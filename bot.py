@@ -7,7 +7,6 @@ import json
 import io
 import os
 from PIL import Image, ImageFilter, ImageFilter, ImageDraw, ImageFont
-from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 from multiprocessing import *
 from telebot import types
 
