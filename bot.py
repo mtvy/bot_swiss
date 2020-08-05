@@ -346,7 +346,7 @@ def lol(message):
                         oper_write += i
             bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html')
         elif message.text == '❗️ Оставить отзыв' or message.text == '❗️ Fikr qoldiring':
-            if message.chat.id != 281321076 and message.chat.id != 667068180:
+            if message.chat.id != 281321076 and message.chat.id != 667068180 and message.chat.id != 263305395 and message.chat.id != 666803198 and message.chat.id != 907508218:
                 oper_write = ""
                 account_settings[str(message.chat.id)]["feedback_st"] = 'open'
                 markup = types.InlineKeyboardMarkup(row_width=2)
@@ -730,7 +730,7 @@ def saveNewTextOperFAQ_Sec(message):
 
 def keyboardRefMaker(message):
     global account_settings
-    if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 907508218:
+    if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 907508218 or message.chat.id == 263305395 or message.chat.id == 666803198:
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         item1 = types.KeyboardButton("📞 Телефон")
         item2 = types.KeyboardButton("🏠 Адреса")
@@ -765,7 +765,7 @@ def keyboardRefMaker(message):
     with open(path_acc_settings, 'r') as fle:
         account_settings = json.load(fle)
 def keyboardRefMakerSec(message):
-    if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 907508218:
+    if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 907508218 or message.chat.id == 263305395 or message.chat.id == 666803198:
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         item1 = types.KeyboardButton("📞 telefon")
         item2 = types.KeyboardButton("🏠 manzillari")
@@ -839,6 +839,9 @@ def fdBack_fill(message):
         markup.add(item1)
         bot.send_message(281321076, txt, reply_markup=markup)
         bot.send_message(667068180, txt, reply_markup=markup)
+        bot.send_message(263305395, txt, reply_markup=markup)
+        bot.send_message(666803198, txt, reply_markup=markup)
+        bot.send_message(907508218, txt, reply_markup=markup)
         feedback_base = []
         with open(path_feedbacks, 'r') as file_set:
             if(file_set.readline() == ""): feedback_base = []
@@ -896,6 +899,9 @@ def fdBack_fill_Sec(message):
         markup.add(item1)
         bot.send_message(281321076, txt, reply_markup=markup)
         bot.send_message(667068180, txt, reply_markup=markup)
+        bot.send_message(263305395, txt, reply_markup=markup)
+        bot.send_message(666803198, txt, reply_markup=markup)
+        bot.send_message(907508218, txt, reply_markup=markup)
         feedback_base = []
         with open(path_feedbacks, 'r') as file_set:
             if(file_set.readline() == ""): feedback_base = []
