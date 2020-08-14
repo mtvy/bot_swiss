@@ -1,5 +1,7 @@
 import schedule
 import datetime
+import psycopg2
+import datetime
 import telebot
 import config
 import time
@@ -36,7 +38,7 @@ path_sec_order_label = "second_language/sl_order_label.txt"
 path_sec_discount_label = "second_language/sl_discount_label.txt"
 path_sec_social_web = "second_language/sl_social_web.txt"
 
-MESSAGE_ID = 218
+MESSAGE_ID = 221
 BOT_ID = 1364784224
 CHANAL_ID = -1001229753165
 
@@ -53,6 +55,142 @@ with open(path_acc_settings, 'r') as file_set:
             account_settings = json.load(file_set)
 
 bot = telebot.TeleBot(config.TOKEN)
+
+def connect():
+    try:
+        con = psycopg2.connect(database="postgres",user="postgres",password="14072003", host="127.0.0.1",port="5432")
+        cur = con.cursor()
+        return con, cur
+    except (Exception, psycopg2.DatabaseError) as error:
+        print ("Error while connecting PostgreSQL!", error)
+        return 0
+
+def insert_new_data(user_id, oper_id):
+    con, cur = connect()
+    if con == 0 and cur == 0:
+        return 0
+    else:
+        try:
+            if oper_id == '0':
+                dt = datetime.date.today()
+                tt = dt.timetuple()
+                date_start = ''
+                ch_i = 0
+                for it in tt:
+                    date_start += str(it)
+                    ch_i += 1
+                    if ch_i >= 3: break
+                    else: date_start += '-'
+                txt_db_com = "INSERT INTO message_tb (user_id, oper_id, date_start, text, status) VALUES (" + user_id + ', ' + oper_id + ", '" + date_start + "', 'TEXT DATABASE', 'open')"
+                cur.execute(txt_db_com)
+                con.commit()
+                print('New data add!')
+                return 1
+            elif user_id != '0' and oper_id != '0':
+                txt_db_com = "UPDATE message_tb SET oper_id = " + oper_id + ", text = '" + "TEXT DATABASE\nOperator: " + oper_id + " User: " + user_id + "'" + " WHERE status = 'open' AND user_id = " + user_id
+                cur.execute(txt_db_com)
+                con.commit()
+                print('New data add!')
+                return 1
+        except Exception as e:
+            print('Error entering new data to message_tb!', e)
+            return 0
+
+def insert_text_to_data(text_val, sm_id):
+    con, cur = connect()
+    if con == 0 and cur == 0:
+        return 0
+    else:
+        try:
+            txt_db_com = "SELECT text FROM message_tb WHERE status = 'open' and (oper_id = " + sm_id + ' or user_id = ' + sm_id + ')'
+            cur.execute(txt_db_com)
+            ed_text = cur.fetchall() 
+            text_adder = ed_text[0]
+            text_adder = text_adder[0] + '\n' + text_val
+            txt_db_com = "UPDATE message_tb SET text = '" + text_adder + "' WHERE status = 'open' and (user_id = " + sm_id + ' or oper_id = ' + sm_id + ')'
+            cur.execute(txt_db_com)
+            con.commit()
+            return 1
+        except Exception as e:
+            print('Error entering data to message_tb!', e)
+            return 0
+
+def closerDataBase(sm_id):
+    con, cur = connect()
+    if con == 0 and cur == 0:
+        return 0
+    else:
+        try:
+            txt_db_com = "SELECT user_id, oper_id FROM message_tb WHERE status = 'open' and (oper_id = " + sm_id + ' or user_id = ' + sm_id + ')'
+            cur.execute(txt_db_com)
+            ed_text = cur.fetchall()
+            if ed_text[0][0] == 0 or ed_text[0][1] == 0:
+                txt_db_com = "delete from message_tb where status = 'open' and (oper_id = " + sm_id + ' or user_id = ' + sm_id + ')'
+                cur.execute(txt_db_com)
+            else:
+                txt_db_com = "UPDATE message_tb SET status = 'close' WHERE status = 'open' and user_id = " + sm_id + ' or oper_id = ' + sm_id
+                cur.execute(txt_db_com)
+            con.commit()
+            return 1
+        except Exception as e:
+            print('Error entering data to message_tb!', e)
+            return 0
+
+def getDataFromDB(date_start):
+    con, cur = connect()
+    if con == 0 and cur == 0:
+        return 0
+    else:
+        try:
+            txt_db_com = "SELECT id, user_id FROM message_tb WHERE date_start = '" + date_start + "'"
+            cur.execute(txt_db_com)
+            ed_text = cur.fetchall()
+            text_adder = 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n'
+            for i in ed_text:
+                for k in account_settings:
+                    if k == str(i[1]):
+                        if account_settings[k]['login'] != 'None':
+                            name_id = '@' + account_settings[k]['login']
+                        else: name_id = account_settings[k]['name']
+                        break
+                text_adder = text_adder + str(i[0]) + ') ' + 'Name: ' + name_id + ' --- Id: ' + str(i[1]) + '\n'
+            con.commit()
+            if text_adder == 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n': return '0' 
+            else: return text_adder
+        except Exception as e:
+            print('Error entering data to message_tb!', e)
+            return '0'
+
+def getTextFromDB(id_text):
+    con, cur = connect()
+    if con == 0 and cur == 0:
+        return 0
+    else:
+        try:
+            txt_db_com = "SELECT text FROM message_tb WHERE id = " + id_text
+            cur.execute(txt_db_com)
+            ed_text = cur.fetchall()
+            text_taker = ed_text[0]
+            text_taker = text_taker[0]
+            con.commit()
+            return text_taker
+        except Exception as e:
+            print('Error, wrong id!', e)
+            return '0'
+
+def change_data(name):
+    con, cur = connect()
+    if con == 0 or cur == 0:
+        return 0
+    else:
+        try:
+            txt_data_del = "UPDATE user_tb set phone = NULL where name = '" + name + "'"
+            cur.execute(txt_data_del)  
+            con.commit()   
+        except Exception as e:
+            err_txt = 'Error deleting data from user @' + name + '!'
+            print(err_txt, e)
+
 
 def start_process():#Запуск Process
     p1 = Process(target=P_schedule.start_schedule, args=()).start()
@@ -171,6 +309,7 @@ def adderNewLabel(message):
         markup.add(item1, item2, item3, item4, item5, item6, item7, item8, item9, item10)
         bot.send_message(message.chat.id,"Какой блок надо отредактировать?", reply_markup=markup)
 
+
 def operKeyboardMaker(message):
     global account_settings
     account_settings[str(message.chat.id)]["conversation"] = 'mid'
@@ -191,6 +330,9 @@ def operKeyboardMaker(message):
     markup = types.InlineKeyboardMarkup(row_width=2)
     item1 = types.InlineKeyboardButton("Принять", callback_data=str(message.chat.id))
     markup.add(item1)
+    user_id = str(message.chat.id)
+    oper_id = '0'
+    insert_new_data(user_id, oper_id)
     bot.send_message(281321076, oper_send_text, reply_markup=markup)
     bot.send_message(667068180, oper_send_text, reply_markup=markup)
 
@@ -214,10 +356,12 @@ def dirKeyboardMaker(message):
     markup = types.InlineKeyboardMarkup(row_width=2)
     item1 = types.InlineKeyboardButton("Принять", callback_data=str(message.chat.id))
     markup.add(item1)
+    user_id = str(message.chat.id)
+    oper_id = '0'
+    insert_new_data(user_id, oper_id)
     bot.send_message(281321076, oper_send_text, reply_markup=markup)
     #bot.send_message(667068180, oper_send_text, reply_markup=markup)
     bot.send_message(907508218, oper_send_text, reply_markup=markup)
-
 
 def operKeyboardMakerSec(message):
     global account_settings
@@ -239,6 +383,9 @@ def operKeyboardMakerSec(message):
     markup = types.InlineKeyboardMarkup(row_width=2)
     item1 = types.InlineKeyboardButton("Принять", callback_data=str(message.chat.id))
     markup.add(item1)
+    user_id = str(message.chat.id)
+    oper_id = '0'
+    insert_new_data(user_id, oper_id)
     bot.send_message(281321076, oper_send_text, reply_markup=markup)
     bot.send_message(667068180, oper_send_text, reply_markup=markup)
 
@@ -262,11 +409,38 @@ def dirKeyboardMakerSec(message):
     markup = types.InlineKeyboardMarkup(row_width=2)
     item1 = types.InlineKeyboardButton("Принять", callback_data=str(message.chat.id))
     markup.add(item1)
+    user_id = str(message.chat.id)
+    oper_id = '0'
+    insert_new_data(user_id, oper_id)
     bot.send_message(281321076, oper_send_text, reply_markup=markup)
     #bot.send_message(667068180, oper_send_text, reply_markup=markup)
     bot.send_message(907508218, oper_send_text, reply_markup=markup)
 
-@bot.message_handler(content_types=['text', 'photo', 'audio', 'video'])
+
+def dbDateSortEnter(message):
+    send = bot.send_message(message.chat.id, '➕ Введите дату в формате ГОД-МЕСЯЦ-ДЕНЬ (2000-1-12)')
+    bot.register_next_step_handler(send, dbSortEnter)
+
+def dbSortEnter(message):
+    date_text = message.text
+    date_text = getDataFromDB(date_text)
+    if date_text == '0': 
+        bot.send_message(message.chat.id, 'Данной даты нет в базе!')
+        return
+    else: bot.send_message(message.chat.id, date_text)
+    send = bot.send_message(message.chat.id, '➕ Введите номер строки по нужному имени или id')
+    bot.register_next_step_handler(send, dbIdSortEnter)
+
+def dbIdSortEnter(message):
+    id_text = message.text
+    id_text = getTextFromDB(id_text)
+    if id_text == '0':
+        bot.send_message(message.chat.id, 'Такого номера нет в базе!')
+        return
+    else: bot.send_message(message.chat.id, id_text)
+
+
+@bot.message_handler(content_types=['text'])
 def lol(message):
     global account_settings
     global mess
@@ -296,44 +470,20 @@ def lol(message):
             bot.send_message(message.chat.id, address.format(message.chat, bot.get_me()),parse_mode='html')
         elif message.text == '🙋 Оператор' or message.text == '🙋 Operator':
             if message.chat.id != 281321076 and message.chat.id != 667068180:
-                #oper_write = ""
                 if account_settings[str(message.chat.id)]["language"] == "Русский":
-                #    with io.open(path_oper_label, encoding='utf-8') as file_set:
-                #        for i in file_set:
-                #            oper_write += i
-                #    bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html')
                     operKeyboardMaker(message)
                 else:
-                    #with io.open(path_sec_oper_label, encoding='utf-8') as file_set:
-                    #    for i in file_set:
-                    #        oper_write += i
-                    #bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html')
                     operKeyboardMakerSec(message)
             else:
                 bot.send_message(message.chat.id, "Вы оператор!")
-            ###########################
-            #operSendQuestion(message)#
-            ###########################
         elif message.text == '✍️ Написать директору' or message.text == '✍️ Direktorga yozing':
             if message.chat.id != 281321076 and message.chat.id != 667068180 and message.chat.id != 907508218:
-                #oper_write = ""
                 if account_settings[str(message.chat.id)]["language"] == "Русский":
-                #    with io.open(path_oper_label, encoding='utf-8') as file_set:
-                #        for i in file_set:
-                #            oper_write += i
-                #    bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html')
                     dirKeyboardMaker(message)
                 else:
-                    #with io.open(path_sec_oper_label, encoding='utf-8') as file_set:
-                    #    for i in file_set:
-                    #        oper_write += i
-                    #bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html')
                     dirKeyboardMakerSec(message)
             else:
                 bot.send_message(message.chat.id, "Вы оператор!")
-            ###########################
-            #operSendQuestion(message)#
-            ###########################
         elif message.text == '📝 Создать заказ' or message.text == '📝 buyurtma yaratish':
             oper_write = ""
             if account_settings[str(message.chat.id)]["language"] == "Русский":
@@ -388,6 +538,13 @@ def lol(message):
                         text_feed += feed_back[k_in][kkk]["FeedBack"]
                         text_feed += "\n-----------------"
                 bot.send_message(message.chat.id, text_feed)          
+        elif message.text == '💽 БД переписок' or message.text == '💽 Yozishmalar bazasi':
+            if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 263305395 or message.chat.id == 666803198 or message.chat.id == 907508218:
+                dbDateSortEnter(message)
+            else:
+                if account_settings[str(message.chat.id)]["language"] == "Русский":
+                    bot.send_message(message.chat.id, 'У вас нет прав для чтения базы!')
+                else: bot.send_message(message.chat.id, "Sizda bazani o'qish huquqi yo'q!")
         elif message.text == '% Получить скидку' or message.text == '% Chegirma oling':
             oper_write = ""
             mess = "new"
@@ -470,15 +627,16 @@ def lol(message):
                 account_settings[account_settings[str(message.chat.id)]["tags"][0]]['tags'].clear()
                 if account_settings[account_settings[str(message.chat.id)]["tags"][0]]["language"] == "Русский":
                     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-                    if account_settings[str(message.chat.id)]["tags"][0] == 281321076 or account_settings[str(message.chat.id)]["tags"][0] == 667068180 or account_settings[str(message.chat.id)]["tags"][0] == 907508218:
+                    if account_settings[str(message.chat.id)]["tags"][0] == '281321076' or account_settings[str(message.chat.id)]["tags"][0] == '667068180' or account_settings[str(message.chat.id)]["tags"][0] == '907508218':
                         item1 = types.KeyboardButton("📞 Телефон")
                         item2 = types.KeyboardButton("🏠 Адреса")
                         item4 = types.KeyboardButton("📝 Создать заказ")
                         item5 = types.KeyboardButton("❗️ Оставить отзыв")
+                        item10 = types.KeyboardButton("💽 БД переписок")
                         item6 = types.KeyboardButton("% Получить скидку")
                         item7 = types.KeyboardButton("®FAQ Инструкция")
                         item9 = types.KeyboardButton("🌐 Мы в социальных сетях")
-                        markup.add(item1, item2, item4, item9, item5, item6, item7)
+                        markup.add(item1, item2, item4, item9, item5, item10, item6, item7)
                     else:
                         item1 = types.KeyboardButton("📞 Телефон")
                         item2 = types.KeyboardButton("🏠 Адреса")
@@ -497,15 +655,16 @@ def lol(message):
                     bot.send_message(account_settings[str(message.chat.id)]["tags"][0], faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
                 else:
                     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-                    if account_settings[str(message.chat.id)]["tags"][0] == 281321076 or account_settings[str(message.chat.id)]["tags"][0] == 667068180 or account_settings[str(message.chat.id)]["tags"][0] == 907508218:
+                    if account_settings[str(message.chat.id)]["tags"][0] == '281321076' or account_settings[str(message.chat.id)]["tags"][0] == '667068180' or account_settings[str(message.chat.id)]["tags"][0] == '907508218':
                         item1 = types.KeyboardButton("📞 telefon")
                         item2 = types.KeyboardButton("🏠 manzillari")
                         item4 = types.KeyboardButton("📝 buyurtma yaratish")
                         item5 = types.KeyboardButton("❗️ Fikr qoldiring")
+                        item10 = types.KeyboardButton("💽 Yozishmalar bazasi")
                         item6 = types.KeyboardButton("% Chegirma oling")
                         item7 = types.KeyboardButton("®FAQ Ko'rsatma")
                         item9 = types.KeyboardButton("🌐 Biz ijtimoiy tarmoqlarda")
-                        markup.add(item1, item2, item4, item9, item5, item6, item7)
+                        markup.add(item1, item2, item4, item9, item5, item10, item6, item7)
                     else:
                         item1 = types.KeyboardButton("📞 telefon")
                         item2 = types.KeyboardButton("🏠 manzillari")
@@ -529,6 +688,7 @@ def lol(message):
             with open(path_acc_settings, 'r') as fle:
                 account_settings = json.load(fle)
             keyboardRefMaker(message)
+            closerDataBase(str(message.chat.id))
         elif message.text == "🔙 Operator chaqiruvini rad etish":
             bot.send_message(str(message.chat.id), "❗ Operator bilan aloqa yakunlandi")
             if len(account_settings[str(message.chat.id)]["tags"]) != 0:
@@ -542,10 +702,11 @@ def lol(message):
                         item2 = types.KeyboardButton("🏠 Адреса")
                         item4 = types.KeyboardButton("📝 Создать заказ")
                         item5 = types.KeyboardButton("❗️ Оставить отзыв")
+                        item10 = types.KeyboardButton("💽 БД переписок")
                         item6 = types.KeyboardButton("% Получить скидку")
                         item7 = types.KeyboardButton("®FAQ Инструкция")
                         item9 = types.KeyboardButton("🌐 Мы в социальных сетях")
-                        markup.add(item1, item2, item4, item9, item5, item6, item7)
+                        markup.add(item1, item2, item4, item9, item5, item10, item6, item7)
                     else:
                         item1 = types.KeyboardButton("📞 Телефон")
                         item2 = types.KeyboardButton("🏠 Адреса")
@@ -569,10 +730,11 @@ def lol(message):
                         item2 = types.KeyboardButton("🏠 manzillari")
                         item4 = types.KeyboardButton("📝 buyurtma yaratish")
                         item5 = types.KeyboardButton("❗️ Fikr qoldiring")
+                        item10 = types.KeyboardButton("💽 Yozishmalar bazasi")
                         item6 = types.KeyboardButton("% Chegirma oling")
                         item7 = types.KeyboardButton("®FAQ Ko'rsatma")
                         item9 = types.KeyboardButton("🌐 Biz ijtimoiy tarmoqlarda")
-                        markup.add(item1, item2, item4, item9, item5, item6, item7)
+                        markup.add(item1, item2, item4, item9, item5, item10, item6, item7)
                     else:
                         item1 = types.KeyboardButton("📞 telefon")
                         item2 = types.KeyboardButton("🏠 manzillari")
@@ -596,6 +758,7 @@ def lol(message):
             with open(path_acc_settings, 'r') as fle:
                 account_settings = json.load(fle)
             keyboardRefMakerSec(message)
+            closerDataBase(str(message.chat.id))
         elif message.text == "❔ Инструкция":
             FAQ_txt = ""
             with io.open(path_FAQoper_label, encoding='utf-8') as file_set:
@@ -610,12 +773,12 @@ def lol(message):
             bot.send_message(message.chat.id, FAQ_txt.format(message.chat, bot.get_me()),parse_mode='html')
         else: 
             if account_settings[str(message.chat.id)]['conversation'] == 'open':
+                if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 263305395 or message.chat.id == 666803198 or message.chat.id == 907508218:
+                    sm_id = 'Operator: '
+                else: sm_id = 'User: '
+                sm_id = sm_id + message.text + '\n'
+                insert_text_to_data(sm_id, str(message.chat.id))
                 bot.send_message(account_settings[str(message.chat.id)]["tags"][0], message.text)
-                #bot.forward_message(account_settings[str(message.chat.id)]["tags"][0], message.chat.id, message.message_id)
-            #elif account_settings[str(message.chat.id)]["language"] == "Русский":
-            #    bot.send_message(message.chat.id, 'Таких команд нет 😧')
-            #else:
-            #    bot.send_message(message.chat.id, "Bunday jamoalar yo'q 😧")
 
 
 def saveNewTextStart(message):
@@ -736,10 +899,11 @@ def keyboardRefMaker(message):
         item2 = types.KeyboardButton("🏠 Адреса")
         item4 = types.KeyboardButton("📝 Создать заказ")
         item5 = types.KeyboardButton("❗️ Оставить отзыв")
+        item10 = types.KeyboardButton("💽 БД переписок")
         item6 = types.KeyboardButton("% Получить скидку")
         item7 = types.KeyboardButton("®FAQ Инструкция")
         item9 = types.KeyboardButton("🌐 Мы в социальных сетях")
-        markup.add(item1, item2, item4, item9, item5, item6, item7)
+        markup.add(item1, item2, item4, item9, item5, item10, item6, item7)
     else:
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         item1 = types.KeyboardButton("📞 Телефон")
@@ -771,10 +935,11 @@ def keyboardRefMakerSec(message):
         item2 = types.KeyboardButton("🏠 manzillari")
         item4 = types.KeyboardButton("📝 buyurtma yaratish")
         item5 = types.KeyboardButton("❗️ Fikr qoldiring")
+        item10 = types.KeyboardButton("💽 Yozishmalar bazasi")
         item6 = types.KeyboardButton("% Chegirma oling")
         item7 = types.KeyboardButton("®FAQ Ko'rsatma")
         item9 = types.KeyboardButton("🌐 Biz ijtimoiy tarmoqlarda")
-        markup.add(item1, item2, item4, item9, item5, item6, item7)
+        markup.add(item1, item2, item4, item9, item5, item10, item6, item7)
     else:
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         item1 = types.KeyboardButton("📞 telefon")
@@ -828,7 +993,7 @@ def fdBack_fill(message):
     global feed_back
     global txt
     feedback_user = message.text
-    if feedback_user != '📞 Телефон' and feedback_user !='🏠 Адреса' and feedback_user !='🌐 Мы в социальных сетях' and feedback_user !='🙋 Operator' and feedback_user != '✍️ Direktorga yozing' and feedback_user !='📝 buyurtma yaratish' and feedback_user !='❗️ Fikr qoldiring' and feedback_user !='% Chegirma oling' and feedback_user !="®FAQ Ko'rsatma" and feedback_user != 'stop':
+    if feedback_user != '📞 Телефон' and feedback_user != '💽 БД переписок' and feedback_user !='🏠 Адреса' and feedback_user !='🌐 Мы в социальных сетях' and feedback_user !='🙋 Operator' and feedback_user != '✍️ Direktorga yozing' and feedback_user !='📝 buyurtma yaratish' and feedback_user !='❗️ Fikr qoldiring' and feedback_user !='% Chegirma oling' and feedback_user !="®FAQ Ko'rsatma" and feedback_user != 'stop':
         txt += "\nОтзыв: "
         txt += feedback_user
         txt += "\n---------------------"
@@ -888,7 +1053,7 @@ def fdBack_fill_Sec(message):
     global feed_back
     global txt
     feedback_user = message.text
-    if feedback_user != '📞 telefon' and feedback_user !='🏠 manzillari' and feedback_user !='🌐 Biz ijtimoiy tarmoqlarda' and feedback_user !='🙋 Оператор' and feedback_user != '✍️ Написать директору' and feedback_user !='📝 Создать заказ' and feedback_user !='❗️ Оставить отзыв' and feedback_user !='% Получить скидку' and feedback_user !='®FAQ Инструкция' and feedback_user != 'stop':
+    if feedback_user != '📞 telefon' and feedback_user != '💽 Yozishmalar bazasi' and feedback_user !='🏠 manzillari' and feedback_user !='🌐 Biz ijtimoiy tarmoqlarda' and feedback_user !='🙋 Оператор' and feedback_user != '✍️ Написать директору' and feedback_user !='📝 Создать заказ' and feedback_user !='❗️ Оставить отзыв' and feedback_user !='% Получить скидку' and feedback_user !='®FAQ Инструкция' and feedback_user != 'stop':
         txt += "\nОтзыв: "
         txt += feedback_user
         txt += "\n---------------------"
@@ -1345,6 +1510,9 @@ def callback_inline(call):
                         else: 
                             bot.send_message(k, "📞 Operator topildi, yozishmalar faollashtirildi")
                         bot.send_message(str(call.message.chat.id), "📞 Вы подтвердили заявку!", reply_markup=markup)
+                        user_id = str(k) 
+                        oper_id = str(call.message.chat.id)
+                        insert_new_data(user_id, oper_id)
                         break
                 if account_settings[str(call.message.chat.id)]["conversation"] != 'open':
                     u_tex = "Пользователь id: "

@@ -8,8 +8,8 @@
         "tags": [],
         "ref": "0",
         "personal data": "YES",
-        "language": "Ozbek",
-        "feedback_st": "close"
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "open"
     },
     "281321076": {
         "login": "mtvyp",
@@ -149,7 +149,7 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "open"
+        "feedback_st": "close"
     },
     "305525303": {
         "login": "DoniTashpulatov",
@@ -195,9 +195,9 @@
         "discount": "0",
         "tags": [],
         "ref": "0",
-        "personal data": "NO",
+        "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "open"
     },
     "698895704": {
         "login": "None",
@@ -694,6 +694,114 @@
     "503108035": {
         "login": "RA_BayerAG",
         "name": "\u0428\u0430\u0445\u043b\u043e",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "680435137": {
+        "login": "Government_uz",
+        "name": "anvar_",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "796977824": {
+        "login": "xon1777",
+        "name": "Azizxon",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "NO",
+        "language": "Ozbek",
+        "feedback_st": "close"
+    },
+    "501228104": {
+        "login": "ABUUU",
+        "name": "\ud83c\uddfa\ud83c\uddff",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "982876906": {
+        "login": "None",
+        "name": "D\ud83d\udc9c",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "84298355": {
+        "login": "None",
+        "name": "Falkon",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "934407387": {
+        "login": "Akbar_Shogird",
+        "name": "Akbar",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "Ozbek",
+        "feedback_st": "close"
+    },
+    "46184425": {
+        "login": "Dimix19",
+        "name": "\u0414\u0438\u043c\u043a\u0430",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "186698794": {
+        "login": "Marina_kmp",
+        "name": "Marina",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "79433332": {
+        "login": "PulatKhaliulin",
+        "name": "Pulat Khaliulin",
         "oper_ids": [],
         "conversation": "close",
         "discount": "0",
