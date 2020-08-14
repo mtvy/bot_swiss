@@ -87,7 +87,7 @@ def insert_new_data(user_id, oper_id):
                 print('New data add!')
                 return 1
             elif user_id != '0' and oper_id != '0':
-                txt_db_com = "UPDATE message_tb SET oper_id = " + oper_id + ", text = '" + "TEXT DATABASE\nOperator: " + oper_id + " User: " + user_id + "'" + " WHERE status = 'open' AND user_id = " + user_id
+                txt_db_com = "UPDATE message_tb SET oper_id = " + oper_id + ", text = '" + "TEXT DATABASE\nOperator: " + oper_id + "\nUser: " + user_id + "\n'" + " WHERE status = 'open' AND user_id = " + user_id
                 cur.execute(txt_db_com)
                 con.commit()
                 print('New data add!')
