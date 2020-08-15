@@ -38,7 +38,7 @@ path_sec_order_label = "second_language/sl_order_label.txt"
 path_sec_discount_label = "second_language/sl_discount_label.txt"
 path_sec_social_web = "second_language/sl_social_web.txt"
 
-MESSAGE_ID = 221
+MESSAGE_ID = 223
 BOT_ID = 1364784224
 CHANAL_ID = -1001229753165
 
@@ -58,7 +58,7 @@ bot = telebot.TeleBot(config.TOKEN)
 
 def connect():
     try:
-        con = psycopg2.connect(database="postgres",user="postgres",password="postgres", host="127.0.0.1",port="5432")
+        con = psycopg2.connect(database="postgres",user="postgres",password="14072003", host="127.0.0.1",port="5432")
         cur = con.cursor()
         return con, cur
     except (Exception, psycopg2.DatabaseError) as error:
@@ -94,6 +94,41 @@ def insert_new_data(user_id, oper_id):
                 return 1
         except Exception as e:
             print('Error entering new data to message_tb!', e)
+            return 0
+def insert_new_feedback_data(oper_id, user_id, txt):
+    con, cur = connect()
+    if con == 0 and cur == 0:
+        return 0
+    else:
+        try:
+            if oper_id == '0':
+                dt = datetime.date.today()
+                tt = dt.timetuple()
+                date_enter = ''
+                ch_i = 0
+                for it in tt:
+                    date_enter += str(it)
+                    ch_i += 1
+                    if ch_i >= 3: break
+                    else: date_enter += '-'
+                txt_db_com = "INSERT INTO feedback_tb (user_id, oper_id, date_enter, text_fb, status) VALUES (" + user_id + ', ' + oper_id + ", '" + date_enter + "', '" + txt +"', 'open')"
+                cur.execute(txt_db_com)
+                con.commit()
+                print('New data add!')
+                return 1
+            else:
+                txt_db_com = "SELECT text_fb FROM feedback_tb WHERE status = 'open' and user_id = " + user_id
+                cur.execute(txt_db_com)
+                ed_text = cur.fetchall() 
+                text_adder = ed_text[0]
+                text_adder = text_adder[0] + '\n' + "Operator: " + oper_id + '\nТекст: ' + txt
+                txt_db_com = "UPDATE feedback_tb SET status = 'close', oper_id = " + oper_id + ", text_fb = '" + "TEXT FEEDBACK\n" + text_adder + "'" + " WHERE status = 'open' AND user_id = " + user_id
+                cur.execute(txt_db_com)
+                con.commit()
+                print('New data add!')
+                return 1
+        except Exception as e:
+            print('Error entering new data to feedback_tb!', e)
             return 0
 
 def insert_text_to_data(text_val, sm_id):
@@ -158,7 +193,31 @@ def getDataFromDB(date_start):
             if text_adder == 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n': return '0' 
             else: return text_adder
         except Exception as e:
-            print('Error entering data to message_tb!', e)
+            print('Error data message_tb!', e)
+            return '0'
+def getDataFromFeedBackDB(date_start):
+    con, cur = connect()
+    if con == 0 and cur == 0:
+        return 0
+    else:
+        try:
+            txt_db_com = "SELECT id, user_id FROM feedback_tb WHERE date_enter = '" + date_start + "'"
+            cur.execute(txt_db_com)
+            ed_text = cur.fetchall()
+            text_adder = 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n'
+            for i in ed_text:
+                for k in account_settings:
+                    if k == str(i[1]):
+                        if account_settings[k]['login'] != 'None':
+                            name_id = '@' + account_settings[k]['login']
+                        else: name_id = account_settings[k]['name']
+                        break
+                text_adder = text_adder + str(i[0]) + ') ' + 'Name: ' + name_id + ' --- Id: ' + str(i[1]) + '\n'
+            con.commit()
+            if text_adder == 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n': return '0' 
+            else: return text_adder
+        except Exception as e:
+            print('Error data feedback_tb!', e)
             return '0'
 
 def getTextFromDB(id_text):
@@ -168,6 +227,22 @@ def getTextFromDB(id_text):
     else:
         try:
             txt_db_com = "SELECT text FROM message_tb WHERE id = " + id_text
+            cur.execute(txt_db_com)
+            ed_text = cur.fetchall()
+            text_taker = ed_text[0]
+            text_taker = text_taker[0]
+            con.commit()
+            return text_taker
+        except Exception as e:
+            print('Error, wrong id!', e)
+            return '0'
+def getTextFromFeedBackDB(id_text):
+    con, cur = connect()
+    if con == 0 and cur == 0:
+        return 0
+    else:
+        try:
+            txt_db_com = "SELECT text_fb FROM feedback_tb WHERE id = " + id_text
             cur.execute(txt_db_com)
             ed_text = cur.fetchall()
             text_taker = ed_text[0]
@@ -420,6 +495,10 @@ def dirKeyboardMakerSec(message):
 def dbDateSortEnter(message):
     send = bot.send_message(message.chat.id, '➕ Введите дату в формате ГОД-МЕСЯЦ-ДЕНЬ (2000-1-12)')
     bot.register_next_step_handler(send, dbSortEnter)
+def feedBackdbDateSortEnter(message):
+    send = bot.send_message(message.chat.id, '➕ Введите дату в формате ГОД-МЕСЯЦ-ДЕНЬ (2000-1-12)')
+    bot.register_next_step_handler(send, FeedBackdbSortEnter)
+
 
 def dbSortEnter(message):
     date_text = message.text
@@ -430,10 +509,26 @@ def dbSortEnter(message):
     else: bot.send_message(message.chat.id, date_text)
     send = bot.send_message(message.chat.id, '➕ Введите номер строки по нужному имени или id')
     bot.register_next_step_handler(send, dbIdSortEnter)
+def FeedBackdbSortEnter(message):
+    date_text = message.text
+    date_text = getDataFromFeedBackDB(date_text)
+    if date_text == '0': 
+        bot.send_message(message.chat.id, 'Данной даты нет в базе!')
+        return
+    else: bot.send_message(message.chat.id, date_text)
+    send = bot.send_message(message.chat.id, '➕ Введите номер строки по нужному имени или id')
+    bot.register_next_step_handler(send, FeedBackdbIdSortEnter)
 
 def dbIdSortEnter(message):
     id_text = message.text
     id_text = getTextFromDB(id_text)
+    if id_text == '0':
+        bot.send_message(message.chat.id, 'Такого номера нет в базе!')
+        return
+    else: bot.send_message(message.chat.id, id_text)
+def FeedBackdbIdSortEnter(message):
+    id_text = message.text
+    id_text = getTextFromFeedBackDB(id_text)
     if id_text == '0':
         bot.send_message(message.chat.id, 'Такого номера нет в базе!')
         return
@@ -514,30 +609,31 @@ def lol(message):
                 account_settings[str(message.chat.id)]["feedback_st"] = 'open'
                 bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
             else:
-                feed_back = [{}]
-                with open(path_feedbacks, 'r') as file_set:
-                    if(file_set.readline() == ""): feed_back = [{}]
-                    else:
-                        file_set.close()
-                        with open(path_feedbacks, 'r') as file_set:
-                            feed_back = json.load(file_set)
-                text_feed = ""
-                for k_in in range(len(feed_back)):
-                    text_feed += "-----------------\n"
-                    text_feed += str(k_in + 1)
-                    text_feed += ". Отзыв\nid: "
-                    for kkk in feed_back[k_in].keys():
-                        text_feed += kkk
-                        text_feed += "\nИмя: "
-                        text_feed += feed_back[k_in][kkk]["Name"]
-                        text_feed += "\nТелефон: "
-                        text_feed += feed_back[k_in][kkk]["Telephone number"]
-                        text_feed += "\nЯзык: "
-                        text_feed += feed_back[k_in][kkk]["Language"]
-                        text_feed += "\nТекст: "
-                        text_feed += feed_back[k_in][kkk]["FeedBack"]
-                        text_feed += "\n-----------------"
-                bot.send_message(message.chat.id, text_feed)          
+                feedBackdbDateSortEnter(message)
+                #feed_back = [{}]
+                #with open(path_feedbacks, 'r') as file_set:
+                #    if(file_set.readline() == ""): feed_back = [{}]
+                #    else:
+                #        file_set.close()
+                #        with open(path_feedbacks, 'r') as file_set:
+                #            feed_back = json.load(file_set)
+                #text_feed = ""
+                #for k_in in range(len(feed_back)):
+                #    text_feed += "-----------------\n"
+                #    text_feed += str(k_in + 1)
+                #    text_feed += ". Отзыв\nid: "
+                #    for kkk in feed_back[k_in].keys():
+                #        text_feed += kkk
+                #        text_feed += "\nИмя: "
+                #        text_feed += feed_back[k_in][kkk]["Name"]
+                #        text_feed += "\nТелефон: "
+                #        text_feed += feed_back[k_in][kkk]["Telephone number"]
+                #        text_feed += "\nЯзык: "
+                #        text_feed += feed_back[k_in][kkk]["Language"]
+                #        text_feed += "\nТекст: "
+                #        text_feed += feed_back[k_in][kkk]["FeedBack"]
+                #        text_feed += "\n-----------------"
+                #bot.send_message(message.chat.id, text_feed)          
         elif message.text == '💽 БД переписок' or message.text == '💽 Yozishmalar bazasi':
             if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 263305395 or message.chat.id == 666803198 or message.chat.id == 907508218:
                 dbDateSortEnter(message)
@@ -1007,19 +1103,21 @@ def fdBack_fill(message):
         bot.send_message(263305395, txt, reply_markup=markup)
         bot.send_message(666803198, txt, reply_markup=markup)
         bot.send_message(907508218, txt, reply_markup=markup)
-        feedback_base = []
-        with open(path_feedbacks, 'r') as file_set:
-            if(file_set.readline() == ""): feedback_base = []
-            else:
-                file_set.close()
-                with open(path_feedbacks, 'r') as file_set:
-                    feedback_base = json.load(file_set)
-        feedback_base.append(feed_back)
-        with open(path_feedbacks, 'w+') as f:
-            json.dump(feedback_base, f, indent='    ')
-        txt = ""
-        feed_back = {}
-        feedback_base = []
+        oper_id = '0'
+        insert_new_feedback_data(oper_id,  str(message.chat.id), txt)
+        #feedback_base = []
+        #with open(path_feedbacks, 'r') as file_set:
+        #    if(file_set.readline() == ""): feedback_base = []
+        #    else:
+        #        file_set.close()
+        #        with open(path_feedbacks, 'r') as file_set:
+        #            feedback_base = json.load(file_set)
+        #feedback_base.append(feed_back)
+        #with open(path_feedbacks, 'w+') as f:
+        #    json.dump(feedback_base, f, indent='    ')
+        #txt = ""
+        #feed_back = {}
+        #feedback_base = []
     elif feedback_user == 'stop':
         bot.send_message(message.chat.id, '➕ Операция отменена')
     else:
@@ -1208,6 +1306,7 @@ def userSebdText(message):
     word_user_send = message.text
     bot.send_message(account_settings[str(message.chat.id)]["feedback_st"], "Ответ оператора на ваш отзыв!👇")
     bot.send_message(account_settings[str(message.chat.id)]["feedback_st"], word_user_send)
+    insert_new_feedback_data(str(message.chat.id), account_settings[str(message.chat.id)]["feedback_st"] , word_user_send)
     #bot.forward_message(account_settings[str(message.chat.id)]["feedback_st"], message.chat.id, message.message_id)
     bot.send_message(message.chat.id, "Сообщение отправлено!")
     account_settings[account_settings[str(message.chat.id)]["feedback_st"]]["feedback_st"] = 'close'

@@ -810,5 +810,77 @@
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
         "feedback_st": "close"
+    },
+    "822327335": {
+        "login": "None",
+        "name": "\ud83d\udd4a",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "NO",
+        "language": "Ozbek",
+        "feedback_st": "close"
+    },
+    "1442409": {
+        "login": "Ren92",
+        "name": "Vladislav",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "655372548": {
+        "login": "Dinara_09",
+        "name": "DiNaRa",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "166680015": {
+        "login": "xylioramirez",
+        "name": "Alexander",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "1497113": {
+        "login": "None",
+        "name": "Dilbar",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "NO",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "255863862": {
+        "login": "None",
+        "name": "+++++",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "NO",
+        "language": "Ozbek",
+        "feedback_st": "close"
     }
 }
