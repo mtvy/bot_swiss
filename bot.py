@@ -58,7 +58,7 @@ bot = telebot.TeleBot(config.TOKEN)
 
 def connect():
     try:
-        con = psycopg2.connect(database="postgres",user="postgres",password="postgres", host="127.0.0.1",port="5432")
+        con = psycopg2.connect(database="postgres",user="postgres",password="14072003", host="127.0.0.1",port="5432")
         cur = con.cursor()
         return con, cur
     except (Exception, psycopg2.DatabaseError) as error:
@@ -91,6 +91,13 @@ def insert_new_data(user_id, oper_id):
                 cur.execute(txt_db_com)
                 con.commit()
                 print('New data add!')
+                txt_db_com = "SELECT id FROM message_tb WHERE status = 'open' and user_id = " + user_id
+                cur.execute(txt_db_com)
+                ed_text = cur.fetchall()
+                text_adder = ed_text[0]
+                text_adder = '✏️id Переписки: ' + str(text_adder[0])
+                bot.send_message(int(oper_id), text_adder)
+                bot.send_message(int(user_id), text_adder)
                 return 1
         except Exception as e:
             print('Error entering new data to message_tb!', e)
@@ -122,10 +129,20 @@ def insert_new_feedback_data(oper_id, user_id, txt):
                 ed_text = cur.fetchall() 
                 text_adder = ed_text[0]
                 text_adder = text_adder[0] + '\n' + "Operator: " + oper_id + '\nТекст: ' + txt
-                txt_db_com = "UPDATE feedback_tb SET status = 'close', oper_id = " + oper_id + ", text_fb = '" + "TEXT FEEDBACK\n" + text_adder + "'" + " WHERE status = 'open' AND user_id = " + user_id
+                txt_db_com = "UPDATE feedback_tb SET oper_id = " + oper_id + ", text_fb = '" + "TEXT FEEDBACK\n" + text_adder + "'" + " WHERE status = 'open' AND user_id = " + user_id
                 cur.execute(txt_db_com)
                 con.commit()
                 print('New data add!')
+                txt_db_com = "SELECT id FROM feedback_tb WHERE status = 'open' and user_id = " + user_id
+                cur.execute(txt_db_com)
+                ed_text = cur.fetchall()
+                text_adder = ed_text[0]
+                text_adder = '✏️id Переписки: ' + str(text_adder[0])
+                bot.send_message(int(oper_id), text_adder)
+                bot.send_message(int(user_id), text_adder)
+                txt_db_com = "UPDATE feedback_tb SET status = 'close' WHERE status = 'open' AND user_id = " + user_id
+                cur.execute(txt_db_com)
+                con.commit()
                 return 1
         except Exception as e:
             print('Error entering new data to feedback_tb!', e)
@@ -721,6 +738,10 @@ def lol(message):
                 bot.send_message(str(account_settings[str(message.chat.id)]["tags"][0]), "❗ Общение с оператором заершено")
                 account_settings[account_settings[str(message.chat.id)]["tags"][0]]['conversation'] = 'close'
                 account_settings[account_settings[str(message.chat.id)]["tags"][0]]['tags'].clear()
+                with open(path_acc_settings, 'w+') as f:
+                    json.dump(account_settings, f, indent='    ')
+                with open(path_acc_settings, 'r') as fle:
+                    account_settings = json.load(fle)
                 if account_settings[account_settings[str(message.chat.id)]["tags"][0]]["language"] == "Русский":
                     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
                     if account_settings[str(message.chat.id)]["tags"][0] == '281321076' or account_settings[str(message.chat.id)]["tags"][0] == '667068180' or account_settings[str(message.chat.id)]["tags"][0] == '907508218':
@@ -776,14 +797,26 @@ def lol(message):
                     with io.open(path_sec_FAQ_label, encoding='utf-8') as file_set:
                         for i in file_set:
                             faq_txt += i
-                    bot.send_message(account_settings[str(message.chat.id)]["tags"][0], faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+                    bot.send_message(account_settings[str(message.chat.id)]["tags"][0], faq_txt.format(message.chat, bot.get_me()), parse_mode='html', reply_markup=markup)
+            keyboardRefMaker(message)
+            markup = types.InlineKeyboardMarkup(row_width=2)
+            item1 = types.InlineKeyboardButton("👍", callback_data='👍')
+            item2 = types.InlineKeyboardButton("👎", callback_data="👎")
+            markup.add(item1, item2)
+            if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 263305395 or message.chat.id == 666803198 or message.chat.id == 907508218:
+                if account_settings[account_settings[str(message.chat.id)]["tags"][0]]["language"] == "Русский": 
+                    bot.send_message(account_settings[str(message.chat.id)]["tags"][0], 'Оцените работу оператора!', reply_markup=markup)
+                else: bot.send_message(account_settings[str(message.chat.id)]["tags"][0], 'Operator ishini baholang!', reply_markup=markup)
+            else:
+                if account_settings[str(message.chat.id)]["language"] == "Русский": 
+                    bot.send_message(str(message.chat.id), 'Оцените работу оператора!', reply_markup=markup)
+                else: bot.send_message(str(message.chat.id), 'Operator ishini baholang!', reply_markup=markup)
             account_settings[str(message.chat.id)]['conversation'] = 'close'
             account_settings[str(message.chat.id)]['tags'].clear()
             with open(path_acc_settings, 'w+') as f:
                 json.dump(account_settings, f, indent='    ')
             with open(path_acc_settings, 'r') as fle:
                 account_settings = json.load(fle)
-            keyboardRefMaker(message)
             closerDataBase(str(message.chat.id))
         elif message.text == "🔙 Operator chaqiruvini rad etish":
             bot.send_message(str(message.chat.id), "❗ Operator bilan aloqa yakunlandi")
@@ -847,14 +880,26 @@ def lol(message):
                         for i in file_set:
                             faq_txt += i
                     bot.send_message(account_settings[str(message.chat.id)]["tags"][0], faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+            keyboardRefMakerSec(message)
+            closerDataBase(str(message.chat.id))
+            markup = types.InlineKeyboardMarkup(row_width=2)
+            item1 = types.InlineKeyboardButton('👍', callback_data='👍')
+            item2 = types.InlineKeyboardButton('👎', callback_data='👎')
+            markup.add(item1, item2)
+            if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 263305395 or message.chat.id == 666803198 or message.chat.id == 907508218:
+                if account_settings[account_settings[str(message.chat.id)]["tags"][0]]["language"] == "Русский": 
+                    bot.send_message(account_settings[str(message.chat.id)]["tags"][0], 'Оцените работу оператора!', reply_markup=markup)
+                else: bot.send_message(account_settings[str(message.chat.id)]["tags"][0], 'Operator ishini baholang!', reply_markup=markup)
+            else:
+                if account_settings[str(message.chat.id)]["language"] == "Русский": 
+                    bot.send_message(str(message.chat.id), 'Оцените работу оператора!', reply_markup=markup)
+                else: bot.send_message(str(message.chat.id), 'Operator ishini baholang!', reply_markup=markup)
             account_settings[str(message.chat.id)]['conversation'] = 'close'
             account_settings[str(message.chat.id)]['tags'].clear()
             with open(path_acc_settings, 'w+') as f:
                 json.dump(account_settings, f, indent='    ')
             with open(path_acc_settings, 'r') as fle:
                 account_settings = json.load(fle)
-            keyboardRefMakerSec(message)
-            closerDataBase(str(message.chat.id))
         elif message.text == "❔ Инструкция":
             FAQ_txt = ""
             with io.open(path_FAQoper_label, encoding='utf-8') as file_set:
@@ -1574,6 +1619,17 @@ def callback_inline(call):
             send = bot.send_message(call.message.chat.id, "➕ Введите текст для изменения")
             bot.register_next_step_handler(send, saveNewTextOperFAQ_Sec)  
 
+        elif call.data == '👍':
+            bot.delete_message(call.message.chat.id, call.message.message_id)
+            if account_settings[str(call.message.chat.id)]["language"] == "Русский":
+                bot.send_message(call.message.chat.id, 'Спасибо за оценку!')
+            else: bot.send_message(call.message.chat.id, 'Baholash uchun rahmat!')
+        elif call.data == '👎':
+            bot.delete_message(call.message.chat.id, call.message.message_id) 
+            if account_settings[str(call.message.chat.id)]["language"] == "Русский":
+                bot.send_message(call.message.chat.id, 'Спасибо за оценку!')
+            else: bot.send_message(call.message.chat.id, 'Baholash uchun rahmat!')
+            
         elif call.data[0] == 'Q':
             if account_settings[call.data[1:]]["feedback_st"] == 'open':
                 account_settings[call.data[1:]]["feedback_st"] = 'close'
@@ -1620,7 +1676,6 @@ def callback_inline(call):
                     bot.send_message(call.message.chat.id, u_tex)
             else:
                 bot.send_message(call.message.chat.id, "Закончите старый диалог, чтобы начать новый!")
-
 
         #show alert
         #bot.answer_callback_query(callback_query_id=call.id, show_alert=False,text="ЭТО ТЕСТОВОЕ УВЕДОМЛЕНИЕ!!11")
