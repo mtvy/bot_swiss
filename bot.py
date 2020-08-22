@@ -38,7 +38,7 @@ path_sec_order_label = "second_language/sl_order_label.txt"
 path_sec_discount_label = "second_language/sl_discount_label.txt"
 path_sec_social_web = "second_language/sl_social_web.txt"
 
-MESSAGE_ID = 223
+MESSAGE_ID = 230
 BOT_ID = 1364784224
 CHANAL_ID = -1001229753165
 
@@ -58,7 +58,7 @@ bot = telebot.TeleBot(config.TOKEN)
 
 def connect():
     try:
-        con = psycopg2.connect(database="postgres",user="postgres",password="postgres", host="127.0.0.1",port="5432")
+        con = psycopg2.connect(database="postgres",user="postgres",password="14072003", host="127.0.0.1",port="5432")
         cur = con.cursor()
         return con, cur
     except (Exception, psycopg2.DatabaseError) as error:
@@ -108,7 +108,7 @@ def insert_new_feedback_data(oper_id, user_id, txt):
         return 0
     else:
         try:
-            if oper_id == '0':
+            if oper_id == '0' and user_id != '0':
                 dt = datetime.date.today()
                 tt = dt.timetuple()
                 date_enter = ''
@@ -122,6 +122,12 @@ def insert_new_feedback_data(oper_id, user_id, txt):
                 cur.execute(txt_db_com)
                 con.commit()
                 print('New data add!')
+                txt_db_com = "SELECT id FROM feedback_tb WHERE status = 'open' and user_id = " + user_id
+                cur.execute(txt_db_com)
+                ed_text = cur.fetchall()
+                text_adder = ed_text[0]
+                text_adder = '✏️id Жалобы: ' + str(text_adder[0])
+                bot.send_message(int(user_id), text_adder)
                 return 1
             else:
                 txt_db_com = "SELECT text_fb FROM feedback_tb WHERE status = 'open' and user_id = " + user_id
@@ -137,9 +143,9 @@ def insert_new_feedback_data(oper_id, user_id, txt):
                 cur.execute(txt_db_com)
                 ed_text = cur.fetchall()
                 text_adder = ed_text[0]
-                text_adder = '✏️id Переписки: ' + str(text_adder[0])
+                text_adder = '✏️id Жалобы: ' + str(text_adder[0])
                 bot.send_message(int(oper_id), text_adder)
-                bot.send_message(int(user_id), text_adder)
+                #bot.send_message(int(user_id), text_adder)
                 txt_db_com = "UPDATE feedback_tb SET status = 'close' WHERE status = 'open' AND user_id = " + user_id
                 cur.execute(txt_db_com)
                 con.commit()
@@ -552,7 +558,7 @@ def FeedBackdbIdSortEnter(message):
     else: bot.send_message(message.chat.id, id_text)
 
 
-@bot.message_handler(content_types=['text'])
+@bot.message_handler(content_types=['text', 'photo'])
 def lol(message):
     global account_settings
     global mess
@@ -607,7 +613,7 @@ def lol(message):
                     for i in file_set:
                         oper_write += i
             bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html')
-        elif message.text == '❗️ Оставить отзыв' or message.text == '❗️ Fikr qoldiring':
+        elif message.text == '❗️ Оставить жалобу' or message.text == '❗️ Shikoyat qoldiring':
             if message.chat.id != 281321076 and message.chat.id != 667068180 and message.chat.id != 263305395 and message.chat.id != 666803198 and message.chat.id != 907508218:
                 oper_write = ""
                 account_settings[str(message.chat.id)]["feedback_st"] = 'open'
@@ -616,41 +622,17 @@ def lol(message):
                     with io.open(path_recv_label, encoding='utf-8') as file_set:
                         for i in file_set:
                             oper_write += i
-                    item1 = types.InlineKeyboardButton("Написать отзыв", callback_data='Написать отзыв')
+                    item1 = types.InlineKeyboardButton("Написать жалобу", callback_data='Написать жалобу')
                 else:
                     with io.open(path_sec_recv_label, encoding='utf-8') as file_set:
                         for i in file_set:
                             oper_write += i
-                    item1 = types.InlineKeyboardButton("Fikr bildiring yozing", callback_data='Write a feedback')
+                    item1 = types.InlineKeyboardButton("Shikoyat yozing", callback_data='Write a feedback')
                 markup.add(item1)
                 account_settings[str(message.chat.id)]["feedback_st"] = 'open'
                 bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
             else:
                 feedBackdbDateSortEnter(message)
-                #feed_back = [{}]
-                #with open(path_feedbacks, 'r') as file_set:
-                #    if(file_set.readline() == ""): feed_back = [{}]
-                #    else:
-                #        file_set.close()
-                #        with open(path_feedbacks, 'r') as file_set:
-                #            feed_back = json.load(file_set)
-                #text_feed = ""
-                #for k_in in range(len(feed_back)):
-                #    text_feed += "-----------------\n"
-                #    text_feed += str(k_in + 1)
-                #    text_feed += ". Отзыв\nid: "
-                #    for kkk in feed_back[k_in].keys():
-                #        text_feed += kkk
-                #        text_feed += "\nИмя: "
-                #        text_feed += feed_back[k_in][kkk]["Name"]
-                #        text_feed += "\nТелефон: "
-                #        text_feed += feed_back[k_in][kkk]["Telephone number"]
-                #        text_feed += "\nЯзык: "
-                #        text_feed += feed_back[k_in][kkk]["Language"]
-                #        text_feed += "\nТекст: "
-                #        text_feed += feed_back[k_in][kkk]["FeedBack"]
-                #        text_feed += "\n-----------------"
-                #bot.send_message(message.chat.id, text_feed)          
         elif message.text == '💽 БД переписок' or message.text == '💽 Yozishmalar bazasi':
             if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 263305395 or message.chat.id == 666803198 or message.chat.id == 907508218:
                 dbDateSortEnter(message)
@@ -748,7 +730,7 @@ def lol(message):
                         item1 = types.KeyboardButton("📞 Телефон")
                         item2 = types.KeyboardButton("🏠 Адреса")
                         item4 = types.KeyboardButton("📝 Создать заказ")
-                        item5 = types.KeyboardButton("❗️ Оставить отзыв")
+                        item5 = types.KeyboardButton("❗️ Оставить жалобу")
                         item10 = types.KeyboardButton("💽 БД переписок")
                         item6 = types.KeyboardButton("% Получить скидку")
                         item7 = types.KeyboardButton("®FAQ Инструкция")
@@ -759,7 +741,7 @@ def lol(message):
                         item2 = types.KeyboardButton("🏠 Адреса")
                         item3 = types.KeyboardButton("🙋 Оператор")
                         item4 = types.KeyboardButton("📝 Создать заказ")
-                        item5 = types.KeyboardButton("❗️ Оставить отзыв")
+                        item5 = types.KeyboardButton("❗️ Оставить жалобу")
                         item6 = types.KeyboardButton("% Получить скидку")
                         item7 = types.KeyboardButton("®FAQ Инструкция")
                         item8 = types.KeyboardButton("✍️ Написать директору")
@@ -776,7 +758,7 @@ def lol(message):
                         item1 = types.KeyboardButton("📞 telefon")
                         item2 = types.KeyboardButton("🏠 manzillari")
                         item4 = types.KeyboardButton("📝 buyurtma yaratish")
-                        item5 = types.KeyboardButton("❗️ Fikr qoldiring")
+                        item5 = types.KeyboardButton("❗️ Shikoyat qoldiring")
                         item10 = types.KeyboardButton("💽 Yozishmalar bazasi")
                         item6 = types.KeyboardButton("% Chegirma oling")
                         item7 = types.KeyboardButton("®FAQ Ko'rsatma")
@@ -787,7 +769,7 @@ def lol(message):
                         item2 = types.KeyboardButton("🏠 manzillari")
                         item3 = types.KeyboardButton("🙋 Operator")
                         item4 = types.KeyboardButton("📝 buyurtma yaratish")
-                        item5 = types.KeyboardButton("❗️ Fikr qoldiring")
+                        item5 = types.KeyboardButton("❗️ Shikoyat qoldiring")
                         item6 = types.KeyboardButton("% Chegirma oling")
                         item7 = types.KeyboardButton("®FAQ Ko'rsatma")
                         item8 = types.KeyboardButton("✍️ Direktorga yozing")
@@ -830,7 +812,7 @@ def lol(message):
                         item1 = types.KeyboardButton("📞 Телефон")
                         item2 = types.KeyboardButton("🏠 Адреса")
                         item4 = types.KeyboardButton("📝 Создать заказ")
-                        item5 = types.KeyboardButton("❗️ Оставить отзыв")
+                        item5 = types.KeyboardButton("❗️ Оставить жалобу")
                         item10 = types.KeyboardButton("💽 БД переписок")
                         item6 = types.KeyboardButton("% Получить скидку")
                         item7 = types.KeyboardButton("®FAQ Инструкция")
@@ -841,7 +823,7 @@ def lol(message):
                         item2 = types.KeyboardButton("🏠 Адреса")
                         item3 = types.KeyboardButton("🙋 Оператор")
                         item4 = types.KeyboardButton("📝 Создать заказ")
-                        item5 = types.KeyboardButton("❗️ Оставить отзыв")
+                        item5 = types.KeyboardButton("❗️ Оставить жалобу")
                         item6 = types.KeyboardButton("% Получить скидку")
                         item7 = types.KeyboardButton("®FAQ Инструкция")
                         item8 = types.KeyboardButton("✍️ Написать директору")
@@ -858,7 +840,7 @@ def lol(message):
                         item1 = types.KeyboardButton("📞 telefon")
                         item2 = types.KeyboardButton("🏠 manzillari")
                         item4 = types.KeyboardButton("📝 buyurtma yaratish")
-                        item5 = types.KeyboardButton("❗️ Fikr qoldiring")
+                        item5 = types.KeyboardButton("❗️ Shikoyat qoldiring")
                         item10 = types.KeyboardButton("💽 Yozishmalar bazasi")
                         item6 = types.KeyboardButton("% Chegirma oling")
                         item7 = types.KeyboardButton("®FAQ Ko'rsatma")
@@ -869,7 +851,7 @@ def lol(message):
                         item2 = types.KeyboardButton("🏠 manzillari")
                         item3 = types.KeyboardButton("🙋 Operator")
                         item4 = types.KeyboardButton("📝 buyurtma yaratish")
-                        item5 = types.KeyboardButton("❗️ Fikr qoldiring")
+                        item5 = types.KeyboardButton("❗️ Shikoyat qoldiring")
                         item6 = types.KeyboardButton("% Chegirma oling")
                         item7 = types.KeyboardButton("®FAQ Ko'rsatma")
                         item8 = types.KeyboardButton("✍️ Direktorga yozing")
@@ -917,9 +899,21 @@ def lol(message):
                 if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 263305395 or message.chat.id == 666803198 or message.chat.id == 907508218:
                     sm_id = 'Operator: '
                 else: sm_id = 'User: '
-                sm_id = sm_id + message.text + '\n'
+                if message.text != None:
+                    sm_id = sm_id + message.text + '\n'
+                    bot.send_message(account_settings[str(message.chat.id)]["tags"][0], message.text)
+                elif message.caption != None:
+                    sm_id = sm_id + message.caption + '\n'
+                    bot.send_message(account_settings[str(message.chat.id)]["tags"][0], message.caption)
+                if message.photo != None:
+                    sm_id = sm_id + 'PHOTO\n'
+                    fileID = message.photo[-1].file_id
+                    file_info = bot.get_file(fileID)
+                    downloaded_file = bot.download_file(file_info.file_path)
+                    #with open("image.jpg", 'wb') as new_file:
+                    #    new_file.write(downloaded_file)
+                    bot.send_photo(account_settings[str(message.chat.id)]["tags"][0], downloaded_file)
                 insert_text_to_data(sm_id, str(message.chat.id))
-                bot.send_message(account_settings[str(message.chat.id)]["tags"][0], message.text)
 
 
 def saveNewTextStart(message):
@@ -1039,7 +1033,7 @@ def keyboardRefMaker(message):
         item1 = types.KeyboardButton("📞 Телефон")
         item2 = types.KeyboardButton("🏠 Адреса")
         item4 = types.KeyboardButton("📝 Создать заказ")
-        item5 = types.KeyboardButton("❗️ Оставить отзыв")
+        item5 = types.KeyboardButton("❗️ Оставить жалобу")
         item10 = types.KeyboardButton("💽 БД переписок")
         item6 = types.KeyboardButton("% Получить скидку")
         item7 = types.KeyboardButton("®FAQ Инструкция")
@@ -1051,7 +1045,7 @@ def keyboardRefMaker(message):
         item2 = types.KeyboardButton("🏠 Адреса")
         item3 = types.KeyboardButton("🙋 Оператор")
         item4 = types.KeyboardButton("📝 Создать заказ")
-        item5 = types.KeyboardButton("❗️ Оставить отзыв")
+        item5 = types.KeyboardButton("❗️ Оставить жалобу")
         item6 = types.KeyboardButton("% Получить скидку")
         item7 = types.KeyboardButton("®FAQ Инструкция")
         item8 = types.KeyboardButton("✍️ Написать директору")
@@ -1075,7 +1069,7 @@ def keyboardRefMakerSec(message):
         item1 = types.KeyboardButton("📞 telefon")
         item2 = types.KeyboardButton("🏠 manzillari")
         item4 = types.KeyboardButton("📝 buyurtma yaratish")
-        item5 = types.KeyboardButton("❗️ Fikr qoldiring")
+        item5 = types.KeyboardButton("❗️ Shikoyat qoldiring")
         item10 = types.KeyboardButton("💽 Yozishmalar bazasi")
         item6 = types.KeyboardButton("% Chegirma oling")
         item7 = types.KeyboardButton("®FAQ Ko'rsatma")
@@ -1087,7 +1081,7 @@ def keyboardRefMakerSec(message):
         item2 = types.KeyboardButton("🏠 manzillari")
         item3 = types.KeyboardButton("🙋 Operator")
         item4 = types.KeyboardButton("📝 buyurtma yaratish")
-        item5 = types.KeyboardButton("❗️ Fikr qoldiring")
+        item5 = types.KeyboardButton("❗️ Shikoyat qoldiring")
         item6 = types.KeyboardButton("% Chegirma oling")
         item7 = types.KeyboardButton("®FAQ Ko'rsatma")
         item8 = types.KeyboardButton("✍️ Direktorga yozing")
@@ -1106,40 +1100,82 @@ def keyboardRefMakerSec(message):
     with open(path_acc_settings, 'r') as fle:
         account_settings = json.load(fle)
 
+
+def fdbackName(message):
+    global feed_back
+    global account_settings
+    name_user = message.text
+    if name_user != 'stop':
+        feed_back[str(message.chat.id)] = {"Name" : name_user, "Username" : str(message.chat.username), "Language" : account_settings[str(message.chat.id)]["language"]}
+        send = bot.send_message(message.chat.id, '➕ Введите ваш номер телефона')
+        bot.register_next_step_handler(send, fdbackTele)
+    else:
+        bot.send_message(message.chat.id, '➕ Операция отменена')
 def fdbackTele(message):
     global feed_back
-    global txt
-    global account_settings
     tele_num = message.text
     if tele_num.isdigit() == True:
-        feed_back = {}
-        txt = "--------Отзыв--------\n"
-        txt += "id: "
-        txt += str(message.chat.id)
-        txt += "\nИмя: "
-        txt += str(message.chat.first_name)
-        txt += "\nНомер телефона: "
-        txt += tele_num
-        txt += "\nЯзык: "
-        txt += account_settings[str(message.chat.id)]["language"]
-        feed_back = {str(message.chat.id) : {"Name" : str(message.chat.first_name), "Telephone number" : tele_num, "Language" : account_settings[str(message.chat.id)]["language"]}}
-        send = bot.send_message(message.chat.id, '➕ Введите ваш отзыв')
-        bot.register_next_step_handler(send, fdBack_fill)
+        bot.send_message(message.chat.id, '➕ Жалоба составляется в четыре этапа:\n1) Причина жалобы\n2) Обозначение филиала/места, где произошёл инцидент\n3) Дату инцидента\n4) Имя или опишите оппонента, с которым произошёл конфликт\n❌ Для отмены операции напишите stop')
+        feed_back[str(message.chat.id)].update({"Telephone number" : tele_num})
+        send = bot.send_message(message.chat.id, '➕ Напишите причину жалобы')
+        bot.register_next_step_handler(send, fdbackReason)
     elif tele_num == 'stop':
         bot.send_message(message.chat.id, '➕ Операция отменена')
     else:
         send = bot.send_message(message.chat.id, '➕ Введите номер телефона в формате 87777777777 или напишите stop')
         bot.register_next_step_handler(send, fdbackTele)
+def fdbackReason(message):
+    global feed_back
+    reason_send = message.text
+    if reason_send != 'stop':
+        feed_back[str(message.chat.id)].update({"Reason" : reason_send})
+        send = bot.send_message(message.chat.id, '➕ Напишите филиал/место, где произошёл инцидент')
+        bot.register_next_step_handler(send, fdbackPlace)
+    else:
+        bot.send_message(message.chat.id, '➕ Операция отменена')
+def fdbackPlace(message):
+    global feed_back
+    place_send = message.text
+    if place_send != 'stop':
+        feed_back[str(message.chat.id)].update({"Place" : place_send})
+        send = bot.send_message(message.chat.id, '➕ Напишите дату инцидента')
+        bot.register_next_step_handler(send, fdbackDate)
+    else:
+        bot.send_message(message.chat.id, '➕ Операция отменена')
+def fdbackDate(message):
+    global feed_back
+    date_send = message.text
+    if date_send != 'stop':
+        feed_back[str(message.chat.id)].update({"Date" : date_send})
+        send = bot.send_message(message.chat.id, '➕ Напишите имя или опишите оппонента, с которым произошёл конфликт')
+        bot.register_next_step_handler(send, fdBack_fill)
+    else:
+        bot.send_message(message.chat.id, '➕ Операция отменена')
 def fdBack_fill(message):
     global feed_back
     global txt
     feedback_user = message.text
-    if feedback_user != '📞 Телефон' and feedback_user != '💽 БД переписок' and feedback_user !='🏠 Адреса' and feedback_user !='🌐 Мы в социальных сетях' and feedback_user !='🙋 Operator' and feedback_user != '✍️ Direktorga yozing' and feedback_user !='📝 buyurtma yaratish' and feedback_user !='❗️ Fikr qoldiring' and feedback_user !='% Chegirma oling' and feedback_user !="®FAQ Ko'rsatma" and feedback_user != 'stop':
-        txt += "\nОтзыв: "
+    if feedback_user != '📞 Телефон' and feedback_user != '💽 БД переписок' and feedback_user !='🏠 Адреса' and feedback_user !='🌐 Мы в социальных сетях' and feedback_user !='🙋 Оператор' and feedback_user != '✍️ Написать директору' and feedback_user !='📝 Создать заказ' and feedback_user !='❗️ Оставить жалобу' and feedback_user !='% Получить скидку' and feedback_user !='®FAQ Инструкция' and feedback_user != 'stop':
+        feed_back[str(message.chat.id)].update({"FeedBack" : feedback_user})
+        txt = "--------ЖАЛОБА--------\n"
+        txt += "id: "
+        txt += str(message.chat.id)
+        txt += "\nИмя: "
+        txt += feed_back[str(message.chat.id)]["Name"]
+        txt += "\nНомер телефона: "
+        txt += feed_back[str(message.chat.id)]["Telephone number"]
+        txt += "\nЯзык: "
+        txt += account_settings[str(message.chat.id)]["language"]
+        txt += "\nПричина: "
+        txt += feed_back[str(message.chat.id)]["Reason"]
+        txt += "\nМесто: "
+        txt += feed_back[str(message.chat.id)]["Place"]
+        txt += "\nДата: "
+        txt += feed_back[str(message.chat.id)]["Date"]
+        txt += "\nКонфликт: "
         txt += feedback_user
         txt += "\n---------------------"
-        feed_back[str(message.chat.id)]["FeedBack"] = feedback_user
-        bot.send_message(message.chat.id, '➕ Спасибо за отзыв!')
+        bot.send_message(message.chat.id, '➕ Контроль сервиса лаборатории SwissLab. Мы благодарим за сделанный выбор и будем рады, если вы поможете улучшить качество нашего сервиса!\n🙋 Наш оператор свяжется с вами при необходимости!')
         markup = types.InlineKeyboardMarkup(row_width=2)
         item1 = types.InlineKeyboardButton("Ответить", callback_data='Q' + str(message.chat.id))
         markup.add(item1)
@@ -1150,58 +1186,87 @@ def fdBack_fill(message):
         bot.send_message(907508218, txt, reply_markup=markup)
         oper_id = '0'
         insert_new_feedback_data(oper_id,  str(message.chat.id), txt)
-        #feedback_base = []
-        #with open(path_feedbacks, 'r') as file_set:
-        #    if(file_set.readline() == ""): feedback_base = []
-        #    else:
-        #        file_set.close()
-        #        with open(path_feedbacks, 'r') as file_set:
-        #            feedback_base = json.load(file_set)
-        #feedback_base.append(feed_back)
-        #with open(path_feedbacks, 'w+') as f:
-        #    json.dump(feedback_base, f, indent='    ')
-        #txt = ""
-        #feed_back = {}
-        #feedback_base = []
     elif feedback_user == 'stop':
         bot.send_message(message.chat.id, '➕ Операция отменена')
     else:
         send = bot.send_message(message.chat.id, '➕ Введите ваш отзыв в правильном формате или напишите stop')
         bot.register_next_step_handler(send, fdBack_fill)
 
+def fdbackName_Sec(message):
+    global feed_back
+    global account_settings
+    name_user = message.text
+    if name_user != 'stop':
+        feed_back[str(message.chat.id)] = {"Name" : name_user, "Username" : str(message.chat.username), "Language" : account_settings[str(message.chat.id)]["language"]}
+        send = bot.send_message(message.chat.id, '➕ Telefon raqamingizni kiriting')
+        bot.register_next_step_handler(send, fdbackTele_Sec)
+    else:
+        bot.send_message(message.chat.id, '➕ Amal bekor qilindi')
 def fdbackTele_Sec(message):
     global feed_back
-    global txt
     tele_num = message.text
     if tele_num.isdigit() == True:
-        feed_back = {}
-        txt = "--------Отзыв--------\n"
-        txt += "id: "
-        txt += str(message.chat.id)
-        txt += "\nИмя: "
-        txt += str(message.chat.first_name)
-        txt += "\nНомер телефона: "
-        txt += tele_num
-        txt += "\nЯзык: "
-        txt += account_settings[str(message.chat.id)]["language"]
-        feed_back = {str(message.chat.id) : {"Name" : str(message.chat.first_name), "Telephone number" : tele_num, "Language" : account_settings[str(message.chat.id)]["language"]}}
-        send = bot.send_message(message.chat.id, '➕ Fikringizni kiriting')
-        bot.register_next_step_handler(send, fdBack_fill_Sec)
+        bot.send_message(message.chat.id, '➕ Shikoyat tort bosqichda tuziladi:\n1) Shikoyat sababi\n2) Hodisa sodir bolgan filial/joyni belgilash\n3) Hodisa sanasi\n4) Mojaro yuz bergan raqibning nomi yoki tarifi\n❌ Operatsiyani bekor qilish uchun yozing stop')
+        feed_back[str(message.chat.id)].update({"Telephone number" : tele_num})
+        send = bot.send_message(message.chat.id, '➕ Shikoyat sababini yozing')
+        bot.register_next_step_handler(send, fdbackReason_Sec)
     elif tele_num == 'stop':
         bot.send_message(message.chat.id, '➕ Amal bekor qilindi')
     else:
         send = bot.send_message(message.chat.id, '➕ Telefon raqamingizni formatda kiriting 9997777777777 yoki yozing stop')
-        bot.register_next_step_handler(send, fdbackTele_Sec)       
+        bot.register_next_step_handler(send, fdbackTele_Sec)
+def fdbackReason_Sec(message):
+    global feed_back
+    reason_send = message.text
+    if reason_send != 'stop':
+        feed_back[str(message.chat.id)].update({"Reason" : reason_send})
+        send = bot.send_message(message.chat.id, '➕ Hodisa sodir bolgan filial/joyni yozing')
+        bot.register_next_step_handler(send, fdbackPlace_Sec)
+    else:
+        bot.send_message(message.chat.id, '➕ Amal bekor qilindi')
+def fdbackPlace_Sec(message):
+    global feed_back
+    place_send = message.text
+    if place_send != 'stop':
+        feed_back[str(message.chat.id)].update({"Place" : place_send})
+        send = bot.send_message(message.chat.id, '➕ Hodisa tarixini yozing')
+        bot.register_next_step_handler(send, fdbackDate_Sec)
+    else:
+        bot.send_message(message.chat.id, '➕ Amal bekor qilindi')
+def fdbackDate_Sec(message):
+    global feed_back
+    date_send = message.text
+    if date_send != 'stop':
+        feed_back[str(message.chat.id)].update({"Date" : date_send})
+        send = bot.send_message(message.chat.id, '➕ Ismni yozing yoki ziddiyatga duch kelgan raqibni tariflang')
+        bot.register_next_step_handler(send, fdBack_fill_Sec)
+    else:
+        bot.send_message(message.chat.id, '➕ Amal bekor qilindi')
 def fdBack_fill_Sec(message):
     global feed_back
     global txt
     feedback_user = message.text
-    if feedback_user != '📞 telefon' and feedback_user != '💽 Yozishmalar bazasi' and feedback_user !='🏠 manzillari' and feedback_user !='🌐 Biz ijtimoiy tarmoqlarda' and feedback_user !='🙋 Оператор' and feedback_user != '✍️ Написать директору' and feedback_user !='📝 Создать заказ' and feedback_user !='❗️ Оставить отзыв' and feedback_user !='% Получить скидку' and feedback_user !='®FAQ Инструкция' and feedback_user != 'stop':
-        txt += "\nОтзыв: "
+    if feedback_user != '📞 telefon' and feedback_user != '💽 Yozishmalar bazasi' and feedback_user !='🏠 manzillari' and feedback_user !='🌐 Biz ijtimoiy tarmoqlarda' and feedback_user !='🙋 Operator' and feedback_user != '✍️ Direktorga yozing' and feedback_user !='📝 buyurtma yaratish' and feedback_user !='❗️ Shikoyat qoldiring' and feedback_user !='% Chegirma oling' and feedback_user !="®FAQ Ko'rsatma" and feedback_user != 'stop':
+        feed_back[str(message.chat.id)].update({"FeedBack" : feedback_user})
+        txt = "--------ЖАЛОБА--------\n"
+        txt += "id: "
+        txt += str(message.chat.id)
+        txt += "\nИмя: "
+        txt += feed_back[str(message.chat.id)]["Name"]
+        txt += "\nНомер телефона: "
+        txt += feed_back[str(message.chat.id)]["Telephone number"]
+        txt += "\nЯзык: "
+        txt += account_settings[str(message.chat.id)]["language"]
+        txt += "\nПричина: "
+        txt += feed_back[str(message.chat.id)]["Reason"]
+        txt += "\nМесто: "
+        txt += feed_back[str(message.chat.id)]["Place"]
+        txt += "\nДата: "
+        txt += feed_back[str(message.chat.id)]["Date"]
+        txt += "\nКонфликт: "
         txt += feedback_user
         txt += "\n---------------------"
-        feed_back[str(message.chat.id)]["FeedBack"] = feedback_user
-        bot.send_message(message.chat.id, '➕ Fikr-mulohaza uchun rahmat!')
+        bot.send_message(message.chat.id, '➕ Laboratoriya xizmatini nazorat qilish SwissLab. Biz tanlaganingiz uchun tashakkur va xizmatimiz sifatini yaxshilashga yordam bersangiz xursand bolamiz!\n🙋 Agar kerak bolsa, bizning operatorimiz sizga murojaat qiladi!')
         markup = types.InlineKeyboardMarkup(row_width=2)
         item1 = types.InlineKeyboardButton("Ответить", callback_data='Q' + str(message.chat.id))
         markup.add(item1)
@@ -1210,19 +1275,8 @@ def fdBack_fill_Sec(message):
         bot.send_message(263305395, txt, reply_markup=markup)
         bot.send_message(666803198, txt, reply_markup=markup)
         bot.send_message(907508218, txt, reply_markup=markup)
-        feedback_base = []
-        with open(path_feedbacks, 'r') as file_set:
-            if(file_set.readline() == ""): feedback_base = []
-            else:
-                file_set.close()
-                with open(path_feedbacks, 'r') as file_set:
-                    feedback_base = json.load(file_set)
-        feedback_base.append(feed_back)
-        with open(path_feedbacks, 'w+') as f:
-            json.dump(feedback_base, f, indent='    ')
-        txt = ""
-        feed_back = {}
-        feedback_base = []
+        oper_id = '0'
+        insert_new_feedback_data(oper_id,  str(message.chat.id), txt)
     elif feedback_user == 'stop':
         bot.send_message(message.chat.id, '➕ Amal bekor qilindi')
     else:
@@ -1348,18 +1402,28 @@ def refAdd(message):
 
 def userSebdText(message):
     global account_settings
-    word_user_send = message.text
-    bot.send_message(account_settings[str(message.chat.id)]["feedback_st"], "Ответ оператора на ваш отзыв!👇")
-    bot.send_message(account_settings[str(message.chat.id)]["feedback_st"], word_user_send)
-    insert_new_feedback_data(str(message.chat.id), account_settings[str(message.chat.id)]["feedback_st"] , word_user_send)
-    #bot.forward_message(account_settings[str(message.chat.id)]["feedback_st"], message.chat.id, message.message_id)
-    bot.send_message(message.chat.id, "Сообщение отправлено!")
-    account_settings[account_settings[str(message.chat.id)]["feedback_st"]]["feedback_st"] = 'close'
-    account_settings[str(message.chat.id)]["feedback_st"] = 'close'
-    with open(path_acc_settings, 'w+') as f:
-        json.dump(account_settings, f, indent='    ')
-    with open(path_acc_settings, 'r') as fle:
-        account_settings = json.load(fle)
+    if message.text != 'stop':
+        if account_settings[account_settings[str(message.chat.id)]["feedback_st"]]['language'] == 'Русский':
+                bot.send_message(account_settings[str(message.chat.id)]["feedback_st"], "Ответ оператора на вашу жалобу!👇")
+        else:  bot.send_message(account_settings[str(message.chat.id)]["feedback_st"], "Sizning shikoyatingizga javob beruvchi operator!👇")
+        if message.photo != None:
+            fileID = message.photo[-1].file_id
+            file_info = bot.get_file(fileID)
+            word_user_send = bot.download_file(file_info.file_path)
+            bot.send_photo(account_settings[str(message.chat.id)]["feedback_st"], word_user_send)
+        if message.text != None or message.caption != None:
+            if message.text != None: word_user_send = message.text
+            else: word_user_send = message.caption
+            bot.send_message(account_settings[str(message.chat.id)]["feedback_st"], word_user_send)
+            insert_new_feedback_data(str(message.chat.id), account_settings[str(message.chat.id)]["feedback_st"] , word_user_send)
+        bot.send_message(message.chat.id, "Сообщение отправлено!")
+        account_settings[account_settings[str(message.chat.id)]["feedback_st"]]["feedback_st"] = 'close'
+        account_settings[str(message.chat.id)]["feedback_st"] = 'close'
+        with open(path_acc_settings, 'w+') as f:
+            json.dump(account_settings, f, indent='    ')
+        with open(path_acc_settings, 'r') as fle:
+            account_settings = json.load(fle)
+    else: bot.send_message(message.chat.id, 'Операция отменена!')
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
@@ -1439,14 +1503,14 @@ def callback_inline(call):
             send = bot.send_message(call.message.chat.id, '➕ Kodni yuboring')
             bot.register_next_step_handler(send, refAdd)
 
-        elif call.data == 'Написать отзыв':
+        elif call.data == 'Написать жалобу':
             bot.delete_message(call.message.chat.id, call.message.message_id)
-            send = bot.send_message(call.message.chat.id, '➕ Напишите ваш номер телефона')
-            bot.register_next_step_handler(send, fdbackTele)
+            send = bot.send_message(call.message.chat.id, '➕ Напишите ваше имя')
+            bot.register_next_step_handler(send, fdbackName)
         elif call.data == 'Write a feedback':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Telefon raqamingizni kiriting')
-            bot.register_next_step_handler(send, fdbackTele_Sec)
+            bot.register_next_step_handler(send, fdbackName_Sec)
 
         elif call.data == 'Отправить tag друзей':
             mess = "new"
@@ -1641,8 +1705,15 @@ def callback_inline(call):
                 send = bot.send_message(call.message.chat.id, "➕ Введите текст для ответа пользователю")
                 bot.register_next_step_handler(send, userSebdText)
             else:
-                bot.send_message(call.message.chat.id, "Оператор уже ответил этому пользователю!")
-
+                bot.send_message(call.message.chat.id, "Оператор уже ответил этому пользователю!\nДля отмены повторного ответа напишите stop")
+                account_settings[call.data[1:]]["feedback_st"] = 'close'
+                account_settings[str(call.message.chat.id)]["feedback_st"] = call.data[1:]
+                with open(path_acc_settings, 'w+') as f:
+                    json.dump(account_settings, f, indent='    ')
+                with open(path_acc_settings, 'r') as fle:
+                    account_settings = json.load(fle)
+                send = bot.send_message(call.message.chat.id, "➕ Введите текст для ответа пользователю")
+                bot.register_next_step_handler(send, userSebdText)
         else:
             if account_settings[str(call.message.chat.id)]["conversation"] == 'close':
                 for k in account_settings.keys():
@@ -1672,8 +1743,29 @@ def callback_inline(call):
                 if account_settings[str(call.message.chat.id)]["conversation"] != 'open':
                     u_tex = "Пользователь id: "
                     u_tex += str(call.data)
-                    u_tex += " отменил режим!"
+                    u_tex += " отменил режим!\nПовторный вызов..."
                     bot.send_message(call.message.chat.id, u_tex)
+                    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+                    item1 = types.KeyboardButton("🔙 Отклонить вызов оператора")
+                    item2 = types.KeyboardButton("❔ Инструкция")
+                    markup.add(item1, item2)
+                    account_settings[str(call.message.chat.id)]["tags"].append(str(call.data))
+                    account_settings[str(call.message.chat.id)]["conversation"] = 'open'
+                    account_settings[str(call.data)]["tags"].append(str(call.message.chat.id))
+                    account_settings[str(call.data)]["tags"].append("0")
+                    account_settings[str(call.data)]["conversation"] = 'open'
+                    with open(path_acc_settings, 'w+') as f:
+                        json.dump(account_settings, f, indent='    ')
+                    with open(path_acc_settings, 'r') as fle:
+                        account_settings = json.load(fle)
+                    if account_settings[str(call.data)]["language"] == "Русский":
+                        bot.send_message(str(call.data), "📞 Оператор активировал переписку", reply_markup=markup)
+                    else: 
+                        bot.send_message(str(call.data), "📞 Operator yozishmalarni faollashtirdi", reply_markup=markup)
+                    bot.send_message(str(call.message.chat.id), "📞 Вы подтвердили заявку!", reply_markup=markup)
+                    user_id = str(call.data) 
+                    oper_id = str(call.message.chat.id)
+                    insert_new_data(user_id, oper_id)
             else:
                 bot.send_message(call.message.chat.id, "Закончите старый диалог, чтобы начать новый!")
 
