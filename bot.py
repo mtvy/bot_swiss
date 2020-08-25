@@ -1,7 +1,6 @@
 import schedule
 import datetime
 import psycopg2
-import datetime
 import telebot
 import config
 import time
@@ -1106,6 +1105,7 @@ def fdbackName(message):
     global account_settings
     name_user = message.text
     if name_user != 'stop':
+        if name_user == None: name_user = 'Пользователь отправил нечитаемый объект'
         feed_back[str(message.chat.id)] = {"Name" : name_user, "Username" : str(message.chat.username), "Language" : account_settings[str(message.chat.id)]["language"]}
         send = bot.send_message(message.chat.id, '➕ Введите ваш номер телефона')
         bot.register_next_step_handler(send, fdbackTele)
@@ -1115,6 +1115,7 @@ def fdbackTele(message):
     global feed_back
     tele_num = message.text
     if tele_num.isdigit() == True:
+        if tele_num == None: tele_num = 'Пользователь отправил нечитаемый объект'
         bot.send_message(message.chat.id, '➕ Жалоба составляется в четыре этапа:\n1) Причина жалобы\n2) Обозначение филиала/места, где произошёл инцидент\n3) Дату инцидента\n4) Имя или опишите оппонента, с которым произошёл конфликт\n❌ Для отмены операции напишите stop')
         feed_back[str(message.chat.id)].update({"Telephone number" : tele_num})
         send = bot.send_message(message.chat.id, '➕ Напишите причину жалобы')
@@ -1128,6 +1129,7 @@ def fdbackReason(message):
     global feed_back
     reason_send = message.text
     if reason_send != 'stop':
+        if reason_send == None: reason_send = 'Пользователь отправил нечитаемый объект'
         feed_back[str(message.chat.id)].update({"Reason" : reason_send})
         send = bot.send_message(message.chat.id, '➕ Напишите филиал/место, где произошёл инцидент')
         bot.register_next_step_handler(send, fdbackPlace)
@@ -1137,6 +1139,7 @@ def fdbackPlace(message):
     global feed_back
     place_send = message.text
     if place_send != 'stop':
+        if place_send == None: place_send = 'Пользователь отправил нечитаемый объект'
         feed_back[str(message.chat.id)].update({"Place" : place_send})
         send = bot.send_message(message.chat.id, '➕ Напишите дату инцидента')
         bot.register_next_step_handler(send, fdbackDate)
@@ -1146,6 +1149,7 @@ def fdbackDate(message):
     global feed_back
     date_send = message.text
     if date_send != 'stop':
+        if date_send == None: date_send = 'Пользователь отправил нечитаемый объект'
         feed_back[str(message.chat.id)].update({"Date" : date_send})
         send = bot.send_message(message.chat.id, '➕ Напишите имя или опишите оппонента, с которым произошёл конфликт')
         bot.register_next_step_handler(send, fdBack_fill)
@@ -1156,6 +1160,7 @@ def fdBack_fill(message):
     global txt
     feedback_user = message.text
     if feedback_user != '📞 Телефон' and feedback_user != '💽 БД переписок' and feedback_user !='🏠 Адреса' and feedback_user !='🌐 Мы в социальных сетях' and feedback_user !='🙋 Оператор' and feedback_user != '✍️ Написать директору' and feedback_user !='📝 Создать заказ' and feedback_user !='❗️ Оставить жалобу' and feedback_user !='% Получить скидку' and feedback_user !='®FAQ Инструкция' and feedback_user != 'stop':
+        if feedback_user == None: feedback_user = 'Пользователь отправил нечитаемый объект'
         feed_back[str(message.chat.id)].update({"FeedBack" : feedback_user})
         txt = "--------ЖАЛОБА--------\n"
         txt += "id: "
@@ -1197,6 +1202,7 @@ def fdbackName_Sec(message):
     global account_settings
     name_user = message.text
     if name_user != 'stop':
+        if name_user == None: name_user = 'Пользователь отправил нечитаемый объект'
         feed_back[str(message.chat.id)] = {"Name" : name_user, "Username" : str(message.chat.username), "Language" : account_settings[str(message.chat.id)]["language"]}
         send = bot.send_message(message.chat.id, '➕ Telefon raqamingizni kiriting')
         bot.register_next_step_handler(send, fdbackTele_Sec)
@@ -1206,6 +1212,7 @@ def fdbackTele_Sec(message):
     global feed_back
     tele_num = message.text
     if tele_num.isdigit() == True:
+        if tele_num == None: tele_num = 'Пользователь отправил нечитаемый объект'
         bot.send_message(message.chat.id, '➕ Shikoyat tort bosqichda tuziladi:\n1) Shikoyat sababi\n2) Hodisa sodir bolgan filial/joyni belgilash\n3) Hodisa sanasi\n4) Mojaro yuz bergan raqibning nomi yoki tarifi\n❌ Operatsiyani bekor qilish uchun yozing stop')
         feed_back[str(message.chat.id)].update({"Telephone number" : tele_num})
         send = bot.send_message(message.chat.id, '➕ Shikoyat sababini yozing')
@@ -1219,6 +1226,7 @@ def fdbackReason_Sec(message):
     global feed_back
     reason_send = message.text
     if reason_send != 'stop':
+        if reason_send == None: reason_send = 'Пользователь отправил нечитаемый объект'
         feed_back[str(message.chat.id)].update({"Reason" : reason_send})
         send = bot.send_message(message.chat.id, '➕ Hodisa sodir bolgan filial/joyni yozing')
         bot.register_next_step_handler(send, fdbackPlace_Sec)
@@ -1228,6 +1236,7 @@ def fdbackPlace_Sec(message):
     global feed_back
     place_send = message.text
     if place_send != 'stop':
+        if place_send == None: place_send = 'Пользователь отправил нечитаемый объект'
         feed_back[str(message.chat.id)].update({"Place" : place_send})
         send = bot.send_message(message.chat.id, '➕ Hodisa tarixini yozing')
         bot.register_next_step_handler(send, fdbackDate_Sec)
@@ -1237,6 +1246,7 @@ def fdbackDate_Sec(message):
     global feed_back
     date_send = message.text
     if date_send != 'stop':
+        if date_send == None: date_send = 'Пользователь отправил нечитаемый объект'
         feed_back[str(message.chat.id)].update({"Date" : date_send})
         send = bot.send_message(message.chat.id, '➕ Ismni yozing yoki ziddiyatga duch kelgan raqibni tariflang')
         bot.register_next_step_handler(send, fdBack_fill_Sec)
@@ -1247,6 +1257,7 @@ def fdBack_fill_Sec(message):
     global txt
     feedback_user = message.text
     if feedback_user != '📞 telefon' and feedback_user != '💽 Yozishmalar bazasi' and feedback_user !='🏠 manzillari' and feedback_user !='🌐 Biz ijtimoiy tarmoqlarda' and feedback_user !='🙋 Operator' and feedback_user != '✍️ Direktorga yozing' and feedback_user !='📝 buyurtma yaratish' and feedback_user !='❗️ Shikoyat qoldiring' and feedback_user !='% Chegirma oling' and feedback_user !="®FAQ Ko'rsatma" and feedback_user != 'stop':
+        if feedback_user == None: feedback_user = 'Пользователь отправил нечитаемый объект'
         feed_back[str(message.chat.id)].update({"FeedBack" : feedback_user})
         txt = "--------ЖАЛОБА--------\n"
         txt += "id: "
