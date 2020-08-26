@@ -77,7 +77,8 @@
         "tags": [],
         "ref": "0",
         "personal data": "YES",
-        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439"
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
     },
     "907508218": {
         "login": "None",
@@ -1036,6 +1037,30 @@
         "tags": [],
         "ref": "0",
         "personal data": "YES",
+        "language": "Ozbek",
+        "feedback_st": "close"
+    },
+    "587357": {
+        "login": "MRazakov",
+        "name": "M",
+        "oper_ids": [],
+        "conversation": "open",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "79835732": {
+        "login": "alisherqultayev",
+        "name": "Alisher",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "NO",
         "language": "Ozbek",
         "feedback_st": "close"
     }

@@ -1769,14 +1769,25 @@ def callback_inline(call):
                         json.dump(account_settings, f, indent='    ')
                     with open(path_acc_settings, 'r') as fle:
                         account_settings = json.load(fle)
-                    if account_settings[str(call.data)]["language"] == "Русский":
-                        bot.send_message(str(call.data), "📞 Оператор активировал переписку", reply_markup=markup)
-                    else: 
-                        bot.send_message(str(call.data), "📞 Operator yozishmalarni faollashtirdi", reply_markup=markup)
-                    bot.send_message(str(call.message.chat.id), "📞 Вы подтвердили заявку!", reply_markup=markup)
-                    user_id = str(call.data) 
-                    oper_id = str(call.message.chat.id)
-                    insert_new_data(user_id, oper_id)
+                    try:
+                        if account_settings[str(call.data)]["language"] == "Русский":
+                            bot.send_message(str(call.data), "📞 Оператор активировал переписку", reply_markup=markup)
+                        else: 
+                            bot.send_message(str(call.data), "📞 Operator yozishmalarni faollashtirdi", reply_markup=markup)
+                        bot.send_message(str(call.message.chat.id), "📞 Вы подтвердили заявку!", reply_markup=markup)
+                        user_id = str(call.data) 
+                        oper_id = str(call.message.chat.id)
+                        insert_new_data(user_id, oper_id)
+                    except Exception as e:
+                        account_settings[str(call.message.chat.id)]["conversation"] = 'close'
+                        account_settings[str(call.data)]["tags"] = []
+                        account_settings[str(call.message.chat.id)]["tags"] = []
+                        bot.send_message(call.message.chat.id, 'Пользователь выключил бота!')
+                        with open(path_acc_settings, 'w+') as f:
+                            json.dump(account_settings, f, indent='    ')
+                        with open(path_acc_settings, 'r') as fle:
+                            account_settings = json.load(fle)
+                    
             else:
                 bot.send_message(call.message.chat.id, "Закончите старый диалог, чтобы начать новый!")
 
