@@ -57,7 +57,7 @@ bot = telebot.TeleBot(config.TOKEN)
 
 def connect():
     try:
-        con = psycopg2.connect(database="postgres",user="postgres",password="postgres", host="127.0.0.1",port="5432")
+        con = psycopg2.connect(database="postgres",user="postgres",password="14072003", host="127.0.0.1",port="5432")
         cur = con.cursor()
         return con, cur
     except (Exception, psycopg2.DatabaseError) as error:
@@ -1025,6 +1025,7 @@ def saveNewTextOperFAQ_Sec(message):
         f.write(word)
     bot.send_message(message.chat.id, "O'zgarishlar saqlandi!")
 
+
 def keyboardRefMaker(message):
     global account_settings
     if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 907508218 or message.chat.id == 263305395 or message.chat.id == 666803198:
@@ -1184,11 +1185,26 @@ def fdBack_fill(message):
         markup = types.InlineKeyboardMarkup(row_width=2)
         item1 = types.InlineKeyboardButton("Ответить", callback_data='Q' + str(message.chat.id))
         markup.add(item1)
-        bot.send_message(281321076, txt, reply_markup=markup)
-        bot.send_message(667068180, txt, reply_markup=markup)
-        bot.send_message(263305395, txt, reply_markup=markup)
-        bot.send_message(666803198, txt, reply_markup=markup)
-        bot.send_message(907508218, txt, reply_markup=markup)
+        try:
+            bot.send_message(281321076, txt, reply_markup=markup)
+        except Exception as e:
+            print('User 281321076 blocked!')
+        try:
+            bot.send_message(667068180, txt, reply_markup=markup)
+        except Exception as e:
+            print('User 667068180 blocked!')
+        try:
+            bot.send_message(263305395, txt, reply_markup=markup)
+        except Exception as e:
+            print('User 263305395 blocked!')
+        try:
+            bot.send_message(666803198, txt, reply_markup=markup)
+        except Exception as e:
+            print('User 666803198 blocked!')
+        try:
+            bot.send_message(907508218, txt, reply_markup=markup)
+        except Exception as e:
+            print('User 907508218 blocked!')
         oper_id = '0'
         insert_new_feedback_data(oper_id,  str(message.chat.id), txt)
     elif feedback_user == 'stop':
@@ -1281,11 +1297,26 @@ def fdBack_fill_Sec(message):
         markup = types.InlineKeyboardMarkup(row_width=2)
         item1 = types.InlineKeyboardButton("Ответить", callback_data='Q' + str(message.chat.id))
         markup.add(item1)
-        bot.send_message(281321076, txt, reply_markup=markup)
-        bot.send_message(667068180, txt, reply_markup=markup)
-        bot.send_message(263305395, txt, reply_markup=markup)
-        bot.send_message(666803198, txt, reply_markup=markup)
-        bot.send_message(907508218, txt, reply_markup=markup)
+        try:
+            bot.send_message(281321076, txt, reply_markup=markup)
+        except Exception as e:
+            print('User 281321076 blocked!')
+        try:
+            bot.send_message(667068180, txt, reply_markup=markup)
+        except Exception as e:
+            print('User 667068180 blocked!')
+        try:
+            bot.send_message(263305395, txt, reply_markup=markup)
+        except Exception as e:
+            print('User 263305395 blocked!')
+        try:
+            bot.send_message(666803198, txt, reply_markup=markup)
+        except Exception as e:
+            print('User 666803198 blocked!')
+        try:
+            bot.send_message(907508218, txt, reply_markup=markup)
+        except Exception as e:
+            print('User 907508218 blocked!')
         oper_id = '0'
         insert_new_feedback_data(oper_id,  str(message.chat.id), txt)
     elif feedback_user == 'stop':
