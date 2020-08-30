@@ -37,7 +37,7 @@ path_sec_order_label = "second_language/sl_order_label.txt"
 path_sec_discount_label = "second_language/sl_discount_label.txt"
 path_sec_social_web = "second_language/sl_social_web.txt"
 
-MESSAGE_ID = 230
+MESSAGE_ID = 232
 BOT_ID = 1364784224
 CHANAL_ID = -1001229753165
 
@@ -294,7 +294,7 @@ def start_process():#Запуск Process
 class P_schedule(): # Class для работы c schedule
     def start_schedule(): #Запуск schedule
         ######Параметры для schedule######
-        schedule.every(1).seconds.do(P_schedule.send_post)
+        schedule.every(30).seconds.do(P_schedule.send_post)
         ##################################
         
         while True: #Запуск цикла
