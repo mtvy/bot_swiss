@@ -37,7 +37,7 @@ path_sec_order_label = "second_language/sl_order_label.txt"
 path_sec_discount_label = "second_language/sl_discount_label.txt"
 path_sec_social_web = "second_language/sl_social_web.txt"
 
-MESSAGE_ID = 232
+MESSAGE_ID = 254
 BOT_ID = 1364784224
 CHANAL_ID = -1001229753165
 

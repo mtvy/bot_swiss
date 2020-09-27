@@ -1,1 +1,3 @@
-Здесь будет инструкция на Ozbek
+- Murojaat matnini kiriting
+- operatorning javobini kuting
+- suhbatni tugatish uchun "Operator chaqiruvini rad etish" tugmasini bosing
