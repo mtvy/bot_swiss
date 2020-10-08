@@ -1264,7 +1264,7 @@
         "discount": "0",
         "tags": [],
         "ref": "0",
-        "personal data": "NO",
+        "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
         "feedback_st": "close"
     },
@@ -1302,6 +1302,90 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "286948021": {
+        "login": "None",
+        "name": "Khurshed",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "1203807508": {
+        "login": "operator_1002",
+        "name": "Operator",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "1086955999": {
+        "login": "operator_10011",
+        "name": "Operator",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "1255615278": {
+        "login": "None",
+        "name": ".",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "NO",
+        "language": "Ozbek",
+        "feedback_st": "close"
+    },
+    "79065525": {
+        "login": "None",
+        "name": "Slava",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "508630896": {
+        "login": "na1707",
+        "name": "Nargiza",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "NO",
+        "language": "Ozbek",
+        "feedback_st": "close"
+    },
+    "332407564": {
+        "login": "laboratoriyabravopharma",
+        "name": "Bravo",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "NO",
+        "language": "Ozbek",
         "feedback_st": "close"
     }
 }
