@@ -14,7 +14,7 @@ from telebot import types
 path_acc_settings = "settings/account_settings.txt"
 path_feedbacks = "settings/feedbacks.txt"
 
-
+###
 path_first_lang = "first_language/fl_start_label.txt"
 path_FAQ_label = "first_language/fl_FAQ_label.txt"
 path_telephone_num = "first_language/fl_telephone_num_label.txt"
@@ -391,7 +391,7 @@ def welcome(message):
 
 @bot.message_handler(commands=['changeLabel'])
 def adderNewLabel(message):
-    if(message.chat.id == 667068180):
+    if message.chat.id == 667068180 or message.chat.id == 923118950:
         markup = types.InlineKeyboardMarkup(row_width=2)
         item1 = types.InlineKeyboardButton("Начальный текст", callback_data='Начальный текст')
         item2 = types.InlineKeyboardButton("FAQ текст", callback_data='FAQ текст')
@@ -434,6 +434,7 @@ def operKeyboardMaker(message):
     bot.send_message(667068180, oper_send_text, reply_markup=markup)
     bot.send_message(1086955999, oper_send_text, reply_markup=markup)
     bot.send_message(1203807508, oper_send_text, reply_markup=markup)
+    bot.send_message(923118950, oper_send_text, reply_markup=markup)
 
 def dirKeyboardMaker(message):
     global account_settings
@@ -459,7 +460,34 @@ def dirKeyboardMaker(message):
     oper_id = '0'
     insert_new_data(user_id, oper_id)
     bot.send_message(281321076, oper_send_text, reply_markup=markup)
-    #bot.send_message(667068180, oper_send_text, reply_markup=markup)
+    bot.send_message(923118950, oper_send_text, reply_markup=markup)
+    bot.send_message(907508218, oper_send_text, reply_markup=markup)
+
+def TechKeyboardMaker(message):
+    global account_settings
+    account_settings[str(message.chat.id)]["conversation"] = 'mid'
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    item1 = types.KeyboardButton("🔙 Отклонить вызов оператора")
+    item2 = types.KeyboardButton("❔ Инструкция")
+    markup.add(item1, item2)
+    bot.send_message(message.chat.id, "🙋 Включён режим переписки с оператором", reply_markup=markup)
+    oper_send_text = "-------Запрос переписки!-------\nid: "
+    oper_send_text += str(message.chat.id)
+    oper_send_text += "\nИмя: "
+    oper_send_text += str(message.chat.first_name)
+    oper_send_text += "\nФамилия: "
+    oper_send_text += str(message.chat.last_name)
+    oper_send_text += "\nUsername: @"
+    oper_send_text += str(message.chat.username)
+    oper_send_text += "\nЯзык: Русский\n----------------------------"
+    markup = types.InlineKeyboardMarkup(row_width=2)
+    item1 = types.InlineKeyboardButton("Принять", callback_data=str(message.chat.id))
+    markup.add(item1)
+    user_id = str(message.chat.id)
+    oper_id = '0'
+    insert_new_data(user_id, oper_id)
+    bot.send_message(281321076, oper_send_text, reply_markup=markup)
+    bot.send_message(923118950, oper_send_text, reply_markup=markup)
     bot.send_message(907508218, oper_send_text, reply_markup=markup)
 
 def operKeyboardMakerSec(message):
@@ -489,6 +517,7 @@ def operKeyboardMakerSec(message):
     bot.send_message(667068180, oper_send_text, reply_markup=markup)
     bot.send_message(1086955999, oper_send_text, reply_markup=markup)
     bot.send_message(1203807508, oper_send_text, reply_markup=markup)
+		bot.send_message(923118950, oper_send_text, reply_markup=markup)
 
 def dirKeyboardMakerSec(message):
     global account_settings
@@ -514,9 +543,36 @@ def dirKeyboardMakerSec(message):
     oper_id = '0'
     insert_new_data(user_id, oper_id)
     bot.send_message(281321076, oper_send_text, reply_markup=markup)
-    #bot.send_message(667068180, oper_send_text, reply_markup=markup)
+    bot.send_message(923118950, oper_send_text, reply_markup=markup)
     bot.send_message(907508218, oper_send_text, reply_markup=markup)
 
+def TechKeyboardMakerSec(message):
+    global account_settings
+    account_settings[str(message.chat.id)]["conversation"] = 'mid'
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    item1 = types.KeyboardButton("🔙 Operator chaqiruvini rad etish")
+    item2 = types.KeyboardButton("❔ Ko'rsatma")
+    markup.add(item1, item2)
+    bot.send_message(message.chat.id, "🙋 Operator bilan yozishmalar rejimi yoqilgan", reply_markup=markup)
+    oper_send_text = "-------Запрос переписки!-------\nid: "
+    oper_send_text += str(message.chat.id)
+    oper_send_text += "\nИмя: "
+    oper_send_text += str(message.chat.first_name)
+    oper_send_text += "\nФамилия: "
+    oper_send_text += str(message.chat.last_name)
+    oper_send_text += "\nUsername: @"
+    oper_send_text += str(message.chat.username)
+    oper_send_text += "\nЯзык: Ozbek\n----------------------------"
+    markup = types.InlineKeyboardMarkup(row_width=2)
+    item1 = types.InlineKeyboardButton("Принять", callback_data=str(message.chat.id))
+    markup.add(item1)
+    user_id = str(message.chat.id)
+    oper_id = '0'
+    insert_new_data(user_id, oper_id)
+    bot.send_message(281321076, oper_send_text, reply_markup=markup)
+    bot.send_message(923118950, oper_send_text, reply_markup=markup)
+    bot.send_message(907508218, oper_send_text, reply_markup=markup)
+    
 
 def dbDateSortEnter(message):
     send = bot.send_message(message.chat.id, '➕ Введите дату в формате ГОД-МЕСЯЦ-ДЕНЬ (2000-1-12)')
@@ -590,15 +646,23 @@ def lol(message):
                         address += i
             bot.send_message(message.chat.id, address.format(message.chat, bot.get_me()),parse_mode='html')
         elif message.text == '🙋 Оператор' or message.text == '🙋 Operator':
-            if message.chat.id != 281321076 and message.chat.id != 667068180 and message.chat.id != 1086955999 and message.chat.id != 1203807508:
+            if message.chat.id != 281321076 and message.chat.id != 667068180 and message.chat.id != 1086955999 and message.chat.id != 1203807508 and message.chat.id != 923118950:
                 if account_settings[str(message.chat.id)]["language"] == "Русский":
                     operKeyboardMaker(message)
                 else:
                     operKeyboardMakerSec(message)
             else:
                 bot.send_message(message.chat.id, "Вы оператор!")
+        elif message.text == '☎️ Тех. поддержка' or message.text == '☎️ Тех. поддержка':
+            if message.chat.id != 281321076 and message.chat.id != 667068180 and message.chat.id != 923118950:
+                if account_settings[str(message.chat.id)]["language"] == "Русский":
+                    TechKeyboardMaker(message)
+                else:
+                    TechKeyboardMakerSec(message)
+            else:
+                bot.send_message(message.chat.id, "Вы оператор!")
         elif message.text == '✍️ Написать директору' or message.text == '✍️ Direktorga yozing':
-            if message.chat.id != 281321076 and message.chat.id != 667068180 and message.chat.id != 907508218:
+            if message.chat.id != 281321076 and message.chat.id != 667068180 and message.chat.id != 907508218 and message.chat.id != 923118950:
                 if account_settings[str(message.chat.id)]["language"] == "Русский":
                     dirKeyboardMaker(message)
                 else:
@@ -617,7 +681,7 @@ def lol(message):
                         oper_write += i
             bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html')
         elif message.text == '❗️ Оставить жалобу' or message.text == '❗️ Shikoyat qoldiring':
-            if message.chat.id != 281321076 and message.chat.id != 667068180 and message.chat.id != 263305395 and message.chat.id != 666803198 and message.chat.id != 907508218 or message.chat.id != 1086955999 or message.chat.id != 1203807508:
+            if message.chat.id != 281321076 and message.chat.id != 667068180 and message.chat.id != 263305395 and message.chat.id != 666803198 and message.chat.id != 907508218 and message.chat.id != 1086955999 and message.chat.id != 1203807508 and message.chat.id != 923118950:
                 oper_write = ""
                 account_settings[str(message.chat.id)]["feedback_st"] = 'open'                
                 markup = types.InlineKeyboardMarkup(row_width=2)
@@ -637,7 +701,7 @@ def lol(message):
             else:
                 feedBackdbDateSortEnter(message)
         elif message.text == '💽 БД переписок' or message.text == '💽 Yozishmalar bazasi':
-            if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 263305395 or message.chat.id == 666803198 or message.chat.id == 907508218 or message.chat.id == 1086955999 or message.chat.id == 1203807508:
+            if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 263305395 or message.chat.id == 666803198 or message.chat.id == 907508218 or message.chat.id == 1086955999 or message.chat.id == 1203807508 or message.chat.id == 923118950:
                 dbDateSortEnter(message)
             else:
                 if account_settings[str(message.chat.id)]["language"] == "Русский":
@@ -706,7 +770,7 @@ def lol(message):
                     for i in file_set:
                         FAQ_txt += i
             bot.send_message(message.chat.id, FAQ_txt.format(message.chat, bot.get_me()),parse_mode='html')
-        elif message.text == '🌐 Мы в социальных сетях' or message.text == '🌐 Biz ijtimoiy tarmoqlarda':
+        elif message.text == "🌐 Соц. сети" or message.text == '🌐 Biz ijtimoiy tarmoqlarda':
             soc_web = ""
             if account_settings[str(message.chat.id)]["language"] == "Русский":
                 with io.open(path_social_web, encoding='utf-8') as file_set:
@@ -729,7 +793,7 @@ def lol(message):
                     account_settings = json.load(fle)
                 if account_settings[account_settings[str(message.chat.id)]["tags"][0]]["language"] == "Русский":
                     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-                    if account_settings[str(message.chat.id)]["tags"][0] == '281321076' or account_settings[str(message.chat.id)]["tags"][0] == '667068180' or account_settings[str(message.chat.id)]["tags"][0] == '907508218' or account_settings[str(message.chat.id)]["tags"][0] == '1203807508' or account_settings[str(message.chat.id)]["tags"][0] == '1086955999':
+                    if account_settings[str(message.chat.id)]["tags"][0] == '281321076' or account_settings[str(message.chat.id)]["tags"][0] == '667068180' or account_settings[str(message.chat.id)]["tags"][0] == '907508218' or account_settings[str(message.chat.id)]["tags"][0] == '1203807508' or account_settings[str(message.chat.id)]["tags"][0] == '1086955999' or account_settings[str(message.chat.id)]["tags"][0] == '923118950':
                         item1 = types.KeyboardButton("📞 Телефон")
                         item2 = types.KeyboardButton("🏠 Адреса")
                         item4 = types.KeyboardButton("📝 Создать заказ")
@@ -749,7 +813,8 @@ def lol(message):
                         item7 = types.KeyboardButton("®FAQ Инструкция")
                         item8 = types.KeyboardButton("✍️ Написать директору")
                         item9 = types.KeyboardButton("🌐 Соц. сети")
-                        markup.row(item1, item2, item4).row(item6, item7, item9).row(item3).row(item8).row(item5)
+                        item10 = types.KeyboardButton("☎️ Тех. поддержка")
+                        markup.row(item1, item2, item4).row(item6, item7, item9).row(item3).row(item8).row(item5).row(item10)
                     faq_txt = ""
                     with io.open(path_FAQ_label, encoding='utf-8') as file_set:
                         for i in file_set:
@@ -757,7 +822,7 @@ def lol(message):
                     bot.send_message(account_settings[str(message.chat.id)]["tags"][0], faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
                 else:
                     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-                    if account_settings[str(message.chat.id)]["tags"][0] == '281321076' or account_settings[str(message.chat.id)]["tags"][0] == '667068180' or account_settings[str(message.chat.id)]["tags"][0] == '907508218' or account_settings[str(message.chat.id)]["tags"][0] == '1203807508' or account_settings[str(message.chat.id)]["tags"][0] == '1086955999':
+                    if account_settings[str(message.chat.id)]["tags"][0] == '281321076' or account_settings[str(message.chat.id)]["tags"][0] == '667068180' or account_settings[str(message.chat.id)]["tags"][0] == '907508218' or account_settings[str(message.chat.id)]["tags"][0] == '1203807508' or account_settings[str(message.chat.id)]["tags"][0] == '1086955999' or account_settings[str(message.chat.id)]["tags"][0] == '923118950':
                         item1 = types.KeyboardButton("📞 telefon")
                         item2 = types.KeyboardButton("🏠 manzillari")
                         item4 = types.KeyboardButton("📝 buyurtma yaratish")
@@ -777,7 +842,8 @@ def lol(message):
                         item7 = types.KeyboardButton("®FAQ Ko'rsatma")
                         item8 = types.KeyboardButton("✍️ Direktorga yozing")
                         item9 = types.KeyboardButton("🌐 Biz ijtimoiy tarmoqlarda")
-                        markup.row(item1, item2, item4).row(item6, item7, item9).row(item3).row(item8).row(item5)
+                        item10 = types.KeyboardButton("☎️ O'sha.  qo'llab-quvvatlash")
+                        markup.row(item1, item2, item4).row(item6, item7, item9).row(item3).row(item8).row(item5).row(item10)
                     faq_txt = ""
                     with io.open(path_sec_FAQ_label, encoding='utf-8') as file_set:
                         for i in file_set:
@@ -788,7 +854,7 @@ def lol(message):
             item1 = types.InlineKeyboardButton("👍", callback_data='👍')
             item2 = types.InlineKeyboardButton("👎", callback_data="👎")
             markup.add(item1, item2)
-            if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 263305395 or message.chat.id == 666803198 or message.chat.id == 907508218 or message.chat.id == 1086955999 or message.chat.id == 1203807508:
+            if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 263305395 or message.chat.id == 666803198 or message.chat.id == 907508218 or message.chat.id == 1086955999 or message.chat.id == 1203807508 or message.chat.id == 923118950:
                 if account_settings[account_settings[str(message.chat.id)]["tags"][0]]["language"] == "Русский":
                     bot.send_message(account_settings[str(message.chat.id)]["tags"][0], 'Оцените работу оператора!', reply_markup=markup)
                 else: bot.send_message(account_settings[str(message.chat.id)]["tags"][0], 'Operator ishini baholang!', reply_markup=markup)
@@ -811,7 +877,7 @@ def lol(message):
                 account_settings[account_settings[str(message.chat.id)]["tags"][0]]['tags'].clear()
                 if account_settings[account_settings[str(message.chat.id)]["tags"][0]]["language"] == "Русский":
                     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-                    if account_settings[str(message.chat.id)]["tags"][0] == '281321076' or account_settings[str(message.chat.id)]["tags"][0] == '667068180' or account_settings[str(message.chat.id)]["tags"][0] == '907508218' or account_settings[str(message.chat.id)]["tags"][0] == '1203807508' or account_settings[str(message.chat.id)]["tags"][0] == '1086955999':
+                    if account_settings[str(message.chat.id)]["tags"][0] == '281321076' or account_settings[str(message.chat.id)]["tags"][0] == '667068180' or account_settings[str(message.chat.id)]["tags"][0] == '907508218' or account_settings[str(message.chat.id)]["tags"][0] == '1203807508' or account_settings[str(message.chat.id)]["tags"][0] == '1086955999' or account_settings[str(message.chat.id)]["tags"][0] == '923118950':
                         item1 = types.KeyboardButton("📞 Телефон")
                         item2 = types.KeyboardButton("🏠 Адреса")
                         item4 = types.KeyboardButton("📝 Создать заказ")
@@ -831,7 +897,8 @@ def lol(message):
                         item7 = types.KeyboardButton("®FAQ Инструкция")
                         item8 = types.KeyboardButton("✍️ Написать директору")
                         item9 = types.KeyboardButton("🌐 Соц. сети")
-                        markup.row(item1, item2, item4).row(item6, item7, item9).row(item3).row(item8).row(item5)
+												item10 = types.KeyboardButton("☎️ Тех. поддержка")
+                        markup.row(item1, item2, item4).row(item6, item7, item9).row(item3).row(item8).row(item5).row(item10)
                     faq_txt = ""
                     with io.open(path_FAQ_label, encoding='utf-8') as file_set:
                         for i in file_set:
@@ -839,7 +906,7 @@ def lol(message):
                     bot.send_message(account_settings[str(message.chat.id)]["tags"][0], faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
                 else:
                     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-                    if account_settings[str(message.chat.id)]["tags"][0] == '281321076' or account_settings[str(message.chat.id)]["tags"][0] == '667068180' or account_settings[str(message.chat.id)]["tags"][0] == '907508218' or account_settings[str(message.chat.id)]["tags"][0] == '1203807508' or account_settings[str(message.chat.id)]["tags"][0] == '1086955999':
+                    if account_settings[str(message.chat.id)]["tags"][0] == '281321076' or account_settings[str(message.chat.id)]["tags"][0] == '667068180' or account_settings[str(message.chat.id)]["tags"][0] == '907508218' or account_settings[str(message.chat.id)]["tags"][0] == '1203807508' or account_settings[str(message.chat.id)]["tags"][0] == '1086955999' or account_settings[str(message.chat.id)]["tags"][0] == '923118950':
                         item1 = types.KeyboardButton("📞 telefon")
                         item2 = types.KeyboardButton("🏠 manzillari")
                         item4 = types.KeyboardButton("📝 buyurtma yaratish")
@@ -859,7 +926,8 @@ def lol(message):
                         item7 = types.KeyboardButton("®FAQ Ko'rsatma")
                         item8 = types.KeyboardButton("✍️ Direktorga yozing")
                         item9 = types.KeyboardButton("🌐 Biz ijtimoiy tarmoqlarda")
-                        markup.row(item1, item2, item4).row(item6, item7, item9).row(item3).row(item8).row(item5)
+                        item10 = types.KeyboardButton("☎️ O'sha.  qo'llab-quvvatlash")
+                        markup.row(item1, item2, item4).row(item6, item7, item9).row(item3).row(item8).row(item5).row(item10)
                     faq_txt = ""
                     with io.open(path_sec_FAQ_label, encoding='utf-8') as file_set:
                         for i in file_set:
@@ -871,7 +939,7 @@ def lol(message):
             item1 = types.InlineKeyboardButton('👍', callback_data='👍')
             item2 = types.InlineKeyboardButton('👎', callback_data='👎')
             markup.add(item1, item2)
-            if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 263305395 or message.chat.id == 666803198 or message.chat.id == 907508218 or message.chat.id == 1086955999 or message.chat.id == 1203807508:
+            if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 263305395 or message.chat.id == 666803198 or message.chat.id == 907508218 or message.chat.id == 1086955999 or message.chat.id == 1203807508 or message.chat.id == 923118950:
                 if account_settings[account_settings[str(message.chat.id)]["tags"][0]]["language"] == "Русский":
                     bot.send_message(account_settings[str(message.chat.id)]["tags"][0], 'Оцените работу оператора!', reply_markup=markup)
                 else: bot.send_message(account_settings[str(message.chat.id)]["tags"][0], 'Operator ishini baholang!', reply_markup=markup)
@@ -899,7 +967,7 @@ def lol(message):
             bot.send_message(message.chat.id, FAQ_txt.format(message.chat, bot.get_me()),parse_mode='html')
         else:
             if account_settings[str(message.chat.id)]['conversation'] == 'open':
-                if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 263305395 or message.chat.id == 666803198 or message.chat.id == 907508218:
+                if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 263305395 or message.chat.id == 666803198 or message.chat.id == 907508218 or message.chat.id == 923118950:
                     sm_id = 'Operator: '
                 else: sm_id = 'User: '
                 if message.text != None:
@@ -1032,7 +1100,7 @@ def saveNewTextOperFAQ_Sec(message):
 
 def keyboardRefMaker(message):
     global account_settings
-    if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 907508218 or message.chat.id == 263305395 or message.chat.id == 666803198 or message.chat.id == 1086955999 or message.chat.id == 1203807508:
+    if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 907508218 or message.chat.id == 263305395 or message.chat.id == 666803198 or message.chat.id == 1086955999 or message.chat.id == 1203807508 or message.chat.id == 923118950:
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         item1 = types.KeyboardButton("📞 Телефон")
         item2 = types.KeyboardButton("🏠 Адреса")
@@ -1054,7 +1122,8 @@ def keyboardRefMaker(message):
         item7 = types.KeyboardButton("®FAQ Инструкция")
         item8 = types.KeyboardButton("✍️ Написать директору")
         item9 = types.KeyboardButton("🌐 Соц. сети")
-        markup.row(item1, item2, item4).row(item6, item7, item9).row(item3).row(item8).row(item5)
+        item10 = types.KeyboardButton("☎️ Тех. поддержка")
+        markup.row(item1, item2, item4).row(item6, item7, item9).row(item3).row(item8).row(item5).row(item10)
     faq_txt = ""
     with io.open(path_FAQ_label, encoding='utf-8') as file_set:
         for i in file_set:
@@ -1068,7 +1137,7 @@ def keyboardRefMaker(message):
     with open(path_acc_settings, 'r') as fle:
         account_settings = json.load(fle)
 def keyboardRefMakerSec(message):
-    if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 907508218 or message.chat.id == 263305395 or message.chat.id == 666803198 or message.chat.id == 1086955999 or message.chat.id == 1203807508:
+    if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 907508218 or message.chat.id == 263305395 or message.chat.id == 666803198 or message.chat.id == 1086955999 or message.chat.id == 1203807508 or message.chat.id == 923118950:
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         item1 = types.KeyboardButton("📞 telefon")
         item2 = types.KeyboardButton("🏠 manzillari")
@@ -1090,7 +1159,8 @@ def keyboardRefMakerSec(message):
         item7 = types.KeyboardButton("®FAQ Ko'rsatma")
         item8 = types.KeyboardButton("✍️ Direktorga yozing")
         item9 = types.KeyboardButton("🌐 Biz ijtimoiy tarmoqlarda")
-        markup.row(item1, item2, item4).row(item6, item7, item9).row(item3).row(item8).row(item5)
+        item10 = types.KeyboardButton("☎️ O'sha.  qo'llab-quvvatlash")
+        markup.row(item1, item2, item4).row(item6, item7, item9).row(item3).row(item8).row(item5).row(item10)
     faq_txt = ""
     with io.open(path_sec_FAQ_label, encoding='utf-8') as file_set:
         for i in file_set:
@@ -1164,7 +1234,7 @@ def fdBack_fill(message):
     global feed_back
     global txt
     feedback_user = message.text
-    if feedback_user != '📞 Телефон' and feedback_user != '💽 БД переписок' and feedback_user !='🏠 Адреса' and feedback_user !='🌐 Соц. сети' and feedback_user !='🙋 Оператор' and feedback_user != '✍️ Написать директору' and feedback_user !='📝 Создать заказ' and feedback_user !='❗️ Оставить жалобу' and feedback_user !='% Получить скидку' and feedback_user !='®FAQ Инструкция' and feedback_user != 'stop':
+    if feedback_user != '📞 Телефон' and feedback_user != '💽 БД переписок' and feedback_user !='🏠 Адреса' and feedback_user !='🌐 Соц. сети' and feedback_user !='🙋 Оператор' and feedback_user != '☎️ Тех. поддержка' and feedback_user != '✍️ Написать директору' and feedback_user !='📝 Создать заказ' and feedback_user !='❗️ Оставить жалобу' and feedback_user !='% Получить скидку' and feedback_user !='®FAQ Инструкция' and feedback_user != 'stop':
         if feedback_user == None: feedback_user = 'Пользователь отправил нечитаемый объект'
         feed_back[str(message.chat.id)].update({"FeedBack" : feedback_user})
         txt = "--------ЖАЛОБА--------\n"
@@ -1209,6 +1279,10 @@ def fdBack_fill(message):
             bot.send_message(907508218, txt, reply_markup=markup)
         except Exception as e:
             print('User 907508218 blocked!')
+        try:
+            bot.send_message(923118950, txt, reply_markup=markup)
+        except Exception as e:
+            print('User 923118950 blocked!')
         oper_id = '0'
         insert_new_feedback_data(oper_id,  str(message.chat.id), txt)
     elif feedback_user == 'stop':
@@ -1276,7 +1350,7 @@ def fdBack_fill_Sec(message):
     global feed_back
     global txt
     feedback_user = message.text
-    if feedback_user != '📞 telefon' and feedback_user != '💽 Yozishmalar bazasi' and feedback_user !='🏠 manzillari' and feedback_user !='🌐 Biz ijtimoiy tarmoqlarda' and feedback_user !='🙋 Operator' and feedback_user != '✍️ Direktorga yozing' and feedback_user !='📝 buyurtma yaratish' and feedback_user !='❗️ Shikoyat qoldiring' and feedback_user !='% Chegirma oling' and feedback_user !="®FAQ Ko'rsatma" and feedback_user != 'stop':
+    if feedback_user != '📞 telefon' and feedback_user != '💽 Yozishmalar bazasi' and feedback_user !='🏠 manzillari' and feedback_user !='🌐 Biz ijtimoiy tarmoqlarda' and feedback_user !='🙋 Operator' and feedback_user != "☎️ O'sha.  qo'llab-quvvatlash" and feedback_user != '✍️ Direktorga yozing' and feedback_user !='📝 buyurtma yaratish' and feedback_user !='❗️ Shikoyat qoldiring' and feedback_user !='% Chegirma oling' and feedback_user !="®FAQ Ko'rsatma" and feedback_user != 'stop':
         if feedback_user == None: feedback_user = 'Пользователь отправил нечитаемый объект'
         feed_back[str(message.chat.id)].update({"FeedBack" : feedback_user})
         txt = "--------ЖАЛОБА--------\n"
@@ -1321,6 +1395,10 @@ def fdBack_fill_Sec(message):
             bot.send_message(907508218, txt, reply_markup=markup)
         except Exception as e:
             print('User 907508218 blocked!')
+        try:
+            bot.send_message(923118950, txt, reply_markup=markup)
+        except Exception as e:
+            print('User 923118950 blocked!')
         oper_id = '0'
         insert_new_feedback_data(oper_id,  str(message.chat.id), txt)
     elif feedback_user == 'stop':
@@ -1826,8 +1904,6 @@ def callback_inline(call):
             else:
                 bot.send_message(call.message.chat.id, "Закончите старый диалог, чтобы начать новый!")
 
-        #show alert
-        #bot.answer_callback_query(callback_query_id=call.id, show_alert=False,text="ЭТО ТЕСТОВОЕ УВЕДОМЛЕНИЕ!!11")
 
     except Exception as e:
         print(repr(e))
