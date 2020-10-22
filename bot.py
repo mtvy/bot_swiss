@@ -517,7 +517,7 @@ def operKeyboardMakerSec(message):
     bot.send_message(667068180, oper_send_text, reply_markup=markup)
     bot.send_message(1086955999, oper_send_text, reply_markup=markup)
     bot.send_message(1203807508, oper_send_text, reply_markup=markup)
-		bot.send_message(923118950, oper_send_text, reply_markup=markup)
+    bot.send_message(923118950, oper_send_text, reply_markup=markup)
 
 def dirKeyboardMakerSec(message):
     global account_settings
@@ -897,7 +897,7 @@ def lol(message):
                         item7 = types.KeyboardButton("®FAQ Инструкция")
                         item8 = types.KeyboardButton("✍️ Написать директору")
                         item9 = types.KeyboardButton("🌐 Соц. сети")
-												item10 = types.KeyboardButton("☎️ Тех. поддержка")
+                        item10 = types.KeyboardButton("☎️ Тех. поддержка")
                         markup.row(item1, item2, item4).row(item6, item7, item9).row(item3).row(item8).row(item5).row(item10)
                     faq_txt = ""
                     with io.open(path_FAQ_label, encoding='utf-8') as file_set:
