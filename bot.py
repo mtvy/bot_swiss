@@ -1,27 +1,4 @@
-import schedule
-import datetime
-import psycopg2
-import telebot
-import config
-import path
-import time
-import json
-import io
-import os
-from PIL import Image, ImageFilter, ImageFilter, ImageDraw, ImageFont
-from multiprocessing import *
-from telebot import types
-
-
-MESSAGE_ID = 254
-BOT_ID = 1364784224
-CHANAL_ID = -1001229753165
-
-account_settings = {}
-feed_back = {}
-new_acc_id = ""
-txt = ""
-mess = ""
+from lib import *
 
 def openfileforRead(action=None, name_path=None):
     global account_settings
@@ -297,8 +274,6 @@ class P_schedule(): # Class для работы c schedule
     ####Функции для выполнения заданий по времени
     def send_post():
         global MESSAGE_ID
-        global CHANAL_ID
-        global BOT_ID
         global account_settings
         c_ex = 0
         #try:
