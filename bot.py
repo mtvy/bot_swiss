@@ -3,6 +3,7 @@ import datetime
 import psycopg2
 import telebot
 import config
+import path
 import time
 import json
 import io
@@ -11,31 +12,6 @@ from PIL import Image, ImageFilter, ImageFilter, ImageDraw, ImageFont
 from multiprocessing import *
 from telebot import types
 
-path_acc_settings = "settings/account_settings.txt"
-path_feedbacks = "settings/feedbacks.txt"
-
-###
-path_first_lang = "first_language/fl_start_label.txt"
-path_FAQ_label = "first_language/fl_FAQ_label.txt"
-path_telephone_num = "first_language/fl_telephone_num_label.txt"
-path_address_label = "first_language/fl_address_label.txt"
-path_oper_label = "first_language/fl_oper_label.txt"
-path_FAQoper_label = "first_language/fl_FAQoper_label.txt"
-path_recv_label = "first_language/fl_recv_label.txt"
-path_order_label = "first_language/fl_order_label.txt"
-path_discount_label = "first_language/fl_discount_label.txt"
-path_social_web = "first_language/fl_social_web.txt"
-
-path_second_lang = "second_language/sl_start_label.txt"
-path_sec_FAQ_label = "second_language/sl_FAQ_label.txt"
-path_sec_telephone_num = "second_language/sl_telephone_num_label.txt"
-path_sec_address_label = "second_language/sl_address_label.txt"
-path_sec_oper_label = "second_language/sl_oper_label.txt"
-path_sec_FAQoper_label = "second_language/sl_FAQoper_label.txt"
-path_sec_recv_label = "second_language/sl_recv_label.txt"
-path_sec_order_label = "second_language/sl_order_label.txt"
-path_sec_discount_label = "second_language/sl_discount_label.txt"
-path_sec_social_web = "second_language/sl_social_web.txt"
 
 MESSAGE_ID = 254
 BOT_ID = 1364784224
@@ -46,12 +22,17 @@ feed_back = {}
 new_acc_id = ""
 txt = ""
 mess = ""
-with open(path_acc_settings, 'r') as file_set:
-    if(file_set.readline() == ""): account_settings = {}
-    else:
-        file_set.close()
-        with open(path_acc_settings, 'r') as file_set:
-            account_settings = json.load(file_set)
+
+def openAccSetforRead():
+    with open(path_acc_settings, 'r') as file_set:
+        if(file_set.readline() == ""): 
+            account_settings = {}
+        else:
+            file_set.close()
+            with open(path_acc_settings, 'r') as file_set:
+                account_settings = json.load(file_set)
+
+openAccSetforRead()
 
 bot = telebot.TeleBot(config.TOKEN)
 
@@ -309,12 +290,7 @@ class P_schedule(): # Class для работы c schedule
         global account_settings
         c_ex = 0
         #try:
-        with open(path_acc_settings, 'r') as file_set:
-            if(file_set.readline() == ""): account_settings = {}
-            else:
-                file_set.close()
-                with open(path_acc_settings, 'r') as file_set:
-                    account_settings = json.load(file_set)
+        openAccSetforRead()
         for i in account_settings.keys():
             try:
                 bot.forward_message(int(i), -1001229753165, MESSAGE_ID)
@@ -338,25 +314,23 @@ class P_schedule(): # Class для работы c schedule
 def welcome(message):
     global account_settings
     global new_acc_id
-    with open(path_acc_settings, 'r') as file_set:
-        if(file_set.readline() == ""): account_settings = {}
-        else:
-            file_set.close()
-            with open(path_acc_settings, 'r') as file_set:
-                account_settings = json.load(file_set)
+
+    openAccSetforRead()
+
     new_acc_id = str(message.chat.id)
     checker_keys = account_settings.setdefault(new_acc_id)
     if checker_keys == None or account_settings[new_acc_id]["language"] == None:
         markup = types.InlineKeyboardMarkup(row_width=2)
-        item1 = types.InlineKeyboardButton("Русский", callback_data='Русский')        
+        item1 = types.InlineKeyboardButton("Русский", callback_data='Русский')
         item2 = types.InlineKeyboardButton("Ozbek", callback_data="Ozbek")
         markup.add(item1, item2)
 
         account_settings[new_acc_id] = {"login" : str(message.chat.username), "name" : str(message.chat.first_name), "oper_ids" : [], "conversation" : "close", "discount" : "0", "tags" : [], "ref" : "0", "personal data" : "NO", "language" : None, "feedback_st" : 'close'}
         with open(path_acc_settings, 'w+') as f:
             json.dump(account_settings, f, indent='    ')
-        with open(path_acc_settings, 'r') as fle:
-            account_settings = json.load(fle)
+
+        openAccSetforRead()
+
 
         bot.send_message(message.chat.id,"🔱Choose language", reply_markup=markup)
     else:
@@ -572,7 +546,7 @@ def TechKeyboardMakerSec(message):
     bot.send_message(281321076, oper_send_text, reply_markup=markup)
     bot.send_message(923118950, oper_send_text, reply_markup=markup)
     bot.send_message(907508218, oper_send_text, reply_markup=markup)
-    
+
 
 def dbDateSortEnter(message):
     send = bot.send_message(message.chat.id, '➕ Введите дату в формате ГОД-МЕСЯЦ-ДЕНЬ (2000-1-12)')
@@ -683,7 +657,7 @@ def lol(message):
         elif message.text == '❗️ Оставить жалобу' or message.text == '❗️ Shikoyat qoldiring':
             if message.chat.id != 281321076 and message.chat.id != 667068180 and message.chat.id != 263305395 and message.chat.id != 666803198 and message.chat.id != 907508218 and message.chat.id != 1086955999 and message.chat.id != 1203807508 and message.chat.id != 923118950:
                 oper_write = ""
-                account_settings[str(message.chat.id)]["feedback_st"] = 'open'                
+                account_settings[str(message.chat.id)]["feedback_st"] = 'open'
                 markup = types.InlineKeyboardMarkup(row_width=2)
                 if account_settings[str(message.chat.id)]["language"] == "Русский":
                     with io.open(path_recv_label, encoding='utf-8') as file_set:
@@ -696,7 +670,7 @@ def lol(message):
                             oper_write += i
                     item1 = types.InlineKeyboardButton("Shikoyat yozing", callback_data='Write a feedback')
                 markup.add(item1)
-                account_settings[str(message.chat.id)]["feedback_st"] = 'open'                
+                account_settings[str(message.chat.id)]["feedback_st"] = 'open'
                 bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
             else:
                 feedBackdbDateSortEnter(message)
@@ -730,8 +704,9 @@ def lol(message):
                 account_settings[str(message.chat.id)]["discount"] = "10"
                 with open(path_acc_settings, 'w+') as f:
                     json.dump(account_settings, f, indent='    ')
-                with open(path_acc_settings, 'r') as fle:
-                    account_settings = json.load(fle)
+
+                openAccSetforRead()
+
                 if account_settings[str(message.chat.id)]["language"] == "Русский":
                     picPNGmaker(message)
                     bot.send_message(message.chat.id, "✅ У вас максимальная скидка!")
@@ -789,8 +764,9 @@ def lol(message):
                 account_settings[account_settings[str(message.chat.id)]["tags"][0]]['tags'].clear()
                 with open(path_acc_settings, 'w+') as f:
                     json.dump(account_settings, f, indent='    ')
-                with open(path_acc_settings, 'r') as fle:
-                    account_settings = json.load(fle)
+
+                openAccSetforRead()
+
                 if account_settings[account_settings[str(message.chat.id)]["tags"][0]]["language"] == "Русский":
                     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
                     if account_settings[str(message.chat.id)]["tags"][0] == '281321076' or account_settings[str(message.chat.id)]["tags"][0] == '667068180' or account_settings[str(message.chat.id)]["tags"][0] == '907508218' or account_settings[str(message.chat.id)]["tags"][0] == '1203807508' or account_settings[str(message.chat.id)]["tags"][0] == '1086955999' or account_settings[str(message.chat.id)]["tags"][0] == '923118950':
@@ -827,7 +803,7 @@ def lol(message):
                         item2 = types.KeyboardButton("🏠 manzillari")
                         item4 = types.KeyboardButton("📝 buyurtma yaratish")
                         item5 = types.KeyboardButton("❗️ Shikoyat qoldiring")
-                        item10 = types.KeyboardButton("💽 Yozishmalar bazasi")                        
+                        item10 = types.KeyboardButton("💽 Yozishmalar bazasi")
                         item6 = types.KeyboardButton("% Chegirma oling")
                         item7 = types.KeyboardButton("®FAQ Ko'rsatma")
                         item9 = types.KeyboardButton("🌐 Biz ijtimoiy tarmoqlarda")
@@ -866,8 +842,9 @@ def lol(message):
             account_settings[str(message.chat.id)]['tags'].clear()
             with open(path_acc_settings, 'w+') as f:
                 json.dump(account_settings, f, indent='    ')
-            with open(path_acc_settings, 'r') as fle:
-                account_settings = json.load(fle)
+
+            openAccSetforRead()
+            
             closerDataBase(str(message.chat.id))
         elif message.text == "🔙 Operator chaqiruvini rad etish":
             bot.send_message(str(message.chat.id), "❗ Operator bilan aloqa yakunlandi")
@@ -911,7 +888,7 @@ def lol(message):
                         item2 = types.KeyboardButton("🏠 manzillari")
                         item4 = types.KeyboardButton("📝 buyurtma yaratish")
                         item5 = types.KeyboardButton("❗️ Shikoyat qoldiring")
-                        item10 = types.KeyboardButton("💽 Yozishmalar bazasi")                        
+                        item10 = types.KeyboardButton("💽 Yozishmalar bazasi")
                         item6 = types.KeyboardButton("% Chegirma oling")
                         item7 = types.KeyboardButton("®FAQ Ko'rsatma")
                         item9 = types.KeyboardButton("🌐 Biz ijtimoiy tarmoqlarda")
@@ -951,8 +928,7 @@ def lol(message):
             account_settings[str(message.chat.id)]['tags'].clear()
             with open(path_acc_settings, 'w+') as f:
                 json.dump(account_settings, f, indent='    ')
-            with open(path_acc_settings, 'r') as fle:
-                account_settings = json.load(fle)
+            openAccSetforRead()
         elif message.text == "❔ Инструкция":
             FAQ_txt = ""
             with io.open(path_FAQoper_label, encoding='utf-8') as file_set:
@@ -1129,13 +1105,11 @@ def keyboardRefMaker(message):
         for i in file_set:
             faq_txt += i
     bot.send_message(message.chat.id, faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
-    with open(path_acc_settings, 'r') as fle:
-        account_settings = json.load(fle)
+    openAccSetforRead()
     account_settings[str(message.chat.id)]["personal data"] = "YES"
     with open(path_acc_settings, 'w+') as f:
         json.dump(account_settings, f, indent='    ')
-    with open(path_acc_settings, 'r') as fle:
-        account_settings = json.load(fle)
+    openAccSetforRead()
 def keyboardRefMakerSec(message):
     if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 907508218 or message.chat.id == 263305395 or message.chat.id == 666803198 or message.chat.id == 1086955999 or message.chat.id == 1203807508 or message.chat.id == 923118950:
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -1166,13 +1140,11 @@ def keyboardRefMakerSec(message):
         for i in file_set:
             faq_txt += i
     bot.send_message(message.chat.id, faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
-    with open(path_acc_settings, 'r') as fle:
-        account_settings = json.load(fle)
+    openAccSetforRead()
     account_settings[str(message.chat.id)]["personal data"] = "YES"
     with open(path_acc_settings, 'w+') as f:
         json.dump(account_settings, f, indent='    ')
-    with open(path_acc_settings, 'r') as fle:
-        account_settings = json.load(fle)
+    openAccSetforRead()
 
 
 def fdbackName(message):
@@ -1309,7 +1281,7 @@ def fdbackTele_Sec(message):
         if tele_num == None: tele_num = 'Пользователь отправил нечитаемый объект'
         bot.send_message(message.chat.id, '➕ Shikoyat tort bosqichda tuziladi:\n1) Shikoyat sababi\n2) Hodisa sodir bolgan filial/joyni belgilash\n3) Hodisa sanasi\n4) Mojaro yuz bergan raqibning nomi yoki tarifi\n❌ Operatsiyani bekor qilish uchun yozing stop')
         feed_back[str(message.chat.id)].update({"Telephone number" : tele_num})
-        send = bot.send_message(message.chat.id, '➕ Shikoyat sababini yozing')        
+        send = bot.send_message(message.chat.id, '➕ Shikoyat sababini yozing')
         bot.register_next_step_handler(send, fdbackReason_Sec)
     elif tele_num == 'stop':
         bot.send_message(message.chat.id, '➕ Amal bekor qilindi')
@@ -1417,13 +1389,11 @@ def enterTag(message):
         mess = ""
         with open(path_acc_settings, 'w+') as f:
             json.dump(account_settings, f, indent='    ')
-        with open(path_acc_settings, 'r') as fle:
-            account_settings = json.load(fle)
+        openAccSetforRead()
     account_settings[str(message.chat.id)]["tags"].append(tags)
     with open(path_acc_settings, 'w+') as f:
         json.dump(account_settings, f, indent='    ')
-    with open(path_acc_settings, 'r') as fle:
-        account_settings = json.load(fle)
+    openAccSetforRead()
     it = len(account_settings[str(message.chat.id)]["tags"])
     tet = "➕ Введено "
     tet += str(it)
@@ -1442,13 +1412,11 @@ def enterTag_Sec(message):
         mess = ""
         with open(path_acc_settings, 'w+') as f:
             json.dump(account_settings, f, indent='    ')
-        with open(path_acc_settings, 'r') as fle:
-            account_settings = json.load(fle)
+        openAccSetforRead()
     account_settings[str(message.chat.id)]["tags"].append(tags)
     with open(path_acc_settings, 'w+') as f:
         json.dump(account_settings, f, indent='    ')
-    with open(path_acc_settings, 'r') as fle:
-        account_settings = json.load(fle)
+    openAccSetforRead()
     it = len(account_settings[str(message.chat.id)]["tags"])
     tet = "➕ Kirilgan "
     tet += str(it)
@@ -1482,8 +1450,7 @@ def picPNGmaker(message):
 def refAdd(message):
     global account_settings
     ref_n = message.text
-    with open(path_acc_settings, 'r') as fle:
-        account_settings = json.load(fle)
+    openAccSetforRead()
     ch_ref = "none"
     for k in account_settings.keys():
         if k == ref_n:
@@ -1494,8 +1461,7 @@ def refAdd(message):
             account_settings[ref_n]["ref"] = str(int(account_settings[ref_n]["ref"]) + 1)
             with open(path_acc_settings, 'w+') as f:
                 json.dump(account_settings, f, indent='    ')
-            with open(path_acc_settings, 'r') as fle:
-                account_settings = json.load(fle)
+            openAccSetforRead()
             if account_settings[str(message.chat.id)]["language"] == "Русский":
                 bot.send_message(message.chat.id, "✅ Спасибо за активацию!")
                 bot.send_message(ref_n, "✅ Новый пользователь активировал реферальный код!")
@@ -1545,8 +1511,7 @@ def userSebdText(message):
         account_settings[str(message.chat.id)]["feedback_st"] = 'close'
         with open(path_acc_settings, 'w+') as f:
             json.dump(account_settings, f, indent='    ')
-        with open(path_acc_settings, 'r') as fle:
-            account_settings = json.load(fle)
+        openAccSetforRead()
     else: bot.send_message(message.chat.id, 'Операция отменена!')
 
 @bot.callback_query_handler(func=lambda call: True)
@@ -1561,8 +1526,7 @@ def callback_inline(call):
             new_acc_id = ""
             with open(path_acc_settings, 'w+') as f:
                 json.dump(account_settings, f, indent='    ')
-            with open(path_acc_settings, 'r') as fle:
-                account_settings = json.load(fle)
+            openAccSetforRead()
             with io.open(path_first_lang, encoding='utf-8') as start_text_file:
                 start_txt = ""
                 for i in start_text_file:
@@ -1597,8 +1561,7 @@ def callback_inline(call):
             new_acc_id = ""
             with open(path_acc_settings, 'w+') as f:
                 json.dump(account_settings, f, indent='    ')
-            with open(path_acc_settings, 'r') as fle:
-                account_settings = json.load(fle)
+            openAccSetforRead()
             with io.open(path_second_lang, encoding='utf-8') as start_text_file:
                 start_txt = ""
                 for i in start_text_file:
@@ -1824,8 +1787,7 @@ def callback_inline(call):
                 account_settings[str(call.message.chat.id)]["feedback_st"] = call.data[1:]
                 with open(path_acc_settings, 'w+') as f:
                     json.dump(account_settings, f, indent='    ')
-                with open(path_acc_settings, 'r') as fle:
-                    account_settings = json.load(fle)
+                openAccSetforRead()
                 send = bot.send_message(call.message.chat.id, "➕ Введите текст для ответа пользователю")
                 bot.register_next_step_handler(send, userSebdText)
             else:
@@ -1834,8 +1796,7 @@ def callback_inline(call):
                 account_settings[str(call.message.chat.id)]["feedback_st"] = call.data[1:]
                 with open(path_acc_settings, 'w+') as f:
                     json.dump(account_settings, f, indent='    ')
-                with open(path_acc_settings, 'r') as fle:
-                    account_settings = json.load(fle)
+                openAccSetforRead()
                 send = bot.send_message(call.message.chat.id, "➕ Введите текст для ответа пользователю")
                 bot.register_next_step_handler(send, userSebdText)
         else:
@@ -1853,8 +1814,7 @@ def callback_inline(call):
                         account_settings[k]["conversation"] = 'open'
                         with open(path_acc_settings, 'w+') as f:
                             json.dump(account_settings, f, indent='    ')
-                        with open(path_acc_settings, 'r') as fle:
-                            account_settings = json.load(fle)
+                        openAccSetforRead()
                         if account_settings[k]["language"] == "Русский":
                             bot.send_message(k, "📞 Найден оператор, переписка активирована")
                         else:
@@ -1880,8 +1840,7 @@ def callback_inline(call):
                     account_settings[str(call.data)]["conversation"] = 'open'
                     with open(path_acc_settings, 'w+') as f:
                         json.dump(account_settings, f, indent='    ')
-                    with open(path_acc_settings, 'r') as fle:
-                        account_settings = json.load(fle)
+                    openAccSetforRead()
                     try:
                         if account_settings[str(call.data)]["language"] == "Русский":
                             bot.send_message(str(call.data), "📞 Оператор активировал переписку", reply_markup=markup)
@@ -1898,8 +1857,7 @@ def callback_inline(call):
                         bot.send_message(call.message.chat.id, 'Пользователь выключил бота!')
                         with open(path_acc_settings, 'w+') as f:
                             json.dump(account_settings, f, indent='    ')
-                        with open(path_acc_settings, 'r') as fle:
-                            account_settings = json.load(fle)
+                        openAccSetforRead()
 
             else:
                 bot.send_message(call.message.chat.id, "Закончите старый диалог, чтобы начать новый!")
