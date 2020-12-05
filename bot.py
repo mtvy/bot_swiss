@@ -21,6 +21,12 @@ def openfileforRead(action=None, name_path=None):
                             file_text += i
         return file_text
 
+def saveNewText(message, name_path):
+    word = message.text
+    with open(name_path, 'w', encoding='utf-8') as f:
+        f.write(word)
+    bot.send_message(message.chat.id, "Изменения сохранены!")
+
 openfileforRead('r')
 
 bot = telebot.TeleBot(config.TOKEN)
@@ -260,7 +266,7 @@ def change_data(name):
 
 
 def start_process():#Запуск Process
-    p1 = Process(target=P_schedule.start_schedule, args=()).start()
+    _ = Process(target=P_schedule.start_schedule, args=()).start()
 class P_schedule(): # Class для работы c schedule
     def start_schedule(): #Запуск schedule
         ######Параметры для schedule######
@@ -946,13 +952,6 @@ def lol(message):
                 insert_text_to_data(sm_id, str(message.chat.id))
 
 
-def saveNewText(message, name_path):
-    word = message.text
-    with open(name_path, 'w', encoding='utf-8') as f:
-        f.write(word)
-    bot.send_message(message.chat.id, "Изменения сохранены!")
-
-
 def keyboardRefMaker(message):
     global account_settings
     if message.chat.id == 281321076 or message.chat.id == 667068180 or message.chat.id == 907508218 or message.chat.id == 263305395 or message.chat.id == 666803198 or message.chat.id == 1086955999 or message.chat.id == 1203807508 or message.chat.id == 923118950:
@@ -1015,16 +1014,23 @@ def keyboardRefMakerSec(message):
         item9 = types.KeyboardButton("🌐 Biz ijtimoiy tarmoqlarda")
         item10 = types.KeyboardButton("☎️ O'sha.  qo'llab-quvvatlash")
         markup.row(item1, item2, item4).row(item6, item7, item9).row(item3).row(item8).row(item5).row(item10)
-    faq_txt = ""
-    with io.open(path_sec_FAQ_label, encoding='utf-8') as file_set:
-        for i in file_set:
-            faq_txt += i
+    faq_txt = ''
+
+    faq_txt = openfileforRead(None, path_sec_FAQ_label)
+
     bot.send_message(message.chat.id, faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
     openfileforRead('r')
     account_settings[str(message.chat.id)]["personal data"] = "YES"
     
     openfileforRead('w+')
     openfileforRead('r')
+
+
+def checkBlockedPeople(message, markup, id):
+    try:
+        bot.send_message(id, txt, reply_markup=markup)
+    except Exception as e:
+        print('User ' + id + ' blocked!')
 
 
 def fdbackName(message):
@@ -1111,30 +1117,10 @@ def fdBack_fill(message):
         markup = types.InlineKeyboardMarkup(row_width=2)
         item1 = types.InlineKeyboardButton("Ответить", callback_data='Q' + str(message.chat.id))
         markup.add(item1)
-        try:
-            bot.send_message(281321076, txt, reply_markup=markup)
-        except Exception as e:
-            print('User 281321076 blocked!')
-        try:
-            bot.send_message(667068180, txt, reply_markup=markup)
-        except Exception as e:
-            print('User 667068180 blocked!')
-        try:
-            bot.send_message(263305395, txt, reply_markup=markup)
-        except Exception as e:
-            print('User 263305395 blocked!')
-        try:
-            bot.send_message(666803198, txt, reply_markup=markup)
-        except Exception as e:
-            print('User 666803198 blocked!')
-        try:
-            bot.send_message(907508218, txt, reply_markup=markup)
-        except Exception as e:
-            print('User 907508218 blocked!')
-        try:
-            bot.send_message(923118950, txt, reply_markup=markup)
-        except Exception as e:
-            print('User 923118950 blocked!')
+        
+        for id in ids_arr:
+            checkBlockedPeople(message, markup, id)
+
         oper_id = '0'
         insert_new_feedback_data(oper_id,  str(message.chat.id), txt)
     elif feedback_user == 'stop':
@@ -1227,30 +1213,10 @@ def fdBack_fill_Sec(message):
         markup = types.InlineKeyboardMarkup(row_width=2)
         item1 = types.InlineKeyboardButton("Ответить", callback_data='Q' + str(message.chat.id))
         markup.add(item1)
-        try:
-            bot.send_message(281321076, txt, reply_markup=markup)
-        except Exception as e:
-            print('User 281321076 blocked!')
-        try:
-            bot.send_message(667068180, txt, reply_markup=markup)
-        except Exception as e:
-            print('User 667068180 blocked!')
-        try:
-            bot.send_message(263305395, txt, reply_markup=markup)
-        except Exception as e:
-            print('User 263305395 blocked!')
-        try:
-            bot.send_message(666803198, txt, reply_markup=markup)
-        except Exception as e:
-            print('User 666803198 blocked!')
-        try:
-            bot.send_message(907508218, txt, reply_markup=markup)
-        except Exception as e:
-            print('User 907508218 blocked!')
-        try:
-            bot.send_message(923118950, txt, reply_markup=markup)
-        except Exception as e:
-            print('User 923118950 blocked!')
+
+        for id in ids_arr:
+            checkBlockedPeople(message, markup, id)
+
         oper_id = '0'
         insert_new_feedback_data(oper_id,  str(message.chat.id), txt)
     elif feedback_user == 'stop':
