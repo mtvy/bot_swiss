@@ -4,15 +4,15 @@ def openfileforRead(action=None, name_path=None):
     global account_settings
 
     if action == 'r':
-        with open(path.path_acc_settings, 'r') as file_set:
+        with open(path_acc_settings, 'r') as file_set:
             if(file_set.readline() == ""): 
                 account_settings = {}
             else:
                 file_set.close()
-                with open(path.path_acc_settings, 'r') as file_set:
+                with open(path_acc_settings, 'r') as file_set:
                     account_settings = json.load(file_set)
     elif action == 'w+':
-        with open(path.path_acc_settings, 'w+') as f:
+        with open(path_acc_settings, 'w+') as f:
             json.dump(account_settings, f, indent='    ')
     else:
         file_text = ''
@@ -327,7 +327,7 @@ def welcome(message):
                 keyboardRefMaker(message)
             elif account_settings[new_acc_id]["personal data"] == "NO":
 
-                start_txt = openfileforRead(None, path.path_first_lang)
+                start_txt = openfileforRead(None, path_first_lang)
                 
                 markup = types.InlineKeyboardMarkup(row_width=2)
                 item1 = types.InlineKeyboardButton("Согласен", callback_data='Согласен')
@@ -340,7 +340,7 @@ def welcome(message):
                 keyboardRefMakerSec(message)
             elif account_settings[new_acc_id]["personal data"] == "NO":
 
-                start_txt = openfileforRead(None, path.path_second_lang)
+                start_txt = openfileforRead(None, path_second_lang)
                 
                 markup = types.InlineKeyboardMarkup(row_width=2)
                 item1 = types.InlineKeyboardButton("ROZIMAN", callback_data='Agree')
@@ -350,7 +350,7 @@ def welcome(message):
 
 @bot.message_handler(commands=['changeLabel'])
 def adderNewLabel(message):
-    if message.chat.id == 667068180 or message.chat.id == 923118950:
+    if message.chat.id == 667068180 or message.chat.id == 923118950 or message.chat.id == 281321076:
         markup = types.InlineKeyboardMarkup(row_width=2)
         item1 = types.InlineKeyboardButton("Начальный текст", callback_data='Начальный текст')
         item2 = types.InlineKeyboardButton("FAQ текст", callback_data='FAQ текст')
@@ -586,22 +586,22 @@ def lol(message):
             telephone_num = ''
             if account_settings[str(message.chat.id)]["language"] == "Русский":
 
-                telephone_num = openfileforRead(None, path.path_telephone_num)
+                telephone_num = openfileforRead(None, path_telephone_num)
 
             else:
 
-                telephone_num = openfileforRead(None, path.path_sec_telephone_num)
+                telephone_num = openfileforRead(None, path_sec_telephone_num)
 
             bot.send_message(message.chat.id, telephone_num.format(message.chat, bot.get_me()),parse_mode='html')
         elif message.text == '🏠 Адреса' or message.text == '🏠 manzillari':
             address = ''
             if account_settings[str(message.chat.id)]["language"] == "Русский":
 
-                address = openfileforRead(None, path.path_address_label)
+                address = openfileforRead(None, path_address_label)
 
             else:
 
-                address = openfileforRead(None, path.path_sec_address_label)
+                address = openfileforRead(None, path_sec_address_label)
 
             bot.send_message(message.chat.id, address.format(message.chat, bot.get_me()),parse_mode='html')
         elif message.text == '🙋 Оператор' or message.text == '🙋 Operator':
@@ -632,11 +632,11 @@ def lol(message):
             oper_write = ''
             if account_settings[str(message.chat.id)]["language"] == "Русский":
                 
-                oper_write = openfileforRead(None, path.path_order_label)
+                oper_write = openfileforRead(None, path_order_label)
 
             else:
                 
-                oper_write = openfileforRead(None, path.path_sec_order_label)
+                oper_write = openfileforRead(None, path_sec_order_label)
 
             bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html')
         elif message.text == '❗️ Оставить жалобу' or message.text == '❗️ Shikoyat qoldiring':
@@ -646,12 +646,12 @@ def lol(message):
                 markup = types.InlineKeyboardMarkup(row_width=2)
                 if account_settings[str(message.chat.id)]["language"] == "Русский":
 
-                    oper_write = openfileforRead(None, path.path_recv_label)
+                    oper_write = openfileforRead(None, path_recv_label)
  
                     item1 = types.InlineKeyboardButton("Написать жалобу", callback_data='Написать жалобу')
                 else:
 
-                    oper_write = openfileforRead(None, path.path_sec_recv_label)
+                    oper_write = openfileforRead(None, path_sec_recv_label)
 
                     item1 = types.InlineKeyboardButton("Shikoyat yozing", callback_data='Write a feedback')
                 markup.add(item1)
@@ -673,14 +673,14 @@ def lol(message):
                 markup = types.InlineKeyboardMarkup(row_width=2)
                 if account_settings[str(message.chat.id)]["language"] == "Русский":
 
-                    oper_write = openfileforRead(None, path.path_discount_label)
+                    oper_write = openfileforRead(None, path_discount_label)
 
                     oper_write += "\nВаш реферальный код: "
                     oper_write += str(message.chat.id)
                     bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html')
                 else:
 
-                    oper_write = openfileforRead(None, path.path_sec_discount_label)
+                    oper_write = openfileforRead(None, path_sec_discount_label)
 
                     oper_write += "\nSizning tavsiyangiz kodi: "
                     oper_write += str(message.chat.id)
@@ -722,22 +722,22 @@ def lol(message):
             FAQ_txt = ""
             if account_settings[str(message.chat.id)]["language"] == "Русский":
 
-                FAQ_txt = openfileforRead(None, path.path_FAQ_label)
+                FAQ_txt = openfileforRead(None, path_FAQ_label)
 
             else:
 
-                FAQ_txt = openfileforRead(None, path.path_sec_FAQ_label)
+                FAQ_txt = openfileforRead(None, path_sec_FAQ_label)
 
             bot.send_message(message.chat.id, FAQ_txt.format(message.chat, bot.get_me()),parse_mode='html')
         elif message.text == "🌐 Соц. сети" or message.text == '🌐 Biz ijtimoiy tarmoqlarda':
             soc_web = ''
             if account_settings[str(message.chat.id)]["language"] == "Русский":
 
-                soc_web = openfileforRead(None, path.path_social_web)
+                soc_web = openfileforRead(None, path_social_web)
 
             else:
 
-                soc_web = openfileforRead(None, path.path_sec_social_web)
+                soc_web = openfileforRead(None, path_sec_social_web)
 
             bot.send_message(message.chat.id, soc_web.format(message.chat, bot.get_me()),parse_mode='html')
         elif message.text == "🔙 Отклонить вызов оператора":
@@ -776,7 +776,7 @@ def lol(message):
                         markup.row(item1, item2, item4).row(item6, item7, item9).row(item3).row(item8).row(item5).row(item10)
                     faq_txt = ''
                     
-                    faq_txt = openfileforRead(None, path.path_FAQ_label)
+                    faq_txt = openfileforRead(None, path_FAQ_label)
 
                     bot.send_message(account_settings[str(message.chat.id)]["tags"][0], faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
                 else:
@@ -805,7 +805,7 @@ def lol(message):
                         markup.row(item1, item2, item4).row(item6, item7, item9).row(item3).row(item8).row(item5).row(item10)
                     faq_txt = ''
 
-                    faq_txt = openfileforRead(None, path.path_sec_FAQ_label)
+                    faq_txt = openfileforRead(None, path_sec_FAQ_label)
 
                     bot.send_message(account_settings[str(message.chat.id)]["tags"][0], faq_txt.format(message.chat, bot.get_me()), parse_mode='html', reply_markup=markup)
             keyboardRefMaker(message)
@@ -860,7 +860,7 @@ def lol(message):
                         markup.row(item1, item2, item4).row(item6, item7, item9).row(item3).row(item8).row(item5).row(item10)
                     faq_txt = ''
                     
-                    faq_txt = openfileforRead(None, path.path_FAQ_label)
+                    faq_txt = openfileforRead(None, path_FAQ_label)
 
                     bot.send_message(account_settings[str(message.chat.id)]["tags"][0], faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
                 else:
@@ -889,7 +889,7 @@ def lol(message):
                         markup.row(item1, item2, item4).row(item6, item7, item9).row(item3).row(item8).row(item5).row(item10)
                     faq_txt = ''
 
-                    faq_txt = openfileforRead(None, path.path_sec_FAQ_label)
+                    faq_txt = openfileforRead(None, path_sec_FAQ_label)
 
                     bot.send_message(account_settings[str(message.chat.id)]["tags"][0], faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
             keyboardRefMakerSec(message)
@@ -915,13 +915,13 @@ def lol(message):
         elif message.text == "❔ Инструкция":
             FAQ_txt = ''
 
-            FAQ_txt = openfileforRead(None, path.path_FAQoper_label)
+            FAQ_txt = openfileforRead(None, path_FAQoper_label)
             
             bot.send_message(message.chat.id, FAQ_txt.format(message.chat, bot.get_me()),parse_mode='html')
         elif message.text == "❔ Ko'rsatma":
             FAQ_txt = ''
 
-            FAQ_txt = openfileforRead(None, path.path_sec_FAQoper_label)
+            FAQ_txt = openfileforRead(None, path_sec_FAQoper_label)
 
             bot.send_message(message.chat.id, FAQ_txt.format(message.chat, bot.get_me()),parse_mode='html')
         else:
@@ -946,115 +946,11 @@ def lol(message):
                 insert_text_to_data(sm_id, str(message.chat.id))
 
 
-def saveNewTextStart(message):
+def saveNewText(message, name_path):
     word = message.text
-    with open(path_first_lang, 'w', encoding='utf-8') as f:
+    with open(name_path, 'w', encoding='utf-8') as f:
         f.write(word)
     bot.send_message(message.chat.id, "Изменения сохранены!")
-def saveNewTextStart_Sec(message):
-    word = message.text
-    with open(path_second_lang, 'w', encoding='utf-8') as f:
-        f.write(word)
-    bot.send_message(message.chat.id, "Chenges saved!")
-
-def saveNewTextFAQ(message):
-    word = message.text
-    with open(path_FAQ_label, 'w', encoding='utf-8') as f:
-        f.write(word)
-    bot.send_message(message.chat.id, "Изменения сохранены!")
-def saveNewTextFAQ_Sec(message):
-    word = message.text
-    with open(path_sec_FAQ_label, 'w', encoding='utf-8') as f:
-        f.write(word)
-    bot.send_message(message.chat.id, "Chenges saved!")
-
-def saveNewTextSupport(message):
-    word = message.text
-    with open(path_oper_label, 'w', encoding='utf-8') as f:
-        f.write(word)
-    bot.send_message(message.chat.id, "Изменения сохранены!")
-def saveNewTextSupport_Sec(message):
-    word = message.text
-    with open(path_sec_oper_label, 'w', encoding='utf-8') as f:
-        f.write(word)
-    bot.send_message(message.chat.id, "Chenges saved!")
-
-def saveNewTextTele(message):
-    word = message.text
-    with open(path_telephone_num, 'w', encoding='utf-8') as f:
-        f.write(word)
-    bot.send_message(message.chat.id, "Изменения сохранены!")
-def saveNewTextTele_Sec(message):
-    word = message.text
-    with open(path_sec_telephone_num, 'w', encoding='utf-8') as f:
-        f.write(word)
-    bot.send_message(message.chat.id, "O'zgarishlar saqlandi!")
-
-def saveNewTextAdress(message):
-    word = message.text
-    with open(path_address_label, 'w', encoding='utf-8') as f:
-        f.write(word)
-    bot.send_message(message.chat.id, "Изменения сохранены!")
-def saveNewTextAdress_Sec(message):
-    word = message.text
-    with open(path_sec_address_label, 'w', encoding='utf-8') as f:
-        f.write(word)
-    bot.send_message(message.chat.id, "Chenges saved!")
-
-def saveNewTextOrder(message):
-    word = message.text
-    with open(path_order_label, 'w', encoding='utf-8') as f:
-        f.write(word)
-    bot.send_message(message.chat.id, "O'zgarishlar saqlandi!")
-def saveNewTextOrder_Sec(message):
-    word = message.text
-    with open(path_sec_order_label, 'w', encoding='utf-8') as f:
-        f.write(word)
-    bot.send_message(message.chat.id, "Chenges saved!")
-
-def saveNewTextRecv(message):
-    word = message.text
-    with open(path_recv_label, 'w', encoding='utf-8') as f:
-        f.write(word)
-    bot.send_message(message.chat.id, "Изменения сохранены!")
-def saveNewTextRecv_Sec(message):
-    word = message.text
-    with open(path_sec_recv_label, 'w', encoding='utf-8') as f:
-        f.write(word)
-    bot.send_message(message.chat.id, "Chenges saved!")
-
-def saveNewTextDisc(message):
-    word = message.text
-    with open(path_discount_label, 'w', encoding='utf-8') as f:
-        f.write(word)
-    bot.send_message(message.chat.id, "Изменения сохранены!")
-def saveNewTextDisc_Sec(message):
-    word = message.text
-    with open(path_sec_discount_label, 'w', encoding='utf-8') as f:
-        f.write(word)
-    bot.send_message(message.chat.id, "O'zgarishlar saqlandi!")
-
-def saveNewTextSocial(message):
-    word = message.text
-    with open(path_social_web, 'w', encoding='utf-8') as f:
-        f.write(word)
-    bot.send_message(message.chat.id, "Изменения сохранены!")
-def saveNewTextSocial_Sec(message):
-    word = message.text
-    with open(path_sec_social_web, 'w', encoding='utf-8') as f:
-        f.write(word)
-    bot.send_message(message.chat.id, "O'zgarishlar saqlandi!")
-
-def saveNewTextOperFAQ(message):
-    word = message.text
-    with open(path_FAQoper_label, 'w', encoding='utf-8') as f:
-        f.write(word)
-    bot.send_message(message.chat.id, "Изменения сохранены!")
-def saveNewTextOperFAQ_Sec(message):
-    word = message.text
-    with open(path_sec_FAQoper_label, 'w', encoding='utf-8') as f:
-        f.write(word)
-    bot.send_message(message.chat.id, "O'zgarishlar saqlandi!")
 
 
 def keyboardRefMaker(message):
@@ -1085,7 +981,7 @@ def keyboardRefMaker(message):
         markup.row(item1, item2, item4).row(item6, item7, item9).row(item3).row(item8).row(item5).row(item10)
     faq_txt = ''
 
-    faq_txt = openfileforRead(None, path.path_FAQ_label)
+    faq_txt = openfileforRead(None, path_FAQ_label)
 
     bot.send_message(message.chat.id, faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
     openfileforRead('r')
@@ -1518,7 +1414,7 @@ def callback_inline(call):
             openfileforRead('w+')
             openfileforRead('r')
 
-            start_txt = openfileforRead(None, path.path_first_lang)
+            start_txt = openfileforRead(None, path_first_lang)
 
             markup = types.InlineKeyboardMarkup(row_width=2)
             item1 = types.InlineKeyboardButton("Согласен", callback_data='Согласен')
@@ -1552,7 +1448,7 @@ def callback_inline(call):
             openfileforRead('w+')
             openfileforRead('r')
 
-            start_txt = openfileforRead(None, path.path_second_lang)
+            start_txt = openfileforRead(None, path_second_lang)
 
             markup = types.InlineKeyboardMarkup(row_width=2)
             item1 = types.InlineKeyboardButton("ROZIMAN", callback_data='Agree')
@@ -1608,11 +1504,11 @@ def callback_inline(call):
         elif call.data == 'РусскийLangStart':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
-            bot.register_next_step_handler(send, saveNewTextStart)
+            bot.register_next_step_handler(send, saveNewText, path_first_lang)
         elif call.data == 'OzbekLangStart':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, "➕ Введите текст для изменения")
-            bot.register_next_step_handler(send, saveNewTextStart_Sec)
+            bot.register_next_step_handler(send, saveNewText, path_second_lang)
 
         elif call.data == 'FAQ текст':
             bot.delete_message(call.message.chat.id, call.message.message_id)
@@ -1624,11 +1520,11 @@ def callback_inline(call):
         elif call.data == 'РусскийLangFAQ':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
-            bot.register_next_step_handler(send, saveNewTextFAQ)
+            bot.register_next_step_handler(send, saveNewText, path_FAQ_label)
         elif call.data == 'OzbekLangFAQ':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, "➕ Введите текст для изменения")
-            bot.register_next_step_handler(send, saveNewTextFAQ_Sec)
+            bot.register_next_step_handler(send, saveNewText, path_sec_FAQ_label)
 
         elif call.data == 'Текст оператора':
             bot.delete_message(call.message.chat.id, call.message.message_id)
@@ -1640,11 +1536,11 @@ def callback_inline(call):
         elif call.data == 'РусскийLangOper':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
-            bot.register_next_step_handler(send, saveNewTextSupport)
+            bot.register_next_step_handler(send, saveNewText, path_oper_label)
         elif call.data == 'OzbekLangOper':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, "➕ Введите текст для изменения")
-            bot.register_next_step_handler(send, saveNewTextSupport_Sec)
+            bot.register_next_step_handler(send, saveNewText, path_sec_oper_label)
 
         elif call.data == 'Текст телефона':
             bot.delete_message(call.message.chat.id, call.message.message_id)
@@ -1656,11 +1552,11 @@ def callback_inline(call):
         elif call.data == 'РусскийLangTele':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
-            bot.register_next_step_handler(send, saveNewTextTele)
+            bot.register_next_step_handler(send, saveNewText, path_telephone_num)
         elif call.data == 'OzbekLangTele':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, "➕ Введите текст для изменения")
-            bot.register_next_step_handler(send, saveNewTextTele_Sec)
+            bot.register_next_step_handler(send, saveNewText, path_sec_telephone_num)
 
         elif call.data == 'Текст адресса':
             bot.delete_message(call.message.chat.id, call.message.message_id)
@@ -1672,11 +1568,11 @@ def callback_inline(call):
         elif call.data == 'РусскийLangAdress':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
-            bot.register_next_step_handler(send, saveNewTextAdress)
+            bot.register_next_step_handler(send, saveNewText, path_address_label)
         elif call.data == 'OzbekLangAdress':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, "➕ Введите текст для изменения")
-            bot.register_next_step_handler(send, saveNewTextAdress_Sec)
+            bot.register_next_step_handler(send, saveNewText, path_sec_address_label)
 
         elif call.data == 'Текст создания заказа':
             bot.delete_message(call.message.chat.id, call.message.message_id)
@@ -1688,11 +1584,11 @@ def callback_inline(call):
         elif call.data == 'РусскийLangOrder':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
-            bot.register_next_step_handler(send, saveNewTextOrder)
+            bot.register_next_step_handler(send, saveNewText, path_order_label)
         elif call.data == 'OzbekLangOrder':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, "➕ Введите текст для изменения")
-            bot.register_next_step_handler(send, saveNewTextOrder_Sec)
+            bot.register_next_step_handler(send, saveNewText, path_sec_order_label)
 
         elif call.data == 'Текст отзыва':
             bot.delete_message(call.message.chat.id, call.message.message_id)
@@ -1704,11 +1600,11 @@ def callback_inline(call):
         elif call.data == 'РусскийLangRecv':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
-            bot.register_next_step_handler(send, saveNewTextRecv)
+            bot.register_next_step_handler(send, saveNewText, path_recv_label)
         elif call.data == 'OzbekLangRecv':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, "➕ Введите текст для изменения")
-            bot.register_next_step_handler(send, saveNewTextRecv_Sec)
+            bot.register_next_step_handler(send, saveNewText, path_sec_recv_label)
 
         elif call.data == 'Текст скидки':
             bot.delete_message(call.message.chat.id, call.message.message_id)
@@ -1720,11 +1616,11 @@ def callback_inline(call):
         elif call.data == 'РусскийLangDisc':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
-            bot.register_next_step_handler(send, saveNewTextDisc)
+            bot.register_next_step_handler(send, saveNewText, path_discount_label)
         elif call.data == 'OzbekLangDisc':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, "➕ Введите текст для изменения")
-            bot.register_next_step_handler(send, saveNewTextDisc_Sec)
+            bot.register_next_step_handler(send, saveNewText, path_sec_discount_label)
 
         elif call.data == 'Текст социальные сети':
             bot.delete_message(call.message.chat.id, call.message.message_id)
@@ -1736,11 +1632,11 @@ def callback_inline(call):
         elif call.data == 'РусскийLangSocial':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
-            bot.register_next_step_handler(send, saveNewTextSocial)
+            bot.register_next_step_handler(send, saveNewText, path_social_web)
         elif call.data == 'OzbekLangSocial':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, "➕ Введите текст для изменения")
-            bot.register_next_step_handler(send, saveNewTextSocial_Sec)
+            bot.register_next_step_handler(send, saveNewText, path_sec_social_web)
 
         elif call.data == 'Текст инструкции оператора':
             bot.delete_message(call.message.chat.id, call.message.message_id)
@@ -1752,11 +1648,11 @@ def callback_inline(call):
         elif call.data == 'РусскийLangOperFAQ':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
-            bot.register_next_step_handler(send, saveNewTextOperFAQ)
+            bot.register_next_step_handler(send, saveNewText, path_FAQoper_label)
         elif call.data == 'OzbekLangOperFAQ':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, "➕ Введите текст для изменения")
-            bot.register_next_step_handler(send, saveNewTextOperFAQ_Sec)
+            bot.register_next_step_handler(send, saveNewText, path_sec_FAQoper_label)
 
         elif call.data == '👍':
             bot.delete_message(call.message.chat.id, call.message.message_id)

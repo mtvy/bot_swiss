@@ -5,5 +5,6 @@ from multiprocessing import Process
 from telebot import types
 
 # Project files
-import config, path
+import config
+from path import *
 from variables import *
