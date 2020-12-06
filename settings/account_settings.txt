@@ -69,7 +69,7 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "open"
     },
     "279657348": {
         "login": "YaBublik",

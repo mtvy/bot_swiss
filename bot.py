@@ -33,7 +33,7 @@ bot = telebot.TeleBot(config.TOKEN)
 
 def connect():
     try:
-        con = psycopg2.connect(database="postgres",user="postgres",password="postgres", host="127.0.0.1",port="5432")
+        con = psycopg2.connect(database="postgres",user="postgres",password="14072003", host="127.0.0.1",port="5432")
         cur = con.cursor()
         return con, cur
     except (Exception, psycopg2.DatabaseError) as error:
@@ -869,7 +869,61 @@ def lol(message):
             
             openfileforRead('w+')
             openfileforRead('r')
+        elif message.text == "❗️ Перенаправить в жалобу":
+            bot.send_message(str(message.chat.id), "❗ Общение с оператором завершено, перенаправление в раздел жалоб")
+            if len(account_settings[str(message.chat.id)]["tags"]) != 0:
 
+                bot.send_message(str(account_settings[str(message.chat.id)]["tags"][0]), "❗ Общение с оператором завершено, вы перенаправлены в раздел жалоб")
+                account_settings[account_settings[str(message.chat.id)]["tags"][0]]['conversation'] = 'close'
+                account_settings[account_settings[str(message.chat.id)]["tags"][0]]['tags'].clear()
+                
+                openfileforRead('w+')
+                openfileforRead('r')
+
+                if account_settings[account_settings[str(message.chat.id)]["tags"][0]]["language"] == "Русский":
+                    keyboardRefMaker(message, 0, account_settings[str(message.chat.id)]["tags"][0])
+                else:
+                    keyboardRefMaker(message, 1, account_settings[str(message.chat.id)]["tags"][0])
+
+            keyboardRefMaker(message, 0)
+            markup = types.InlineKeyboardMarkup(row_width=2)
+            item1 = types.InlineKeyboardButton("👍", callback_data='👍')
+            item2 = types.InlineKeyboardButton("👎", callback_data="👎")
+            markup.add(item1, item2)
+            if checkOperId(str(message.chat.id), 'check_all_oper'):
+                if account_settings[account_settings[str(message.chat.id)]["tags"][0]]["language"] == "Русский":
+                    bot.send_message(account_settings[str(message.chat.id)]["tags"][0], 'Оцените работу оператора!', reply_markup=markup)
+                else: bot.send_message(account_settings[str(message.chat.id)]["tags"][0], 'Operator ishini baholang!', reply_markup=markup)
+            else:
+                if account_settings[str(message.chat.id)]["language"] == "Русский":
+                    bot.send_message(str(message.chat.id), 'Оцените работу оператора!', reply_markup=markup)
+                else: bot.send_message(str(message.chat.id), 'Operator ishini baholang!', reply_markup=markup)
+
+            oper_write = ''
+            account_settings[account_settings[str(message.chat.id)]["tags"][0]]["feedback_st"] = 'open'
+            markup = types.InlineKeyboardMarkup(row_width=2)
+            if account_settings[account_settings[str(message.chat.id)]["tags"][0]]["language"] == "Русский":
+
+                oper_write = openfileforRead(None, path_recv_label)
+ 
+                item1 = types.InlineKeyboardButton("Написать жалобу", callback_data='Написать жалобу')
+            else:
+
+                oper_write = openfileforRead(None, path_sec_recv_label)
+
+                item1 = types.InlineKeyboardButton("Shikoyat yozing", callback_data='Write a feedback')
+            markup.add(item1)
+            account_settings[account_settings[str(message.chat.id)]["tags"][0]]["feedback_st"] = 'open'
+            bot.send_message(account_settings[str(message.chat.id)]["tags"][0], oper_write.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+            
+            account_settings[str(message.chat.id)]['conversation'] = 'close'
+            account_settings[str(message.chat.id)]['tags'].clear()
+            
+            openfileforRead('w+')
+            openfileforRead('r')
+            
+            closerDataBase(str(message.chat.id))
+            
         elif message.text == "❔ Инструкция":
             FAQ_txt = ''
 
@@ -1143,7 +1197,7 @@ def fdBack_fill(message, lang):
             item1 = types.InlineKeyboardButton("Ответить", callback_data='Q' + str(message.chat.id))
             markup.add(item1)
             
-            for id in ids_arr:
+            for id in all_ids_arr:
                 checkBlockedPeople(message, markup, id)
 
             oper_id = '0'
@@ -1162,7 +1216,7 @@ def fdBack_fill(message, lang):
                 item1 = types.InlineKeyboardButton("Ответить", callback_data='Q' + str(message.chat.id))
                 markup.add(item1)
 
-                for id in ids_arr:
+                for id in all_ids_arr:
                     checkBlockedPeople(message, markup, id)
 
                 oper_id = '0'
@@ -1618,7 +1672,8 @@ def callback_inline(call):
                         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
                         item1 = types.KeyboardButton("🔙 Отклонить вызов оператора")
                         item2 = types.KeyboardButton("❔ Инструкция")
-                        markup.add(item1, item2)
+                        item3 = types.KeyboardButton("❗️ Перенаправить в жалобу")
+                        markup.add(item1, item2, item3)
                         account_settings[str(call.message.chat.id)]["tags"].append(str(k))
                         account_settings[str(call.message.chat.id)]["conversation"] = 'open'
                         account_settings[k]["tags"].append(str(call.message.chat.id))
@@ -1645,9 +1700,15 @@ def callback_inline(call):
                     u_tex += " отменил режим!\nПовторный вызов..."
                     bot.send_message(call.message.chat.id, u_tex)
                     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+                    user_markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
                     item1 = types.KeyboardButton("🔙 Отклонить вызов оператора")
                     item2 = types.KeyboardButton("❔ Инструкция")
-                    markup.add(item1, item2)
+                    item3 = types.KeyboardButton("❗️ Перенаправить в жалобу")
+                    markup.add(item1, item2, item3)
+                    if account_settings[str(call.data)]["language"] != "Русский":
+                        item1 = types.KeyboardButton("🔙 Operator chaqiruvini rad etish")
+                        item2 = types.KeyboardButton("❔ Ko'rsatma")
+                    user_markup.add(item1, item2)
                     account_settings[str(call.message.chat.id)]["tags"].append(str(call.data))
                     account_settings[str(call.message.chat.id)]["conversation"] = 'open'
                     account_settings[str(call.data)]["tags"].append(str(call.message.chat.id))
@@ -1660,10 +1721,10 @@ def callback_inline(call):
                     try:
                         if account_settings[str(call.data)]["language"] == "Русский":
                             oper_ans = "📞 Оператор #" + str(call.message.chat.id) + " активировал переписку"
-                            bot.send_message(str(call.data), oper_ans, reply_markup=markup)
+                            bot.send_message(str(call.data), oper_ans, reply_markup=user_markup)
                         else:
                             oper_ans = "📞 Operator #" + str(call.message.chat.id) + " yozishmalarni faollashtirdi"
-                            bot.send_message(str(call.data), oper_ans, reply_markup=markup)
+                            bot.send_message(str(call.data), oper_ans, reply_markup=user_markup)
                         bot.send_message(str(call.message.chat.id), "📞 Вы подтвердили заявку!", reply_markup=markup)
                         user_id = str(call.data)
                         oper_id = str(call.message.chat.id)
