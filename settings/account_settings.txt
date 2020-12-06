@@ -34,5 +34,77 @@
         "personal data": "NO",
         "language": null,
         "feedback_st": "close"
+    },
+    "1973253": {
+        "login": "None",
+        "name": "Nilufarkhon",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": null,
+        "feedback_st": "close"
+    },
+    "237295957": {
+        "login": "Farair",
+        "name": "F",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "NO",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "1329360121": {
+        "login": "None",
+        "name": "El",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "279657348": {
+        "login": "YaBublik",
+        "name": "Adelya",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "NO",
+        "language": null,
+        "feedback_st": "close"
+    },
+    "743473879": {
+        "login": "None",
+        "name": "Respect",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "NO",
+        "language": null,
+        "feedback_st": "close"
+    },
+    "593504724": {
+        "login": "None",
+        "name": "\u0418\u0433\u043e\u0440\u044c",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": null,
+        "feedback_st": "close"
     }
 }
