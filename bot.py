@@ -33,7 +33,7 @@ bot = telebot.TeleBot(config.TOKEN)
 
 def connect():
     try:
-        con = psycopg2.connect(database="postgres",user="postgres",password="postgres", host="127.0.0.1",port="5432")
+        con = psycopg2.connect(database="postgres",user="postgres",password="14072003", host="127.0.0.1",port="5432")
         cur = con.cursor()
         return con, cur
     except (Exception, psycopg2.DatabaseError) as error:
@@ -372,222 +372,53 @@ def adderNewLabel(message):
         bot.send_message(message.chat.id,"Какой блок надо отредактировать?", reply_markup=markup)
 
 
-def operKeyboardMaker(message):
-    global account_settings
-    account_settings[str(message.chat.id)]["conversation"] = 'mid'
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    item1 = types.KeyboardButton("🔙 Отклонить вызов оператора")
-    item2 = types.KeyboardButton("❔ Инструкция")
-    markup.add(item1, item2)
-    bot.send_message(message.chat.id, "🙋 Включён режим переписки с оператором", reply_markup=markup)
-    oper_send_text = "-------Запрос переписки!-------\nid: "
-    oper_send_text += str(message.chat.id)
-    oper_send_text += "\nИмя: "
-    oper_send_text += str(message.chat.first_name)
-    oper_send_text += "\nФамилия: "
-    oper_send_text += str(message.chat.last_name)
-    oper_send_text += "\nUsername: @"
-    oper_send_text += str(message.chat.username)
-    oper_send_text += "\nЯзык: Русский\n----------------------------"
-    markup = types.InlineKeyboardMarkup(row_width=2)
-    item1 = types.InlineKeyboardButton("Принять", callback_data=str(message.chat.id))
-    markup.add(item1)
-    user_id = str(message.chat.id)
-    oper_id = '0'
-    insert_new_data(user_id, oper_id)
-    bot.send_message(281321076, oper_send_text, reply_markup=markup)
-    bot.send_message(667068180, oper_send_text, reply_markup=markup)
-    bot.send_message(1086955999, oper_send_text, reply_markup=markup)
-    bot.send_message(1203807508, oper_send_text, reply_markup=markup)
-    bot.send_message(923118950, oper_send_text, reply_markup=markup)
-def dirKeyboardMaker(message):
-    global account_settings
-    account_settings[str(message.chat.id)]["conversation"] = 'mid'
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    item1 = types.KeyboardButton("🔙 Отклонить вызов оператора")
-    item2 = types.KeyboardButton("❔ Инструкция")
-    markup.add(item1, item2)
-    bot.send_message(message.chat.id, "🙋 Включён режим переписки с оператором", reply_markup=markup)
-    oper_send_text = "-------Запрос переписки!-------\nid: "
-    oper_send_text += str(message.chat.id)
-    oper_send_text += "\nИмя: "
-    oper_send_text += str(message.chat.first_name)
-    oper_send_text += "\nФамилия: "
-    oper_send_text += str(message.chat.last_name)
-    oper_send_text += "\nUsername: @"
-    oper_send_text += str(message.chat.username)
-    oper_send_text += "\nЯзык: Русский\n----------------------------"
-    markup = types.InlineKeyboardMarkup(row_width=2)
-    item1 = types.InlineKeyboardButton("Принять", callback_data=str(message.chat.id))
-    markup.add(item1)
-    user_id = str(message.chat.id)
-    oper_id = '0'
-    insert_new_data(user_id, oper_id)
-    bot.send_message(281321076, oper_send_text, reply_markup=markup)
-    bot.send_message(923118950, oper_send_text, reply_markup=markup)
-    bot.send_message(907508218, oper_send_text, reply_markup=markup)
-def TechKeyboardMaker(message):
-    global account_settings
-    account_settings[str(message.chat.id)]["conversation"] = 'mid'
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    item1 = types.KeyboardButton("🔙 Отклонить вызов оператора")
-    item2 = types.KeyboardButton("❔ Инструкция")
-    markup.add(item1, item2)
-    bot.send_message(message.chat.id, "🙋 Включён режим переписки с оператором", reply_markup=markup)
-    oper_send_text = "-------Запрос переписки!-------\nid: "
-    oper_send_text += str(message.chat.id)
-    oper_send_text += "\nИмя: "
-    oper_send_text += str(message.chat.first_name)
-    oper_send_text += "\nФамилия: "
-    oper_send_text += str(message.chat.last_name)
-    oper_send_text += "\nUsername: @"
-    oper_send_text += str(message.chat.username)
-    oper_send_text += "\nЯзык: Русский\n----------------------------"
-    markup = types.InlineKeyboardMarkup(row_width=2)
-    item1 = types.InlineKeyboardButton("Принять", callback_data=str(message.chat.id))
-    markup.add(item1)
-    user_id = str(message.chat.id)
-    oper_id = '0'
-    insert_new_data(user_id, oper_id)
-    bot.send_message(281321076, oper_send_text, reply_markup=markup)
-    bot.send_message(923118950, oper_send_text, reply_markup=markup)
-    bot.send_message(907508218, oper_send_text, reply_markup=markup)
-def dockKeyboardMaker(message):
-    global account_settings
-    account_settings[str(message.chat.id)]["conversation"] = 'mid'
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    item1 = types.KeyboardButton("🔙 Отклонить вызов оператора")
-    item2 = types.KeyboardButton("❔ Инструкция")
-    markup.add(item1, item2)
-    bot.send_message(message.chat.id, "🙋 Включён режим переписки с оператором", reply_markup=markup)
-    oper_send_text = "-------Запрос переписки!-------\nid: "
-    oper_send_text += str(message.chat.id)
-    oper_send_text += "\nИмя: "
-    oper_send_text += str(message.chat.first_name)
-    oper_send_text += "\nФамилия: "
-    oper_send_text += str(message.chat.last_name)
-    oper_send_text += "\nUsername: @"
-    oper_send_text += str(message.chat.username)
-    oper_send_text += "\nЯзык: Русский\n----------------------------"
-    markup = types.InlineKeyboardMarkup(row_width=2)
-    item1 = types.InlineKeyboardButton("Принять", callback_data=str(message.chat.id))
-    markup.add(item1)
-    user_id = str(message.chat.id)
-    oper_id = '0'
-    insert_new_data(user_id, oper_id)
-    bot.send_message(281321076, oper_send_text, reply_markup=markup)
-    bot.send_message(667068180, oper_send_text, reply_markup=markup)
-    bot.send_message(1086955999, oper_send_text, reply_markup=markup)
-    bot.send_message(1203807508, oper_send_text, reply_markup=markup)
-    bot.send_message(923118950, oper_send_text, reply_markup=markup)
-def operKeyboardMakerSec(message):
-    global account_settings
-    account_settings[str(message.chat.id)]["conversation"] = 'mid'
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    item1 = types.KeyboardButton("🔙 Operator chaqiruvini rad etish")
-    item2 = types.KeyboardButton("❔ Ko'rsatma")
-    markup.add(item1, item2)
-    bot.send_message(message.chat.id, "🙋 Operator bilan yozishmalar rejimi yoqilgan", reply_markup=markup)
-    oper_send_text = "-------Запрос переписки!-------\nid: "
-    oper_send_text += str(message.chat.id)
-    oper_send_text += "\nИмя: "
-    oper_send_text += str(message.chat.first_name)
-    oper_send_text += "\nФамилия: "
-    oper_send_text += str(message.chat.last_name)
-    oper_send_text += "\nUsername: @"
-    oper_send_text += str(message.chat.username)
-    oper_send_text += "\nЯзык: Ozbek\n----------------------------"
-    markup = types.InlineKeyboardMarkup(row_width=2)
-    item1 = types.InlineKeyboardButton("Принять", callback_data=str(message.chat.id))
-    markup.add(item1)
-    user_id = str(message.chat.id)
-    oper_id = '0'
-    insert_new_data(user_id, oper_id)
-    bot.send_message(281321076, oper_send_text, reply_markup=markup)
-    bot.send_message(667068180, oper_send_text, reply_markup=markup)
-    bot.send_message(1086955999, oper_send_text, reply_markup=markup)
-    bot.send_message(1203807508, oper_send_text, reply_markup=markup)
-    bot.send_message(923118950, oper_send_text, reply_markup=markup)
-def dirKeyboardMakerSec(message):
-    global account_settings
-    account_settings[str(message.chat.id)]["conversation"] = 'mid'
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    item1 = types.KeyboardButton("🔙 Operator chaqiruvini rad etish")
-    item2 = types.KeyboardButton("❔ Ko'rsatma")
-    markup.add(item1, item2)
-    bot.send_message(message.chat.id, "🙋 Operator bilan yozishmalar rejimi yoqilgan", reply_markup=markup)
-    oper_send_text = "-------Запрос переписки!-------\nid: "
-    oper_send_text += str(message.chat.id)
-    oper_send_text += "\nИмя: "
-    oper_send_text += str(message.chat.first_name)
-    oper_send_text += "\nФамилия: "
-    oper_send_text += str(message.chat.last_name)
-    oper_send_text += "\nUsername: @"
-    oper_send_text += str(message.chat.username)
-    oper_send_text += "\nЯзык: Ozbek\n----------------------------"
-    markup = types.InlineKeyboardMarkup(row_width=2)
-    item1 = types.InlineKeyboardButton("Принять", callback_data=str(message.chat.id))
-    markup.add(item1)
-    user_id = str(message.chat.id)
-    oper_id = '0'
-    insert_new_data(user_id, oper_id)
-    bot.send_message(281321076, oper_send_text, reply_markup=markup)
-    bot.send_message(923118950, oper_send_text, reply_markup=markup)
-    bot.send_message(907508218, oper_send_text, reply_markup=markup)
-def TechKeyboardMakerSec(message):
-    global account_settings
-    account_settings[str(message.chat.id)]["conversation"] = 'mid'
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    item1 = types.KeyboardButton("🔙 Operator chaqiruvini rad etish")
-    item2 = types.KeyboardButton("❔ Ko'rsatma")
-    markup.add(item1, item2)
-    bot.send_message(message.chat.id, "🙋 Operator bilan yozishmalar rejimi yoqilgan", reply_markup=markup)
-    oper_send_text = "-------Запрос переписки!-------\nid: "
-    oper_send_text += str(message.chat.id)
-    oper_send_text += "\nИмя: "
-    oper_send_text += str(message.chat.first_name)
-    oper_send_text += "\nФамилия: "
-    oper_send_text += str(message.chat.last_name)
-    oper_send_text += "\nUsername: @"
-    oper_send_text += str(message.chat.username)
-    oper_send_text += "\nЯзык: Ozbek\n----------------------------"
-    markup = types.InlineKeyboardMarkup(row_width=2)
-    item1 = types.InlineKeyboardButton("Принять", callback_data=str(message.chat.id))
-    markup.add(item1)
-    user_id = str(message.chat.id)
-    oper_id = '0'
-    insert_new_data(user_id, oper_id)
-    bot.send_message(281321076, oper_send_text, reply_markup=markup)
-    bot.send_message(923118950, oper_send_text, reply_markup=markup)
-    bot.send_message(907508218, oper_send_text, reply_markup=markup)
-def dockKeyboardMaker_Sec(message):
-    global account_settings
-    account_settings[str(message.chat.id)]["conversation"] = 'mid'
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    item1 = types.KeyboardButton("🔙 Operator chaqiruvini rad etish")
-    item2 = types.KeyboardButton("❔ Ko'rsatma")
-    markup.add(item1, item2)
-    bot.send_message(message.chat.id, "🙋 Operator bilan yozishmalar rejimi yoqilgan", reply_markup=markup)
-    oper_send_text = "-------Запрос переписки!-------\nid: "
-    oper_send_text += str(message.chat.id)
-    oper_send_text += "\nИмя: "
-    oper_send_text += str(message.chat.first_name)
-    oper_send_text += "\nФамилия: "
-    oper_send_text += str(message.chat.last_name)
-    oper_send_text += "\nUsername: @"
-    oper_send_text += str(message.chat.username)
-    oper_send_text += "\nЯзык: Ozbek\n----------------------------"
-    markup = types.InlineKeyboardMarkup(row_width=2)
-    item1 = types.InlineKeyboardButton("Принять", callback_data=str(message.chat.id))
-    markup.add(item1)
-    user_id = str(message.chat.id)
-    oper_id = '0'
-    insert_new_data(user_id, oper_id)
-    bot.send_message(281321076, oper_send_text, reply_markup=markup)
-    bot.send_message(667068180, oper_send_text, reply_markup=markup)
-    bot.send_message(923118950, oper_send_text, reply_markup=markup)
+def sendReqtoOper(message, which_oper, oper_send_text, markup):
+    if which_oper == 'simple_oper':
+        for oper_id in simple_oper_ids_arr:
+            bot.send_message(int(oper_id), oper_send_text, reply_markup=markup)
+    elif which_oper == 'doc_oper':
+        for oper_id in doctor_oper_ids_arr:
+            bot.send_message(int(oper_id), oper_send_text, reply_markup=markup)
+    elif which_oper == 'dir_oper':
+        for oper_id in director_oper_ids_arr:
+            bot.send_message(int(oper_id), oper_send_text, reply_markup=markup)
+    elif which_oper == 'sup_oper':
+        for oper_id in support_oper_ids_arr:
+            bot.send_message(int(oper_id), oper_send_text, reply_markup=markup)
 
-
+def operKeyboardMaker(message, which_oper, lang):
+    global account_settings
+    if lang == 0:
+        account_settings[str(message.chat.id)]["conversation"] = 'mid'
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        item1 = types.KeyboardButton("🔙 Отклонить вызов оператора")
+        item2 = types.KeyboardButton("❔ Инструкция")
+        markup.add(item1, item2)
+        bot.send_message(message.chat.id, "🙋 Включён режим переписки с оператором", reply_markup=markup)
+    elif lang == 1:
+        account_settings[str(message.chat.id)]["conversation"] = 'mid'
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        item1 = types.KeyboardButton("🔙 Operator chaqiruvini rad etish")
+        item2 = types.KeyboardButton("❔ Ko'rsatma")
+        markup.add(item1, item2)
+        bot.send_message(message.chat.id, "🙋 Operator bilan yozishmalar rejimi yoqilgan", reply_markup=markup)
+    oper_send_text = "-------Запрос переписки!-------\nid: "
+    oper_send_text += str(message.chat.id)
+    oper_send_text += "\nИмя: "
+    oper_send_text += str(message.chat.first_name)
+    oper_send_text += "\nФамилия: "
+    oper_send_text += str(message.chat.last_name)
+    oper_send_text += "\nUsername: @"
+    oper_send_text += str(message.chat.username)
+    oper_send_text += "\nЯзык: Русский\n----------------------------"
+    markup = types.InlineKeyboardMarkup(row_width=2)
+    item1 = types.InlineKeyboardButton("Принять", callback_data=str(message.chat.id))
+    markup.add(item1)
+    user_id = str(message.chat.id)
+    oper_id = '0'
+    insert_new_data(user_id, oper_id)
+    sendReqtoOper(message, which_oper, oper_send_text, markup)
+		
 
 def dbDateSortEnter(message):
     send = bot.send_message(message.chat.id, '➕ Введите дату в формате ГОД-МЕСЯЦ-ДЕНЬ (2000-1-12)')
@@ -663,33 +494,33 @@ def lol(message):
         elif message.text == '🙋 Оператор' or message.text == '🙋 Operator':
             if checkOperId(str(message.chat.id), 'check_simple_oper'):
                 if account_settings[str(message.chat.id)]["language"] == "Русский":
-                    operKeyboardMaker(message)
+                    operKeyboardMaker(message, 'simple_oper', 0)
                 else:
-                    operKeyboardMakerSec(message)
+                    operKeyboardMaker(message, 'simple_oper', 1)
             else:
                 bot.send_message(message.chat.id, "Вы оператор!")
         elif message.text == '👨‍⚕️ Доктор онлайн' or message.text == '👨‍⚕️ Shifokor onlayn':
             if checkOperId(str(message.chat.id), 'check_doc_id'):
                 if account_settings[str(message.chat.id)]["language"] == "Русский":
-                    dockKeyboardMaker(message)
+                    operKeyboardMaker(message, 'doc_oper', 0)
                 else:
-                    dockKeyboardMaker_Sec(message)
+                    operKeyboardMaker(message, 'doc_oper', 1)
             else:
                 bot.send_message(message.chat.id, "Вы оператор!")
         elif message.text == '☎️ Тех. поддержка' or message.text == '☎️ Тех. поддержка':
             if checkOperId(str(message.chat.id), 'check_support_id'):
                 if account_settings[str(message.chat.id)]["language"] == "Русский":
-                    TechKeyboardMaker(message)
+                    operKeyboardMaker(message, 'sup_oper', 0)
                 else:
-                    TechKeyboardMakerSec(message)
+                    operKeyboardMaker(message, 'sup_oper', 1)
             else:
                 bot.send_message(message.chat.id, "Вы оператор!")
         elif message.text == '✍️ Написать директору' or message.text == '✍️ Direktorga yozing':
             if checkOperId(str(message.chat.id), 'check_director_id'):
                 if account_settings[str(message.chat.id)]["language"] == "Русский":
-                    dirKeyboardMaker(message)
+                    operKeyboardMaker(message, 'dir_oper', 0)
                 else:
-                    dirKeyboardMakerSec(message)
+                    operKeyboardMaker(message, 'dir_oper', 1)
             else:
                 bot.send_message(message.chat.id, "Вы оператор!")
         elif message.text == '📝 Создать заказ' or message.text == '📝 buyurtma yaratish':
