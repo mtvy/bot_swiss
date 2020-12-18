@@ -462,6 +462,46 @@ def FeedBackdbIdSortEnter(message):
         return
     else: bot.send_message(message.chat.id, id_text)
 
+def operInit(message, action, set_act):
+    if checkOperId(str(message.chat.id), action):
+        if account_settings[str(message.chat.id)]["language"] == "Русский":
+            operKeyboardMaker(message, set_act, 0)
+        else:
+            operKeyboardMaker(message, set_act, 1)
+    else:
+        bot.send_message(message.chat.id, "Вы оператор!")
+        
+
+def redirectInit(message, action):
+    bot.send_message(str(message.chat.id), action)
+    if len(account_settings[str(message.chat.id)]["tags"]) != 0:
+
+        bot.send_message(str(account_settings[str(message.chat.id)]["tags"][0]), action)
+        account_settings[account_settings[str(message.chat.id)]["tags"][0]]['conversation'] = 'close'
+        account_settings[account_settings[str(message.chat.id)]["tags"][0]]['tags'].clear()
+                
+        openfileforRead('w+')
+        openfileforRead('r')
+
+        if account_settings[account_settings[str(message.chat.id)]["tags"][0]]["language"] == "Русский":
+            keyboardRefMaker(message, 0, account_settings[str(message.chat.id)]["tags"][0])
+        else:
+            keyboardRefMaker(message, 1, account_settings[str(message.chat.id)]["tags"][0])
+
+    keyboardRefMaker(message, 0)
+    markup = types.InlineKeyboardMarkup(row_width=2)
+    item1 = types.InlineKeyboardButton("👍", callback_data='👍')
+    item2 = types.InlineKeyboardButton("👎", callback_data="👎")
+    markup.add(item1, item2)
+    if checkOperId(str(message.chat.id), 'check_all_oper'):
+        if account_settings[account_settings[str(message.chat.id)]["tags"][0]]["language"] == "Русский":
+            bot.send_message(account_settings[str(message.chat.id)]["tags"][0], 'Оцените работу оператора!', reply_markup=markup)
+        else: bot.send_message(account_settings[str(message.chat.id)]["tags"][0], 'Operator ishini baholang!', reply_markup=markup)
+    else:
+        if account_settings[str(message.chat.id)]["language"] == "Русский":
+                    bot.send_message(str(message.chat.id), 'Оцените работу оператора!', reply_markup=markup)
+        else: bot.send_message(str(message.chat.id), 'Operator ishini baholang!', reply_markup=markup)    
+
 
 @bot.message_handler(content_types=['text', 'photo'])
 def lol(message):
@@ -492,37 +532,13 @@ def lol(message):
 
             bot.send_message(message.chat.id, address.format(message.chat, bot.get_me()),parse_mode='html')
         elif message.text == '🙋 Оператор' or message.text == '🙋 Operator':
-            if checkOperId(str(message.chat.id), 'check_simple_oper'):
-                if account_settings[str(message.chat.id)]["language"] == "Русский":
-                    operKeyboardMaker(message, 'simple_oper', 0)
-                else:
-                    operKeyboardMaker(message, 'simple_oper', 1)
-            else:
-                bot.send_message(message.chat.id, "Вы оператор!")
+            operInit(message, 'check_simple_oper', 'simple_oper')
         elif message.text == '👨‍⚕️ Доктор онлайн' or message.text == '👨‍⚕️ Shifokor onlayn':
-            if checkOperId(str(message.chat.id), 'check_doc_id'):
-                if account_settings[str(message.chat.id)]["language"] == "Русский":
-                    operKeyboardMaker(message, 'doc_oper', 0)
-                else:
-                    operKeyboardMaker(message, 'doc_oper', 1)
-            else:
-                bot.send_message(message.chat.id, "Вы оператор!")
+            operInit(message, 'check_doc_id', 'doc_oper')
         elif message.text == '☎️ Тех. поддержка' or message.text == '☎️ Тех. поддержка':
-            if checkOperId(str(message.chat.id), 'check_support_id'):
-                if account_settings[str(message.chat.id)]["language"] == "Русский":
-                    operKeyboardMaker(message, 'sup_oper', 0)
-                else:
-                    operKeyboardMaker(message, 'sup_oper', 1)
-            else:
-                bot.send_message(message.chat.id, "Вы оператор!")
+            operInit(message, 'check_support_id', 'sup_oper')
         elif message.text == '✍️ Написать директору' or message.text == '✍️ Direktorga yozing':
-            if checkOperId(str(message.chat.id), 'check_director_id'):
-                if account_settings[str(message.chat.id)]["language"] == "Русский":
-                    operKeyboardMaker(message, 'dir_oper', 0)
-                else:
-                    operKeyboardMaker(message, 'dir_oper', 1)
-            else:
-                bot.send_message(message.chat.id, "Вы оператор!")
+            operInit(message, 'check_director_id', 'dir_oper')
         elif message.text == '📝 Создать заказ' or message.text == '📝 buyurtma yaratish':
             oper_write = ''
             if account_settings[str(message.chat.id)]["language"] == "Русский":
@@ -701,34 +717,8 @@ def lol(message):
             openfileforRead('w+')
             openfileforRead('r')
         elif message.text == "❗️ Перенаправить в жалобу":
-            bot.send_message(str(message.chat.id), "❗ Общение с оператором завершено, перенаправление в раздел жалоб")
-            if len(account_settings[str(message.chat.id)]["tags"]) != 0:
-
-                bot.send_message(str(account_settings[str(message.chat.id)]["tags"][0]), "❗ Общение с оператором завершено, вы перенаправлены в раздел жалоб")
-                account_settings[account_settings[str(message.chat.id)]["tags"][0]]['conversation'] = 'close'
-                account_settings[account_settings[str(message.chat.id)]["tags"][0]]['tags'].clear()
-                
-                openfileforRead('w+')
-                openfileforRead('r')
-
-                if account_settings[account_settings[str(message.chat.id)]["tags"][0]]["language"] == "Русский":
-                    keyboardRefMaker(message, 0, account_settings[str(message.chat.id)]["tags"][0])
-                else:
-                    keyboardRefMaker(message, 1, account_settings[str(message.chat.id)]["tags"][0])
-
-            keyboardRefMaker(message, 0)
-            markup = types.InlineKeyboardMarkup(row_width=2)
-            item1 = types.InlineKeyboardButton("👍", callback_data='👍')
-            item2 = types.InlineKeyboardButton("👎", callback_data="👎")
-            markup.add(item1, item2)
-            if checkOperId(str(message.chat.id), 'check_all_oper'):
-                if account_settings[account_settings[str(message.chat.id)]["tags"][0]]["language"] == "Русский":
-                    bot.send_message(account_settings[str(message.chat.id)]["tags"][0], 'Оцените работу оператора!', reply_markup=markup)
-                else: bot.send_message(account_settings[str(message.chat.id)]["tags"][0], 'Operator ishini baholang!', reply_markup=markup)
-            else:
-                if account_settings[str(message.chat.id)]["language"] == "Русский":
-                    bot.send_message(str(message.chat.id), 'Оцените работу оператора!', reply_markup=markup)
-                else: bot.send_message(str(message.chat.id), 'Operator ishini baholang!', reply_markup=markup)
+            
+            redirectInit(message, "❗ Общение с оператором завершено, перенаправление в раздел жалоб")
 
             oper_write = ''
             account_settings[account_settings[str(message.chat.id)]["tags"][0]]["feedback_st"] = 'open'
@@ -754,6 +744,25 @@ def lol(message):
             openfileforRead('r')
             
             closerDataBase(str(message.chat.id))         
+        
+        elif message.text == "🙋 Перенаправить к оператору":
+
+            redirectInit(message, "❗ Общение завершено, перенаправление к оператору")
+
+            operInit(message, 'check_simple_oper', 'simple_oper')
+
+        elif message.text == "☎️ Перенаправить в тех.поддержку":
+            
+            redirectInit(message, "❗ Общение завершено, перенаправление в тех.поддержку")
+
+            operInit(message, 'check_support_id', 'sup_oper')
+
+        elif message.text == "✍️ Перенаправить к директору":
+
+            redirectInit(message, "❗ Общение завершено, перенаправление к директору")
+
+            operInit(message, 'check_director_id', 'dir_oper') 
+
         elif message.text == "❔ Инструкция":
             FAQ_txt = ''
 
