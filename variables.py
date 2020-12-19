@@ -1,4 +1,4 @@
-# Number of the last message in the channel
+# Last message number
 MESSAGE_ID = 254
 
 
@@ -20,6 +20,7 @@ feedback_oper_ids_arr = ['281321076', '667068180', '263305395', '666803198', '90
 
 # Global variables
 account_settings = {}
+message_ids_dict = {}
 feed_back = {}
 new_acc_id = ""
 txt = ""

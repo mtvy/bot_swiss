@@ -388,16 +388,16 @@ def sendReqtoOper(message, which_oper, oper_send_text, markup):
 
 def operKeyboardMaker(message, which_oper, lang):
     global account_settings
+    global message_ids_dict
+    account_settings[str(message.chat.id)]["conversation"] = 'mid'
+    message_ids_dict[str(message.chat.id)] = message
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     if lang == 0:
-        account_settings[str(message.chat.id)]["conversation"] = 'mid'
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         item1 = types.KeyboardButton("🔙 Отклонить вызов оператора")
         item2 = types.KeyboardButton("❔ Инструкция")
         markup.add(item1, item2)
         bot.send_message(message.chat.id, "🙋 Включён режим переписки с оператором", reply_markup=markup)
     elif lang == 1:
-        account_settings[str(message.chat.id)]["conversation"] = 'mid'
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         item1 = types.KeyboardButton("🔙 Operator chaqiruvini rad etish")
         item2 = types.KeyboardButton("❔ Ko'rsatma")
         markup.add(item1, item2)
@@ -462,7 +462,8 @@ def FeedBackdbIdSortEnter(message):
         return
     else: bot.send_message(message.chat.id, id_text)
 
-def operInit(message, action, set_act):
+
+def operInit(message, action, set_act, id_check, deactivation=None):
     if checkOperId(str(message.chat.id), action):
         if account_settings[str(message.chat.id)]["language"] == "Русский":
             operKeyboardMaker(message, set_act, 0)
@@ -471,7 +472,6 @@ def operInit(message, action, set_act):
     else:
         bot.send_message(message.chat.id, "Вы оператор!")
         
-
 def redirectInit(message, action):
     bot.send_message(str(message.chat.id), action)
     if len(account_settings[str(message.chat.id)]["tags"]) != 0:
@@ -502,10 +502,20 @@ def redirectInit(message, action):
                     bot.send_message(str(message.chat.id), 'Оцените работу оператора!', reply_markup=markup)
         else: bot.send_message(str(message.chat.id), 'Operator ishini baholang!', reply_markup=markup)    
 
+def closeConversation(message):
+    global account_settings
+    account_settings[str(message.chat.id)]['conversation'] = 'close'
+    account_settings[str(message.chat.id)]['tags'].clear()
+            
+    openfileforRead('w+')
+    openfileforRead('r')
+            
+    closerDataBase(str(message.chat.id))
 
 @bot.message_handler(content_types=['text', 'photo'])
 def lol(message):
     global account_settings
+    global message_ids_dict
     global mess
     global feed_back
     if message.chat.type == 'private':
@@ -532,13 +542,13 @@ def lol(message):
 
             bot.send_message(message.chat.id, address.format(message.chat, bot.get_me()),parse_mode='html')
         elif message.text == '🙋 Оператор' or message.text == '🙋 Operator':
-            operInit(message, 'check_simple_oper', 'simple_oper')
+            operInit(message, 'check_simple_oper', 'simple_oper', str(message.chat.id))
         elif message.text == '👨‍⚕️ Доктор онлайн' or message.text == '👨‍⚕️ Shifokor onlayn':
-            operInit(message, 'check_doc_id', 'doc_oper')
+            operInit(message, 'check_doc_id', 'doc_oper', str(message.chat.id))
         elif message.text == '☎️ Тех. поддержка' or message.text == '☎️ Тех. поддержка':
-            operInit(message, 'check_support_id', 'sup_oper')
+            operInit(message, 'check_support_id', 'sup_oper', str(message.chat.id))
         elif message.text == '✍️ Написать директору' or message.text == '✍️ Direktorga yozing':
-            operInit(message, 'check_director_id', 'dir_oper')
+            operInit(message, 'check_director_id', 'dir_oper', str(message.chat.id))
         elif message.text == '📝 Создать заказ' or message.text == '📝 buyurtma yaratish':
             oper_write = ''
             if account_settings[str(message.chat.id)]["language"] == "Русский":
@@ -716,7 +726,7 @@ def lol(message):
             
             openfileforRead('w+')
             openfileforRead('r')
-        elif message.text == "❗️ Перенаправить в жалобу":
+        elif message.text == "❗️ Жалоба":
             
             redirectInit(message, "❗ Общение с оператором завершено, перенаправление в раздел жалоб")
 
@@ -736,33 +746,19 @@ def lol(message):
             markup.add(item1)
             account_settings[account_settings[str(message.chat.id)]["tags"][0]]["feedback_st"] = 'open'
             bot.send_message(account_settings[str(message.chat.id)]["tags"][0], oper_write.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
-            
-            account_settings[str(message.chat.id)]['conversation'] = 'close'
-            account_settings[str(message.chat.id)]['tags'].clear()
-            
-            openfileforRead('w+')
-            openfileforRead('r')
-            
-            closerDataBase(str(message.chat.id))         
-        
-        elif message.text == "🙋 Перенаправить к оператору":
-
+            closeConversation(message)        
+        elif message.text == "🙋 Операторская":
             redirectInit(message, "❗ Общение завершено, перенаправление к оператору")
-
-            operInit(message, 'check_simple_oper', 'simple_oper')
-
-        elif message.text == "☎️ Перенаправить в тех.поддержку":
-            
+            operInit(message_ids_dict[account_settings[str(message.chat.id)]["tags"][0]], 'check_simple_oper', 'simple_oper', closeConversation(message)) 
+        elif message.text == "☎️ Поддержка":
             redirectInit(message, "❗ Общение завершено, перенаправление в тех.поддержку")
-
-            operInit(message, 'check_support_id', 'sup_oper')
-
-        elif message.text == "✍️ Перенаправить к директору":
-
+            operInit(message_ids_dict[account_settings[str(message.chat.id)]["tags"][0]], 'check_support_id', 'sup_oper', closeConversation(message)) 
+        elif message.text == "✍️ Директор":
             redirectInit(message, "❗ Общение завершено, перенаправление к директору")
-
-            operInit(message, 'check_director_id', 'dir_oper') 
-
+            operInit(message_ids_dict[account_settings[str(message.chat.id)]["tags"][0]], 'check_director_id', 'dir_oper', closeConversation(message))    
+        elif message.text == "👨‍⚕️ Доктор":
+            redirectInit(message, "❗ Общение завершено, перенаправление к доктору")
+            operInit(message_ids_dict[account_settings[str(message.chat.id)]["tags"][0]], 'check_doc_id', 'doc_oper', closeConversation(message))
         elif message.text == "❔ Инструкция":
             FAQ_txt = ''
 
@@ -1511,8 +1507,12 @@ def callback_inline(call):
                         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
                         item1 = types.KeyboardButton("🔙 Отклонить вызов оператора")
                         item2 = types.KeyboardButton("❔ Инструкция")
-                        item3 = types.KeyboardButton("❗️ Перенаправить в жалобу")
-                        markup.add(item1, item2, item3)
+                        item3 = types.KeyboardButton("❗️ Жалоба")
+                        item4 = types.KeyboardButton("🙋 Операторская")
+                        item5 = types.KeyboardButton("☎️ Поддержка")
+                        item6 = types.KeyboardButton("✍️ Директор")
+                        item7 = types.KeyboardButton("👨‍⚕️ Доктор")
+                        markup.row(item1, item2).row(item3, item4, item5).row(item6, item7)
                         account_settings[str(call.message.chat.id)]["tags"].append(str(k))
                         account_settings[str(call.message.chat.id)]["conversation"] = 'open'
                         account_settings[k]["tags"].append(str(call.message.chat.id))
@@ -1542,8 +1542,12 @@ def callback_inline(call):
                     user_markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
                     item1 = types.KeyboardButton("🔙 Отклонить вызов оператора")
                     item2 = types.KeyboardButton("❔ Инструкция")
-                    item3 = types.KeyboardButton("❗️ Перенаправить в жалобу")
-                    markup.add(item1, item2, item3)
+                    item3 = types.KeyboardButton("❗️ Жалоба")
+                    item4 = types.KeyboardButton("🙋 Операторская")
+                    item5 = types.KeyboardButton("☎️ Поддержка")
+                    item6 = types.KeyboardButton("✍️ Директор")
+                    item7 = types.KeyboardButton("👨‍⚕️ Доктор")
+                    markup.row(item1, item2).row(item3, item4, item5).row(item6, item7)
                     if account_settings[str(call.data)]["language"] != "Русский":
                         item1 = types.KeyboardButton("🔙 Operator chaqiruvini rad etish")
                         item2 = types.KeyboardButton("❔ Ko'rsatma")
