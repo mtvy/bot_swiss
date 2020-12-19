@@ -463,6 +463,14 @@ def FeedBackdbIdSortEnter(message):
     else: bot.send_message(message.chat.id, id_text)
 
 
+def pushingLabelFromFile(message, path, path_sec):
+    label_text = ''
+    if account_settings[str(message.chat.id)]["language"] == "Русский":
+        label_text = openfileforRead(None, path)
+    else:
+        label_text = openfileforRead(None, path_sec)
+    bot.send_message(message.chat.id, label_text.format(message.chat, bot.get_me()),parse_mode='html')
+
 def operInit(message, action, set_act, id_check, deactivation=None):
     if checkOperId(str(message.chat.id), action):
         if account_settings[str(message.chat.id)]["language"] == "Русский":
@@ -520,27 +528,9 @@ def lol(message):
     global feed_back
     if message.chat.type == 'private':
         if message.text == '📞 Телефон' or message.text == '📞 telefon':
-            telephone_num = ''
-            if account_settings[str(message.chat.id)]["language"] == "Русский":
-
-                telephone_num = openfileforRead(None, path_telephone_num)
-
-            else:
-
-                telephone_num = openfileforRead(None, path_sec_telephone_num)
-
-            bot.send_message(message.chat.id, telephone_num.format(message.chat, bot.get_me()),parse_mode='html')
+            pushingLabelFromFile(message, path_telephone_num, path_sec_telephone_num)
         elif message.text == '🏠 Адреса' or message.text == '🏠 manzillari':
-            address = ''
-            if account_settings[str(message.chat.id)]["language"] == "Русский":
-
-                address = openfileforRead(None, path_address_label)
-
-            else:
-
-                address = openfileforRead(None, path_sec_address_label)
-
-            bot.send_message(message.chat.id, address.format(message.chat, bot.get_me()),parse_mode='html')
+            pushingLabelFromFile(message, path_address_label, path_sec_address_label)
         elif message.text == '🙋 Оператор' or message.text == '🙋 Operator':
             operInit(message, 'check_simple_oper', 'simple_oper', str(message.chat.id))
         elif message.text == '👨‍⚕️ Доктор онлайн' or message.text == '👨‍⚕️ Shifokor onlayn':
@@ -550,16 +540,7 @@ def lol(message):
         elif message.text == '✍️ Написать директору' or message.text == '✍️ Direktorga yozing':
             operInit(message, 'check_director_id', 'dir_oper', str(message.chat.id))
         elif message.text == '📝 Создать заказ' or message.text == '📝 buyurtma yaratish':
-            oper_write = ''
-            if account_settings[str(message.chat.id)]["language"] == "Русский":
-                
-                oper_write = openfileforRead(None, path_order_label)
-
-            else:
-                
-                oper_write = openfileforRead(None, path_sec_order_label)
-
-            bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html')
+            pushingLabelFromFile(message, path_order_label, path_sec_order_label)
         elif message.text == '❗️ Оставить жалобу' or message.text == '❗️ Shikoyat qoldiring':
             if checkOperId(str(message.chat.id), 'check_feedback_oper_id'):
                 oper_write = ''
@@ -640,27 +621,9 @@ def lol(message):
                         bot.send_message(message.chat.id, text_tags)
                         picPNGmaker(message)
         elif message.text == '®FAQ Инструкция' or message.text == "®FAQ Ko'rsatma":
-            FAQ_txt = ""
-            if account_settings[str(message.chat.id)]["language"] == "Русский":
-
-                FAQ_txt = openfileforRead(None, path_FAQ_label)
-
-            else:
-
-                FAQ_txt = openfileforRead(None, path_sec_FAQ_label)
-
-            bot.send_message(message.chat.id, FAQ_txt.format(message.chat, bot.get_me()),parse_mode='html')
+            pushingLabelFromFile(message, path_FAQ_label, path_sec_FAQ_label)
         elif message.text == "🌐 Соц. сети" or message.text == '🌐 Biz ijtimoiy tarmoqlarda':
-            soc_web = ''
-            if account_settings[str(message.chat.id)]["language"] == "Русский":
-
-                soc_web = openfileforRead(None, path_social_web)
-
-            else:
-
-                soc_web = openfileforRead(None, path_sec_social_web)
-
-            bot.send_message(message.chat.id, soc_web.format(message.chat, bot.get_me()),parse_mode='html')
+            pushingLabelFromFile(message, path_social_web, path_sec_social_web)
         elif message.text == "🔙 Отклонить вызов оператора":
             bot.send_message(str(message.chat.id), "❗ Общение с оператором завершено")
             if len(account_settings[str(message.chat.id)]["tags"]) != 0:
@@ -787,8 +750,6 @@ def lol(message):
                     fileID = message.photo[-1].file_id
                     file_info = bot.get_file(fileID)
                     downloaded_file = bot.download_file(file_info.file_path)
-                    #with open("image.jpg", 'wb') as new_file:
-                    #    new_file.write(downloaded_file)
                     bot.send_photo(account_settings[str(message.chat.id)]["tags"][0], downloaded_file)
                 insert_text_to_data(sm_id, str(message.chat.id))
 
