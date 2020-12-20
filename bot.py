@@ -1550,13 +1550,10 @@ def callback_inline(call):
         for id_er in label_change_ids_arr:
             bot.send_message(int(id_er), "Error in the 'call' part!\n\n"+ traceback.format_exc())
 
-def main():
+if __name__ == '__main__':
     start_process()
     try:
         bot.polling(none_stop=True)
     except Exception as _:
         for id_er in label_change_ids_arr:
             bot.send_message(int(id_er), "Program error!\n\n"+ traceback.format_exc())
-
-if __name__ == '__main__':
-    main()

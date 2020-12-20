@@ -1,6 +1,5 @@
 # Main libraries
-import schedule, datetime, psycopg2, telebot, time, json, io, os
-import traceback
+import schedule, datetime, psycopg2, telebot, time, json, io, os, traceback
 from PIL import Image, ImageDraw, ImageFont
 from multiprocessing import Process
 from telebot import types

@@ -9,7 +9,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "open",
+        "timer_conv": 1608460159
     },
     "281321076": {
         "login": "mtvyp",
@@ -2814,6 +2815,18 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "132986337": {
+        "login": "donoxon",
+        "name": "Dono",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "Ozbek",
         "feedback_st": "close"
     }
 }
