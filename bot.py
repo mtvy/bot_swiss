@@ -286,11 +286,11 @@ class P_schedule(): ### Class для работы c schedule
         for i in account_settings.keys():
             try:
                 time_checker = int(time.time()) - account_settings[str(i)]["timer_conv"]
-                if time_checker > 900 and account_settings[str(i)]["conversation"]== 'open':
+                if time_checker > 60 and account_settings[str(i)]["conversation"]== 'open':
                     if account_settings[str(i)]["language"] == 'Русский':
-                        stopConversation(str(i), 0)
+                        stopConversation(None, 0, str(i))
                     else:
-                        stopConversation(str(i), 1)
+                        stopConversation(None, 1, str(i))
             except Exception as _:
                 pass
             try:
