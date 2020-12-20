@@ -286,7 +286,7 @@ class P_schedule(): ### Class для работы c schedule
         for i in account_settings.keys():
             try:
                 time_checker = int(time.time()) - account_settings[str(i)]["timer_conv"]
-                if time_checker > 60 and account_settings[str(i)]["conversation"]== 'open':
+                if time_checker > 900 and account_settings[str(i)]["conversation"]== 'open':
                     if account_settings[str(i)]["language"] == 'Русский':
                         stopConversation(None, 0, str(i))
                     else:
