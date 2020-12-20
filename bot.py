@@ -2,7 +2,6 @@ from lib import *
 
 def openfileforRead(action=None, name_path=None):
     global account_settings
-
     if action == 'r':
         with open(path_acc_settings, 'r') as file_set:
             if(file_set.readline() == ""): 
@@ -265,10 +264,44 @@ def change_data(name):
             print(err_txt, e)
 
 
-def start_process():#Запуск Process
+def stopConversation(pers_id):
+    bot.send_message(pers_id, "❗ Общение с оператором завершено")
+    if len(account_settings[pers_id]["tags"]) != 0:
+        bot.send_message(str(account_settings[pers_id]["tags"][0]), "❗ Общение с оператором завершено")
+        account_settings[account_settings[pers_id]["tags"][0]]['conversation'] = 'close'
+        account_settings[account_settings[pers_id]["tags"][0]]['tags'].clear()
+            
+        openfileforRead('w+')
+        openfileforRead('r')
+        if account_settings[account_settings[pers_id]["tags"][0]]["language"] == "Русский":
+            keyboardRefMaker(None, 0, account_settings[pers_id]["tags"][0])
+        else:
+            keyboardRefMaker(None, 1, account_settings[pers_id]["tags"][0])
+    keyboardRefMaker(None, 0, pers_id)
+    markup = types.InlineKeyboardMarkup(row_width=2)
+    item1 = types.InlineKeyboardButton("👍", callback_data='👍')
+    item2 = types.InlineKeyboardButton("👎", callback_data="👎")
+    markup.add(item1, item2)
+    if checkOperId(pers_id, 'check_all_oper'):
+        if account_settings[account_settings[pers_id]["tags"][0]]["language"] == "Русский":
+            bot.send_message(account_settings[pers_id]["tags"][0], 'Оцените работу оператора!', reply_markup=markup)
+        else: bot.send_message(account_settings[pers_id]["tags"][0], 'Operator ishini baholang!', reply_markup=markup)
+    else:
+        if account_settings[pers_id]["language"] == "Русский":
+            bot.send_message(pers_id, 'Оцените работу оператора!', reply_markup=markup)
+        else: bot.send_message(pers_id, 'Operator ishini baholang!', reply_markup=markup)
+    account_settings[pers_id]['conversation'] = 'close'
+    account_settings[pers_id]['tags'].clear()
+            
+    openfileforRead('w+')
+    openfileforRead('r')
+            
+    closerDataBase(pers_id)
+
+def start_process(): ### Запуск Process
     _ = Process(target=P_schedule.start_schedule, args=()).start()
-class P_schedule(): # Class для работы c schedule
-    def start_schedule(): #Запуск schedule
+class P_schedule(): ### Class для работы c schedule
+    def start_schedule(): ### Запуск schedule
         ######Параметры для schedule######
         schedule.every(30).seconds.do(P_schedule.send_post)
         ##################################
@@ -277,19 +310,25 @@ class P_schedule(): # Class для работы c schedule
             schedule.run_pending()
             time.sleep(1)
 
-    ####Функции для выполнения заданий по времени
-    def send_post():
+    def send_post(): ### Функции для выполнения заданий по времени
         global MESSAGE_ID
         global account_settings
+        global message_ids_dict
         c_ex = 0
-        #try:
+
         openfileforRead('r')
+
         for i in account_settings.keys():
             try:
+                time_checker = int(time.time()) - account_settings[str(i)]["timer_conv"]
+                if time_checker > 900 and account_settings[str(i)]["conversation"]== 'open':
+                    stopConversation(str(i))
+            except Exception as _:
+                pass
+            try:
                 bot.forward_message(int(i), -1001229753165, MESSAGE_ID)
-            except Exception as ex:
+            except Exception as _:
                 c_ex+=1
-                #print(repr(ex))
                 continue
         if c_ex == len(account_settings):
             c_ex = 0
@@ -299,8 +338,6 @@ class P_schedule(): # Class для работы c schedule
                 MESSAGE_ID += 1
             except Exception as qt:
                 print(repr(qt))
-        #except Exception as e:
-            #print(repr(e))
 
 
 @bot.message_handler(commands=['start'])
@@ -317,13 +354,9 @@ def welcome(message):
         item1 = types.InlineKeyboardButton("Русский", callback_data='Русский')
         item2 = types.InlineKeyboardButton("Ozbek", callback_data="Ozbek")
         markup.add(item1, item2)
-
         account_settings[new_acc_id] = {"login" : str(message.chat.username), "name" : str(message.chat.first_name), "oper_ids" : [], "conversation" : "close", "discount" : "0", "tags" : [], "ref" : "0", "personal data" : "NO", "language" : None, "feedback_st" : 'close'}
-        
         openfileforRead('w+')
         openfileforRead('r')
-
-
         bot.send_message(message.chat.id,"🔱Choose language", reply_markup=markup)
     else:
         start_txt=''
@@ -526,6 +559,7 @@ def lol(message):
     global message_ids_dict
     global mess
     global feed_back
+    openfileforRead('r')
     if message.chat.type == 'private':
         if message.text == '📞 Телефон' or message.text == '📞 telefon':
             pushingLabelFromFile(message, path_telephone_num, path_sec_telephone_num)
@@ -737,8 +771,13 @@ def lol(message):
         else:
             if account_settings[str(message.chat.id)]['conversation'] == 'open':
                 if checkOperId(str(message.chat.id), 'check_all_oper'):
+                    account_settings[account_settings[str(message.chat.id)]["tags"][0]]["timer_conv"] = int(time.time())
                     sm_id = 'Operator: '
-                else: sm_id = 'User: '
+                else: 
+                    account_settings[str(message.chat.id)]["timer_conv"] = int(time.time())
+                    sm_id = 'User: '
+                openfileforRead('w+')
+                openfileforRead('r')
                 if message.text != None:
                     sm_id = sm_id + message.text + '\n'
                     bot.send_message(account_settings[str(message.chat.id)]["tags"][0], message.text)
@@ -756,46 +795,46 @@ def lol(message):
 
 def checkOperId(person_id, action)->bool:
     if action == 'check_all_oper':
-        for id in all_ids_arr:
-            if person_id == id:
+        for pers_id in all_ids_arr:
+            if person_id == pers_id:
                 return True
         return False
     elif action == 'check_simple_oper':
-        for id in simple_oper_ids_arr:
-            if person_id == id:
+        for pers_id in simple_oper_ids_arr:
+            if person_id == pers_id:
                 return False
         return True
     elif action == 'check_doc_id':
-        for id in doctor_oper_ids_arr:
-            if person_id == id:
+        for pers_id in doctor_oper_ids_arr:
+            if person_id == pers_id:
                 return False
         return True
     elif action == 'check_support_id':
-        for id in support_oper_ids_arr:
-            if person_id == id:
+        for pers_id in support_oper_ids_arr:
+            if person_id == pers_id:
                 return False
         return True
     elif action == 'check_feedback_oper_id':
-        for id in feedback_oper_ids_arr:
-            if person_id == id:
+        for pers_id in feedback_oper_ids_arr:
+            if person_id == pers_id:
                 return False
         return True
     elif action == 'check_director_id':
-        for id in director_oper_ids_arr:
-            if person_id == id:
+        for pers_id in director_oper_ids_arr:
+            if person_id == pers_id:
                 return False
         return True
     elif action == 'check_label_changer':
-        for id in label_change_ids_arr:
-            if person_id == id:
+        for pers_id in label_change_ids_arr:
+            if person_id == pers_id:
                 return True
         return False
     
 
-def keyboardRefMaker(message, lang, id=None):
+def keyboardRefMaker(message, lang, pers_id=None):
     global account_settings
-    if id != None:
-        person_id = id
+    if pers_id != None:
+        person_id = pers_id
     else:
         person_id = str(message.chat.id)
     if lang == 0:
@@ -828,8 +867,8 @@ def keyboardRefMaker(message, lang, id=None):
 
         faq_txt = openfileforRead(None, path_FAQ_label)
         
-        if person_id == id:
-            bot.send_message(person_id, faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+        if person_id == pers_id:
+            bot.send_message(person_id, faq_txt, reply_markup=markup)
         else:
             bot.send_message(message.chat.id, faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
             openfileforRead('r')
@@ -866,7 +905,7 @@ def keyboardRefMaker(message, lang, id=None):
 
         faq_txt = openfileforRead(None, path_sec_FAQ_label)
 
-        if person_id == id:
+        if person_id == pers_id:
             bot.send_message(person_id, faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
         else:
             bot.send_message(message.chat.id, faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
@@ -876,11 +915,11 @@ def keyboardRefMaker(message, lang, id=None):
             openfileforRead('r')
 
 
-def checkBlockedPeople(message, markup, id):
+def checkBlockedPeople(message, markup, pers_id):
     try:
-        bot.send_message(id, txt, reply_markup=markup)
+        bot.send_message(pers_id, txt, reply_markup=markup)
     except Exception as e:
-        print('User ' + id + ' blocked!' + '(', repr(e), ')', sep = '')
+        print('User ' + pers_id + ' blocked!' + '(', repr(e), ')', sep = '')
 
 
 def fdbackName(message, lang):
@@ -1480,6 +1519,8 @@ def callback_inline(call):
                         account_settings[k]["tags"].append("0")
                         account_settings[k]["conversation"] = 'open'
                         
+                        account_settings[k]["timer_conv"] = int(time.time())
+
                         openfileforRead('w+')
                         openfileforRead('r')
 
@@ -1518,6 +1559,7 @@ def callback_inline(call):
                     account_settings[str(call.data)]["tags"].append(str(call.message.chat.id))
                     account_settings[str(call.data)]["tags"].append("0")
                     account_settings[str(call.data)]["conversation"] = 'open'
+                    account_settings[str(call.data)]["timer_conv"] = int(time.time())
                     
                     openfileforRead('w+')
                     openfileforRead('r')

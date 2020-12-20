@@ -1,7 +1,6 @@
 import os
 ### ids database
 path_acc_settings = os.path.join('settings', 'account_settings.txt')
-#path_feedbacks   = os.path.join('settings', 'feedbacks.txt')
 
 ### Russian label text
 path_first_lang = os.path.join('first_language', 'fl_start_label.txt')
