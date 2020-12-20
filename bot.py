@@ -32,7 +32,7 @@ bot = telebot.TeleBot(config.TOKEN)
 
 def connect():
     try:
-        con = psycopg2.connect(database="postgres",user="postgres",password="14072003", host="127.0.0.1",port="5432")
+        con = psycopg2.connect(database="postgres",user="postgres",password="postgres", host="127.0.0.1",port="5432")
         cur = con.cursor()
         return con, cur
     except (Exception, psycopg2.DatabaseError) as error:
@@ -306,6 +306,8 @@ class P_schedule(): ### Class для работы c schedule
                 MESSAGE_ID += 1
             except Exception as qt:
                 print("Error pushing news!", repr(qt))
+                for id_er in label_change_ids_arr:
+                    bot.send_message(int(id_er), "Error pushing news!" + repr(qt))
 
 
 @bot.message_handler(commands=['start'])
@@ -870,7 +872,11 @@ def checkBlockedPeople(message, markup, pers_id):
     try:
         bot.send_message(pers_id, txt, reply_markup=markup)
     except Exception as e:
-        print('User ' + pers_id + ' blocked!' + '(', repr(e), ')', sep = '')
+        text_push = 'User ' + pers_id + ' blocked!\n\n' + repr(e)
+        print(text_push)
+        for id_er in label_change_ids_arr:
+            bot.send_message(int(id_er), text_push)
+        
 
 
 def fdbackName(message, lang):
@@ -983,8 +989,8 @@ def fdBack_fill(message, lang):
             item1 = types.InlineKeyboardButton("Ответить", callback_data='Q' + str(message.chat.id))
             markup.add(item1)
             
-            for id in all_ids_arr:
-                checkBlockedPeople(message, markup, id)
+            for id_p in all_ids_arr:
+                checkBlockedPeople(message, markup, id_p)
 
             oper_id = '0'
             insert_new_feedback_data(oper_id,  str(message.chat.id), txt)
@@ -1002,8 +1008,8 @@ def fdBack_fill(message, lang):
                 item1 = types.InlineKeyboardButton("Ответить", callback_data='Q' + str(message.chat.id))
                 markup.add(item1)
 
-                for id in all_ids_arr:
-                    checkBlockedPeople(message, markup, id)
+                for id_p in all_ids_arr:
+                    checkBlockedPeople(message, markup, id_p)
 
                 oper_id = '0'
                 insert_new_feedback_data(oper_id,  str(message.chat.id), txt)
@@ -1541,11 +1547,16 @@ def callback_inline(call):
 
     except Exception as e:
         print("Error in the 'call' part!", repr(e))
+        for id_er in label_change_ids_arr:
+            bot.send_message(int(id_er), "Error in the 'call' part!\n\n"+ traceback.format_exc())
 
-
-if __name__ == '__main__':
+def main():
     start_process()
     try:
         bot.polling(none_stop=True)
-    except:
-        pass
+    except Exception as _:
+        for id_er in label_change_ids_arr:
+            bot.send_message(int(id_er), "Program error!\n\n"+ traceback.format_exc())
+
+if __name__ == '__main__':
+    main()
