@@ -868,7 +868,7 @@ def keyboardRefMaker(message, lang, pers_id=None):
         faq_txt = openfileforRead(None, path_sec_FAQ_label)
 
         if person_id == pers_id:
-            bot.send_message(person_id, faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+            bot.send_message(person_id, faq_txt, reply_markup=markup)
         else:
             bot.send_message(message.chat.id, faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
             openfileforRead('r')
@@ -1262,7 +1262,7 @@ def callback_inline(call):
         elif call.data == 'Write a feedback':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Telefon raqamingizni kiriting')
-            bot.register_next_step_handler(send, fdbackName)
+            bot.register_next_step_handler(send, fdbackName, 1)
 
         elif call.data == 'Отправить tag друзей':
             mess = "new"

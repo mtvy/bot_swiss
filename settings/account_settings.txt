@@ -33,8 +33,7 @@
         "tags": [],
         "ref": "0",
         "personal data": "YES",
-        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439"
     },
     "98884146": {
         "login": "None",
@@ -45,8 +44,7 @@
         "tags": [],
         "ref": "0",
         "personal data": "YES",
-        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439"
     },
     "667068180": {
         "login": "Ditaocom",
@@ -69,8 +67,7 @@
         "tags": [],
         "ref": "0",
         "personal data": "NO",
-        "language": "Ozbek",
-        "feedback_st": "close"
+        "language": "Ozbek"
     },
     "414658569": {
         "login": "None",
@@ -1372,11 +1369,13 @@
         "login": "na1707",
         "name": "Nargiza",
         "oper_ids": [],
-        "conversation": "close",
+        "conversation": "open",
         "discount": "0",
-        "tags": [],
+        "tags": [
+            "646607199"
+        ],
         "ref": "0",
-        "personal data": "NO",
+        "personal data": "YES",
         "language": "Ozbek",
         "feedback_st": "close"
     },
@@ -3352,9 +3351,11 @@
         "login": "Nilyushk",
         "name": "\u041d\u0438\u043b\u044e",
         "oper_ids": [],
-        "conversation": "close",
+        "conversation": "open",
         "discount": "0",
-        "tags": [],
+        "tags": [
+            "39953924"
+        ],
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
@@ -3364,9 +3365,11 @@
         "login": "IbroKHimoV_3338",
         "name": "IbroKHimoV_3338",
         "oper_ids": [],
-        "conversation": "close",
+        "conversation": "open",
         "discount": "0",
-        "tags": [],
+        "tags": [
+            "646607199"
+        ],
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
@@ -3467,5 +3470,116 @@
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
         "feedback_st": "close"
+    },
+    "646607199": {
+        "login": "None",
+        "name": "Doston",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "Ozbek",
+        "feedback_st": "close",
+        "timer_conv": 1612247485
+    },
+    "46795898": {
+        "login": "None",
+        "name": ".",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close",
+        "timer_conv": 1611906094
+    },
+    "976072383": {
+        "login": "Lana2476",
+        "name": "\u0421\u0432\u0435\u0442\u043b\u0430\u043d\u0430",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "296727806": {
+        "login": "mokhira_mm",
+        "name": "M \u0627\u0644\u0644\u0647",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "796115885": {
+        "login": "None",
+        "name": "\u0410\u043b\u0438\u0448\u0435\u0440",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "NO",
+        "language": "Ozbek",
+        "feedback_st": "close"
+    },
+    "47261880": {
+        "login": "Tsoydmitriy",
+        "name": "DMITRIY",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "NO",
+        "language": null,
+        "feedback_st": "close"
+    },
+    "71056040": {
+        "login": "Alex_Sander_85",
+        "name": "Alex",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "194006042": {
+        "login": "None",
+        "name": "5ual1",
+        "oper_ids": [],
+        "conversation": "mid",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close"
+    },
+    "39953924": {
+        "login": "BlackBip",
+        "name": "DNA",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close",
+        "timer_conv": 1612523689
     }
 }
