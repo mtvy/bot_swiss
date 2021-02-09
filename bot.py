@@ -39,243 +39,11 @@ openfileforRead('r')
 
 bot = telebot.TeleBot(config.TOKEN)
 
-def connect():
-    try:
-        con = psycopg2.connect(database="postgres",user="postgres",password="14072003", host="127.0.0.1",port="5432")
-        cur = con.cursor()
-        return con, cur
-    except (Exception, psycopg2.DatabaseError) as error:
-        print("Error while connecting PostgreSQL!", error)
-        return 0
-
-def insert_new_data(user_id, oper_id):
-    con, cur = connect()
-    if con == 0 and cur == 0:
-        return 0
-    else:
-        try:
-            if oper_id == '0':
-                dt = datetime.date.today()
-                tt = dt.timetuple()
-                date_start = ''
-                ch_i = 0
-                for it in tt:
-                    date_start += str(it)
-                    ch_i += 1
-                    if ch_i >= 3: break
-                    else: date_start += '-'
-                txt_db_com = "INSERT INTO message_tb (user_id, oper_id, date_start, text, status) VALUES (" + user_id + ', ' + oper_id + ", '" + date_start + "', 'TEXT DATABASE', 'open')"
-                cur.execute(txt_db_com)
-                con.commit()
-                print('New data add!')
-                return 1
-            elif user_id != '0' and oper_id != '0':
-                txt_db_com = "UPDATE message_tb SET oper_id = " + oper_id + ", text = '" + "TEXT DATABASE\nOperator: " + oper_id + "\nUser: " + user_id + "\n'" + " WHERE status = 'open' AND user_id = " + user_id
-                cur.execute(txt_db_com)
-                con.commit()
-                print('New data add!')
-                txt_db_com = "SELECT id FROM message_tb WHERE status = 'open' and user_id = " + user_id
-                cur.execute(txt_db_com)
-                ed_text = cur.fetchall()
-                text_adder = ed_text[0]
-                text_adder = '✏️id Переписки: ' + str(text_adder[0])
-                bot.send_message(int(oper_id), text_adder)
-                bot.send_message(int(user_id), text_adder)
-                return 1
-        except Exception as e:
-            print('Error entering new data to message_tb!', e)
-            return 0
-def insert_new_feedback_data(oper_id, user_id, txt):
-    con, cur = connect()
-    if con == 0 and cur == 0:
-        return 0
-    else:
-        try:
-            if oper_id == '0' and user_id != '0':
-                dt = datetime.date.today()
-                tt = dt.timetuple()
-                date_enter = ''
-                ch_i = 0
-                for it in tt:
-                    date_enter += str(it)
-                    ch_i += 1
-                    if ch_i >= 3: break
-                    else: date_enter += '-'
-                txt_db_com = "INSERT INTO feedback_tb (user_id, oper_id, date_enter, text_fb, status) VALUES (" + user_id + ', ' + oper_id + ", '" + date_enter + "', '" + txt +"', 'open')"
-                cur.execute(txt_db_com)
-                con.commit()
-                print('New data add!')
-                txt_db_com = "SELECT id FROM feedback_tb WHERE status = 'open' and user_id = " + user_id
-                cur.execute(txt_db_com)
-                ed_text = cur.fetchall()
-                text_adder = ed_text[0]
-                text_adder = '✏️id Жалобы: ' + str(text_adder[0])
-                bot.send_message(int(user_id), text_adder)
-                return 1
-            else:
-                txt_db_com = "SELECT text_fb FROM feedback_tb WHERE status = 'open' and user_id = " + user_id
-                cur.execute(txt_db_com)
-                ed_text = cur.fetchall()
-                text_adder = ed_text[0]
-                text_adder = text_adder[0] + '\n' + "Operator: " + oper_id + '\nТекст: ' + txt
-                txt_db_com = "UPDATE feedback_tb SET oper_id = " + oper_id + ", text_fb = '" + "TEXT FEEDBACK\n" + text_adder + "'" + " WHERE status = 'open' AND user_id = " + user_id
-                cur.execute(txt_db_com)
-                con.commit()
-                print('New data add!')
-                txt_db_com = "SELECT id FROM feedback_tb WHERE status = 'open' and user_id = " + user_id
-                cur.execute(txt_db_com)
-                ed_text = cur.fetchall()
-                text_adder = ed_text[0]
-                text_adder = '✏️id Жалобы: ' + str(text_adder[0])
-                bot.send_message(int(oper_id), text_adder)
-                txt_db_com = "UPDATE feedback_tb SET status = 'close' WHERE status = 'open' AND user_id = " + user_id
-                cur.execute(txt_db_com)
-                con.commit()
-                return 1
-        except Exception as e:
-            print('Error entering new data to feedback_tb!', e)
-            return 0
-
-def insert_text_to_data(text_val, sm_id):
-    con, cur = connect()
-    if con == 0 and cur == 0:
-        return 0
-    else:
-        try:
-            txt_db_com = "SELECT text FROM message_tb WHERE status = 'open' and (oper_id = " + sm_id + ' or user_id = ' + sm_id + ')'
-            cur.execute(txt_db_com)
-            ed_text = cur.fetchall()
-            text_adder = ed_text[0]
-            text_adder = text_adder[0] + '\n' + text_val
-            txt_db_com = "UPDATE message_tb SET text = '" + text_adder + "' WHERE status = 'open' and (user_id = " + sm_id + ' or oper_id = ' + sm_id + ')'
-            cur.execute(txt_db_com)
-            con.commit()
-            return 1
-        except Exception as e:
-            print('Error entering data to message_tb!', e)
-            return 0
-
-def closerDataBase(sm_id):
-    con, cur = connect()
-    if con == 0 and cur == 0:
-        return 0
-    else:
-        try:
-            txt_db_com = "SELECT user_id, oper_id FROM message_tb WHERE status = 'open' and (oper_id = " + sm_id + ' or user_id = ' + sm_id + ')'
-            cur.execute(txt_db_com)
-            ed_text = cur.fetchall()
-            if ed_text[0][0] == 0 or ed_text[0][1] == 0:
-                txt_db_com = "delete from message_tb where status = 'open' and (oper_id = " + sm_id + ' or user_id = ' + sm_id + ')'
-                cur.execute(txt_db_com)
-            else:
-                txt_db_com = "UPDATE message_tb SET status = 'close' WHERE status = 'open' and user_id = " + sm_id + ' or oper_id = ' + sm_id
-                cur.execute(txt_db_com)
-            con.commit()
-            return 1
-        except Exception as e:
-            print('Error entering data to message_tb!', e)
-            return 0
-
-def getDataFromDB(date_start):
-    con, cur = connect()
-    if con == 0 and cur == 0:
-        return 0
-    else:
-        try:
-            txt_db_com = "SELECT id, user_id FROM message_tb WHERE date_start = '" + date_start + "'"
-            cur.execute(txt_db_com)
-            ed_text = cur.fetchall()
-            text_adder = 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n'
-            for i in ed_text:
-                for k in account_settings:
-                    if k == str(i[1]):
-                        if account_settings[k]['login'] != 'None':
-                            name_id = '@' + account_settings[k]['login']
-                        else: name_id = account_settings[k]['name']
-                        break
-                text_adder = text_adder + str(i[0]) + ') ' + 'Name: ' + name_id + ' --- Id: ' + str(i[1]) + '\n'
-            con.commit()
-            if text_adder == 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n': return '0'
-            else: return text_adder
-        except Exception as e:
-            print('Error data message_tb!', e)
-            return '0'
-def getDataFromFeedBackDB(date_start):
-    con, cur = connect()
-    if con == 0 and cur == 0:
-        return 0
-    else:
-        try:
-            txt_db_com = "SELECT id, user_id FROM feedback_tb WHERE date_enter = '" + date_start + "'"
-            cur.execute(txt_db_com)
-            ed_text = cur.fetchall()
-            text_adder = 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n'
-            for i in ed_text:
-                for k in account_settings:
-                    if k == str(i[1]):
-                        if account_settings[k]['login'] != 'None':
-                            name_id = '@' + account_settings[k]['login']
-                        else: name_id = account_settings[k]['name']
-                        break
-                text_adder = text_adder + str(i[0]) + ') ' + 'Name: ' + name_id + ' --- Id: ' + str(i[1]) + '\n'
-            con.commit()
-            if text_adder == 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n': return '0'
-            else: return text_adder
-        except Exception as e:
-            print('Error data feedback_tb!', e)
-            return '0'
-
-def getTextFromDB(id_text):
-    con, cur = connect()
-    if con == 0 and cur == 0:
-        return 0
-    else:
-        try:
-            txt_db_com = "SELECT text FROM message_tb WHERE id = " + id_text
-            cur.execute(txt_db_com)
-            ed_text = cur.fetchall()
-            text_taker = ed_text[0]
-            text_taker = text_taker[0]
-            con.commit()
-            return text_taker
-        except Exception as e:
-            print('Error, wrong id!', e)
-            return '0'
-def getTextFromFeedBackDB(id_text):
-    con, cur = connect()
-    if con == 0 and cur == 0:
-        return 0
-    else:
-        try:
-            txt_db_com = "SELECT text_fb FROM feedback_tb WHERE id = " + id_text
-            cur.execute(txt_db_com)
-            ed_text = cur.fetchall()
-            text_taker = ed_text[0]
-            text_taker = text_taker[0]
-            con.commit()
-            return text_taker
-        except Exception as e:
-            print('Error, wrong id!', e)
-            return '0'
-
-def change_data(name):
-    con, cur = connect()
-    if con == 0 or cur == 0:
-        return 0
-    else:
-        try:
-            txt_data_del = "UPDATE user_tb set phone = NULL where name = '" + name + "'"
-            cur.execute(txt_data_del)
-            con.commit()
-        except Exception as e:
-            err_txt = 'Error deleting data from user @' + name + '!'
-            print(err_txt, e)
-
 
 def start_process(): ### Запуск Process
     _ = Process(target=P_schedule.start_schedule, args=()).start()
 class P_schedule(): ### Class для работы c schedule
-    def start_schedule(): ### Запуск schedule
+    def start_schedule(self): ### Запуск schedule
         
         ### Параметры для schedule
         schedule.every(30).seconds.do(P_schedule.send_post)
@@ -284,7 +52,7 @@ class P_schedule(): ### Class для работы c schedule
         while True:
             schedule.run_pending()
             time.sleep(1)
-    def send_post(): ### Функции для выполнения заданий по времени
+    def send_post(self): ### Функции для выполнения заданий по времени
         global MESSAGE_ID
         global account_settings
         global message_ids_dict
@@ -428,7 +196,7 @@ def operKeyboardMaker(message, which_oper, lang):
     markup.add(item1)
     user_id = str(message.chat.id)
     oper_id = '0'
-    insert_new_data(user_id, oper_id)
+    database.insert_new_data(user_id, oper_id)
     sendReqtoOper(message, which_oper, oper_send_text, markup)
 		
 
@@ -442,7 +210,7 @@ def feedBackdbDateSortEnter(message):
 
 def dbSortEnter(message):
     date_text = message.text
-    date_text = getDataFromDB(date_text)
+    date_text = database.getDataFromDB(date_text)
     if date_text == '0':
         bot.send_message(message.chat.id, 'Данной даты нет в базе!')
         return
@@ -451,7 +219,7 @@ def dbSortEnter(message):
     bot.register_next_step_handler(send, dbIdSortEnter)
 def FeedBackdbSortEnter(message):
     date_text = message.text
-    date_text = getDataFromFeedBackDB(date_text)
+    date_text = database.getDataFromFeedBackDB(date_text)
     if date_text == '0':
         bot.send_message(message.chat.id, 'Данной даты нет в базе!')
         return
@@ -461,14 +229,14 @@ def FeedBackdbSortEnter(message):
 
 def dbIdSortEnter(message):
     id_text = message.text
-    id_text = getTextFromDB(id_text)
+    id_text = database.getTextFromDB(id_text)
     if id_text == '0':
         bot.send_message(message.chat.id, 'Такого номера нет в базе!')
         return
     else: bot.send_message(message.chat.id, id_text)
 def FeedBackdbIdSortEnter(message):
     id_text = message.text
-    id_text = getTextFromFeedBackDB(id_text)
+    id_text = database.getTextFromFeedBackDB(id_text)
     if id_text == '0':
         bot.send_message(message.chat.id, 'Такого номера нет в базе!')
         return
@@ -563,7 +331,7 @@ def stopConversation(message, lang, pers_id=None):
     openfileforRead('w+')
     openfileforRead('r')
             
-    closerDataBase(person_id)
+    database.closerDataBase(person_id)
 
 def closeConversation(message):
     global account_settings
@@ -573,7 +341,7 @@ def closeConversation(message):
     openfileforRead('w+')
     openfileforRead('r')
             
-    closerDataBase(str(message.chat.id))
+    database.closerDataBase(str(message.chat.id))
 
 @bot.message_handler(content_types=['text', 'photo'])
 def lol(message):
@@ -752,7 +520,7 @@ def lol(message):
                     file_info = bot.get_file(fileID)
                     downloaded_file = bot.download_file(file_info.file_path)
                     bot.send_photo(account_settings[str(message.chat.id)]["tags"][0], downloaded_file)
-                insert_text_to_data(sm_id, str(message.chat.id))
+                database.insert_text_to_data(sm_id, str(message.chat.id))
 
 
 def checkOperId(person_id, action)->bool:
@@ -1002,7 +770,7 @@ def fdBack_fill(message, lang):
                 checkBlockedPeople(message, markup, id_p)
 
             oper_id = '0'
-            insert_new_feedback_data(oper_id,  str(message.chat.id), txt)
+            database.insert_new_feedback_data(oper_id,  str(message.chat.id), txt)
         else:
             if feedback_user != '📞 telefon' and feedback_user != '💽 Yozishmalar bazasi' and feedback_user !='🏠 manzillari' and feedback_user !='🌐 Biz ijtimoiy tarmoqlarda' and feedback_user !='🙋 Operator' and feedback_user != "☎️ O'sha.  qo'llab-quvvatlash" and feedback_user != '✍️ Direktorga yozing' and feedback_user !='📝 buyurtma yaratish' and feedback_user !='❗️ Shikoyat qoldiring' and feedback_user !='% Chegirma oling' and feedback_user !="®FAQ Ko'rsatma" and feedback_user != 'stop':
                 if feedback_user == None: feedback_user = 'Пользователь отправил нечитаемый объект'
@@ -1021,7 +789,7 @@ def fdBack_fill(message, lang):
                     checkBlockedPeople(message, markup, id_p)
 
                 oper_id = '0'
-                insert_new_feedback_data(oper_id,  str(message.chat.id), txt)
+                database.insert_new_feedback_data(oper_id,  str(message.chat.id), txt)
     
     elif feedback_user == 'stop':
         if lang == 0:
@@ -1170,7 +938,7 @@ def userSebdText(message):
             if message.text != None: word_user_send = message.text
             else: word_user_send = message.caption
             bot.send_message(account_settings[str(message.chat.id)]["feedback_st"], word_user_send)
-            insert_new_feedback_data(str(message.chat.id), account_settings[str(message.chat.id)]["feedback_st"] , word_user_send)
+            database.insert_new_feedback_data(str(message.chat.id), account_settings[str(message.chat.id)]["feedback_st"] , word_user_send)
         bot.send_message(message.chat.id, "Сообщение отправлено!")
         account_settings[account_settings[str(message.chat.id)]["feedback_st"]]["feedback_st"] = 'close'
         account_settings[str(message.chat.id)]["feedback_st"] = 'close'
@@ -1179,6 +947,16 @@ def userSebdText(message):
         openfileforRead('r')
 
     else: bot.send_message(message.chat.id, 'Операция отменена!')
+
+
+
+def inlineMessages(call, text1, text2, callback_data1, callback_data2, markup_text):
+    bot.delete_message(call.message.chat.id, call.message.message_id)
+    markup = types.InlineKeyboardMarkup(row_width=2)
+    item1 = types.InlineKeyboardButton(text=text1, callback_data=callback_data1)
+    item2 = types.InlineKeyboardButton(text=text2, callback_data=callback_data2)
+    markup.add(item1, item2)
+    bot.send_message(call.message.chat.id, markup_text.format(call.message.chat, bot.get_me()), parse_mode='html', reply_markup=markup)
 
 
 @bot.callback_query_handler(func=lambda call: True)
@@ -1206,12 +984,7 @@ def callback_inline(call):
             bot.delete_message(call.message.chat.id, call.message.message_id)
             bot.send_message(call.message.chat.id, "Вы отказались от обработки персональных данных\n♻️ Для перезапуска бота нажмите /start")
         elif call.data == 'Согласен':
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            markup = types.InlineKeyboardMarkup(row_width=2)
-            item1 = types.InlineKeyboardButton("Да", callback_data='Да')
-            item2 = types.InlineKeyboardButton("Нет", callback_data='Нет')
-            markup.add(item1, item2)
-            bot.send_message(call.message.chat.id, "♻️ У вас есть реферальная ссылка?", reply_markup=markup)
+            inlineMessages(call, text1='Да', text2='Нет', callback_data1='Да', callback_data2='Нет' , markup_text='♻️ У вас есть реферальная ссылка?')
 
         elif call.data == 'Нет':
             bot.delete_message(call.message.chat.id, call.message.message_id)
@@ -1240,13 +1013,7 @@ def callback_inline(call):
             bot.delete_message(call.message.chat.id, call.message.message_id)
             bot.send_message(call.message.chat.id, "Siz shaxsiy ma'lumotlarni qayta ishlash uchun rad qilgan\n♻️ Botni qayta ishga tushirish uchun bosing /start")
         elif call.data == 'Agree':
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            markup = types.InlineKeyboardMarkup(row_width=2)
-            item1 = types.InlineKeyboardButton("Ha", callback_data='Yes')
-            item2 = types.InlineKeyboardButton("Yo'q", callback_data='No')
-            markup.add(item1, item2)
-            bot.send_message(call.message.chat.id, "♻️ Yo'naltiruvchi havola bormi?", reply_markup=markup)
-
+            inlineMessages(call, text1='Ha', text2="Yo'q", callback_data1='Yes', callback_data2='No' , markup_text="♻️ Yo'naltiruvchi havola bormi?")
         elif call.data == 'No':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             keyboardRefMaker(call.message, 1)
@@ -1276,12 +1043,7 @@ def callback_inline(call):
             bot.register_next_step_handler(send, enterTag_Sec)
 
         elif call.data == 'Начальный текст':
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            markup = types.InlineKeyboardMarkup(row_width=2)
-            item1 = types.InlineKeyboardButton("Русский", callback_data='РусскийLangStart')
-            item2 = types.InlineKeyboardButton("Ozbek", callback_data='OzbekLangStart')
-            markup.add(item1, item2)
-            bot.send_message(call.message.chat.id, "Выберите язык блока".format(call.message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+            inlineMessages(call, text1='Русский', text2='Ozbek', callback_data1='РусскийLangStart', callback_data2='OzbekLangStart' , markup_text='Выберите язык блока')
         elif call.data == 'РусскийLangStart':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
@@ -1292,12 +1054,7 @@ def callback_inline(call):
             bot.register_next_step_handler(send, saveNewText, path_second_lang)
 
         elif call.data == 'FAQ текст':
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            markup = types.InlineKeyboardMarkup(row_width=2)
-            item1 = types.InlineKeyboardButton("Русский", callback_data='РусскийLangFAQ')
-            item2 = types.InlineKeyboardButton("Ozbek", callback_data='OzbekLangFAQ')
-            markup.add(item1, item2)
-            bot.send_message(call.message.chat.id, "Выберите язык блока".format(call.message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+            inlineMessages(call, text1='Русский', text2='Ozbek', callback_data1='РусскийLangFAQ', callback_data2='OzbekLangFAQ' , markup_text='Выберите язык блока')
         elif call.data == 'РусскийLangFAQ':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
@@ -1308,12 +1065,7 @@ def callback_inline(call):
             bot.register_next_step_handler(send, saveNewText, path_sec_FAQ_label)
 
         elif call.data == 'Текст оператора':
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            markup = types.InlineKeyboardMarkup(row_width=2)
-            item1 = types.InlineKeyboardButton("Русский", callback_data='РусскийLangOper')
-            item2 = types.InlineKeyboardButton("Ozbek", callback_data='OzbekLangOper')
-            markup.add(item1, item2)
-            bot.send_message(call.message.chat.id, "Выберите язык блока".format(call.message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+            inlineMessages(call, text1='Русский', text2='Ozbek', callback_data1='РусскийLangOper', callback_data2='OzbekLangOper' , markup_text='Выберите язык блока')
         elif call.data == 'РусскийLangOper':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
@@ -1324,12 +1076,7 @@ def callback_inline(call):
             bot.register_next_step_handler(send, saveNewText, path_sec_oper_label)
 
         elif call.data == 'Текст телефона':
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            markup = types.InlineKeyboardMarkup(row_width=2)
-            item1 = types.InlineKeyboardButton("Русский", callback_data='РусскийLangTele')
-            item2 = types.InlineKeyboardButton("Ozbek", callback_data='OzbekLangTele')
-            markup.add(item1, item2)
-            bot.send_message(call.message.chat.id, "Выберите язык блока".format(call.message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+            inlineMessages(call, text1='Русский', text2='Ozbek', callback_data1='РусскийLangTele', callback_data2='OzbekLangTele' , markup_text='Выберите язык блока')
         elif call.data == 'РусскийLangTele':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
@@ -1340,12 +1087,7 @@ def callback_inline(call):
             bot.register_next_step_handler(send, saveNewText, path_sec_telephone_num)
 
         elif call.data == 'Текст адресса':
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            markup = types.InlineKeyboardMarkup(row_width=2)
-            item1 = types.InlineKeyboardButton("Русский", callback_data='РусскийLangAdress')
-            item2 = types.InlineKeyboardButton("Ozbek", callback_data='OzbekLangAdress')
-            markup.add(item1, item2)
-            bot.send_message(call.message.chat.id, "Выберите язык блока".format(call.message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+            inlineMessages(call, text1='Русский', text2='Ozbek', callback_data1='РусскийLangAdress', callback_data2='OzbekLangAdress' , markup_text='Выберите язык блока')
         elif call.data == 'РусскийLangAdress':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
@@ -1356,12 +1098,7 @@ def callback_inline(call):
             bot.register_next_step_handler(send, saveNewText, path_sec_address_label)
 
         elif call.data == 'Текст создания заказа':
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            markup = types.InlineKeyboardMarkup(row_width=2)
-            item1 = types.InlineKeyboardButton("Русский", callback_data='РусскийLangOrder')
-            item2 = types.InlineKeyboardButton("Ozbek", callback_data='OzbekLangOrder')
-            markup.add(item1, item2)
-            bot.send_message(call.message.chat.id, "Выберите язык блока".format(call.message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+            inlineMessages(call, text1='Русский', text2='Ozbek', callback_data1='РусскийLangOrder', callback_data2='OzbekLangOrder' , markup_text='Выберите язык блока')
         elif call.data == 'РусскийLangOrder':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
@@ -1372,12 +1109,7 @@ def callback_inline(call):
             bot.register_next_step_handler(send, saveNewText, path_sec_order_label)
 
         elif call.data == 'Текст отзыва':
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            markup = types.InlineKeyboardMarkup(row_width=2)
-            item1 = types.InlineKeyboardButton("Русский", callback_data='РусскийLangRecv')
-            item2 = types.InlineKeyboardButton("Ozbek", callback_data='OzbekLangRecv')
-            markup.add(item1, item2)
-            bot.send_message(call.message.chat.id, "Выберите язык блока".format(call.message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+            inlineMessages(call, text1='Русский', text2='Ozbek', callback_data1='РусскийLangRecv', callback_data2='OzbekLangRecv' , markup_text='Выберите язык блока')
         elif call.data == 'РусскийLangRecv':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
@@ -1388,12 +1120,7 @@ def callback_inline(call):
             bot.register_next_step_handler(send, saveNewText, path_sec_recv_label)
 
         elif call.data == 'Текст скидки':
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            markup = types.InlineKeyboardMarkup(row_width=2)
-            item1 = types.InlineKeyboardButton("Русский", callback_data='РусскийLangDisc')
-            item2 = types.InlineKeyboardButton("Ozbek", callback_data='OzbekLangDisc')
-            markup.add(item1, item2)
-            bot.send_message(call.message.chat.id, "Выберите язык блока".format(call.message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+            inlineMessages(call, text1='Русский', text2='Ozbek', callback_data1='РусскийLangDisc', callback_data2='OzbekLangDisc' , markup_text='Выберите язык блока')
         elif call.data == 'РусскийLangDisc':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
@@ -1404,12 +1131,7 @@ def callback_inline(call):
             bot.register_next_step_handler(send, saveNewText, path_sec_discount_label)
 
         elif call.data == 'Текст социальные сети':
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            markup = types.InlineKeyboardMarkup(row_width=2)
-            item1 = types.InlineKeyboardButton("Русский", callback_data='РусскийLangSocial')
-            item2 = types.InlineKeyboardButton("Ozbek", callback_data='OzbekLangSocial')
-            markup.add(item1, item2)
-            bot.send_message(call.message.chat.id, "Выберите язык блока".format(call.message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+            inlineMessages(call, text1='Русский', text2='Ozbek', callback_data1='РусскийLangSocial', callback_data2='OzbekLangSocial' , markup_text='Выберите язык блока')
         elif call.data == 'РусскийLangSocial':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
@@ -1420,12 +1142,7 @@ def callback_inline(call):
             bot.register_next_step_handler(send, saveNewText, path_sec_social_web)
 
         elif call.data == 'Текст инструкции оператора':
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            markup = types.InlineKeyboardMarkup(row_width=2)
-            item1 = types.InlineKeyboardButton("Русский", callback_data='РусскийLangOperFAQ')
-            item2 = types.InlineKeyboardButton("Ozbek", callback_data='OzbekLangOperFAQ')
-            markup.add(item1, item2)
-            bot.send_message(call.message.chat.id, "Выберите язык блока".format(call.message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+            inlineMessages(call, text1='Русский', text2='Ozbek', callback_data1='РусскийLangOperFAQ', callback_data2='OzbekLangOperFAQ' , markup_text='Выберите язык блока')
         elif call.data == 'РусскийLangOperFAQ':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
@@ -1499,7 +1216,7 @@ def callback_inline(call):
                         bot.send_message(str(call.message.chat.id), "📞 Вы подтвердили заявку!", reply_markup=markup)
                         user_id = str(k)
                         oper_id = str(call.message.chat.id)
-                        insert_new_data(user_id, oper_id)
+                        database.insert_new_data(user_id, oper_id)
                         break
                 if account_settings[str(call.message.chat.id)]["conversation"] != 'open':
                     if account_settings[str(call.data)]["conversation"] != 'open':
@@ -1541,7 +1258,7 @@ def callback_inline(call):
                             bot.send_message(str(call.message.chat.id), "📞 Вы подтвердили заявку!", reply_markup=markup)
                             user_id = str(call.data)
                             oper_id = str(call.message.chat.id)
-                            insert_new_data(user_id, oper_id)
+                            database.insert_new_data(user_id, oper_id)
                         except Exception as e:
                             account_settings[str(call.message.chat.id)]["conversation"] = 'close'
                             account_settings[str(call.data)]["tags"] = []

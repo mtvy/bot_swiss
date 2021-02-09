@@ -29,6 +29,7 @@ class Account:
             #'feedback_st': self.feedback_st,
             #'timer_conv': self.timer,
         })
+
         
 def openfileforRead(action=None, name_path=None):
     global account_settings
