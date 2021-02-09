@@ -41,7 +41,7 @@ bot = telebot.TeleBot(config.TOKEN)
 
 def connect():
     try:
-        con = psycopg2.connect(database="postgres",user="postgres",password="postgres", host="127.0.0.1",port="5432")
+        con = psycopg2.connect(database="postgres",user="postgres",password="14072003", host="127.0.0.1",port="5432")
         cur = con.cursor()
         return con, cur
     except (Exception, psycopg2.DatabaseError) as error:
@@ -1502,54 +1502,56 @@ def callback_inline(call):
                         insert_new_data(user_id, oper_id)
                         break
                 if account_settings[str(call.message.chat.id)]["conversation"] != 'open':
-                    u_tex = "Пользователь id: "
-                    u_tex += str(call.data)
-                    u_tex += " отменил режим!\nПовторный вызов..."
-                    bot.send_message(call.message.chat.id, u_tex)
-                    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-                    user_markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-                    item1 = types.KeyboardButton("🔙 Отклонить вызов оператора")
-                    item2 = types.KeyboardButton("❔ Инструкция")
-                    item3 = types.KeyboardButton("❗️ Жалоба")
-                    item4 = types.KeyboardButton("🙋 Операторская")
-                    item5 = types.KeyboardButton("☎️ Поддержка")
-                    item6 = types.KeyboardButton("✍️ Директор")
-                    item7 = types.KeyboardButton("👨‍⚕️ Доктор")
-                    markup.row(item1, item2).row(item3, item4, item5).row(item6, item7)
-                    if account_settings[str(call.data)]["language"] != "Русский":
-                        item1 = types.KeyboardButton("🔙 Operator chaqiruvini rad etish")
-                        item2 = types.KeyboardButton("❔ Ko'rsatma")
-                    user_markup.add(item1, item2)
-                    account_settings[str(call.message.chat.id)]["tags"].append(str(call.data))
-                    account_settings[str(call.message.chat.id)]["conversation"] = 'open'
-                    account_settings[str(call.data)]["tags"].append(str(call.message.chat.id))
-                    account_settings[str(call.data)]["tags"].append("0")
-                    account_settings[str(call.data)]["conversation"] = 'open'
-                    account_settings[str(call.data)]["timer_conv"] = int(time.time())
-                    
-                    openfileforRead('w+')
-                    openfileforRead('r')
-
-                    try:
-                        if account_settings[str(call.data)]["language"] == "Русский":
-                            oper_ans = "📞 Оператор #" + str(call.message.chat.id) + " активировал переписку"
-                            bot.send_message(str(call.data), oper_ans, reply_markup=user_markup)
-                        else:
-                            oper_ans = "📞 Operator #" + str(call.message.chat.id) + " yozishmalarni faollashtirdi"
-                            bot.send_message(str(call.data), oper_ans, reply_markup=user_markup)
-                        bot.send_message(str(call.message.chat.id), "📞 Вы подтвердили заявку!", reply_markup=markup)
-                        user_id = str(call.data)
-                        oper_id = str(call.message.chat.id)
-                        insert_new_data(user_id, oper_id)
-                    except Exception as e:
-                        account_settings[str(call.message.chat.id)]["conversation"] = 'close'
-                        account_settings[str(call.data)]["tags"] = []
-                        account_settings[str(call.message.chat.id)]["tags"] = []
-                        bot.send_message(call.message.chat.id, 'Пользователь выключил бота!')
+                    if account_settings[str(call.data)]["conversation"] != 'open':
+                        u_tex = "Пользователь id: "
+                        u_tex += str(call.data)
+                        u_tex += " отменил режим!\nПовторный вызов..."
+                        bot.send_message(call.message.chat.id, u_tex)
+                        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+                        user_markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+                        item1 = types.KeyboardButton("🔙 Отклонить вызов оператора")
+                        item2 = types.KeyboardButton("❔ Инструкция")
+                        item3 = types.KeyboardButton("❗️ Жалоба")
+                        item4 = types.KeyboardButton("🙋 Операторская")
+                        item5 = types.KeyboardButton("☎️ Поддержка")
+                        item6 = types.KeyboardButton("✍️ Директор")
+                        item7 = types.KeyboardButton("👨‍⚕️ Доктор")
+                        markup.row(item1, item2).row(item3, item4, item5).row(item6, item7)
+                        if account_settings[str(call.data)]["language"] != "Русский":
+                            item1 = types.KeyboardButton("🔙 Operator chaqiruvini rad etish")
+                            item2 = types.KeyboardButton("❔ Ko'rsatma")
+                        user_markup.add(item1, item2)
+                        account_settings[str(call.message.chat.id)]["tags"].append(str(call.data))
+                        account_settings[str(call.message.chat.id)]["conversation"] = 'open'
+                        account_settings[str(call.data)]["tags"].append(str(call.message.chat.id))
+                        account_settings[str(call.data)]["tags"].append("0")
+                        account_settings[str(call.data)]["conversation"] = 'open'
+                        account_settings[str(call.data)]["timer_conv"] = int(time.time())
                         
                         openfileforRead('w+')
                         openfileforRead('r')
 
+                        try:
+                            if account_settings[str(call.data)]["language"] == "Русский":
+                                oper_ans = "📞 Оператор #" + str(call.message.chat.id) + " активировал переписку"
+                                bot.send_message(str(call.data), oper_ans, reply_markup=user_markup)
+                            else:
+                                oper_ans = "📞 Operator #" + str(call.message.chat.id) + " yozishmalarni faollashtirdi"
+                                bot.send_message(str(call.data), oper_ans, reply_markup=user_markup)
+                            bot.send_message(str(call.message.chat.id), "📞 Вы подтвердили заявку!", reply_markup=markup)
+                            user_id = str(call.data)
+                            oper_id = str(call.message.chat.id)
+                            insert_new_data(user_id, oper_id)
+                        except Exception as e:
+                            account_settings[str(call.message.chat.id)]["conversation"] = 'close'
+                            account_settings[str(call.data)]["tags"] = []
+                            account_settings[str(call.message.chat.id)]["tags"] = []
+                            bot.send_message(call.message.chat.id, 'Пользователь выключил бота!')
+                            
+                            openfileforRead('w+')
+                            openfileforRead('r')
+                    else:
+                        bot.send_message(str(call.message.chat.id), "Другой оператор отвечает на заявку!")
             else:
                 bot.send_message(call.message.chat.id, "Закончите старый диалог, чтобы начать новый!")
 
