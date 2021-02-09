@@ -1369,11 +1369,9 @@
         "login": "na1707",
         "name": "Nargiza",
         "oper_ids": [],
-        "conversation": "open",
+        "conversation": "close",
         "discount": "0",
-        "tags": [
-            "646607199"
-        ],
+        "tags": [],
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
@@ -3351,11 +3349,9 @@
         "login": "Nilyushk",
         "name": "\u041d\u0438\u043b\u044e",
         "oper_ids": [],
-        "conversation": "open",
+        "conversation": "close",
         "discount": "0",
-        "tags": [
-            "39953924"
-        ],
+        "tags": [],
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
@@ -3365,11 +3361,9 @@
         "login": "IbroKHimoV_3338",
         "name": "IbroKHimoV_3338",
         "oper_ids": [],
-        "conversation": "open",
+        "conversation": "close",
         "discount": "0",
-        "tags": [
-            "646607199"
-        ],
+        "tags": [],
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
