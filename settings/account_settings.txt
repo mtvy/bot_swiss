@@ -3,22 +3,27 @@
         "login": "None",
         "name": "El",
         "oper_ids": [],
-        "conversation": "close",
+        "conversation": "open",
         "discount": "0",
-        "tags": [],
+        "tags": [
+            "281321076",
+            "0"
+        ],
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
         "feedback_st": "close",
-        "timer_conv": 1608590306
+        "timer_conv": 1612888361
     },
     "281321076": {
         "login": "mtvyp",
         "name": "\u041c\u0430\u0442\u0432\u0435\u0439",
         "oper_ids": [],
-        "conversation": "close",
+        "conversation": "open",
         "discount": "0",
-        "tags": [],
+        "tags": [
+            "1329360121"
+        ],
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
