@@ -9,3 +9,4 @@ import config
 from path import *
 from variables import *
 import database
+#from bot import *

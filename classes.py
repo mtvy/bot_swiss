@@ -3,13 +3,13 @@ from lib import *
 class Account:
 
     def __init__(self, i, acc):
-        self.personal_data = acc[i]['personal data']
+        self.personal_data = acc[i]['personal_data']
         self.conversation = acc[i]['conversation']
-        #self.feedback_st = acc[i]['feedback_st']
+        self.feedback_st = acc[i]['feedback_st']
         self.language = acc[i]['language']
         self.oper_ids = acc[i]['oper_ids']
         self.discount = acc[i]['discount']
-        #self.timer = acc[i]['timer_conv']
+        self.timer_conv = acc[i]['timer_conv']
         self.login = acc[i]['login']
         self.name = acc[i]['name']
         self.tags = acc[i]['tags']
@@ -24,7 +24,7 @@ class Account:
             'discount':  self.discount,
             'tags': self.tags,
             'ref':  self.ref,
-            'personal data': self.personal_data,
+            'personal_data': self.personal_data,
             'language': self.language,
             #'feedback_st': self.feedback_st,
             #'timer_conv': self.timer,
@@ -48,5 +48,7 @@ def read():
     box = [['i', Account(i,acc)] for i in acc]
     for i in box:
         print(i[1])
+        database.insert_account_data(i[1])
+    
 if __name__ == '__main__':
     read()

@@ -10,7 +10,7 @@ def connect():
         print("Error while connecting PostgreSQL!", error)
         return 0
 
-def insert_new_data(user_id, oper_id):
+def insert_new_data(user_id, oper_id, bot):
     con, cur = connect()
     if con == 0 and cur == 0:
         return 0
@@ -47,7 +47,7 @@ def insert_new_data(user_id, oper_id):
         except Exception as e:
             print('Error entering new data to message_tb!', e)
             return 0
-def insert_new_feedback_data(oper_id, user_id, txt):
+def insert_new_feedback_data(oper_id, user_id, txt, bot):
     con, cur = connect()
     if con == 0 and cur == 0:
         return 0
@@ -98,7 +98,7 @@ def insert_new_feedback_data(oper_id, user_id, txt):
             print('Error entering new data to feedback_tb!', e)
             return 0
 
-def insert_text_to_data(text_val, sm_id):
+def insert_text_to_data(text_val, sm_id, bot):
     con, cur = connect()
     if con == 0 and cur == 0:
         return 0
@@ -117,7 +117,7 @@ def insert_text_to_data(text_val, sm_id):
             print('Error entering data to message_tb!', e)
             return 0
 
-def closerDataBase(sm_id):
+def closerDataBase(sm_id, bot):
     con, cur = connect()
     if con == 0 and cur == 0:
         return 0
@@ -138,7 +138,7 @@ def closerDataBase(sm_id):
             print('Error entering data to message_tb!', e)
             return 0
 
-def getDataFromDB(date_start):
+def getDataFromDB(date_start, bot):
     con, cur = connect()
     if con == 0 and cur == 0:
         return 0
@@ -162,7 +162,7 @@ def getDataFromDB(date_start):
         except Exception as e:
             print('Error data message_tb!', e)
             return '0'
-def getDataFromFeedBackDB(date_start):
+def getDataFromFeedBackDB(date_start, bot):
     con, cur = connect()
     if con == 0 and cur == 0:
         return 0
@@ -187,7 +187,7 @@ def getDataFromFeedBackDB(date_start):
             print('Error data feedback_tb!', e)
             return '0'
 
-def getTextFromDB(id_text):
+def getTextFromDB(id_text, bot):
     con, cur = connect()
     if con == 0 and cur == 0:
         return 0
@@ -203,7 +203,7 @@ def getTextFromDB(id_text):
         except Exception as e:
             print('Error, wrong id!', e)
             return '0'
-def getTextFromFeedBackDB(id_text):
+def getTextFromFeedBackDB(id_text, bot):
     con, cur = connect()
     if con == 0 and cur == 0:
         return 0
@@ -220,7 +220,7 @@ def getTextFromFeedBackDB(id_text):
             print('Error, wrong id!', e)
             return '0'
 
-def change_data(name):
+def change_data(name, bot):
     con, cur = connect()
     if con == 0 or cur == 0:
         return 0
@@ -232,3 +232,21 @@ def change_data(name):
         except Exception as e:
             err_txt = 'Error deleting data from user @' + name + '!'
             print(err_txt, e)
+
+
+
+### For account_tb
+
+def insert_account_data(account):
+    con, cur = connect()
+    if con == 0 and cur == 0:
+        return False
+    else:
+        try:
+            cur.execute("INSERT INTO account_tb (login, name, oper_ids, conversation, discount, tags, ref, personal_data, language, feedback_st, timer_conv) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (account.login, account.name, account.oper_ids, account.conversation, account.discount, account.tags, account.tags, account.personal_data, account.language, account.feedback_st, account.timer_conv))
+            con.commit()
+            print('New user add!')
+            return True
+        except Exception as e:
+            print('Error entering new data to account_tb!', e)
+            return 0

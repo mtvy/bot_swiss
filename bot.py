@@ -196,7 +196,7 @@ def operKeyboardMaker(message, which_oper, lang):
     markup.add(item1)
     user_id = str(message.chat.id)
     oper_id = '0'
-    database.insert_new_data(user_id, oper_id)
+    database.insert_new_data(user_id, oper_id, bot)
     sendReqtoOper(message, which_oper, oper_send_text, markup)
 		
 
@@ -210,7 +210,7 @@ def feedBackdbDateSortEnter(message):
 
 def dbSortEnter(message):
     date_text = message.text
-    date_text = database.getDataFromDB(date_text)
+    date_text = database.getDataFromDB(date_text, bot)
     if date_text == '0':
         bot.send_message(message.chat.id, 'Данной даты нет в базе!')
         return
@@ -219,7 +219,7 @@ def dbSortEnter(message):
     bot.register_next_step_handler(send, dbIdSortEnter)
 def FeedBackdbSortEnter(message):
     date_text = message.text
-    date_text = database.getDataFromFeedBackDB(date_text)
+    date_text = database.getDataFromFeedBackDB(date_text, bot)
     if date_text == '0':
         bot.send_message(message.chat.id, 'Данной даты нет в базе!')
         return
@@ -229,14 +229,14 @@ def FeedBackdbSortEnter(message):
 
 def dbIdSortEnter(message):
     id_text = message.text
-    id_text = database.getTextFromDB(id_text)
+    id_text = database.getTextFromDB(id_text, bot)
     if id_text == '0':
         bot.send_message(message.chat.id, 'Такого номера нет в базе!')
         return
     else: bot.send_message(message.chat.id, id_text)
 def FeedBackdbIdSortEnter(message):
     id_text = message.text
-    id_text = database.getTextFromFeedBackDB(id_text)
+    id_text = database.getTextFromFeedBackDB(id_text, bot)
     if id_text == '0':
         bot.send_message(message.chat.id, 'Такого номера нет в базе!')
         return
@@ -331,7 +331,7 @@ def stopConversation(message, lang, pers_id=None):
     openfileforRead('w+')
     openfileforRead('r')
             
-    database.closerDataBase(person_id)
+    database.closerDataBase(person_id, bot)
 
 def closeConversation(message):
     global account_settings
@@ -341,7 +341,7 @@ def closeConversation(message):
     openfileforRead('w+')
     openfileforRead('r')
             
-    database.closerDataBase(str(message.chat.id))
+    database.closerDataBase(str(message.chat.id), bot)
 
 @bot.message_handler(content_types=['text', 'photo'])
 def lol(message):
@@ -520,7 +520,7 @@ def lol(message):
                     file_info = bot.get_file(fileID)
                     downloaded_file = bot.download_file(file_info.file_path)
                     bot.send_photo(account_settings[str(message.chat.id)]["tags"][0], downloaded_file)
-                database.insert_text_to_data(sm_id, str(message.chat.id))
+                database.insert_text_to_data(sm_id, str(message.chat.id), bot)
 
 
 def checkOperId(person_id, action)->bool:
@@ -770,7 +770,7 @@ def fdBack_fill(message, lang):
                 checkBlockedPeople(message, markup, id_p)
 
             oper_id = '0'
-            database.insert_new_feedback_data(oper_id,  str(message.chat.id), txt)
+            database.insert_new_feedback_data(oper_id,  str(message.chat.id), txt, bot)
         else:
             if feedback_user != '📞 telefon' and feedback_user != '💽 Yozishmalar bazasi' and feedback_user !='🏠 manzillari' and feedback_user !='🌐 Biz ijtimoiy tarmoqlarda' and feedback_user !='🙋 Operator' and feedback_user != "☎️ O'sha.  qo'llab-quvvatlash" and feedback_user != '✍️ Direktorga yozing' and feedback_user !='📝 buyurtma yaratish' and feedback_user !='❗️ Shikoyat qoldiring' and feedback_user !='% Chegirma oling' and feedback_user !="®FAQ Ko'rsatma" and feedback_user != 'stop':
                 if feedback_user == None: feedback_user = 'Пользователь отправил нечитаемый объект'
@@ -789,7 +789,7 @@ def fdBack_fill(message, lang):
                     checkBlockedPeople(message, markup, id_p)
 
                 oper_id = '0'
-                database.insert_new_feedback_data(oper_id,  str(message.chat.id), txt)
+                database.insert_new_feedback_data(oper_id,  str(message.chat.id), txt, bot)
     
     elif feedback_user == 'stop':
         if lang == 0:
@@ -938,7 +938,7 @@ def userSebdText(message):
             if message.text != None: word_user_send = message.text
             else: word_user_send = message.caption
             bot.send_message(account_settings[str(message.chat.id)]["feedback_st"], word_user_send)
-            database.insert_new_feedback_data(str(message.chat.id), account_settings[str(message.chat.id)]["feedback_st"] , word_user_send)
+            database.insert_new_feedback_data(str(message.chat.id), account_settings[str(message.chat.id)]["feedback_st"] , word_user_send, bot)
         bot.send_message(message.chat.id, "Сообщение отправлено!")
         account_settings[account_settings[str(message.chat.id)]["feedback_st"]]["feedback_st"] = 'close'
         account_settings[str(message.chat.id)]["feedback_st"] = 'close'
@@ -1216,7 +1216,7 @@ def callback_inline(call):
                         bot.send_message(str(call.message.chat.id), "📞 Вы подтвердили заявку!", reply_markup=markup)
                         user_id = str(k)
                         oper_id = str(call.message.chat.id)
-                        database.insert_new_data(user_id, oper_id)
+                        database.insert_new_data(user_id, oper_id, bot)
                         break
                 if account_settings[str(call.message.chat.id)]["conversation"] != 'open':
                     if account_settings[str(call.data)]["conversation"] != 'open':
@@ -1258,7 +1258,7 @@ def callback_inline(call):
                             bot.send_message(str(call.message.chat.id), "📞 Вы подтвердили заявку!", reply_markup=markup)
                             user_id = str(call.data)
                             oper_id = str(call.message.chat.id)
-                            database.insert_new_data(user_id, oper_id)
+                            database.insert_new_data(user_id, oper_id, bot)
                         except Exception as e:
                             account_settings[str(call.message.chat.id)]["conversation"] = 'close'
                             account_settings[str(call.data)]["tags"] = []
