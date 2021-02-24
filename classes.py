@@ -2,21 +2,23 @@ from lib import *
 
 class Account:
 
-    def __init__(self, i, acc):
-        self.personal_data = acc[i]['personal_data']
-        self.conversation = acc[i]['conversation']
-        self.feedback_st = acc[i]['feedback_st']
-        self.timer_conv = acc[i]['timer_conv']
-        self.language = acc[i]['language']
-        self.oper_ids = acc[i]['oper_ids']
-        self.discount = acc[i]['discount']
-        self.login = acc[i]['login']
-        self.name = acc[i]['name']
-        self.tags = acc[i]['tags']
-        self.ref = acc[i]['ref']
+    def __init__(self, acc):
+        self.telegram_id = acc[0]
+        self.personal_data = acc[1]
+        self.conversation = acc[2]
+        self.feedback_st = acc[3]
+        self.timer_conv = acc[4]
+        self.language = acc[5]
+        self.oper_ids = acc[6]
+        self.discount = acc[7]
+        self.login = acc[8]
+        self.name = acc[9]
+        self.tags = acc[10]
+        self.ref = acc[11]
     
     def __str__(self):
         return str({
+            'telegram_id': self.telegram_id
             'login': self.login,
             'name':  self.name,
             'oper_ids':  self.oper_ids,
@@ -49,6 +51,7 @@ def read():
     for i in box:
         print(i[1])
         database.insert_account_data(account = i[1])
+       	database.change_account_data(account = i[1], parametr = "personal_data", data = "YES")
     
 if __name__ == '__main__':
     read()

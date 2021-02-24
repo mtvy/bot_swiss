@@ -1,33 +1,8 @@
 from lib import *
 
-def openfileforRead(action=None, name_path=None):
-    global account_settings
-    if action == 'set':
-        with open(path_acc_settings, 'r') as file_set:
-            if(file_set.readline() == ""): 
-                account_settings = {}
-            else:
-                file_set.close()
-                with open(path_acc_settings, 'r') as file_set:
-                    account_settings = json.load(file_set)
-        return account_settings
-    elif action == 'r':
-        with open(path_acc_settings, 'r') as file_set:
-            if(file_set.readline() == ""): 
-                account_settings = {}
-            else:
-                file_set.close()
-                with open(path_acc_settings, 'r') as file_set:
-                    account_settings = json.load(file_set)
-    elif action == 'w+':
-        with open(path_acc_settings, 'w+') as f:
-            json.dump(account_settings, f, indent='    ')
-    else:
-        file_text = ''
-        with io.open(name_path, encoding='utf-8') as file_set:
-                        for i in file_set:
-                            file_text += i
-        return file_text
+
+account_settings = database.get_accounts_data()
+
 
 def saveNewText(message, name_path):
     word = message.text
@@ -35,7 +10,6 @@ def saveNewText(message, name_path):
         f.write(word)
     bot.send_message(message.chat.id, "Изменения сохранены!")
 
-openfileforRead('r')
 
 bot = telebot.TeleBot(config.TOKEN)
 
@@ -58,13 +32,13 @@ class P_schedule(): ### Class для работы c schedule
         global message_ids_dict
         c_ex = 0
 
-        openfileforRead('r')
+        account_settings = database.get_accounts_data()
 
-        for i in account_settings.keys():
+        for account in account_settings.keys():
             try:
-                time_checker = int(time.time()) - account_settings[str(i)]["timer_conv"]
-                if time_checker > 900 and account_settings[str(i)]["conversation"]== 'open':
-                    if account_settings[str(i)]["language"] == 'Русский':
+                time_checker = int(time.time()) - account_settings[account].timer_conv
+                if time_checker > 900 and account_settings[account].conversation == 'open':
+                    if account_settings[account].language == 'Русский':
                         stopConversation(None, 0, str(i))
                     else:
                         stopConversation(None, 1, str(i))
@@ -91,27 +65,18 @@ class P_schedule(): ### Class для работы c schedule
 def welcome(message):
     global account_settings
     global new_acc_id
+    
+    account_settings = database.get_accounts_data();
 
-    openfileforRead('r')
-
-    new_acc_id = str(message.chat.id)
-    checker_keys = account_settings.setdefault(new_acc_id)
-    if checker_keys == None or account_settings[new_acc_id]["language"] == None:
-        markup = types.InlineKeyboardMarkup(row_width=2)
-        item1 = types.InlineKeyboardButton("Русский", callback_data='Русский')
-        item2 = types.InlineKeyboardButton("Ozbek", callback_data="Ozbek")
-        markup.add(item1, item2)
-        account_settings[new_acc_id] = {"login" : str(message.chat.username), "name" : str(message.chat.first_name), "oper_ids" : [], "conversation" : "close", "discount" : "0", "tags" : [], "ref" : "0", "personal data" : "NO", "language" : None, "feedback_st" : 'close'}
-        openfileforRead('w+')
-        openfileforRead('r')
-        bot.send_message(message.chat.id,"🔱Choose language", reply_markup=markup)
-    else:
+    new_account = [str(message.chat.id)]
+    for account in account_settings.keys():
+      if account_settings[account].telegram_id == new_acc_id[0]:
         start_txt=''
-        if account_settings[new_acc_id]["language"] == "Русский":
-            if account_settings[new_acc_id]["personal data"] == "YES":
+        if account_settings[account].language == "Русский":
+            if account_settings[account].personal data == "YES":
                 bot.send_message(message.chat.id,"🔱Вы уже зарегистрированы в системе!")
                 keyboardRefMaker(message, 0)
-            elif account_settings[new_acc_id]["personal data"] == "NO":
+            elif account_settings[account].personal_data == "NO":
 
                 start_txt = openfileforRead(None, path_first_lang)
                 
@@ -121,10 +86,10 @@ def welcome(message):
                 markup.add(item1, item2)
                 bot.send_message(message.chat.id, start_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
         else:
-            if account_settings[new_acc_id]["personal data"] == "YES":
+            if account_settings[account].personal_data == "YES":
                 bot.send_message(message.chat.id,"🔱Siz allaqachon ro'yxatdan o'tgansiz!")
                 keyboardRefMaker(message, 1)
-            elif account_settings[new_acc_id]["personal data"] == "NO":
+            elif account_settings[account].personal_data == "NO":
 
                 start_txt = openfileforRead(None, path_second_lang)
                 
@@ -133,6 +98,19 @@ def welcome(message):
                 item2 = types.InlineKeyboardButton("Qo'shilmayman", callback_data='Disagree')
                 markup.add(item1, item2)
                 bot.send_message(message.chat.id, start_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+    else:
+      markup = types.InlineKeyboardMarkup(row_width=2)
+      item1 = types.InlineKeyboardButton("Русский", callback_data='Русский')
+      item2 = types.InlineKeyboardButton("Ozbek", callback_data="Ozbek")
+      markup.add(item1, item2)
+      
+      new_acc_id += [str(message.chat.username), str(message.chat.first_name), [], "close", "0", [], "0", "NO", None, 'close'}
+      
+      account = Account(new_acc_id)
+      database.insert_account_data(account)
+      account_settings[account.telegram_id] = account
+      
+      bot.send_message(message.chat.id,"🔱Choose language", reply_markup=markup)
 
 @bot.message_handler(commands=['changeLabel'])
 def adderNewLabel(message):
@@ -169,7 +147,7 @@ def sendReqtoOper(message, which_oper, oper_send_text, markup):
 def operKeyboardMaker(message, which_oper, lang):
     global account_settings
     global message_ids_dict
-    account_settings[str(message.chat.id)]["conversation"] = 'mid'
+    account_settings[str(message.chat.id)].conversation = 'mid'
     message_ids_dict[str(message.chat.id)] = message
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     if lang == 0:
@@ -245,7 +223,7 @@ def FeedBackdbIdSortEnter(message):
 
 def pushingLabelFromFile(message, path, path_sec):
     label_text = ''
-    if account_settings[str(message.chat.id)]["language"] == "Русский":
+    if account_settings[str(message.chat.id).language == "Русский":
         label_text = openfileforRead(None, path)
     else:
         label_text = openfileforRead(None, path_sec)
@@ -253,7 +231,7 @@ def pushingLabelFromFile(message, path, path_sec):
 
 def operInit(message, action, set_act, id_check, deactivation=None):
     if checkOperId(str(message.chat.id), action):
-        if account_settings[str(message.chat.id)]["language"] == "Русский":
+        if account_settings[str(message.chat.id)].language == "Русский":
             operKeyboardMaker(message, set_act, 0)
         else:
             operKeyboardMaker(message, set_act, 1)
@@ -262,19 +240,19 @@ def operInit(message, action, set_act, id_check, deactivation=None):
         
 def redirectInit(message, action):
     bot.send_message(str(message.chat.id), action)
-    if len(account_settings[str(message.chat.id)]["tags"]) != 0:
+    if len(account_settings[str(message.chat.id)].tags) != 0:
 
-        bot.send_message(str(account_settings[str(message.chat.id)]["tags"][0]), action)
-        account_settings[account_settings[str(message.chat.id)]["tags"][0]]['conversation'] = 'close'
-        account_settings[account_settings[str(message.chat.id)]["tags"][0]]['tags'].clear()
+        bot.send_message(str(account_settings[str(message.chat.id)].tags[0]), action)
+        account_settings[account_settings[str(message.chat.id)].tags[0]].conversation = 'close'
+        account_settings[account_settings[str(message.chat.id)].tags[0]].tags.clear()
                 
         openfileforRead('w+')
         openfileforRead('r')
 
-        if account_settings[account_settings[str(message.chat.id)]["tags"][0]]["language"] == "Русский":
-            keyboardRefMaker(message, 0, account_settings[str(message.chat.id)]["tags"][0])
+        if account_settings[account_settings[str(message.chat.id)].tags[0]].language == "Русский":
+            keyboardRefMaker(message, 0, account_settings[str(message.chat.id)].tags[0])
         else:
-            keyboardRefMaker(message, 1, account_settings[str(message.chat.id)]["tags"][0])
+            keyboardRefMaker(message, 1, account_settings[str(message.chat.id)].tags[0])
 
     keyboardRefMaker(message, 0)
     markup = types.InlineKeyboardMarkup(row_width=2)
@@ -282,11 +260,11 @@ def redirectInit(message, action):
     item2 = types.InlineKeyboardButton("👎", callback_data="👎")
     markup.add(item1, item2)
     if checkOperId(str(message.chat.id), 'check_all_oper'):
-        if account_settings[account_settings[str(message.chat.id)]["tags"][0]]["language"] == "Русский":
-            bot.send_message(account_settings[str(message.chat.id)]["tags"][0], 'Оцените работу оператора!', reply_markup=markup)
-        else: bot.send_message(account_settings[str(message.chat.id)]["tags"][0], 'Operator ishini baholang!', reply_markup=markup)
+        if account_settings[account_settings[str(message.chat.id)].tags[0]].language == "Русский":
+            bot.send_message(account_settings[str(message.chat.id)].tags[0], 'Оцените работу оператора!', reply_markup=markup)
+        else: bot.send_message(account_settings[str(message.chat.id)].tags[0], 'Operator ishini baholang!', reply_markup=markup)
     else:
-        if account_settings[str(message.chat.id)]["language"] == "Русский":
+        if account_settings[str(message.chat.id)].language == "Русский":
                     bot.send_message(str(message.chat.id), 'Оцените работу оператора!', reply_markup=markup)
         else: bot.send_message(str(message.chat.id), 'Operator ishini baholang!', reply_markup=markup)
         
@@ -301,32 +279,32 @@ def stopConversation(message, lang, pers_id=None):
         push_text = "❗ Operator bilan aloqa yakunlandi"
 
     bot.send_message(person_id, push_text)
-    if len(account_settings[person_id]["tags"]) != 0:
-        bot.send_message(str(account_settings[person_id]["tags"][0]), push_text)
-        account_settings[account_settings[person_id]["tags"][0]]['conversation'] = 'close'
-        account_settings[account_settings[person_id]["tags"][0]]['tags'].clear()
+    if len(account_settings[person_id].tags) != 0:
+        bot.send_message(str(account_settings[person_id].tags[0]), push_text)
+        account_settings[account_settings[person_id].tags[0]].conversation = 'close'
+        account_settings[account_settings[person_id].tags[0]].tags.clear()
             
         openfileforRead('w+')
         openfileforRead('r')
-        if account_settings[account_settings[person_id]["tags"][0]]["language"] == "Русский":
-            keyboardRefMaker(None, 0, account_settings[person_id]["tags"][0])
+        if account_settings[account_settings[person_id].tags[0]].language == "Русский":
+            keyboardRefMaker(None, 0, account_settings[person_id].tags[0])
         else:
-            keyboardRefMaker(None, 1, account_settings[person_id]["tags"][0])
+            keyboardRefMaker(None, 1, account_settings[person_id].tags[0])
     keyboardRefMaker(None, lang, person_id)
     markup = types.InlineKeyboardMarkup(row_width=2)
     item1 = types.InlineKeyboardButton("👍", callback_data='👍')
     item2 = types.InlineKeyboardButton("👎", callback_data="👎")
     markup.add(item1, item2)
     if checkOperId(person_id, 'check_all_oper'):
-        if account_settings[account_settings[person_id]["tags"][0]]["language"] == "Русский":
-            bot.send_message(account_settings[person_id]["tags"][0], 'Оцените работу оператора!', reply_markup=markup)
-        else: bot.send_message(account_settings[person_id]["tags"][0], 'Operator ishini baholang!', reply_markup=markup)
+        if account_settings[account_settings[person_id].tags[0]].language == "Русский":
+            bot.send_message(account_settings[person_id].tags[0], 'Оцените работу оператора!', reply_markup=markup)
+        else: bot.send_message(account_settings[person_id].tags[0], 'Operator ishini baholang!', reply_markup=markup)
     else:
-        if account_settings[person_id]["language"] == "Русский":
+        if account_settings[person_id].language == "Русский":
             bot.send_message(person_id, 'Оцените работу оператора!', reply_markup=markup)
         else: bot.send_message(person_id, 'Operator ishini baholang!', reply_markup=markup)
-    account_settings[person_id]['conversation'] = 'close'
-    account_settings[person_id]['tags'].clear()
+    account_settings[person_id].conversation = 'close'
+    account_settings[person_id].tags.clear()
             
     openfileforRead('w+')
     openfileforRead('r')
@@ -335,8 +313,8 @@ def stopConversation(message, lang, pers_id=None):
 
 def closeConversation(message):
     global account_settings
-    account_settings[str(message.chat.id)]['conversation'] = 'close'
-    account_settings[str(message.chat.id)]['tags'].clear()
+    account_settings[str(message.chat.id)].conversation = 'close'
+    account_settings[str(message.chat.id)].tags.clear()
             
     openfileforRead('w+')
     openfileforRead('r')
@@ -372,9 +350,9 @@ def lol(message):
         elif message.text == '❗️ Оставить жалобу' or message.text == '❗️ Shikoyat qoldiring':
             if checkOperId(str(message.chat.id), 'check_feedback_oper_id'):
                 oper_write = ''
-                account_settings[str(message.chat.id)]["feedback_st"] = 'open'
+                account_settings[str(message.chat.id)].feedback_st = 'open'
                 markup = types.InlineKeyboardMarkup(row_width=2)
-                if account_settings[str(message.chat.id)]["language"] == "Русский":
+                if account_settings[str(message.chat.id)].language == "Русский":
 
                     oper_write = openfileforRead(None, path_recv_label)
  
@@ -385,7 +363,7 @@ def lol(message):
 
                     item1 = types.InlineKeyboardButton("Shikoyat yozing", callback_data='Write a feedback')
                 markup.add(item1)
-                account_settings[str(message.chat.id)]["feedback_st"] = 'open'
+                account_settings[str(message.chat.id)].feedback_st = 'open'
                 bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
             else:
                 feedBackdbDateSortEnter(message)
@@ -393,15 +371,15 @@ def lol(message):
             if checkOperId(str(message.chat.id), 'check_all_oper'):
                 dbDateSortEnter(message)
             else:
-                if account_settings[str(message.chat.id)]["language"] == "Русский":
+                if account_settings[str(message.chat.id)].language == "Русский":
                     bot.send_message(message.chat.id, 'У вас нет прав для чтения базы!')
                 else: bot.send_message(message.chat.id, "Sizda bazani o'qish huquqi yo'q!")
         elif message.text == '% Получить скидку' or message.text == '% Chegirma oling':
             oper_write = ''
             mess = 'new'
-            if (account_settings[str(message.chat.id)]["discount"] == "0" and account_settings[str(message.chat.id)]["ref"] == "0"):
+            if (account_settings[str(message.chat.id)].discount == "0" and account_settings[str(message.chat.id)].ref == "0"):
                 markup = types.InlineKeyboardMarkup(row_width=2)
-                if account_settings[str(message.chat.id)]["language"] == "Русский":
+                if account_settings[str(message.chat.id)].language == "Русский":
 
                     oper_write = openfileforRead(None, path_discount_label)
 
@@ -415,36 +393,36 @@ def lol(message):
                     oper_write += "\nSizning tavsiyangiz kodi: "
                     oper_write += str(message.chat.id)
                     bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html')
-            elif account_settings[str(message.chat.id)]["ref"] == "10":
-                account_settings[str(message.chat.id)]["discount"] = "10"
+            elif account_settings[str(message.chat.id)].ref == "10":
+                account_settings[str(message.chat.id)].discount = "10"
                 
                 openfileforRead('w+')
                 openfileforRead('r')
 
-                if account_settings[str(message.chat.id)]["language"] == "Русский":
+                if account_settings[str(message.chat.id)].language == "Русский":
                     picPNGmaker(message)
                     bot.send_message(message.chat.id, "✅ У вас максимальная скидка!")
                 else:
                     picPNGmaker(message)
                     bot.send_message(message.chat.id, "✅ Siz maksimal chegirma bor!")
             else:
-                if account_settings[str(message.chat.id)]["language"] == "Русский":
-                    if account_settings[str(message.chat.id)]["discount"] == "10":
+                if account_settings[str(message.chat.id)].language == "Русский":
+                    if account_settings[str(message.chat.id)].discount == "10":
                         picPNGmaker(message)
                         bot.send_message(message.chat.id, "✅ У вас максимальная скидка!")
                     else:
                         text_tags = "❌ Ваши друзья ещё не активировали бота!\n❌ Всего активаций "
-                        text_tags += account_settings[str(message.chat.id)]["ref"]
+                        text_tags += account_settings[str(message.chat.id)].ref
                         text_tags += " из 10"
                         bot.send_message(message.chat.id, text_tags)
                         picPNGmaker(message)
                 else:
-                    if account_settings[str(message.chat.id)]["discount"] == "10":
+                    if account_settings[str(message.chat.id)].discount == "10":
                         picPNGmaker(message)
                         bot.send_message(message.chat.id, "✅ Siz maksimal chegirma bor!")
                     else:
                         text_tags = "❌ Sizning do'stlaringiz hali botni faollashtirmagan!\n❌ Jami aktivatsiyalar "
-                        text_tags += account_settings[str(message.chat.id)]["ref"]
+                        text_tags += account_settings[str(message.chat.id)].ref
                         text_tags += " dan 10"
                         bot.send_message(message.chat.id, text_tags)
                         picPNGmaker(message)
@@ -458,9 +436,9 @@ def lol(message):
             redirectInit(message, "❗ Общение с оператором завершено, перенаправление в раздел жалоб")
 
             oper_write = ''
-            account_settings[account_settings[str(message.chat.id)]["tags"][0]]["feedback_st"] = 'open'
+            account_settings[account_settings[str(message.chat.id)].tags[0]].feedback_st = 'open'
             markup = types.InlineKeyboardMarkup(row_width=2)
-            if account_settings[account_settings[str(message.chat.id)]["tags"][0]]["language"] == "Русский":
+            if account_settings[account_settings[str(message.chat.id)].tags[0]].language == "Русский":
 
                 oper_write = openfileforRead(None, path_recv_label)
  
@@ -471,21 +449,21 @@ def lol(message):
 
                 item1 = types.InlineKeyboardButton("Shikoyat yozing", callback_data='Write a feedback')
             markup.add(item1)
-            account_settings[account_settings[str(message.chat.id)]["tags"][0]]["feedback_st"] = 'open'
-            bot.send_message(account_settings[str(message.chat.id)]["tags"][0], oper_write.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+            account_settings[account_settings[str(message.chat.id)].tags[0]].feedback_st = 'open'
+            bot.send_message(account_settings[str(message.chat.id)].tags[0], oper_write.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
             closeConversation(message)        
         elif message.text == "🙋 Операторская":
             redirectInit(message, "❗ Общение завершено, перенаправление к оператору")
-            operInit(message_ids_dict[account_settings[str(message.chat.id)]["tags"][0]], 'check_simple_oper', 'simple_oper', closeConversation(message)) 
+            operInit(message_ids_dict[account_settings[str(message.chat.id)].tags[0]], 'check_simple_oper', 'simple_oper', closeConversation(message)) 
         elif message.text == "☎️ Поддержка":
             redirectInit(message, "❗ Общение завершено, перенаправление в тех.поддержку")
-            operInit(message_ids_dict[account_settings[str(message.chat.id)]["tags"][0]], 'check_support_id', 'sup_oper', closeConversation(message)) 
+            operInit(message_ids_dict[account_settings[str(message.chat.id)].tags.[0]], 'check_support_id', 'sup_oper', closeConversation(message)) 
         elif message.text == "✍️ Директор":
             redirectInit(message, "❗ Общение завершено, перенаправление к директору")
-            operInit(message_ids_dict[account_settings[str(message.chat.id)]["tags"][0]], 'check_director_id', 'dir_oper', closeConversation(message))    
+            operInit(message_ids_dict[account_settings[str(message.chat.id)].tags[0]], 'check_director_id', 'dir_oper', closeConversation(message))    
         elif message.text == "👨‍⚕️ Доктор":
             redirectInit(message, "❗ Общение завершено, перенаправление к доктору")
-            operInit(message_ids_dict[account_settings[str(message.chat.id)]["tags"][0]], 'check_doc_id', 'doc_oper', closeConversation(message))
+            operInit(message_ids_dict[account_settings[str(message.chat.id)].tags[0]], 'check_doc_id', 'doc_oper', closeConversation(message))
         elif message.text == "❔ Инструкция":
             FAQ_txt = ''
 
@@ -501,29 +479,29 @@ def lol(message):
         else:
             if account_settings[str(message.chat.id)]['conversation'] == 'open':
                 if checkOperId(str(message.chat.id), 'check_all_oper'):
-                    account_settings[account_settings[str(message.chat.id)]["tags"][0]]["timer_conv"] = int(time.time())
+                    account_settings[account_settings[str(message.chat.id)].tags[0]].timer_conv = int(time.time())
                     sm_id = 'Operator: '
                 else: 
-                    account_settings[str(message.chat.id)]["timer_conv"] = int(time.time())
+                    account_settings[str(message.chat.id)].timer_conv = int(time.time())
                     sm_id = 'User: '
                 openfileforRead('w+')
                 openfileforRead('r')
                 if message.text != None:
                     sm_id = sm_id + message.text + '\n'
-                    bot.send_message(account_settings[str(message.chat.id)]["tags"][0], message.text)
+                    bot.send_message(account_settings[str(message.chat.id)].tags[0], message.text)
                 elif message.caption != None:
                     sm_id = sm_id + message.caption + '\n'
-                    bot.send_message(account_settings[str(message.chat.id)]["tags"][0], message.caption)
+                    bot.send_message(account_settings[str(message.chat.id)].tags[0], message.caption)
                 if message.photo != None:
                     sm_id = sm_id + 'PHOTO\n'
                     fileID = message.photo[-1].file_id
                     file_info = bot.get_file(fileID)
                     downloaded_file = bot.download_file(file_info.file_path)
-                    bot.send_photo(account_settings[str(message.chat.id)]["tags"][0], downloaded_file)
+                    bot.send_photo(account_settings[str(message.chat.id)].tags[0], downloaded_file)
                 database.insert_text_to_data(sm_id, str(message.chat.id), bot)
 
 
-def checkOperId(person_id, action)->bool:
+def checkOperId(person_id, action):
     if action == 'check_all_oper':
         for pers_id in all_ids_arr:
             if person_id == pers_id:
@@ -602,7 +580,7 @@ def keyboardRefMaker(message, lang, pers_id=None):
         else:
             bot.send_message(message.chat.id, faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
             openfileforRead('r')
-            account_settings[str(message.chat.id)]["personal data"] = "YES"
+            account_settings[str(message.chat.id)].personal_data = "YES"
             openfileforRead('w+')
             openfileforRead('r')
     else:
@@ -640,7 +618,7 @@ def keyboardRefMaker(message, lang, pers_id=None):
         else:
             bot.send_message(message.chat.id, faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
             openfileforRead('r')
-            account_settings[str(message.chat.id)]["personal data"] = "YES"
+            account_settings[str(message.chat.id)].personal_data = "YES"
             openfileforRead('w+')
             openfileforRead('r')
 
@@ -662,7 +640,7 @@ def fdbackName(message, lang):
     name_user = message.text
     if name_user != 'stop':
         if name_user == None: name_user = 'Пользователь отправил нечитаемый объект'
-        feed_back[str(message.chat.id)] = {"Name" : name_user, "Username" : str(message.chat.username), "Language" : account_settings[str(message.chat.id)]["language"]}
+        feed_back[str(message.chat.id)] = {"Name" : name_user, "Username" : str(message.chat.username), "Language" : account_settings[str(message.chat.id)].language}
         if lang == 0:
             send = bot.send_message(message.chat.id, '➕ Введите ваш номер телефона')
         else:
@@ -758,7 +736,7 @@ def fdBack_fill(message, lang):
             feed_back[str(message.chat.id)].update({"FeedBack" : feedback_user})
 
             txt = "--------ЖАЛОБА--------\n" + "id: " + str(message.chat.id) + "\nИмя: " + feed_back[str(message.chat.id)]["Name"] + "\nЯзык: " + \
-                account_settings[str(message.chat.id)]["language"] + "\nПричина: " + feed_back[str(message.chat.id)]["Reason"] + "\nМесто: " + \
+                account_settings[str(message.chat.id)].language + "\nПричина: " + feed_back[str(message.chat.id)]["Reason"] + "\nМесто: " + \
                 feed_back[str(message.chat.id)]["Place"] + "\nДата: " + feed_back[str(message.chat.id)]["Date"] + "\nКонфликт: " + feedback_user + "\n---------------------"
 
             bot.send_message(message.chat.id, '➕ Контроль сервиса лаборатории SwissLab. Мы благодарим за сделанный выбор и будем рады, если вы поможете улучшить качество нашего сервиса!\n🙋 Наш оператор свяжется с вами при необходимости!')
@@ -777,7 +755,7 @@ def fdBack_fill(message, lang):
                 feed_back[str(message.chat.id)].update({"FeedBack" : feedback_user})
 
                 txt = "--------ЖАЛОБА--------\n" + "id: " + str(message.chat.id) + "\nИмя: " + feed_back[str(message.chat.id)]["Name"] + "\nЯзык: " + \
-                    account_settings[str(message.chat.id)]["language"] + "\nПричина: " + feed_back[str(message.chat.id)]["Reason"] + "\nМесто: " + \
+                    account_settings[str(message.chat.id)].language + "\nПричина: " + feed_back[str(message.chat.id)]["Reason"] + "\nМесто: " + \
                     feed_back[str(message.chat.id)]["Place"] + "\nДата: " + feed_back[str(message.chat.id)]["Date"] + "\nКонфликт: " + feedback_user + "\n---------------------"
 
                 bot.send_message(message.chat.id, '➕ Laboratoriya xizmatini nazorat qilish SwissLab. Biz tanlaganingiz uchun tashakkur va xizmatimiz sifatini yaxshilashga yordam bersangiz xursand bolamiz!\n🙋 Agar kerak bolsa, bizning operatorimiz sizga murojaat qiladi!')
@@ -809,18 +787,18 @@ def enterTag(message):
     global mess
     tags = message.text
     if mess == "new":
-        account_settings[str(message.chat.id)]["tags"] = []
+        account_settings[str(message.chat.id)].tags = []
         mess = ""
         
         openfileforRead('w+')
         openfileforRead('r')
 
-    account_settings[str(message.chat.id)]["tags"].append(tags)
+    account_settings[str(message.chat.id)].tags.append(tags)
     
     openfileforRead('w+')
     openfileforRead('r')
 
-    it = len(account_settings[str(message.chat.id)]["tags"])
+    it = len(account_settings[str(message.chat.id)].tags)
     tet = "➕ Введено "
     tet += str(it)
     tet += " из 10 пользователей"
@@ -834,18 +812,18 @@ def enterTag_Sec(message):
     global mess
     tags = message.text
     if mess == "new":
-        account_settings[str(message.chat.id)]["tags"] = []
+        account_settings[str(message.chat.id)].tags = []
         mess = ""
 
         openfileforRead('w+')
         openfileforRead('r')
 
-    account_settings[str(message.chat.id)]["tags"].append(tags)
+    account_settings[str(message.chat.id)].tags.append(tags)
     
     openfileforRead('w+')
     openfileforRead('r')
 
-    it = len(account_settings[str(message.chat.id)]["tags"])
+    it = len(account_settings[str(message.chat.id)].tags)
     tet = "➕ Kirilgan "
     tet += str(it)
     tet += " 10 foydalanuvchilar"
@@ -869,7 +847,7 @@ def picPNGmaker(message):
     img.save('newAcc.png')
     with open('newAcc.png', 'rb') as f:
         contents = f.read()
-    if account_settings[str(message.chat.id)]["language"] == "Русский":
+    if account_settings[str(message.chat.id)].language == "Русский":
         bot.send_photo(message.chat.id, contents, caption='💳 Ваша карта')
     else:
         bot.send_photo(message.chat.id, contents, caption='💳 Sizning kartangiz')
@@ -886,13 +864,13 @@ def refAdd(message):
             ch_ref = "yes"
             break
     if ch_ref == "yes":
-        if int(account_settings[ref_n]["ref"]) < 10:
-            account_settings[ref_n]["ref"] = str(int(account_settings[ref_n]["ref"]) + 1)
+        if int(account_settings[ref_n].ref) < 10:
+            account_settings[ref_n].ref = str(int(account_settings[ref_n].ref) + 1)
             
             openfileforRead('w+')
             openfileforRead('r')
             
-            if account_settings[str(message.chat.id)]["language"] == "Русский":
+            if account_settings[str(message.chat.id)].language == "Русский":
                 bot.send_message(message.chat.id, "✅ Спасибо за активацию!")
                 bot.send_message(ref_n, "✅ Новый пользователь активировал реферальный код!")
                 keyboardRefMaker(message, 0)
@@ -901,19 +879,19 @@ def refAdd(message):
                 bot.send_message(ref_n, "✅ Yangi foydalanuvchi tavsiya kodini faollashtirdi!")
                 keyboardRefMaker(message, 1)
         else:
-            if account_settings[str(message.chat.id)]["language"] == "Русский":
+            if account_settings[str(message.chat.id)].language == "Русский":
                 bot.send_message(message.chat.id, "⚠️ Активации кода закончены")
                 keyboardRefMaker(message, 0)
             else:
                 bot.send_message(message.chat.id, "⚠️ Kodni faollashtirish tugadi")
                 keyboardRefMaker(message, 1)
     elif ref_n == "stop":
-        if account_settings[str(message.chat.id)]["language"] == "Русский":
+        if account_settings[str(message.chat.id)].language == "Русский":
             keyboardRefMaker(message, 0)
         else:
             keyboardRefMaker(message, 1)
     else:
-        if account_settings[str(message.chat.id)]["language"] == "Русский":
+        if account_settings[str(message.chat.id)].language == "Русский":
             send = bot.send_message(message.chat.id, '❔ Ваш код не найден, поробуйте ещё раз или напишите - stop')
         else:
             send = bot.send_message(message.chat.id, '❔ Sizning kodingiz topilmadi, yana porobuyte yoki yozing - stop')
@@ -923,25 +901,25 @@ def refAdd(message):
 def userSebdText(message):
     global account_settings
     if message.text != 'stop':
-        if account_settings[account_settings[str(message.chat.id)]["feedback_st"]]['language'] == 'Русский':
-            oper_ans = 'Ответ оператора #' + account_settings[str(message.chat.id)]["feedback_st"] + ' на вашу жалобу!👇'
+        if account_settings[account_settings[str(message.chat.id)].feedback_st].language == 'Русский':
+            oper_ans = 'Ответ оператора #' + account_settings[str(message.chat.id)].feedback_st + ' на вашу жалобу!👇'
             bot.send_message(account_settings[str(message.chat.id)]["feedback_st"], oper_ans)
         else:  
-            oper_ans = 'Sizning shikoyatingizga javob beruvchi operator #' + account_settings[str(message.chat.id)]["feedback_st"] + ' !👇'
-            bot.send_message(account_settings[str(message.chat.id)]["feedback_st"], oper_ans)
+            oper_ans = 'Sizning shikoyatingizga javob beruvchi operator #' + account_settings[str(message.chat.id)].feedback_st + ' !👇'
+            bot.send_message(account_settings[str(message.chat.id)].feedback_st, oper_ans)
         if message.photo != None:
             fileID = message.photo[-1].file_id
             file_info = bot.get_file(fileID)
             word_user_send = bot.download_file(file_info.file_path)
-            bot.send_photo(account_settings[str(message.chat.id)]["feedback_st"], word_user_send)
+            bot.send_photo(account_settings[str(message.chat.id)].feedback_st, word_user_send)
         if message.text != None or message.caption != None:
             if message.text != None: word_user_send = message.text
             else: word_user_send = message.caption
-            bot.send_message(account_settings[str(message.chat.id)]["feedback_st"], word_user_send)
-            database.insert_new_feedback_data(str(message.chat.id), account_settings[str(message.chat.id)]["feedback_st"] , word_user_send, bot)
+            bot.send_message(account_settings[str(message.chat.id)].feedback_st, word_user_send)
+            database.insert_new_feedback_data(str(message.chat.id), account_settings[str(message.chat.id)].feedback_st, word_user_send, bot)
         bot.send_message(message.chat.id, "Сообщение отправлено!")
-        account_settings[account_settings[str(message.chat.id)]["feedback_st"]]["feedback_st"] = 'close'
-        account_settings[str(message.chat.id)]["feedback_st"] = 'close'
+        account_settings[account_settings[str(message.chat.id)].feedback_st].feedback_st = 'close'
+        account_settings[str(message.chat.id)].feedback_st = 'close'
         
         openfileforRead('w+')
         openfileforRead('r')
@@ -967,7 +945,7 @@ def callback_inline(call):
     try:
         if call.data == 'Русский':
             bot.delete_message(call.message.chat.id, call.message.message_id)
-            account_settings[new_acc_id]["language"] = "Русский"
+            account_settings[new_acc_id].language = "Русский"
             new_acc_id = ""
             
             openfileforRead('w+')
@@ -996,7 +974,7 @@ def callback_inline(call):
 
         elif call.data == 'Ozbek':
             bot.delete_message(call.message.chat.id, call.message.message_id)
-            account_settings[new_acc_id]["language"] = "Ozbek"
+            account_settings[new_acc_id].language = "Ozbek"
             new_acc_id = ""
             
             openfileforRead('w+')
@@ -1154,19 +1132,19 @@ def callback_inline(call):
 
         elif call.data == '👍':
             bot.delete_message(call.message.chat.id, call.message.message_id)
-            if account_settings[str(call.message.chat.id)]["language"] == "Русский":
+            if account_settings[str(call.message.chat.id)].language == "Русский":
                 bot.send_message(call.message.chat.id, 'Спасибо за оценку!')
             else: bot.send_message(call.message.chat.id, 'Baholash uchun rahmat!')
         elif call.data == '👎':
             bot.delete_message(call.message.chat.id, call.message.message_id)
-            if account_settings[str(call.message.chat.id)]["language"] == "Русский":
+            if account_settings[str(call.message.chat.id)].language == "Русский":
                 bot.send_message(call.message.chat.id, 'Спасибо за оценку!')
             else: bot.send_message(call.message.chat.id, 'Baholash uchun rahmat!')
 
         elif call.data[0] == 'Q':
-            if account_settings[call.data[1:]]["feedback_st"] == 'open':
-                account_settings[call.data[1:]]["feedback_st"] = 'close'
-                account_settings[str(call.message.chat.id)]["feedback_st"] = call.data[1:]
+            if account_settings[call.data[1:]].feedback_st == 'open':
+                account_settings[call.data[1:]].feedback_st = 'close'
+                account_settings[str(call.message.chat.id)].feedback_st = call.data[1:]
                 
                 openfileforRead('w+')
                 openfileforRead('r')
@@ -1175,8 +1153,8 @@ def callback_inline(call):
                 bot.register_next_step_handler(send, userSebdText)
             else:
                 bot.send_message(call.message.chat.id, "Оператор уже ответил этому пользователю!\nДля отмены повторного ответа напишите stop")
-                account_settings[call.data[1:]]["feedback_st"] = 'close'
-                account_settings[str(call.message.chat.id)]["feedback_st"] = call.data[1:]
+                account_settings[call.data[1:]].feedback_st = 'close'
+                account_settings[str(call.message.chat.id)].feedback_st = call.data[1:]
                 
                 openfileforRead('w+')
                 openfileforRead('r')
@@ -1184,9 +1162,9 @@ def callback_inline(call):
                 send = bot.send_message(call.message.chat.id, "➕ Введите текст для ответа пользователю")
                 bot.register_next_step_handler(send, userSebdText)
         else:
-            if account_settings[str(call.message.chat.id)]["conversation"] == 'close':
+            if account_settings[str(call.message.chat.id)].conversation == 'close':
                 for k in account_settings.keys():
-                    if k == call.data and account_settings[k]["conversation"] == 'mid':
+                    if k == call.data and account_settings[k].conversation == 'mid':
                         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
                         item1 = types.KeyboardButton("🔙 Отклонить вызов оператора")
                         item2 = types.KeyboardButton("❔ Инструкция")
@@ -1196,18 +1174,18 @@ def callback_inline(call):
                         item6 = types.KeyboardButton("✍️ Директор")
                         item7 = types.KeyboardButton("👨‍⚕️ Доктор")
                         markup.row(item1, item2).row(item3, item4, item5).row(item6, item7)
-                        account_settings[str(call.message.chat.id)]["tags"].append(str(k))
-                        account_settings[str(call.message.chat.id)]["conversation"] = 'open'
-                        account_settings[k]["tags"].append(str(call.message.chat.id))
-                        account_settings[k]["tags"].append("0")
-                        account_settings[k]["conversation"] = 'open'
+                        account_settings[str(call.message.chat.id)].tags.append(str(k))
+                        account_settings[str(call.message.chat.id)].conversation = 'open'
+                        account_settings[k].tags.append(str(call.message.chat.id))
+                        account_settings[k].tags.append("0")
+                        account_settings[k].conversation = 'open'
                         
-                        account_settings[k]["timer_conv"] = int(time.time())
+                        account_settings[k].timer_conv = int(time.time())
 
                         openfileforRead('w+')
                         openfileforRead('r')
 
-                        if account_settings[k]["language"] == "Русский":
+                        if account_settings[k].language == "Русский":
                             oper_ans = "📞 Найден оператор #" + str(call.message.chat.id) + " , переписка активирована"
                             bot.send_message(k, oper_ans)
                         else:
@@ -1218,8 +1196,8 @@ def callback_inline(call):
                         oper_id = str(call.message.chat.id)
                         database.insert_new_data(user_id, oper_id, bot)
                         break
-                if account_settings[str(call.message.chat.id)]["conversation"] != 'open':
-                    if account_settings[str(call.data)]["conversation"] != 'open':
+                if account_settings[str(call.message.chat.id)].conversation != 'open':
+                    if account_settings[str(call.data)].conversation != 'open':
                         u_tex = "Пользователь id: "
                         u_tex += str(call.data)
                         u_tex += " отменил режим!\nПовторный вызов..."
@@ -1234,22 +1212,22 @@ def callback_inline(call):
                         item6 = types.KeyboardButton("✍️ Директор")
                         item7 = types.KeyboardButton("👨‍⚕️ Доктор")
                         markup.row(item1, item2).row(item3, item4, item5).row(item6, item7)
-                        if account_settings[str(call.data)]["language"] != "Русский":
+                        if account_settings[str(call.data)].language != "Русский":
                             item1 = types.KeyboardButton("🔙 Operator chaqiruvini rad etish")
                             item2 = types.KeyboardButton("❔ Ko'rsatma")
                         user_markup.add(item1, item2)
-                        account_settings[str(call.message.chat.id)]["tags"].append(str(call.data))
-                        account_settings[str(call.message.chat.id)]["conversation"] = 'open'
-                        account_settings[str(call.data)]["tags"].append(str(call.message.chat.id))
-                        account_settings[str(call.data)]["tags"].append("0")
-                        account_settings[str(call.data)]["conversation"] = 'open'
-                        account_settings[str(call.data)]["timer_conv"] = int(time.time())
+                        account_settings[str(call.message.chat.id)].tags.append(str(call.data))
+                        account_settings[str(call.message.chat.id)].conversation = 'open'
+                        account_settings[str(call.data)].tags.append(str(call.message.chat.id))
+                        account_settings[str(call.data)].tags.append("0")
+                        account_settings[str(call.data)].conversation = 'open'
+                        account_settings[str(call.data)].timer_conv = int(time.time())
                         
                         openfileforRead('w+')
                         openfileforRead('r')
 
                         try:
-                            if account_settings[str(call.data)]["language"] == "Русский":
+                            if account_settings[str(call.data)].language == "Русский":
                                 oper_ans = "📞 Оператор #" + str(call.message.chat.id) + " активировал переписку"
                                 bot.send_message(str(call.data), oper_ans, reply_markup=user_markup)
                             else:
@@ -1260,9 +1238,9 @@ def callback_inline(call):
                             oper_id = str(call.message.chat.id)
                             database.insert_new_data(user_id, oper_id, bot)
                         except Exception as e:
-                            account_settings[str(call.message.chat.id)]["conversation"] = 'close'
-                            account_settings[str(call.data)]["tags"] = []
-                            account_settings[str(call.message.chat.id)]["tags"] = []
+                            account_settings[str(call.message.chat.id)].conversation = 'close'
+                            account_settings[str(call.data)].tags = []
+                            account_settings[str(call.message.chat.id)].tags = []
                             bot.send_message(call.message.chat.id, 'Пользователь выключил бота!')
                             
                             openfileforRead('w+')

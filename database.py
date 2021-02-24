@@ -243,7 +243,7 @@ def insert_account_data(account):
         return False
     else:
         try:
-            cur.execute("INSERT INTO account_tb (telegram_id, login, name, oper_ids, conversation, discount, tags, ref, personal_data, language, feedback_st, timer_conv) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (account.login, account.name, account.oper_ids, account.conversation, account.discount, account.tags, account.tags, account.personal_data, account.language, account.feedback_st, account.timer_conv))
+            cur.execute("INSERT INTO account_tb (telegram_id, login, name, oper_ids, conversation, discount, tags, ref, personal_data, language, feedback_st, timer_conv) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (account.telegram_id, account.login, account.name, account.oper_ids, account.conversation, account.discount, account.tags, account.tags, account.personal_data, account.language, account.feedback_st, account.timer_conv))
             con.commit()
             print('New user add!')
             return True
@@ -257,10 +257,29 @@ def change_account_data(account, parametr, data):
         return False
     else:
         try:
-            cur.execute("UPDATE account_tb set %s = %s where name = '" + name + "'")
+            cur.execute("UPDATE account_tb set %s = %s where telegram_id = %s", (parametr, data, account.telegram_id))
             con.commit()
-            print('New user add!')
+            print('Successful account_tb update!')
             return True
         except Exception as error:
-            print('Error entering changing data in account_tb!', error)
+            print('Error changing data in account_tb!', error)
             return False
+
+def get_accounts_data():
+    con, cur = connect()
+    if con == 0 and cur == 0:
+        return {}
+    else:
+        try:
+            account_settings = {}
+            cur.execute("SELECT * FROM account_tb")
+            accounts = cur.fetchall()
+            for acc in accounts:
+            	account = Account(acc)
+              account_settings[account.telegram_id] = account
+            con.commit()
+            print('Successful account_tb data taken!')
+            return account_settings
+        except Exception as e:
+            print('Error taking data from account_tb!', e)
+            return {}
