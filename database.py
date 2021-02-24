@@ -243,10 +243,24 @@ def insert_account_data(account):
         return False
     else:
         try:
-            cur.execute("INSERT INTO account_tb (login, name, oper_ids, conversation, discount, tags, ref, personal_data, language, feedback_st, timer_conv) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (account.login, account.name, account.oper_ids, account.conversation, account.discount, account.tags, account.tags, account.personal_data, account.language, account.feedback_st, account.timer_conv))
+            cur.execute("INSERT INTO account_tb (telegram_id, login, name, oper_ids, conversation, discount, tags, ref, personal_data, language, feedback_st, timer_conv) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (account.login, account.name, account.oper_ids, account.conversation, account.discount, account.tags, account.tags, account.personal_data, account.language, account.feedback_st, account.timer_conv))
             con.commit()
             print('New user add!')
             return True
-        except Exception as e:
-            print('Error entering new data to account_tb!', e)
-            return 0
+        except Exception as error:
+            print('Error entering new data to account_tb!', error)
+            return False
+
+def change_account_data(account, parametr, data):
+    con, cur = connect()
+    if con == 0 and cur == 0:
+        return False
+    else:
+        try:
+            cur.execute("UPDATE account_tb set %s = %s where name = '" + name + "'")
+            con.commit()
+            print('New user add!')
+            return True
+        except Exception as error:
+            print('Error entering changing data in account_tb!', error)
+            return False
