@@ -3,6 +3,34 @@ from lib import *
 
 account_settings = database.get_accounts_data()
 
+def openfileforRead(action=None, name_path=None):
+    global account_settings
+    if action == 'set':
+        with open(path_acc_settings, 'r') as file_set:
+            if(file_set.readline() == ""): 
+                account_settings = {}
+            else:
+                file_set.close()
+                with open(path_acc_settings, 'r') as file_set:
+                    account_settings = json.load(file_set)
+        return account_settings
+    elif action == 'r':
+        with open(path_acc_settings, 'r') as file_set:
+            if(file_set.readline() == ""): 
+                account_settings = {}
+            else:
+                file_set.close()
+                with open(path_acc_settings, 'r') as file_set:
+                    account_settings = json.load(file_set)
+    elif action == 'w+':
+        with open(path_acc_settings, 'w+') as f:
+            json.dump(account_settings, f, indent='    ')
+    else:
+        file_text = ''
+        with io.open(name_path, encoding='utf-8') as file_set:
+                        for i in file_set:
+                            file_text += i
+        return file_text
 
 def saveNewText(message, name_path):
     word = message.text
@@ -39,13 +67,13 @@ class P_schedule(): ### Class для работы c schedule
                 time_checker = int(time.time()) - account_settings[account].timer_conv
                 if time_checker > 900 and account_settings[account].conversation == 'open':
                     if account_settings[account].language == 'Русский':
-                        stopConversation(None, 0, str(i))
+                        stopConversation(None, 0, account)
                     else:
-                        stopConversation(None, 1, str(i))
+                        stopConversation(None, 1, account)
             except Exception as _:
                 pass
             try:
-                bot.forward_message(int(i), -1001229753165, MESSAGE_ID)
+                bot.forward_message(int(account), -1001229753165, MESSAGE_ID)
             except Exception as _:
                 c_ex+=1
                 continue
@@ -64,53 +92,52 @@ class P_schedule(): ### Class для работы c schedule
 @bot.message_handler(commands=['start'])
 def welcome(message):
     global account_settings
-    global new_acc_id
     
-    account_settings = database.get_accounts_data();
+    account_settings = database.get_accounts_data()
 
     new_account = [str(message.chat.id)]
     for account in account_settings.keys():
-      if account_settings[account].telegram_id == new_acc_id[0]:
-        start_txt=''
-        if account_settings[account].language == "Русский":
-            if account_settings[account].personal data == "YES":
-                bot.send_message(message.chat.id,"🔱Вы уже зарегистрированы в системе!")
-                keyboardRefMaker(message, 0)
-            elif account_settings[account].personal_data == "NO":
+        if account_settings[account].telegram_id == new_account[0]:
+            start_txt=''
+            if account_settings[account].language == "Русский":
+                if account_settings[account].personal_data == "YES":
+                    bot.send_message(message.chat.id,"🔱Вы уже зарегистрированы в системе!")
+                    keyboardRefMaker(message, 0)
+                elif account_settings[account].personal_data == "NO":
 
-                start_txt = openfileforRead(None, path_first_lang)
-                
-                markup = types.InlineKeyboardMarkup(row_width=2)
-                item1 = types.InlineKeyboardButton("Согласен", callback_data='Согласен')
-                item2 = types.InlineKeyboardButton("Отказываюсь", callback_data='Отказываюсь')
-                markup.add(item1, item2)
-                bot.send_message(message.chat.id, start_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
-        else:
-            if account_settings[account].personal_data == "YES":
-                bot.send_message(message.chat.id,"🔱Siz allaqachon ro'yxatdan o'tgansiz!")
-                keyboardRefMaker(message, 1)
-            elif account_settings[account].personal_data == "NO":
+                    start_txt = openfileforRead(None, path_first_lang)
+                    
+                    markup = types.InlineKeyboardMarkup(row_width=2)
+                    item1 = types.InlineKeyboardButton("Согласен", callback_data='Согласен')
+                    item2 = types.InlineKeyboardButton("Отказываюсь", callback_data='Отказываюсь')
+                    markup.add(item1, item2)
+                    bot.send_message(message.chat.id, start_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+            else:
+                if account_settings[account].personal_data == "YES":
+                    bot.send_message(message.chat.id,"🔱Siz allaqachon ro'yxatdan o'tgansiz!")
+                    keyboardRefMaker(message, 1)
+                elif account_settings[account].personal_data == "NO":
 
-                start_txt = openfileforRead(None, path_second_lang)
-                
-                markup = types.InlineKeyboardMarkup(row_width=2)
-                item1 = types.InlineKeyboardButton("ROZIMAN", callback_data='Agree')
-                item2 = types.InlineKeyboardButton("Qo'shilmayman", callback_data='Disagree')
-                markup.add(item1, item2)
-                bot.send_message(message.chat.id, start_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+                    start_txt = openfileforRead(None, path_second_lang)
+                    
+                    markup = types.InlineKeyboardMarkup(row_width=2)
+                    item1 = types.InlineKeyboardButton("ROZIMAN", callback_data='Agree')
+                    item2 = types.InlineKeyboardButton("Qo'shilmayman", callback_data='Disagree')
+                    markup.add(item1, item2)
+                    bot.send_message(message.chat.id, start_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+            break
     else:
-      markup = types.InlineKeyboardMarkup(row_width=2)
-      item1 = types.InlineKeyboardButton("Русский", callback_data='Русский')
-      item2 = types.InlineKeyboardButton("Ozbek", callback_data="Ozbek")
-      markup.add(item1, item2)
-      
-      new_acc_id += [str(message.chat.username), str(message.chat.first_name), [], "close", "0", [], "0", "NO", None, 'close'}
-      
-      account = Account(new_acc_id)
-      database.insert_account_data(account)
-      account_settings[account.telegram_id] = account
-      
-      bot.send_message(message.chat.id,"🔱Choose language", reply_markup=markup)
+        markup = types.InlineKeyboardMarkup(row_width=2)
+        item1 = types.InlineKeyboardButton("Русский", callback_data='Русский')
+        item2 = types.InlineKeyboardButton("Ozbek", callback_data="Ozbek")
+        markup.add(item1, item2)
+        
+        new_account += [str(message.chat.username), str(message.chat.first_name), [], "close", "0", [], "0", "NO", None, 'close']
+        
+        account = classes.Account(new_account)
+        database.insert_account_data(account)
+        account_settings[account.telegram_id] = account
+        bot.send_message(message.chat.id,"🔱Choose language", reply_markup=markup)
 
 @bot.message_handler(commands=['changeLabel'])
 def adderNewLabel(message):
@@ -223,7 +250,7 @@ def FeedBackdbIdSortEnter(message):
 
 def pushingLabelFromFile(message, path, path_sec):
     label_text = ''
-    if account_settings[str(message.chat.id).language == "Русский":
+    if account_settings[str(message.chat.id)].language == "Русский":
         label_text = openfileforRead(None, path)
     else:
         label_text = openfileforRead(None, path_sec)
@@ -457,7 +484,7 @@ def lol(message):
             operInit(message_ids_dict[account_settings[str(message.chat.id)].tags[0]], 'check_simple_oper', 'simple_oper', closeConversation(message)) 
         elif message.text == "☎️ Поддержка":
             redirectInit(message, "❗ Общение завершено, перенаправление в тех.поддержку")
-            operInit(message_ids_dict[account_settings[str(message.chat.id)].tags.[0]], 'check_support_id', 'sup_oper', closeConversation(message)) 
+            operInit(message_ids_dict[account_settings[str(message.chat.id)].tags[0]], 'check_support_id', 'sup_oper', closeConversation(message)) 
         elif message.text == "✍️ Директор":
             redirectInit(message, "❗ Общение завершено, перенаправление к директору")
             operInit(message_ids_dict[account_settings[str(message.chat.id)].tags[0]], 'check_director_id', 'dir_oper', closeConversation(message))    

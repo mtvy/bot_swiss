@@ -18,7 +18,7 @@ class Account:
     
     def __str__(self):
         return str({
-            'telegram_id': self.telegram_id
+            'telegram_id': self.telegram_id,
             'login': self.login,
             'name':  self.name,
             'oper_ids':  self.oper_ids,
@@ -29,7 +29,7 @@ class Account:
             'personal_data': self.personal_data,
             'language': self.language,
             'feedback_st': self.feedback_st,
-            'timer_conv': self.timer,
+            'timer_conv': self.timer_conv,
         })
 
         
@@ -47,7 +47,7 @@ def openfileforRead(action=None, name_path=None):
         
 def read():
     acc = openfileforRead('set')
-    box = [['i', Account(i,acc)] for i in acc]
+    box = [['i', Account(acc)] for i in acc]
     for i in box:
         print(i[1])
         database.insert_account_data(account = i[1])
