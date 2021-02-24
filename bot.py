@@ -137,6 +137,7 @@ def welcome(message):
         account = classes.Account(new_account)
         database.insert_account_data(account)
         account_settings[account.telegram_id] = account
+
         bot.send_message(message.chat.id,"🔱Choose language", reply_markup=markup)
 
 @bot.message_handler(commands=['changeLabel'])
@@ -273,8 +274,10 @@ def redirectInit(message, action):
         account_settings[account_settings[str(message.chat.id)].tags[0]].conversation = 'close'
         account_settings[account_settings[str(message.chat.id)].tags[0]].tags.clear()
                 
-        openfileforRead('w+')
-        openfileforRead('r')
+        #change_account_data(account=, parametr, data)
+        #database.insert_account_data(account)
+        #account_settings[account.telegram_id] = account
+        #openfileforRead('r')
 
         if account_settings[account_settings[str(message.chat.id)].tags[0]].language == "Русский":
             keyboardRefMaker(message, 0, account_settings[str(message.chat.id)].tags[0])
