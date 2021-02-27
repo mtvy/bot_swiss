@@ -6,5 +6,8 @@ from telebot import types
 
 # Project files
 import config
+import database
+import classes
 from path import *
 from variables import *
+#from bot import *

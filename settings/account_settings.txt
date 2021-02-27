@@ -10,7 +10,7 @@
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
         "feedback_st": "close",
-        "timer_conv": 1608590306
+        "timer_conv": 1613390361
     },
     "281321076": {
         "login": "mtvyp",
@@ -22,7 +22,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "404806819": {
         "login": "yashkashustrij",
@@ -33,7 +34,9 @@
         "tags": [],
         "ref": "0",
         "personal data": "YES",
-        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439"
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "98884146": {
         "login": "None",
@@ -44,7 +47,9 @@
         "tags": [],
         "ref": "0",
         "personal data": "YES",
-        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439"
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "667068180": {
         "login": "Ditaocom",
@@ -56,7 +61,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "731208378": {
         "login": "None",
@@ -67,7 +73,9 @@
         "tags": [],
         "ref": "0",
         "personal data": "NO",
-        "language": "Ozbek"
+        "language": "Ozbek",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "414658569": {
         "login": "None",
@@ -79,7 +87,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "907508218": {
         "login": "None",
@@ -91,7 +100,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "185791822": {
         "login": "factual_link",
@@ -103,7 +113,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1203716040": {
         "login": "Odnorazovayaposudaa",
@@ -115,7 +126,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "750961013": {
         "login": "None",
@@ -127,7 +139,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "666803198": {
         "login": "Saya1984sa",
@@ -139,7 +152,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "923118950": {
         "login": "None",
@@ -151,7 +165,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "305525303": {
         "login": "DoniTashpulatov",
@@ -163,7 +178,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "95164773": {
         "login": "None",
@@ -175,7 +191,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "263305395": {
         "login": "karina_abdukarimbekova",
@@ -187,7 +204,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "623624652": {
         "login": "None",
@@ -199,7 +217,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "698895704": {
         "login": "None",
@@ -211,7 +230,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "754300576": {
         "login": "Analizyuz",
@@ -223,7 +243,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "755382622": {
         "login": "None",
@@ -235,7 +256,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "254919788": {
         "login": "None",
@@ -247,7 +269,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "601856769": {
         "login": "TASHFARM",
@@ -259,7 +282,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "399661753": {
         "login": "daurovtimur",
@@ -271,7 +295,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "390084459": {
         "login": "osamiev",
@@ -283,7 +308,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1667788": {
         "login": "Just_Hope90",
@@ -295,7 +321,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "268442643": {
         "login": "shirov",
@@ -307,7 +334,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "357563728": {
         "login": "None",
@@ -319,7 +347,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "53885875": {
         "login": "adilya_amirova",
@@ -331,7 +360,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "325962033": {
         "login": "None",
@@ -343,7 +373,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "2138839": {
         "login": "MuhammadSodiqN",
@@ -355,7 +386,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "723053": {
         "login": "None",
@@ -367,7 +399,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "433080729": {
         "login": "None",
@@ -379,7 +412,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "450962187": {
         "login": "None",
@@ -391,7 +425,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "149520512": {
         "login": "Ulugbek_Mos",
@@ -403,7 +438,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "404845259": {
         "login": "Unicornielife",
@@ -415,7 +451,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "345911840": {
         "login": "neekeesh",
@@ -427,7 +464,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "986345327": {
         "login": "None",
@@ -439,7 +477,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "67218599": {
         "login": "None",
@@ -451,7 +490,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "476717140": {
         "login": "xsxmsv",
@@ -463,7 +503,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "3857293": {
         "login": "None",
@@ -475,7 +516,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "88749989": {
         "login": "ruslankabaev",
@@ -487,7 +529,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "72313159": {
         "login": "None",
@@ -499,7 +542,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "676544659": {
         "login": "None",
@@ -511,7 +555,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "195893780": {
         "login": "Burhon",
@@ -523,7 +568,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "229969": {
         "login": "jshoh",
@@ -535,7 +581,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "61776998": {
         "login": "None",
@@ -547,7 +594,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "593690280": {
         "login": "None",
@@ -559,7 +607,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1499883": {
         "login": "klazokat",
@@ -571,7 +620,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "97135663": {
         "login": "None",
@@ -582,8 +632,9 @@
         "tags": [],
         "ref": "0",
         "personal data": "NO",
-        "language": null,
-        "feedback_st": "close"
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "412890767": {
         "login": "None",
@@ -595,7 +646,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "25173810": {
         "login": "alimovad96",
@@ -607,7 +659,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "3413524": {
         "login": "None",
@@ -619,7 +672,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "631133": {
         "login": "None",
@@ -631,7 +685,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "429704272": {
         "login": "Sabearov",
@@ -643,7 +698,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "798261378": {
         "login": "platinum_brok",
@@ -655,7 +711,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "57493738": {
         "login": "SobirovaMadina",
@@ -667,7 +724,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "649731587": {
         "login": "None",
@@ -679,7 +737,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "758190413": {
         "login": "None",
@@ -691,7 +750,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "503108035": {
         "login": "RA_BayerAG",
@@ -703,7 +763,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "680435137": {
         "login": "Government_uz",
@@ -715,7 +776,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "796977824": {
         "login": "xon1777",
@@ -727,7 +789,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "501228104": {
         "login": "ABUUU",
@@ -739,7 +802,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "982876906": {
         "login": "None",
@@ -751,7 +815,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "84298355": {
         "login": "None",
@@ -763,7 +828,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "934407387": {
         "login": "Akbar_Shogird",
@@ -775,7 +841,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "46184425": {
         "login": "Dimix19",
@@ -787,7 +854,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "186698794": {
         "login": "Marina_kmp",
@@ -799,7 +867,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "79433332": {
         "login": "PulatKhaliulin",
@@ -811,7 +880,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "822327335": {
         "login": "None",
@@ -823,7 +893,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1442409": {
         "login": "Ren92",
@@ -835,7 +906,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "655372548": {
         "login": "Dinara_09",
@@ -847,7 +919,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "166680015": {
         "login": "xylioramirez",
@@ -859,7 +932,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1497113": {
         "login": "None",
@@ -871,7 +945,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "255863862": {
         "login": "None",
@@ -883,7 +958,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "238404720": {
         "login": "Ajizu",
@@ -895,7 +971,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "818035082": {
         "login": "ishanbekov",
@@ -907,7 +984,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1577080": {
         "login": "oksana_danilevskaya",
@@ -919,7 +997,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "52576920": {
         "login": "sevennod",
@@ -931,7 +1010,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "858821803": {
         "login": "None",
@@ -943,7 +1023,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "831578546": {
         "login": "None",
@@ -955,7 +1036,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "67336980": {
         "login": "None",
@@ -967,7 +1049,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1222132155": {
         "login": "None",
@@ -979,7 +1062,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "971765697": {
         "login": "None",
@@ -991,7 +1075,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "854496943": {
         "login": "None",
@@ -1003,7 +1088,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "84285893": {
         "login": "Ekaterina_Vladyko",
@@ -1015,7 +1101,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "695173804": {
         "login": "felix_gr",
@@ -1027,7 +1114,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "682065344": {
         "login": "Shuhratovna1",
@@ -1039,7 +1127,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "587357": {
         "login": "MRazakov",
@@ -1051,7 +1140,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "79835732": {
         "login": "alisherqultayev",
@@ -1063,7 +1153,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "648933773": {
         "login": "None",
@@ -1075,7 +1166,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "2041820": {
         "login": "eithotsoy",
@@ -1087,7 +1179,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "84164189": {
         "login": "None",
@@ -1099,7 +1192,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "362105915": {
         "login": "None",
@@ -1111,7 +1205,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "861640561": {
         "login": "None",
@@ -1123,7 +1218,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "238266465": {
         "login": "None",
@@ -1135,7 +1231,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "761088130": {
         "login": "khidirkulova",
@@ -1147,7 +1244,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "714260516": {
         "login": "rodle_v",
@@ -1159,7 +1257,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "50761289": {
         "login": "mesan_kilit",
@@ -1171,7 +1270,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1078135714": {
         "login": "None",
@@ -1183,7 +1283,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "819244": {
         "login": "None",
@@ -1195,7 +1296,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "899433332": {
         "login": "saidovnaz",
@@ -1207,7 +1309,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "908735659": {
         "login": "ikramovich_1",
@@ -1219,7 +1322,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "187820646": {
         "login": "qobilzohidov",
@@ -1231,7 +1335,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "34498283": {
         "login": "None",
@@ -1243,7 +1348,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "226838356": {
         "login": "YaBahama",
@@ -1255,7 +1361,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "678906031": {
         "login": "None",
@@ -1267,7 +1374,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "546112168": {
         "login": "ernandesscrp",
@@ -1279,7 +1387,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1388702733": {
         "login": "None",
@@ -1291,7 +1400,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1185167": {
         "login": "None",
@@ -1303,7 +1413,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "286948021": {
         "login": "None",
@@ -1315,7 +1426,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1203807508": {
         "login": "operator_1002",
@@ -1327,7 +1439,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1086955999": {
         "login": "operator_10011",
@@ -1339,7 +1452,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1255615278": {
         "login": "None",
@@ -1351,7 +1465,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "79065525": {
         "login": "None",
@@ -1363,7 +1478,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "508630896": {
         "login": "na1707",
@@ -1375,7 +1491,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "332407564": {
         "login": "laboratoriyabravopharma",
@@ -1387,7 +1504,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "237112918": {
         "login": "akmal_bafoev",
@@ -1399,7 +1517,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "283389812": {
         "login": "Mukhammad_Khodzhaev",
@@ -1411,7 +1530,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "755123509": {
         "login": "ABC_printofis",
@@ -1423,7 +1543,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "44429778": {
         "login": "Lilyush",
@@ -1435,7 +1556,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "3545356": {
         "login": "Dankou_lovuha",
@@ -1447,7 +1569,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "242358584": {
         "login": "None",
@@ -1459,7 +1582,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "164179494": {
         "login": "None",
@@ -1471,7 +1595,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "30321": {
         "login": "madinkass",
@@ -1483,7 +1608,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1392993": {
         "login": "barca_team",
@@ -1495,7 +1621,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "609843221": {
         "login": "None",
@@ -1507,7 +1634,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "376497256": {
         "login": "None",
@@ -1519,7 +1647,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "157964976": {
         "login": "None",
@@ -1531,7 +1660,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "741899173": {
         "login": "GRR0592",
@@ -1543,7 +1673,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "53066743": {
         "login": "karinagaysina",
@@ -1555,7 +1686,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "301131134": {
         "login": "Assilov",
@@ -1567,7 +1699,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "268057041": {
         "login": "Ejeenee",
@@ -1579,7 +1712,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": null,
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "374224894": {
         "login": "None",
@@ -1591,7 +1725,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": null,
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "219034": {
         "login": "None",
@@ -1603,7 +1738,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "48745275": {
         "login": "None",
@@ -1615,7 +1751,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "850287603": {
         "login": "niknatalya",
@@ -1627,7 +1764,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "102854859": {
         "login": "None",
@@ -1639,7 +1777,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "65463836": {
         "login": "NaziraAbdullaeva",
@@ -1651,7 +1790,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "72896616": {
         "login": "nikelena",
@@ -1663,7 +1803,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "77941850": {
         "login": "None",
@@ -1675,7 +1816,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1571340": {
         "login": "dilik_d",
@@ -1687,7 +1829,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "70565759": {
         "login": "None",
@@ -1699,7 +1842,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "297415750": {
         "login": "None",
@@ -1711,7 +1855,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "58257922": {
         "login": "Artem_Klimenko",
@@ -1723,7 +1868,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "527894564": {
         "login": "None",
@@ -1735,7 +1881,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "161590382": {
         "login": "None",
@@ -1747,7 +1894,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "35292156": {
         "login": "said_se7en",
@@ -1759,7 +1907,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "76131811": {
         "login": "Artem264",
@@ -1771,7 +1920,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "3445143": {
         "login": "None",
@@ -1783,7 +1933,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "289181200": {
         "login": "None",
@@ -1795,7 +1946,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "686317148": {
         "login": "None",
@@ -1807,7 +1959,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "620977130": {
         "login": "None",
@@ -1819,7 +1972,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "24749141": {
         "login": "iamvolvr",
@@ -1831,7 +1985,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1533534": {
         "login": "hovand",
@@ -1843,7 +1998,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "123672263": {
         "login": "None",
@@ -1855,7 +2011,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "34752197": {
         "login": "None",
@@ -1867,7 +2024,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "930683953": {
         "login": "None",
@@ -1879,7 +2037,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "112459677": {
         "login": "None",
@@ -1891,7 +2050,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "55483382": {
         "login": "None",
@@ -1903,7 +2063,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "64261855": {
         "login": "None",
@@ -1915,7 +2076,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "681496178": {
         "login": "None",
@@ -1927,7 +2089,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "80850839": {
         "login": "None",
@@ -1939,7 +2102,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "66066719": {
         "login": "BakhtD",
@@ -1951,7 +2115,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "3721564": {
         "login": "None",
@@ -1963,7 +2128,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "91872967": {
         "login": "None",
@@ -1975,7 +2141,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "109729324": {
         "login": "None",
@@ -1987,7 +2154,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "100185996": {
         "login": "None",
@@ -1999,7 +2167,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "155549510": {
         "login": "None",
@@ -2011,7 +2180,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "337287402": {
         "login": "None",
@@ -2023,7 +2193,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "208169": {
         "login": "GalaKio",
@@ -2035,7 +2206,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "45751295": {
         "login": "None",
@@ -2047,7 +2219,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "30035029": {
         "login": "LutfullaMannopov",
@@ -2059,7 +2232,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "5204411": {
         "login": "None",
@@ -2071,7 +2245,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "109042665": {
         "login": "maryjukov",
@@ -2083,7 +2258,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "672163474": {
         "login": "None",
@@ -2095,7 +2271,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "73326736": {
         "login": "None",
@@ -2107,7 +2284,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "901937802": {
         "login": "None",
@@ -2119,7 +2297,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "187700": {
         "login": "KadirovAbdulaziz",
@@ -2131,7 +2310,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": null,
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "101934480": {
         "login": "None",
@@ -2143,7 +2323,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1093388941": {
         "login": "None",
@@ -2155,7 +2336,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "512122581": {
         "login": "Xasanboy_22",
@@ -2167,7 +2349,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1399998898": {
         "login": "AndKolp",
@@ -2179,7 +2362,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "398304054": {
         "login": "None",
@@ -2191,7 +2375,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "78248974": {
         "login": "None",
@@ -2203,7 +2388,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "42977141": {
         "login": "None",
@@ -2215,7 +2401,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "710443": {
         "login": "dior0979",
@@ -2227,7 +2414,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "655597164": {
         "login": "None",
@@ -2239,7 +2427,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "62454614": {
         "login": "PopovaTatyana",
@@ -2251,7 +2440,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "205927096": {
         "login": "Nodirjon79",
@@ -2263,7 +2453,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "39902282": {
         "login": "vl_ten",
@@ -2275,7 +2466,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "75885390": {
         "login": "None",
@@ -2287,7 +2479,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "916130922": {
         "login": "None",
@@ -2299,7 +2492,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": null,
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "479721443": {
         "login": "None",
@@ -2311,7 +2505,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "612605140": {
         "login": "None",
@@ -2323,7 +2518,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "649173403": {
         "login": "None",
@@ -2335,7 +2531,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "125486535": {
         "login": "RustamTA",
@@ -2347,7 +2544,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "480165": {
         "login": "Ottabek",
@@ -2359,7 +2557,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "760659267": {
         "login": "AKAzizova",
@@ -2371,7 +2570,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "87199766": {
         "login": "Svetlana_F",
@@ -2383,7 +2583,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "580272325": {
         "login": "None",
@@ -2395,7 +2596,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1074819": {
         "login": "None",
@@ -2407,7 +2609,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "577349": {
         "login": "Ibostar95",
@@ -2419,7 +2622,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "737547253": {
         "login": "None",
@@ -2431,7 +2635,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "246857611": {
         "login": "hateyaall",
@@ -2443,7 +2648,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "397571934": {
         "login": "None",
@@ -2455,7 +2661,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "958725585": {
         "login": "None",
@@ -2467,7 +2674,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "813910137": {
         "login": "None",
@@ -2479,7 +2687,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "2301924": {
         "login": "None",
@@ -2491,7 +2700,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1224812": {
         "login": "baxtiyor_v",
@@ -2503,7 +2713,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "226672299": {
         "login": "TASRT",
@@ -2515,7 +2726,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "932912": {
         "login": "justinbieberismyhero",
@@ -2527,7 +2739,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "98507013": {
         "login": "None",
@@ -2539,7 +2752,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1042283921": {
         "login": "None",
@@ -2551,7 +2765,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "557042352": {
         "login": "sultanova_mohidilhon",
@@ -2563,7 +2778,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "102428930": {
         "login": "Kh_Djamilya",
@@ -2575,7 +2791,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "66864650": {
         "login": "None",
@@ -2587,7 +2804,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "58232089": {
         "login": "Feruza_Shukhratovna",
@@ -2599,7 +2817,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "261241": {
         "login": "KhalikovBakhtiyor",
@@ -2611,7 +2830,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "234406792": {
         "login": "BiTrend_CRM",
@@ -2623,7 +2843,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "790963236": {
         "login": "Musa7209",
@@ -2635,7 +2856,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1003927958": {
         "login": "None",
@@ -2647,7 +2869,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "206130832": {
         "login": "akaZAFAR",
@@ -2659,7 +2882,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "202749030": {
         "login": "oybek3009",
@@ -2671,7 +2895,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "2690020": {
         "login": "None",
@@ -2683,7 +2908,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "815556521": {
         "login": "None",
@@ -2695,7 +2921,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "431670165": {
         "login": "None",
@@ -2707,7 +2934,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1015938836": {
         "login": "None",
@@ -2719,7 +2947,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "2278339": {
         "login": "mushtariy_b",
@@ -2731,7 +2960,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "99948755": {
         "login": "None",
@@ -2743,7 +2973,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "426955396": {
         "login": "None",
@@ -2755,7 +2986,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "554833085": {
         "login": "None",
@@ -2767,7 +2999,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "341597619": {
         "login": "None",
@@ -2779,7 +3012,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": null,
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "293810014": {
         "login": "nataliDi",
@@ -2791,7 +3025,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": null,
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "228903932": {
         "login": "Muslim1010",
@@ -2803,7 +3038,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "80093614": {
         "login": "ENTdoctors",
@@ -2815,7 +3051,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "132986337": {
         "login": "donoxon",
@@ -2827,7 +3064,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "843501572": {
         "login": "None",
@@ -2839,7 +3077,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1350550516": {
         "login": "dmitri_turkinski",
@@ -2851,7 +3090,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "83840398": {
         "login": "feruzamukhamedova",
@@ -2863,7 +3103,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "314934747": {
         "login": "diyora_is",
@@ -2875,7 +3116,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1376912013": {
         "login": "None",
@@ -2887,7 +3129,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "3275502": {
         "login": "None",
@@ -2899,7 +3142,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "206960076": {
         "login": "FayzullaF",
@@ -2911,7 +3155,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "880363300": {
         "login": "JO777O",
@@ -2923,7 +3168,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "107309989": {
         "login": "nastenalee",
@@ -2935,7 +3181,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "525174279": {
         "login": "KSP_NET",
@@ -2947,7 +3194,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1062965916": {
         "login": "None",
@@ -2959,7 +3207,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1134185056": {
         "login": "vabdullaev",
@@ -2971,7 +3220,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1193925179": {
         "login": "None",
@@ -2983,7 +3233,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "377661938": {
         "login": "None",
@@ -2995,7 +3246,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "593504724": {
         "login": "None",
@@ -3007,7 +3259,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "62618459": {
         "login": "NoNick20",
@@ -3019,7 +3272,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "521081664": {
         "login": "gka4810092",
@@ -3031,7 +3285,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "73518672": {
         "login": "SafMoon",
@@ -3043,7 +3298,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "65759008": {
         "login": "oksana_tortik",
@@ -3055,7 +3311,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "684319380": {
         "login": "None",
@@ -3067,7 +3324,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "294484054": {
         "login": "None",
@@ -3079,7 +3337,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "2309680": {
         "login": "None",
@@ -3091,7 +3350,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "39120906": {
         "login": "elli_art",
@@ -3103,7 +3363,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "106618330": {
         "login": "Dav51063",
@@ -3115,7 +3376,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "164220341": {
         "login": "Michaelsofianov",
@@ -3127,7 +3389,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "133714242": {
         "login": "None",
@@ -3139,7 +3402,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "706276252": {
         "login": "None",
@@ -3151,7 +3415,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "157431786": {
         "login": "None",
@@ -3163,7 +3428,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "345203426": {
         "login": "Jimmy_455",
@@ -3175,7 +3441,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": null,
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1205878813": {
         "login": "None",
@@ -3187,7 +3454,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "683058590": {
         "login": "None",
@@ -3199,7 +3467,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "633475406": {
         "login": "Ptaha96",
@@ -3211,7 +3480,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "549386418": {
         "login": "None",
@@ -3223,7 +3493,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1125063680": {
         "login": "Shaxruza1995",
@@ -3235,7 +3506,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "225866974": {
         "login": "Alieva_Zuhra",
@@ -3247,7 +3519,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "20083822": {
         "login": "infinity_9119",
@@ -3259,7 +3532,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "542909744": {
         "login": "None",
@@ -3271,7 +3545,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "364203357": {
         "login": "shexrizat1929",
@@ -3283,7 +3558,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "74171495": {
         "login": "Luiiza",
@@ -3295,7 +3571,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": null,
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1184347750": {
         "login": "None",
@@ -3307,7 +3584,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1443622737": {
         "login": "ipumsm",
@@ -3319,7 +3597,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1397828877": {
         "login": "None",
@@ -3331,7 +3610,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "379640085": {
         "login": "kompavel",
@@ -3343,7 +3623,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "169857618": {
         "login": "Nilyushk",
@@ -3355,7 +3636,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "557561032": {
         "login": "IbroKHimoV_3338",
@@ -3367,7 +3649,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "672734144": {
         "login": "lexman1",
@@ -3379,7 +3662,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": null,
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "993534435": {
         "login": "None",
@@ -3391,7 +3675,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "1048615883": {
         "login": "None",
@@ -3401,9 +3686,10 @@
         "discount": "0",
         "tags": [],
         "ref": "0",
-        "personal data": "NO",
+        "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "812358569": {
         "login": "None",
@@ -3415,7 +3701,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "94504466": {
         "login": "LolaTY77",
@@ -3427,7 +3714,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "287653614": {
         "login": "Tanya1914",
@@ -3439,7 +3727,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "144098200": {
         "login": "None",
@@ -3451,7 +3740,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "53888775": {
         "login": "iokhotin",
@@ -3463,7 +3753,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "646607199": {
         "login": "None",
@@ -3501,7 +3792,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "296727806": {
         "login": "mokhira_mm",
@@ -3513,7 +3805,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "796115885": {
         "login": "None",
@@ -3525,7 +3818,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": "Ozbek",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "47261880": {
         "login": "Tsoydmitriy",
@@ -3537,7 +3831,8 @@
         "ref": "0",
         "personal data": "NO",
         "language": null,
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "71056040": {
         "login": "Alex_Sander_85",
@@ -3549,7 +3844,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "194006042": {
         "login": "None",
@@ -3561,7 +3857,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "39953924": {
         "login": "BlackBip",
@@ -3586,7 +3883,8 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     },
     "151038113": {
         "login": "None",
@@ -3611,6 +3909,319 @@
         "ref": "0",
         "personal data": "YES",
         "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-        "feedback_st": "close"
+        "feedback_st": "close",
+        "timer_conv": 1613390361
+    },
+    "312330522": {
+        "login": "Doniyor7277",
+        "name": "Doniyor",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "Ozbek",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
+    },
+    "1094393147": {
+        "login": "None",
+        "name": "\u041d\u0438\u0433\u0438\u043d\u0430",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
+    },
+    "453519505": {
+        "login": "mstr_iy",
+        "name": "\ud835\ude7c",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
+    },
+    "229581259": {
+        "login": "tochka005",
+        "name": "to4ka",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "NO",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
+    },
+    "1583782": {
+        "login": "None",
+        "name": "\u0410\u0440\u0438\u043d\u0430 \ud83d\udc1d \u0421\u0435\u0440\u0433\u0435\u0435\u0432\u043d\u0430",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
+    },
+    "775615716": {
+        "login": "Komola0129",
+        "name": "Komola",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "NO",
+        "language": "Ozbek",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
+    },
+    "574423759": {
+        "login": "a76politik",
+        "name": "\u0410\u043d\u0430\u0442\u043e\u043b\u0438\u0439",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
+    },
+    "637818091": {
+        "login": "None",
+        "name": "\ud83c\udf38",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "Ozbek",
+        "feedback_st": "close",
+        "timer_conv": 1613239493
+    },
+    "1618835043": {
+        "login": "None",
+        "name": "Madiyor To'xtayev",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "NO",
+        "language": "Ozbek",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
+    },
+    "295311591": {
+        "login": "None",
+        "name": "N",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
+    },
+    "2254596": {
+        "login": "bakhromrasulev",
+        "name": "Bakhrom Rasulev",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
+    },
+    "209217087": {
+        "login": "GregoryB",
+        "name": "Gregory",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
+    },
+    "1237876": {
+        "login": "HS333300",
+        "name": "H",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close",
+        "timer_conv": 1613451466
+    },
+    "473080842": {
+        "login": "None",
+        "name": "\u041a\u043e\u043c\u043e\u043b\u0430",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "NO",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
+    },
+    "716448891": {
+        "login": "None",
+        "name": "7777",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "NO",
+        "language": null,
+        "feedback_st": "close",
+        "timer_conv": 1613390361
+    },
+    "3759576": {
+        "login": "None",
+        "name": "\u0421\u0432\u0435\u0442\u043b\u0430\u043d\u0430",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
+    },
+    "628662708": {
+        "login": "Odilkhooja",
+        "name": "Odilkhoja",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "Ozbek",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
+    },
+    "603580941": {
+        "login": "None",
+        "name": "Evgeniy",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
+    },
+    "12182838": {
+        "login": "None",
+        "name": "Tashmatova S.A.",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "NO",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
+    },
+    "175337797": {
+        "login": "None",
+        "name": "\u26c4",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
+    },
+    "88069832": {
+        "login": "Slako",
+        "name": "slako",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
+    },
+    "727642628": {
+        "login": "namespace_erik",
+        "name": "\u042d\u0440\u0438\u043a",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close",
+        "timer_conv": 1614249656
+    },
+    "269329034": {
+        "login": "None",
+        "name": "Li",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "NO",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
+    },
+    "1434488593": {
+        "login": "None",
+        "name": "Leonid",
+        "oper_ids": [],
+        "conversation": "close",
+        "discount": "0",
+        "tags": [],
+        "ref": "0",
+        "personal data": "YES",
+        "language": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "feedback_st": "close",
+        "timer_conv": 1613390361
     }
 }
