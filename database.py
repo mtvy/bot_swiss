@@ -1,9 +1,10 @@
 ### defs for database conv
 from lib import *
+import classes
 
 def connect():
     try:
-        con = psycopg2.connect(database="postgres",user="postgres",password="14072003", host="127.0.0.1",port="5432")
+        con = psycopg2.connect(database="postgres",user="postgres",password="postgres", host="127.0.0.1",port="5432")
         cur = con.cursor()
         return con, cur
     except (Exception, psycopg2.DatabaseError) as error:
@@ -243,7 +244,7 @@ def insert_account_data(account):
         return False
     else:
         try:
-            cur.execute("INSERT INTO account_tb (telegram_id, login, name, oper_ids, conversation, discount, tags, ref, personal_data, language, feedback_st, timer_conv) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (account.telegram_id, account.login, account.name, account.oper_ids, account.conversation, account.discount, account.tags, account.tags, account.personal_data, account.language, account.feedback_st, account.timer_conv))
+            cur.execute("INSERT INTO account_tb (telegram_id, login, name, oper_ids, conversation, discount, tags, ref, personal_data, language, feedback_st, timer_conv) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (account.telegram_id, account.login, account.name, account.oper_ids, account.conversation, account.discount, account.tags, account.ref, account.personal_data, account.language, account.feedback_st, account.timer_conv))
             con.commit()
             print('New user add!')
             return True
@@ -257,7 +258,7 @@ def change_account_data(account, parametr, data):
         return False
     else:
         try:
-            cur.execute("UPDATE account_tb set %s = %s where telegram_id = %s", (parametr, data, account.telegram_id))
+            cur.execute("UPDATE account_tb SET " + parametr + " = %s WHERE telegram_id = %s", ( data, account.telegram_id))
             con.commit()
             print('Successful account_tb update!')
             return True
@@ -272,10 +273,10 @@ def get_accounts_data():
     else:
         try:
             account_settings = {}
-            cur.execute("SELECT * FROM account_tb")
+            cur.execute("SELECT telegram_id, login, name, oper_ids, conversation, discount, tags, ref, personal_data, language, feedback_st, timer_conv FROM account_tb")
             accounts = cur.fetchall()
             for acc in accounts:
-                account = classes.Account(acc)
+                account = classes.Account(acc = acc)
                 account_settings[account.telegram_id] = account
             con.commit()
             print('Successful account_tb data taken!')

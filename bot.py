@@ -45,7 +45,7 @@ bot = telebot.TeleBot(config.TOKEN)
 def start_process(): ### Запуск Process
     _ = Process(target=P_schedule.start_schedule, args=()).start()
 class P_schedule(): ### Class для работы c schedule
-    def start_schedule(self): ### Запуск schedule
+    def start_schedule(): ### Запуск schedule
         
         ### Параметры для schedule
         schedule.every(30).seconds.do(P_schedule.send_post)
@@ -54,7 +54,7 @@ class P_schedule(): ### Class для работы c schedule
         while True:
             schedule.run_pending()
             time.sleep(1)
-    def send_post(self): ### Функции для выполнения заданий по времени
+    def send_post(): ### Функции для выполнения заданий по времени
         global MESSAGE_ID
         global account_settings
         global message_ids_dict
@@ -112,7 +112,7 @@ def welcome(message):
                     item2 = types.InlineKeyboardButton("Отказываюсь", callback_data='Отказываюсь')
                     markup.add(item1, item2)
                     bot.send_message(message.chat.id, start_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
-            else:
+            elif account_settings[account].language == "Ozbek":
                 if account_settings[account].personal_data == "YES":
                     bot.send_message(message.chat.id,"🔱Siz allaqachon ro'yxatdan o'tgansiz!")
                     keyboardRefMaker(message, 1)
@@ -125,6 +125,12 @@ def welcome(message):
                     item2 = types.InlineKeyboardButton("Qo'shilmayman", callback_data='Disagree')
                     markup.add(item1, item2)
                     bot.send_message(message.chat.id, start_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+            else:
+                markup = types.InlineKeyboardMarkup(row_width=2)
+                item1 = types.InlineKeyboardButton("Русский", callback_data='Русский')
+                item2 = types.InlineKeyboardButton("Ozbek", callback_data="Ozbek")
+                markup.add(item1, item2)
+                bot.send_message(message.chat.id,"🔱Choose language", reply_markup=markup)
             break
     else:
         markup = types.InlineKeyboardMarkup(row_width=2)
@@ -132,7 +138,7 @@ def welcome(message):
         item2 = types.InlineKeyboardButton("Ozbek", callback_data="Ozbek")
         markup.add(item1, item2)
         
-        new_account += [str(message.chat.username), str(message.chat.first_name), [], "close", "0", [], "0", "NO", None, 'close']
+        new_account += [str(message.chat.username), str(message.chat.first_name), [], "close", "0", [], "0", "NO", None, 'close', 0]
         
         account = classes.Account(new_account)
         database.insert_account_data(account)
@@ -147,7 +153,7 @@ def adderNewLabel(message):
         item1 = types.InlineKeyboardButton("Начальный текст", callback_data='Начальный текст')
         item2 = types.InlineKeyboardButton("FAQ текст", callback_data='FAQ текст')
         item3 = types.InlineKeyboardButton("Текст оператора", callback_data='Текст оператора')
-        item4 = types.InlineKeyboardButton("Текст инструкции оператора", callback_data='Текст инструкции оператора')
+        item4 = types.InlineKeyboardButton("Текст инструкции опер`атора", callback_data='Текст инструкции оператора')
         item5 = types.InlineKeyboardButton("Текст телефона", callback_data='Текст телефона')
         item6 = types.InlineKeyboardButton("Текст адресса", callback_data='Текст адресса')
         item7 = types.InlineKeyboardButton("Текст создания заказа", callback_data='Текст создания заказа')
@@ -267,13 +273,15 @@ def operInit(message, action, set_act, id_check, deactivation=None):
         bot.send_message(message.chat.id, "Вы оператор!")
         
 def redirectInit(message, action):
+    global account_settings
+
     bot.send_message(str(message.chat.id), action)
     if len(account_settings[str(message.chat.id)].tags) != 0:
 
         bot.send_message(str(account_settings[str(message.chat.id)].tags[0]), action)
         
-        change_account_data(account = account_settings[account_settings[str(message.chat.id)].tags[0]], parametr = 'conversation', data = 'close')
-        change_account_data(account = account_settings[account_settings[str(message.chat.id)].tags[0]], parametr = 'tags', data = [])        
+        database.change_account_data(account = account_settings[account_settings[str(message.chat.id)].tags[0]], parametr = 'conversation', data = 'close')
+        database.change_account_data(account = account_settings[account_settings[str(message.chat.id)].tags[0]], parametr = 'tags', data = [])        
         account_settings = database.get_accounts_data()
 
         if account_settings[account_settings[str(message.chat.id)].tags[0]].language == "Русский":
@@ -296,6 +304,7 @@ def redirectInit(message, action):
         else: bot.send_message(str(message.chat.id), 'Operator ishini baholang!', reply_markup=markup)
         
 def stopConversation(message, lang, pers_id=None):
+    global account_settings
     if pers_id!=None:
         person_id = pers_id
     else:
@@ -309,8 +318,8 @@ def stopConversation(message, lang, pers_id=None):
     if len(account_settings[person_id].tags) != 0:
         bot.send_message(str(account_settings[person_id].tags[0]), push_text)
             
-        change_account_data(account = account_settings[account_settings[person_id].tags[0]], parametr = 'conversation', data = 'close')
-        change_account_data(account = account_settings[account_settings[person_id].tags[0]], parametr = 'tags', data = [])        
+        database.change_account_data(account = account_settings[account_settings[person_id].tags[0]], parametr = 'conversation', data = 'close')
+        database.change_account_data(account = account_settings[account_settings[person_id].tags[0]], parametr = 'tags', data = [])        
         account_settings = database.get_accounts_data()
 
 
@@ -332,8 +341,8 @@ def stopConversation(message, lang, pers_id=None):
             bot.send_message(person_id, 'Оцените работу оператора!', reply_markup=markup)
         else: bot.send_message(person_id, 'Operator ishini baholang!', reply_markup=markup)
             
-    change_account_data(account = account_settings[person_id], parametr = 'conversation', data = 'close')
-    change_account_data(account = account_settings[person_id], parametr = 'tags', data = [])        
+    database.change_account_data(account = account_settings[person_id], parametr = 'conversation', data = 'close')
+    database.change_account_data(account = account_settings[person_id], parametr = 'tags', data = [])        
     account_settings = database.get_accounts_data()
             
     database.closerDataBase(person_id, bot)
@@ -341,8 +350,8 @@ def stopConversation(message, lang, pers_id=None):
 def closeConversation(message):
     global account_settings
             
-    change_account_data(account = account_settings[str(message.chat.id)], parametr = 'conversation', data = 'close')
-    change_account_data(account = account_settings[str(message.chat.id)], parametr = 'tags', data = [])        
+    database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'conversation', data = 'close')
+    database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'tags', data = [])        
     account_settings = database.get_accounts_data()
             
     database.closerDataBase(str(message.chat.id), bot)
@@ -423,7 +432,7 @@ def lol(message):
                     bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html')
             elif account_settings[str(message.chat.id)].ref == "10":
                 
-                change_account_data(account = account_settings[str(message.chat.id)], parametr = 'discount', data = '10')       
+                database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'discount', data = '10')       
                 account_settings = database.get_accounts_data()
 
                 if account_settings[str(message.chat.id)].language == "Русский":
@@ -504,12 +513,12 @@ def lol(message):
 
             bot.send_message(message.chat.id, FAQ_txt.format(message.chat, bot.get_me()),parse_mode='html')
         else:
-            if account_settings[str(message.chat.id)]['conversation'] == 'open':
+            if account_settings[str(message.chat.id)].conversation == 'open':
                 if checkOperId(str(message.chat.id), 'check_all_oper'):
-                    change_account_data(account = account_settings[account_settings[str(message.chat.id)].tags[0]], parametr = 'timer_conv', data = int(time.time()))
+                    database.change_account_data(account = account_settings[account_settings[str(message.chat.id)].tags[0]], parametr = 'timer_conv', data = int(time.time()))
                     sm_id = 'Operator: '
                 else:
-                    change_account_data(account = account_settings[str(message.chat.id)], parametr = 'timer_conv', data = int(time.time()))
+                    database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'timer_conv', data = int(time.time()))
                     sm_id = 'User: '
       
                 account_settings = database.get_accounts_data()
@@ -609,7 +618,7 @@ def keyboardRefMaker(message, lang, pers_id=None):
             bot.send_message(message.chat.id, faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
             
             account_settings = database.get_accounts_data()
-            change_account_data(account = account_settings[str(message.chat.id)], parametr = 'personal_data', data = 'YES')      
+            database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'personal_data', data = 'YES')      
             account_settings = database.get_accounts_data()
     else:
         if checkOperId(person_id, 'check_all_oper'):
@@ -647,7 +656,7 @@ def keyboardRefMaker(message, lang, pers_id=None):
             bot.send_message(message.chat.id, faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
             
             account_settings = database.get_accounts_data()
-            change_account_data(account = account_settings[str(message.chat.id)], parametr = 'personal_data', data = 'YES')
+            database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'personal_data', data = 'YES')
             account_settings = database.get_accounts_data()
 
 
@@ -815,14 +824,14 @@ def enterTag(message):
     global mess
     tags = message.text
     if mess == "new":
-        change_account_data(account = account_settings[str(message.chat.id)], parametr = 'tags', data = [])
+        database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'tags', data = [])
         mess = ""
         
         account_settings = database.get_accounts_data()
 
     account_settings[str(message.chat.id)].tags.append(tags)
     
-    change_account_data(account = account_settings[str(message.chat.id)], parametr = 'tags', data = account_settings[str(message.chat.id)].tags)       
+    database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'tags', data = account_settings[str(message.chat.id)].tags)       
 
     it = len(account_settings[str(message.chat.id)].tags)
     tet = "➕ Введено "
@@ -838,14 +847,14 @@ def enterTag_Sec(message):
     global mess
     tags = message.text
     if mess == "new":
-        change_account_data(account = account_settings[str(message.chat.id)], parametr = 'tags', data = [])        
+        database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'tags', data = [])        
         mess = ""
 
         account_settings = database.get_accounts_data()
 
     account_settings[str(message.chat.id)].tags.append(tags)
     
-    change_account_data(account = account_settings[str(message.chat.id)], parametr = 'tags', data = account_settings[str(message.chat.id)].tags)
+    database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'tags', data = account_settings[str(message.chat.id)].tags)
 
     it = len(account_settings[str(message.chat.id)].tags)
     tet = "➕ Kirilgan "
@@ -891,7 +900,7 @@ def refAdd(message):
         if int(account_settings[ref_n].ref) < 10:
             account_settings[ref_n].ref = str(int(account_settings[ref_n].ref) + 1)
             
-            change_account_data(account = account_settings[ref_n], parametr = 'ref', data = str(int(account_settings[ref_n].ref) + 1))
+            database.change_account_data(account = account_settings[ref_n], parametr = 'ref', data = str(int(account_settings[ref_n].ref) + 1))
             account_settings = database.get_accounts_data()
             
             if account_settings[str(message.chat.id)].language == "Русский":
@@ -943,8 +952,8 @@ def userSebdText(message):
             database.insert_new_feedback_data(str(message.chat.id), account_settings[str(message.chat.id)].feedback_st, word_user_send, bot)
         bot.send_message(message.chat.id, "Сообщение отправлено!")
         
-        change_account_data(account = account_settings[account_settings[str(message.chat.id)].feedback_st], parametr = 'feedback_st', data = 'close')
-        change_account_data(account = account_settings[str(message.chat.id)], parametr = 'feedback_st', data = 'close')        
+        database.change_account_data(account = account_settings[account_settings[str(message.chat.id)].feedback_st], parametr = 'feedback_st', data = 'close')
+        database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'feedback_st', data = 'close')        
         account_settings = database.get_accounts_data()
 
     else: bot.send_message(message.chat.id, 'Операция отменена!')
@@ -962,14 +971,12 @@ def inlineMessages(call, text1, text2, callback_data1, callback_data2, markup_te
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
-    global new_acc_id
     global account_settings
     global mess
     try:
         if call.data == 'Русский':
             bot.delete_message(call.message.chat.id, call.message.message_id)
-            change_account_data(account = account_settings[new_acc_id], parametr = 'language', data = 'Русский')
-            new_acc_id = ""
+            database.change_account_data(account = account_settings[str(call.message.chat.id)], parametr = 'language', data = 'Русский')
             
             account_settings = database.get_accounts_data()
 
@@ -996,8 +1003,7 @@ def callback_inline(call):
 
         elif call.data == 'Ozbek':
             bot.delete_message(call.message.chat.id, call.message.message_id)
-            change_account_data(account = account_settings[new_acc_id], parametr = 'language', data = 'Ozbek')
-            new_acc_id = ""
+            database.change_account_data(account = account_settings[str(call.message.chat.id)], parametr = 'language', data = 'Ozbek')
             
             account_settings = database.get_accounts_data()
 
@@ -1165,8 +1171,8 @@ def callback_inline(call):
         elif call.data[0] == 'Q':
             if account_settings[call.data[1:]].feedback_st == 'open':
                 
-                change_account_data(account = account_settings[call.data[1:]], parametr = 'feedback_st', data = 'close')        
-                change_account_data(account = account_settings[str(call.message.chat.id)], parametr = 'feedback_st', data = call.data[1:])
+                database.change_account_data(account = account_settings[call.data[1:]], parametr = 'feedback_st', data = 'close')        
+                database.change_account_data(account = account_settings[str(call.message.chat.id)], parametr = 'feedback_st', data = call.data[1:])
                 account_settings = database.get_accounts_data()
 
                 send = bot.send_message(call.message.chat.id, "➕ Введите текст для ответа пользователю")
@@ -1174,8 +1180,8 @@ def callback_inline(call):
             else:
                 bot.send_message(call.message.chat.id, "Оператор уже ответил этому пользователю!\nДля отмены повторного ответа напишите stop")
                 
-                change_account_data(account = account_settings[call.data[1:]], parametr = 'feedback_st', data = 'close')        
-                change_account_data(account = account_settings[str(call.message.chat.id)], parametr = 'feedback_st', data = call.data[1:])
+                database.change_account_data(account = account_settings[call.data[1:]], parametr = 'feedback_st', data = 'close')        
+                database.change_account_data(account = account_settings[str(call.message.chat.id)], parametr = 'feedback_st', data = call.data[1:])
                 account_settings = database.get_accounts_data()
 
                 send = bot.send_message(call.message.chat.id, "➕ Введите текст для ответа пользователю")
@@ -1194,20 +1200,14 @@ def callback_inline(call):
                         item7 = types.KeyboardButton("👨‍⚕️ Доктор")
                         markup.row(item1, item2).row(item3, item4, item5).row(item6, item7)
                         account_settings[str(call.message.chat.id)].tags.append(str(k))
-                        change_account_data(account = account_settings[str(call.message.chat.id)], parametr = 'tags', data = account_settings[str(call.message.chat.id)].tags)        
-                        ###################
-                        account_settings[str(call.message.chat.id)].conversation = 'open'
+                        database.change_account_data(account = account_settings[str(call.message.chat.id)], parametr = 'tags', data = account_settings[str(call.message.chat.id)].tags)        
+                        database.change_account_data(account = account_settings[str(call.message.chat.id)], parametr = 'conversation', data = 'open')
+                        database.change_account_data(account = account_settings[str(call.message.chat.id)], parametr = 'timer_conv', data = int(time.time()))
                         account_settings[k].tags.append(str(call.message.chat.id))
                         account_settings[k].tags.append("0")
-                        account_settings[k].conversation = 'open'
-                        ##################
-                        account_settings[k].timer_conv = int(time.time())
-                        ###################
-                        change_account_data(account = account_settings[str(call.message.chat.id)], parametr = 'feedback_st', data = call.data[1:])
-                        change_account_data(account = account_settings[call.data[1:]], parametr = 'feedback_st', data = 'close')        
-                        change_account_data(account = account_settings[str(call.message.chat.id)], parametr = 'feedback_st', data = call.data[1:])
-                        change_account_data(account = account_settings[call.data[1:]], parametr = 'feedback_st', data = 'close')        
-                        change_account_data(account = account_settings[str(call.message.chat.id)], parametr = 'feedback_st', data = call.data[1:])
+                        database.change_account_data(account = account_settings[k], parametr = 'tags', data = account_settings[k].tags)        
+                        database.change_account_data(account = account_settings[k], parametr = 'conversation', data = 'open')
+                        database.change_account_data(account = account_settings[k], parametr = 'timer_conv', data = int(time.time()))
                         account_settings = database.get_accounts_data()
 
                         if account_settings[k].language == "Русский":
@@ -1241,15 +1241,18 @@ def callback_inline(call):
                             item1 = types.KeyboardButton("🔙 Operator chaqiruvini rad etish")
                             item2 = types.KeyboardButton("❔ Ko'rsatma")
                         user_markup.add(item1, item2)
-                        account_settings[str(call.message.chat.id)].tags.append(str(call.data))
-                        account_settings[str(call.message.chat.id)].conversation = 'open'
-                        account_settings[str(call.data)].tags.append(str(call.message.chat.id))
-                        account_settings[str(call.data)].tags.append("0")
-                        account_settings[str(call.data)].conversation = 'open'
-                        account_settings[str(call.data)].timer_conv = int(time.time())
                         
-                        openfileforRead('w+')
-                        openfileforRead('r')
+                        account_settings[str(call.message.chat.id)].tags.append(str(call.data))
+                        database.change_account_data(account = account_settings[str(call.message.chat.id)], parametr = 'tags', data = account_settings[str(call.message.chat.id)].tags)
+                        database.change_account_data(account = account_settings[str(call.message.chat.id)], parametr = 'conversation', data = 'open')
+                        database.change_account_data(account = account_settings[str(call.message.chat.id)], parametr = 'timer_conv', data = int(time.time()))
+                        account_settings[str(call.data)].tags.append(str(call.message.chat.id))
+                        database.change_account_data(account = account_settings[str(call.data)], parametr = 'tags', data = account_settings[str(call.data)].tags)
+                        account_settings[str(call.data)].tags.append("0")
+                        database.change_account_data(account = account_settings[str(call.data)], parametr = 'tags', data = account_settings[str(call.data)].tags)
+                        database.change_account_data(account = account_settings[str(call.data)], parametr = 'conversation', data = 'open')
+                        database.change_account_data(account = account_settings[str(call.data)], parametr = 'timer_conv', data = int(time.time()))
+                        account_settings = database.get_accounts_data()
 
                         try:
                             if account_settings[str(call.data)].language == "Русский":
@@ -1263,13 +1266,11 @@ def callback_inline(call):
                             oper_id = str(call.message.chat.id)
                             database.insert_new_data(user_id, oper_id, bot)
                         except Exception as e:
-                            account_settings[str(call.message.chat.id)].conversation = 'close'
-                            account_settings[str(call.data)].tags = []
-                            account_settings[str(call.message.chat.id)].tags = []
+                            database.change_account_data(account = account_settings[str(call.message.chat.id)], parametr = 'conversation', data = 'close')
+                            database.change_account_data(account = account_settings[str(call.data)], parametr = 'tags', data = [])
+                            database.change_account_data(account = account_settings[str(call.message.chat.id)], parametr = 'tags', data = [])
+                            account_settings = database.get_accounts_data()
                             bot.send_message(call.message.chat.id, 'Пользователь выключил бота!')
-                            
-                            openfileforRead('w+')
-                            openfileforRead('r')
                     else:
                         bot.send_message(str(call.message.chat.id), "Другой оператор отвечает на заявку!")
             else:
