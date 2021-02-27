@@ -4,33 +4,11 @@ from lib import *
 account_settings = database.get_accounts_data()
 
 def openfileforRead(action=None, name_path=None):
-    global account_settings
-    if action == 'set':
-        with open(path_acc_settings, 'r') as file_set:
-            if(file_set.readline() == ""): 
-                account_settings = {}
-            else:
-                file_set.close()
-                with open(path_acc_settings, 'r') as file_set:
-                    account_settings = json.load(file_set)
-        return account_settings
-    elif action == 'r':
-        with open(path_acc_settings, 'r') as file_set:
-            if(file_set.readline() == ""): 
-                account_settings = {}
-            else:
-                file_set.close()
-                with open(path_acc_settings, 'r') as file_set:
-                    account_settings = json.load(file_set)
-    elif action == 'w+':
-        with open(path_acc_settings, 'w+') as f:
-            json.dump(account_settings, f, indent='    ')
-    else:
-        file_text = ''
-        with io.open(name_path, encoding='utf-8') as file_set:
-                        for i in file_set:
-                            file_text += i
-        return file_text
+    file_text = ''
+    with io.open(name_path, encoding='utf-8') as file_set:
+                    for i in file_set:
+                        file_text += i
+    return file_text
 
 def saveNewText(message, name_path):
     word = message.text
@@ -42,19 +20,15 @@ def saveNewText(message, name_path):
 bot = telebot.TeleBot(config.TOKEN)
 
 
-def start_process(): ### Запуск Process
+def start_process():
     _ = Process(target=P_schedule.start_schedule, args=()).start()
-class P_schedule(): ### Class для работы c schedule
-    def start_schedule(): ### Запуск schedule
-        
-        ### Параметры для schedule
+class P_schedule:
+    def start_schedule(self):
         schedule.every(30).seconds.do(P_schedule.send_post)
-
-        ### Запуск цикла
         while True:
             schedule.run_pending()
             time.sleep(1)
-    def send_post(): ### Функции для выполнения заданий по времени
+    def send_post(self):
         global MESSAGE_ID
         global account_settings
         global message_ids_dict

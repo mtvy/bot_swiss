@@ -1,6 +1,5 @@
 ### defs for database conv
-from lib import *
-import classes
+from lib import classes, psycopg2, datetime, account_settings
 
 def connect():
     try:
