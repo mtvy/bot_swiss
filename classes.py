@@ -2,19 +2,19 @@ from lib import *
 
 class Account:
 
-    def __init__(self, i, acc):
-        self.personal_data = acc[i]['personal data']	        
-        self.conversation = acc[i]['conversation']	       
-        self.feedback_st = acc[i]['feedback_st']	        
-        self.timer_conv = acc[i]['timer_conv']	        
-        self.language = acc[i]['language']	        
-        self.oper_ids = acc[i]['oper_ids']	       
-        self.discount = acc[i]['discount']	
-        self.login = acc[i]['login']	        
-        self.name = acc[i]['name']	        
-        self.tags = acc[i]['tags']	        
-        self.ref = acc[i]['ref']
-        self.telegram_id = str(i)
+    def __init__(self, acc):
+        self.telegram_id = acc[0]
+        self.login = acc[1]
+        self.name = acc[2]
+        self.oper_ids = acc[3]
+        self.conversation = acc[4]
+        self.discount = acc[5]
+        self.tags = acc[6]
+        self.ref = acc[7]
+        self.personal_data = acc[8]
+        self.language = acc[9]
+        self.feedback_st = acc[10]
+        self.timer_conv = acc[11]
     
     def __str__(self):
         return str({
@@ -46,12 +46,7 @@ def openfileforRead(action=None, name_path=None):
         return account_settings
         
 def read():
-    acc = openfileforRead('set')
-    box = [['i', Account(i, acc)] for i in acc]
-    for i in box:
-        print(i[1])
-        database.insert_account_data(account = i[1])
-       	database.change_account_data(account = i[1], parametr = "personal_data", data = "YES")
-    #acc = database.get_accounts_data()
+    acc = database.get_accounts_data()
+    for i in acc.keys(): print(acc[i])
 if __name__ == '__main__':
     read()

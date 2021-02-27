@@ -260,7 +260,7 @@ def change_account_data(account, parametr, data):
         try:
             cur.execute("UPDATE account_tb SET " + parametr + " = %s WHERE telegram_id = %s", ( data, account.telegram_id))
             con.commit()
-            print('Successful account_tb update!')
+            #print('Successful account_tb update!')
             return True
         except Exception as error:
             print('Error changing data in account_tb!', error)
@@ -279,7 +279,7 @@ def get_accounts_data():
                 account = classes.Account(acc = acc)
                 account_settings[account.telegram_id] = account
             con.commit()
-            print('Successful account_tb data taken!')
+            #print('Successful account_tb data taken!')
             return account_settings
         except Exception as e:
             print('Error taking data from account_tb!', e)
