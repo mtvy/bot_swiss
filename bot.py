@@ -3,8 +3,7 @@ from lib import *
 
 account_settings = database.get_accounts_data()
 
-def openfileforRead(action=None, name_path=None):
-    file_text = ''
+def openfileforRead(action=None, name_path=None, file_text=''):
     with io.open(name_path, encoding='utf-8') as file_set:
                     for i in file_set:
                         file_text += i
@@ -139,18 +138,14 @@ def adderNewLabel(message):
 
 
 def sendReqtoOper(message, which_oper, oper_send_text, markup):
-    if which_oper == 'simple_oper':
-        for oper_id in simple_oper_ids_arr:
-            bot.send_message(int(oper_id), oper_send_text, reply_markup=markup)
-    elif which_oper == 'doc_oper':
-        for oper_id in doctor_oper_ids_arr:
-            bot.send_message(int(oper_id), oper_send_text, reply_markup=markup)
-    elif which_oper == 'dir_oper':
-        for oper_id in director_oper_ids_arr:
-            bot.send_message(int(oper_id), oper_send_text, reply_markup=markup)
-    elif which_oper == 'sup_oper':
-        for oper_id in support_oper_ids_arr:
-            bot.send_message(int(oper_id), oper_send_text, reply_markup=markup)
+    action_oper_select = {
+    	'simple_oper' : simple_oper_ids_arr,
+    	'doc_oper'    : doctor_oper_ids_arr,
+    	'dir_oper'    : director_oper_ids_arr,
+    	'sup_oper'    : support_oper_ids_arr
+    }
+    for oper_id in action_oper_select[which_oper]:
+        bot.send_message(int(oper_id), oper_send_text, reply_markup=markup)
 
 def operKeyboardMaker(message, which_oper, lang):
     global account_settings
