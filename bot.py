@@ -122,7 +122,7 @@ def welcome(message):
 
 @bot.message_handler(commands=['changeLabel'])
 def adderNewLabel(message):
-    if checkOperId(str(message.chat.id), 'check_label_changer'):
+    if checkOperId(person_id = str(message.chat.id), action = 'check_label_changer'):
         markup = types.InlineKeyboardMarkup(row_width=2)
         item1 = types.InlineKeyboardButton("Начальный текст", callback_data='Начальный текст')
         item2 = types.InlineKeyboardButton("FAQ текст", callback_data='FAQ текст')
@@ -238,13 +238,13 @@ def pushingLabelFromFile(message, path, path_sec):
     bot.send_message(message.chat.id, label_text.format(message.chat, bot.get_me()),parse_mode='html')
 
 def operInit(message, action, set_act, id_check, deactivation=None):
-    if checkOperId(str(message.chat.id), action):
+    if checkOperId(person_id = str(message.chat.id), action = action):
+        bot.send_message(message.chat.id, "Вы оператор!")
+    else:
         if account_settings[str(message.chat.id)].language == "Русский":
             operKeyboardMaker(message, set_act, 0)
         else:
             operKeyboardMaker(message, set_act, 1)
-    else:
-        bot.send_message(message.chat.id, "Вы оператор!")
         
 def redirectInit(message, action):
     global account_settings
@@ -268,7 +268,7 @@ def redirectInit(message, action):
     item1 = types.InlineKeyboardButton("👍", callback_data='👍')
     item2 = types.InlineKeyboardButton("👎", callback_data="👎")
     markup.add(item1, item2)
-    if checkOperId(str(message.chat.id), 'check_all_oper'):
+    if checkOperId(person_id = str(message.chat.id), action = 'check_all_oper'):
         if account_settings[account_settings[str(message.chat.id)].tags[0]].language == "Русский":
             bot.send_message(account_settings[str(message.chat.id)].tags[0], 'Оцените работу оператора!', reply_markup=markup)
         else: bot.send_message(account_settings[str(message.chat.id)].tags[0], 'Operator ishini baholang!', reply_markup=markup)
@@ -306,7 +306,7 @@ def stopConversation(message, lang, pers_id=None):
     item1 = types.InlineKeyboardButton("👍", callback_data='👍')
     item2 = types.InlineKeyboardButton("👎", callback_data="👎")
     markup.add(item1, item2)
-    if checkOperId(person_id, 'check_all_oper'):
+    if checkOperId(person_id = person_id, action = 'check_all_oper'):
         if account_settings[account_settings[person_id].tags[0]].language == "Русский":
             bot.send_message(account_settings[person_id].tags[0], 'Оцените работу оператора!', reply_markup=markup)
         else: bot.send_message(account_settings[person_id].tags[0], 'Operator ishini baholang!', reply_markup=markup)
@@ -359,7 +359,9 @@ def lol(message):
         elif message.text == '✍️ Написать директору' or message.text == '✍️ Direktorga yozing':
             operInit(message, 'check_director_id', 'dir_oper', str(message.chat.id))
         elif message.text == '❗️ Оставить жалобу' or message.text == '❗️ Shikoyat qoldiring':
-            if checkOperId(str(message.chat.id), 'check_feedback_oper_id'):
+            if checkOperId(person_id = str(message.chat.id), action = 'check_feedback_oper_id'):
+                feedBackdbDateSortEnter(message)
+            else:
                 oper_write = ''
                 account_settings[str(message.chat.id)].feedback_st = 'open'
                 markup = types.InlineKeyboardMarkup(row_width=2)
@@ -376,10 +378,8 @@ def lol(message):
                 markup.add(item1)
                 account_settings[str(message.chat.id)].feedback_st = 'open'
                 bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
-            else:
-                feedBackdbDateSortEnter(message)
         elif message.text == '💽 БД переписок' or message.text == '💽 Yozishmalar bazasi':
-            if checkOperId(str(message.chat.id), 'check_all_oper'):
+            if checkOperId(person_id = str(message.chat.id), action = 'check_all_oper'):
                 dbDateSortEnter(message)
             else:
                 if account_settings[str(message.chat.id)].language == "Русский":
@@ -488,7 +488,7 @@ def lol(message):
             bot.send_message(message.chat.id, FAQ_txt.format(message.chat, bot.get_me()),parse_mode='html')
         else:
             if account_settings[str(message.chat.id)].conversation == 'open':
-                if checkOperId(str(message.chat.id), 'check_all_oper'):
+                if checkOperId(person_id = str(message.chat.id), action = 'check_all_oper'):
                     database.change_account_data(account = account_settings[account_settings[str(message.chat.id)].tags[0]], parametr = 'timer_conv', data = int(time.time()))
                     sm_id = 'Operator: '
                 else:
@@ -513,42 +513,19 @@ def lol(message):
 
 
 def checkOperId(person_id, action):
-    if action == 'check_all_oper':
-        for pers_id in all_ids_arr:
-            if person_id == pers_id:
-                return True
-        return False
-    elif action == 'check_simple_oper':
-        for pers_id in simple_oper_ids_arr:
-            if person_id == pers_id:
-                return False
-        return True
-    elif action == 'check_doc_id':
-        for pers_id in doctor_oper_ids_arr:
-            if person_id == pers_id:
-                return False
-        return True
-    elif action == 'check_support_id':
-        for pers_id in support_oper_ids_arr:
-            if person_id == pers_id:
-                return False
-        return True
-    elif action == 'check_feedback_oper_id':
-        for pers_id in feedback_oper_ids_arr:
-            if person_id == pers_id:
-                return False
-        return True
-    elif action == 'check_director_id':
-        for pers_id in director_oper_ids_arr:
-            if person_id == pers_id:
-                return False
-        return True
-    elif action == 'check_label_changer':
-        for pers_id in label_change_ids_arr:
-            if person_id == pers_id:
-                return True
-        return False
-    
+    action_dict = {
+    	'check_all_oper'   : all_ids_arr,
+    	'check_simple_oper': simple_oper_ids_arr,
+    	'check_doc_id'     : doctor_oper_ids_arr,
+    	'check_support_id' : support_oper_ids_arr,
+    	'check_feedback_oper_id' : feedback_oper_ids_arr,
+    	'check_director_id'      : director_oper_ids_arr,
+    	'check_label_changer'    : label_change_ids_arr
+    }
+    for pers_id in action_dict[action]:
+    	  if person_id == pers_id:
+           return True
+    return False
 
 def keyboardRefMaker(message, lang, pers_id=None):
     global account_settings
@@ -557,7 +534,7 @@ def keyboardRefMaker(message, lang, pers_id=None):
     else:
         person_id = str(message.chat.id)
     if lang == 0:
-        if checkOperId(person_id, 'check_all_oper'):
+        if checkOperId(person_id = person_id, action = 'check_all_oper'):
             markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
             item1 = types.KeyboardButton("📞 Телефон")
             item2 = types.KeyboardButton("🏠 Адреса")
@@ -595,7 +572,7 @@ def keyboardRefMaker(message, lang, pers_id=None):
             database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'personal_data', data = 'YES')      
             account_settings = database.get_accounts_data()
     else:
-        if checkOperId(person_id, 'check_all_oper'):
+        if checkOperId(person_id = person_id, action = 'check_all_oper'):
             markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
             item1 = types.KeyboardButton("📞 telefon")
             item2 = types.KeyboardButton("🏠 manzillari")
