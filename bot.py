@@ -163,6 +163,7 @@ def operKeyboardMaker(message, which_oper, lang):
         item2 = types.KeyboardButton("❔ Ko'rsatma")
         markup.add(item1, item2)
         bot.send_message(message.chat.id, "🙋 Operator bilan yozishmalar rejimi yoqilgan", reply_markup=markup)
+    oper_send_text = f'-------Запрос переписки!-------\nid: {message.chat.id} \nИмя: {message.chat.first_name} \nФамилия: {message.chat.last_name} \nUsername: @ {message.chat.username} \nЯзык: Русский\n----------------------------'
     oper_send_text = "-------Запрос переписки!-------\nid: "
     oper_send_text += str(message.chat.id)
     oper_send_text += "\nИмя: "
@@ -237,9 +238,9 @@ def operInit(message, action, set_act, id_check, deactivation=None):
         bot.send_message(message.chat.id, "Вы оператор!")
     else:
         if account_settings[str(message.chat.id)].language == "Русский":
-            operKeyboardMaker(message, set_act, 0)
+            operKeyboardMaker(message = message, which_oper = set_act, lang = 0)
         else:
-            operKeyboardMaker(message, set_act, 1)
+            operKeyboardMaker(message = message, which_oper = set_act, lang = 1)
         
 def redirectInit(message, action):
     global account_settings
@@ -325,6 +326,39 @@ def closeConversation(message):
             
     database.closerDataBase(str(message.chat.id), bot)
 
+def setCollectionKeyboard(message, person_id, show_text = 'Выберите необходимый мед офис'):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    item1 = types.KeyboardButton("МО Гор.больница №1")
+    item2 = types.KeyboardButton("МО Кушбеги")
+    item3 = types.KeyboardButton("МО  Мирзо Улугбека")
+    item4 = types.KeyboardButton("МО  Юнусата")
+    item5 = types.KeyboardButton("МО  viezd")
+    item6 = types.KeyboardButton("🔙 Назад")
+    markup.add(item1, item2, item3, item4, item5)
+    bot.send_message(person_id, show_text, reply_markup=markup)
+
+def selectTerminal(message, office, persin_id, step):
+    show_text_dict = {
+    	1 : 'Введите номер терминала:',
+    	2 : 'Введите наличные:'
+    	3 : 'Ведите номер договора:'
+    	4 : 'Введите информацию по возврату средств:'
+    	5 : 'Введите данные по ПЦР:'
+    	6 : 'Введите данные по ПЦР экспресс:'
+    	7 : 'Введите количество анализов:'
+    	8 : 'Введите комментарий: '
+    	9 : False
+    }
+    if show_text_dict[step]:
+        #Дописать
+        dbCollection()
+        #Запрос на БД с выбранным офисом
+        bot.send_message(persin_id, show_text_dict[step])
+        bot.register_next_step_handler(message, selectTerminal, step + 1)
+    else:
+        pass
+        #Написать действие после ввода инфы
+
 @bot.message_handler(content_types=['text', 'photo'])
 def lol(message):
     global account_settings
@@ -337,6 +371,16 @@ def lol(message):
     if message.chat.type == 'private':
         if message.text == '📞 Телефон' or message.text == '📞 telefon':
             pushingLabelFromFile(message, path_telephone_num, path_sec_telephone_num)
+        elif message.text == 'МО Гор.больница №1':
+           selectOffice()
+        elif message.text == 'МО Кушбеги':
+           pass
+        elif message.text == 'МО  Мирзо Улугбека':
+           pass
+        elif message.text == 'МО  Юнусата':
+           pass
+        elif message.text == 'МО  viezd':
+           pass
         elif message.text == '🏠 Адреса' or message.text == '🏠 manzillari':
             pushingLabelFromFile(message, path_address_label, path_sec_address_label)
         elif message.text == "🌐 Соц. сети" or message.text == '🌐 Biz ijtimoiy tarmoqlarda':
@@ -373,6 +417,9 @@ def lol(message):
                 markup.add(item1)
                 account_settings[str(message.chat.id)].feedback_st = 'open'
                 bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+        elif message.text == "💰 Инкассация":
+            if checkOperId(person_id = str(message.chat.id), action = 'collection_oper_ids_arr'):
+                setCollectionKeyboard(message = message, person_id = str(message.chat.id))
         elif message.text == '💽 БД переписок' or message.text == '💽 Yozishmalar bazasi':
             if checkOperId(person_id = str(message.chat.id), action = 'check_all_oper'):
                 dbDateSortEnter(message)
@@ -515,7 +562,8 @@ def checkOperId(person_id, action):
     	'check_support_id' : support_oper_ids_arr,
     	'check_feedback_oper_id' : feedback_oper_ids_arr,
     	'check_director_id'      : director_oper_ids_arr,
-    	'check_label_changer'    : label_change_ids_arr
+    	'check_label_changer'    : label_change_ids_arr,
+    	'check_collection_oper'  : collection_oper_ids_arr
     }
     for pers_id in action_dict[action]:
     	  if person_id == pers_id:
@@ -539,6 +587,18 @@ def keyboardRefMaker(message, lang, pers_id=None):
             item6 = types.KeyboardButton("% Получить скидку")
             item7 = types.KeyboardButton("®FAQ Инструкция")
             item9 = types.KeyboardButton("🌐 Соц. сети")
+            markup.add(item1, item2, item4, item9, item5, item10, item6, item7)
+        elif checkOperId(person_id = person_id, action = ' check_collection_oper'):
+            markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+            item1 = types.KeyboardButton("📞 Телефон")
+            item2 = types.KeyboardButton("🏠 Адреса")
+            item4 = types.KeyboardButton("📝 Создать заказ")
+            item5 = types.KeyboardButton("❗️ Оставить жалобу")
+            item10 = types.KeyboardButton("💽 БД переписок")
+            item6 = types.KeyboardButton("% Получить скидку")
+            item7 = types.KeyboardButton("®FAQ Инструкция")
+            item9 = types.KeyboardButton("🌐 Соц. сети")
+            item11 = types.KeyboardButton("💰 Инкассация")
             markup.add(item1, item2, item4, item9, item5, item10, item6, item7)
         else:
             markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -577,7 +637,19 @@ def keyboardRefMaker(message, lang, pers_id=None):
             item6 = types.KeyboardButton("% Chegirma oling")
             item7 = types.KeyboardButton("®FAQ Ko'rsatma")
             item9 = types.KeyboardButton("🌐 Biz ijtimoiy tarmoqlarda")
-            markup.add(item1, item2, item4, item9, item5, item10, item6, item7)
+            markup.add(item1, item2, item4, item9, item5, item10, item6, item7, item11)
+        elif checkOperId(person_id = person_id, action = ' check_collection_oper'):
+            markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+            item1 = types.KeyboardButton("📞 telefon")
+            item2 = types.KeyboardButton("🏠 manzillari")
+            item4 = types.KeyboardButton("📝 buyurtma yaratish")
+            item5 = types.KeyboardButton("❗️ Shikoyat qoldiring")
+            item10 = types.KeyboardButton("💽 Yozishmalar bazasi")
+            item6 = types.KeyboardButton("% Chegirma oling")
+            item7 = types.KeyboardButton("®FAQ Ko'rsatma")
+            item9 = types.KeyboardButton("🌐 Biz ijtimoiy tarmoqlarda")
+            item11 = types.KeyboardButton("💰 Naqd pul yig'ish")
+            markup.add(item1, item2, item4, item9, item5, item10, item6, item7, item11)
         else:
             markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
             item1 = types.KeyboardButton("📞 telefon")

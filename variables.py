@@ -9,6 +9,7 @@ doctor_oper_ids_arr   = ['281321076', '923118950', '379640085']
 support_oper_ids_arr  = ['281321076', '923118950', '379640085']
 director_oper_ids_arr = ['281321076', '923118950']
 feedback_oper_ids_arr = ['281321076', '923118950', '379640085']
+collection_oper_ids_arr = ['281321076']
 
 # Global variables
 account_settings = {}
