@@ -337,18 +337,7 @@ def setCollectionKeyboard(message, person_id, show_text = 'Выберите не
     markup.add(item1, item2, item3, item4, item5)
     bot.send_message(person_id, show_text, reply_markup=markup)
 
-def selectTerminal(message, office, persin_id, step):
-    show_text_dict = {
-    	1 : 'Введите номер терминала:',
-    	2 : 'Введите наличные:'
-    	3 : 'Ведите номер договора:'
-    	4 : 'Введите информацию по возврату средств:'
-    	5 : 'Введите данные по ПЦР:'
-    	6 : 'Введите данные по ПЦР экспресс:'
-    	7 : 'Введите количество анализов:'
-    	8 : 'Введите комментарий: '
-    	9 : False
-    }
+def selectOffice(message, office, persin_id, step):
     if show_text_dict[step]:
         #Дописать
         dbCollection()
@@ -368,35 +357,15 @@ def lol(message):
 
     account_settings = database.get_accounts_data()
     
+    #Описать Жалобу для Узбекского
+    
     if message.chat.type == 'private':
-        if message.text == '📞 Телефон' or message.text == '📞 telefon':
-            pushingLabelFromFile(message, path_telephone_num, path_sec_telephone_num)
-        elif message.text == 'МО Гор.больница №1':
-           selectOffice()
-        elif message.text == 'МО Кушбеги':
-           pass
-        elif message.text == 'МО  Мирзо Улугбека':
-           pass
-        elif message.text == 'МО  Юнусата':
-           pass
-        elif message.text == 'МО  viezd':
-           pass
-        elif message.text == '🏠 Адреса' or message.text == '🏠 manzillari':
-            pushingLabelFromFile(message, path_address_label, path_sec_address_label)
-        elif message.text == "🌐 Соц. сети" or message.text == '🌐 Biz ijtimoiy tarmoqlarda':
-            pushingLabelFromFile(message, path_social_web, path_sec_social_web)
-        elif message.text == '®FAQ Инструкция' or message.text == "®FAQ Ko'rsatma":
-            pushingLabelFromFile(message, path_FAQ_label, path_sec_FAQ_label)
-        elif message.text == '📝 Создать заказ' or message.text == '📝 buyurtma yaratish':
-            pushingLabelFromFile(message, path_order_label, path_sec_order_label)
-        elif message.text == '🙋 Оператор' or message.text == '🙋 Operator':
-            operInit(message, 'check_simple_oper', 'simple_oper', str(message.chat.id))
-        elif message.text == '👨‍⚕️ Доктор онлайн' or message.text == '👨‍⚕️ Shifokor onlayn':
-            operInit(message, 'check_doc_id', 'doc_oper', str(message.chat.id))
-        elif message.text == '☎️ Тех. поддержка' or message.text == '☎️ Тех. поддержка':
-            operInit(message, 'check_support_id', 'sup_oper', str(message.chat.id))
-        elif message.text == '✍️ Написать директору' or message.text == '✍️ Direktorga yozing':
-            operInit(message, 'check_director_id', 'dir_oper', str(message.chat.id))
+        if message_text_dict[message.text][0] == 'office':
+            selectOffice(message = message, office = message.text, person_id = str(message.chat.id), step = 1)
+        elif message_text_dict[message.text][0] == 'text_show':
+            pushingLabelFromFile(message, message_text_dict[message.text][1], message_text_dict[message.text][2])
+        elif message_text_dict[message.text][0] == 'oper_show':
+            operInit(message, message_text_dict[message.text][1], message_text_dict[message.text][2], str(message.chat.id))
         elif message.text == '❗️ Оставить жалобу' or message.text == '❗️ Shikoyat qoldiring':
             if checkOperId(person_id = str(message.chat.id), action = 'check_feedback_oper_id'):
                 feedBackdbDateSortEnter(message)
@@ -504,18 +473,9 @@ def lol(message):
             account_settings[account_settings[str(message.chat.id)].tags[0]].feedback_st = 'open'
             bot.send_message(account_settings[str(message.chat.id)].tags[0], oper_write.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
             closeConversation(message)        
-        elif message.text == "🙋 Операторская":
-            redirectInit(message, "❗ Общение завершено, перенаправление к оператору")
-            operInit(message_ids_dict[account_settings[str(message.chat.id)].tags[0]], 'check_simple_oper', 'simple_oper', closeConversation(message)) 
-        elif message.text == "☎️ Поддержка":
-            redirectInit(message, "❗ Общение завершено, перенаправление в тех.поддержку")
-            operInit(message_ids_dict[account_settings[str(message.chat.id)].tags[0]], 'check_support_id', 'sup_oper', closeConversation(message)) 
-        elif message.text == "✍️ Директор":
-            redirectInit(message, "❗ Общение завершено, перенаправление к директору")
-            operInit(message_ids_dict[account_settings[str(message.chat.id)].tags[0]], 'check_director_id', 'dir_oper', closeConversation(message))    
-        elif message.text == "👨‍⚕️ Доктор":
-            redirectInit(message, "❗ Общение завершено, перенаправление к доктору")
-            operInit(message_ids_dict[account_settings[str(message.chat.id)].tags[0]], 'check_doc_id', 'doc_oper', closeConversation(message))
+        elif message_text_dict[message.text][0] == 'redirect':
+            redirectInit(message, f"❗ Общение завершено, перенаправление {message_text_dict[message.text][1]}")
+            operInit(message_ids_dict[account_settings[str(message.chat.id)].tags[0]], message_text_dict[message.text][2], message_text_dict[message.text][3], closeConversation(message))
         elif message.text == "❔ Инструкция":
             FAQ_txt = ''
 
@@ -555,16 +515,6 @@ def lol(message):
 
 
 def checkOperId(person_id, action):
-    action_dict = {
-    	'check_all_oper'   : all_ids_arr,
-    	'check_simple_oper': simple_oper_ids_arr,
-    	'check_doc_id'     : doctor_oper_ids_arr,
-    	'check_support_id' : support_oper_ids_arr,
-    	'check_feedback_oper_id' : feedback_oper_ids_arr,
-    	'check_director_id'      : director_oper_ids_arr,
-    	'check_label_changer'    : label_change_ids_arr,
-    	'check_collection_oper'  : collection_oper_ids_arr
-    }
     for pers_id in action_dict[action]:
     	  if person_id == pers_id:
            return True
