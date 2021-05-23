@@ -340,12 +340,18 @@ def setCollectionKeyboard(message, person_id, show_text = 'Выберите не
 def selectOffice(message, office, persin_id, step):
     if show_text_dict[step]:
         #Дописать
-        dbCollection()
+        database.dbCollection()
         #Запрос на БД с выбранным офисом
         bot.send_message(persin_id, show_text_dict[step])
         bot.register_next_step_handler(message, selectTerminal, step + 1)
     else:
-        pass
+        markup = types.InlineKeyboardMarkup(row_width=2)
+        item1 = types.InlineKeyboardButton('Отправить отчёт', callback_data='Отправить отчёт')
+        item2 = types.InlineKeyboardButton('Исправить', callback_data='Исправить')
+        markup.add(item1, item2)
+        bot.send_message(person_id, 'Можете отправить отчёт или изменить данные', reply_markup=markup)
+        
+        
         #Написать действие после ввода инфы
 
 @bot.message_handler(content_types=['text', 'photo'])
@@ -366,6 +372,15 @@ def lol(message):
             pushingLabelFromFile(message, message_text_dict[message.text][1], message_text_dict[message.text][2])
         elif message_text_dict[message.text][0] == 'oper_show':
             operInit(message, message_text_dict[message.text][1], message_text_dict[message.text][2], str(message.chat.id))
+        elif message_text_dict[message.text][0] == 'oper_close':
+            stopConversation(message, message_text_dict[message.text][1])
+        elif message_text_dict[message.text][0] == 'redirect':
+            redirectInit(message, f"❗ Общение завершено, перенаправление {message_text_dict[message.text][1]}")
+            operInit(message_ids_dict[account_settings[str(message.chat.id)].tags[0]], message_text_dict[message.text][2], message_text_dict[message.text][3], closeConversation(message))
+        elif message_text_dict[message.text][0] == 'discount':
+            FAQ_txt = ''
+            FAQ_txt = openfileforRead(None, message_text_dict[message.text][1])
+            bot.send_message(message.chat.id, FAQ_txt.format(message.chat, bot.get_me()),parse_mode='html')
         elif message.text == '❗️ Оставить жалобу' or message.text == '❗️ Shikoyat qoldiring':
             if checkOperId(person_id = str(message.chat.id), action = 'check_feedback_oper_id'):
                 feedBackdbDateSortEnter(message)
@@ -447,11 +462,6 @@ def lol(message):
                         text_tags += " dan 10"
                         bot.send_message(message.chat.id, text_tags)
                         picPNGmaker(message)
-        elif message.text == "🔙 Отклонить вызов оператора":
-            stopConversation(message, 0)
-        elif message.text == "🔙 Operator chaqiruvini rad etish":
-            bot.send_message(str(message.chat.id), "❗ Operator bilan aloqa yakunlandi")
-            stopConversation(message, 1)
         elif message.text == "❗️ Жалоба":
             
             redirectInit(message, "❗ Общение с оператором завершено, перенаправление в раздел жалоб")
@@ -473,21 +483,6 @@ def lol(message):
             account_settings[account_settings[str(message.chat.id)].tags[0]].feedback_st = 'open'
             bot.send_message(account_settings[str(message.chat.id)].tags[0], oper_write.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
             closeConversation(message)        
-        elif message_text_dict[message.text][0] == 'redirect':
-            redirectInit(message, f"❗ Общение завершено, перенаправление {message_text_dict[message.text][1]}")
-            operInit(message_ids_dict[account_settings[str(message.chat.id)].tags[0]], message_text_dict[message.text][2], message_text_dict[message.text][3], closeConversation(message))
-        elif message.text == "❔ Инструкция":
-            FAQ_txt = ''
-
-            FAQ_txt = openfileforRead(None, path_FAQoper_label)
-            
-            bot.send_message(message.chat.id, FAQ_txt.format(message.chat, bot.get_me()),parse_mode='html')
-        elif message.text == "❔ Ko'rsatma":
-            FAQ_txt = ''
-
-            FAQ_txt = openfileforRead(None, path_sec_FAQoper_label)
-
-            bot.send_message(message.chat.id, FAQ_txt.format(message.chat, bot.get_me()),parse_mode='html')
         else:
             if account_settings[str(message.chat.id)].conversation == 'open':
                 if checkOperId(person_id = str(message.chat.id), action = 'check_all_oper'):
@@ -1135,7 +1130,83 @@ def callback_inline(call):
             if account_settings[str(call.message.chat.id)].language == "Русский":
                 bot.send_message(call.message.chat.id, 'Спасибо за оценку!')
             else: bot.send_message(call.message.chat.id, 'Baholash uchun rahmat!')
-
+        elif call.data == 'Номер терминала':
+        	  bot.delete_message(call.message.chat.id, call.message.message_id)
+            send = bot.send_message(call.message.chat.id, "➕ Введите данные для изменения")
+        	  bot.register_next_step_handler(send, database.dbCollection, path_sec_FAQoper_label)
+        	  
+        	  #Дописать связь с БД
+        
+        elif call.data == 'Исправить наличные':
+        	  bot.delete_message(call.message.chat.id, call.message.message_id)
+            send = bot.send_message(call.message.chat.id, "➕ Введите данные для изменения")
+        	  bot.register_next_step_handler(send, database.dbCollection, path_sec_FAQoper_label)
+        	  
+        	  #Дописать связь с БД
+        elif call.data == 'Номер договора':
+        	  bot.delete_message(call.message.chat.id, call.message.message_id)
+            send = bot.send_message(call.message.chat.id, "➕ Введите данные для изменения")
+        	  bot.register_next_step_handler(send, database.dbCollection, path_sec_FAQoper_label)
+        	  
+        	  #Дописать связь с БД
+        elif call.data == 'Информация по возврату средств':
+        	  bot.delete_message(call.message.chat.id, call.message.message_id)
+            send = bot.send_message(call.message.chat.id, "➕ Введите данные для изменения")
+        	  bot.register_next_step_handler(send, database.dbCollection, path_sec_FAQoper_label)
+        	  
+        	  #Дописать связь с БД
+        elif call.data == 'Данные по ПЦР':
+        	  bot.delete_message(call.message.chat.id, call.message.message_id)
+            send = bot.send_message(call.message.chat.id, "➕ Введите данные для изменения")
+        	  bot.register_next_step_handler(send, database.dbCollection, path_sec_FAQoper_label)
+        	  
+        	  #Дописать связь с БД
+        elif call.data == 'Данные по ПЦР экспресс':
+        	  bot.delete_message(call.message.chat.id, call.message.message_id)
+            send = bot.send_message(call.message.chat.id, "➕ Введите данные для изменения")
+        	  bot.register_next_step_handler(send, database.dbCollection, path_sec_FAQoper_label)
+        	  
+        	  #Дописать связь с БД
+        elif call.data == 'Количество анализов':
+        	  bot.delete_message(call.message.chat.id, call.message.message_id)
+            send = bot.send_message(call.message.chat.id, "➕ Введите данные для изменения")
+        	  bot.register_next_step_handler(send, database.dbCollection, path_sec_FAQoper_label)
+        	  
+        	  #Дописать связь с БД
+        elif call.data == 'Комментарий':
+        	  bot.delete_message(call.message.chat.id, call.message.message_id)
+            send = bot.send_message(call.message.chat.id, "➕ Введите данные для изменения")
+        	  bot.register_next_step_handler(send, database.dbCollection, path_sec_FAQoper_label)
+        	  
+        	  #Дописать связь с БД	    
+        elif call.data == 'Отправить отчёт':
+            
+            bot.delete_message(call.message.chat.id, call.message.message_id)
+            #
+            #Описать связь с БД
+            #
+            
+            database.dbCollection()
+        elif call.data == 'Изменить':
+            
+            bot.delete_message(call.message.chat.id, call.message.message_id)
+            #
+            # Описать изменение данных
+            # и связь с БД
+            #
+            
+            markup = types.InlineKeyboardMarkup(row_width=2)
+        		item1 = types.InlineKeyboardButton('Номер терминала', callback_data='Номер терминала')
+        		item2 = types.InlineKeyboardButton('Исправить наличные', callback_data='Исправить наличные')
+        		item3 = types.InlineKeyboardButton('Номер договора', callback_data='Номер договора')
+        		item4 = types.InlineKeyboardButton('Информация по возврату средств', callback_data='Информация по возврату средств')
+        		item5 = types.InlineKeyboardButton('Данные по ПЦР', callback_data='Данные по ПЦР')
+        		item6 = types.InlineKeyboardButton('Данные по ПЦР экспресс', callback_data='Данные по ПЦР экспресс')
+        		item7 = types.InlineKeyboardButton('Количество анализов', callback_data='Количество анализов')
+        		item8 = types.InlineKeyboardButton('Комментарий', callback_data='Комментарий')
+        		markup.add(item1, item2, item3, item4, item5, item6, item7, item8)
+        		bot.send_message(person_id, 'Что нужно исправить?', reply_markup=markup)
+            
         elif call.data[0] == 'Q':
             if account_settings[call.data[1:]].feedback_st == 'open':
                 
