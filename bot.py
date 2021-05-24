@@ -279,7 +279,7 @@ def stopConversation(message, lang, pers_id=None):
         person_id = pers_id
     else:
         person_id = str(message.chat.id)
-    if lang == 0: 
+    if lang == 0 or lang == 'Русский': 
         push_text = "❗ Общение с оператором завершено"
     else:
         push_text = "❗ Operator bilan aloqa yakunlandi"
@@ -327,15 +327,26 @@ def closeConversation(message):
     database.closerDataBase(str(message.chat.id), bot)
 
 def setCollectionKeyboard(message, person_id, show_text = 'Выберите необходимый мед офис'):
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    item1 = types.KeyboardButton("МО Гор.больница №1")
-    item2 = types.KeyboardButton("МО Кушбеги")
-    item3 = types.KeyboardButton("МО  Мирзо Улугбека")
-    item4 = types.KeyboardButton("МО  Юнусата")
-    item5 = types.KeyboardButton("МО  viezd")
-    item6 = types.KeyboardButton("🔙 Назад")
-    markup.add(item1, item2, item3, item4, item5)
-    bot.send_message(person_id, show_text, reply_markup=markup)
+    if checkOperId(person_id = person_id, action = 'collection_oper_ids_arr'):
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        item1 = types.KeyboardButton("МО Гор.больница №1")
+        item2 = types.KeyboardButton("МО Кушбеги")
+        item3 = types.KeyboardButton("МО  Мирзо Улугбека")
+        item4 = types.KeyboardButton("МО  Юнусата")
+        item5 = types.KeyboardButton("МО  viezd")
+        item6 = types.KeyboardButton("🔙 Назад")
+        markup.add(item1, item2, item3, item4, item5)
+        bot.send_message(person_id, show_text, reply_markup=markup)
+    elif checkOperId(person_id = person_id, action = 'collection_cash_ids_arr'):
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        item1 = types.KeyboardButton("МО Гор.больница №1")
+        item2 = types.KeyboardButton("МО Кушбеги")
+        item3 = types.KeyboardButton("МО  Мирзо Улугбека")
+        item4 = types.KeyboardButton("МО  Юнусата")
+        item5 = types.KeyboardButton("МО  viezd")
+        item6 = types.KeyboardButton("🔙 Назад")
+        markup.add(item1, item2, item3, item4, item5)
+        bot.send_message(person_id, show_text, reply_markup=markup)
 
 def selectOffice(message, office, persin_id, step):
     if show_text_dict[step]:
@@ -350,9 +361,6 @@ def selectOffice(message, office, persin_id, step):
         item2 = types.InlineKeyboardButton('Исправить', callback_data='Исправить')
         markup.add(item1, item2)
         bot.send_message(person_id, 'Можете отправить отчёт или изменить данные', reply_markup=markup)
-        
-        
-        #Написать действие после ввода инфы
 
 @bot.message_handler(content_types=['text', 'photo'])
 def lol(message):
@@ -381,6 +389,8 @@ def lol(message):
             FAQ_txt = ''
             FAQ_txt = openfileforRead(None, message_text_dict[message.text][1])
             bot.send_message(message.chat.id, FAQ_txt.format(message.chat, bot.get_me()),parse_mode='html')
+        elif message.text = '🔙 Назад':
+            stopConversation(message, account_settings[str(message.chat.id)].language)
         elif message.text == '❗️ Оставить жалобу' or message.text == '❗️ Shikoyat qoldiring':
             if checkOperId(person_id = str(message.chat.id), action = 'check_feedback_oper_id'):
                 feedBackdbDateSortEnter(message)
@@ -403,6 +413,8 @@ def lol(message):
                 bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
         elif message.text == "💰 Инкассация":
             if checkOperId(person_id = str(message.chat.id), action = 'collection_oper_ids_arr'):
+                setCollectionKeyboard(message = message, person_id = str(message.chat.id))
+            elif checkOperId(person_id = str(message.chat.id), action = 'collection_cash_ids_arr'):
                 setCollectionKeyboard(message = message, person_id = str(message.chat.id))
         elif message.text == '💽 БД переписок' or message.text == '💽 Yozishmalar bazasi':
             if checkOperId(person_id = str(message.chat.id), action = 'check_all_oper'):
@@ -1187,6 +1199,7 @@ def callback_inline(call):
             #
             
             database.dbCollection()
+            
         elif call.data == 'Изменить':
             
             bot.delete_message(call.message.chat.id, call.message.message_id)
