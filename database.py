@@ -233,7 +233,10 @@ def change_data(name, bot):
             err_txt = 'Error deleting data from user @' + name + '!'
             print(err_txt, e)
 
+### For collection
 
+def dbCollection():
+    pass
 
 ### For account_tb
 

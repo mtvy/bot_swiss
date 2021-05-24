@@ -36,12 +36,12 @@ class Account:
 def openfileforRead(action=None, name_path=None):
     global account_settings
     if action == 'set':
-        with open(path_acc_settings, 'r') as file_set:
+        with open(path.acc_settings, 'r') as file_set:
             if(file_set.readline() == ""): 
                 account_settings = {}
             else:
                 file_set.close()
-                with open(path_acc_settings, 'r') as file_set:
+                with open(path.acc_settings, 'r') as file_set:
                     account_settings = json.load(file_set)
         return account_settings
         

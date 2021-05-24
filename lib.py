@@ -8,5 +8,5 @@ from telebot import types
 import config
 import database
 import classes
-from path import *
-from variables import *
+import path
+import variables
