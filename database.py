@@ -235,8 +235,46 @@ def change_data(name, bot):
 
 ### For collection
 
-def dbCollection():
-    pass
+def dbCollection(person_id, action, step):
+    """
+     _________________________________________________________________________________________________________________________
+    |id|office|terminal_number|cash|doc_number|cash_return_info|PCR|PCR_express|analyzes_count|comment|admin_date|cashier_date|                |
+    |__|______|_______________|____|__________|________________|___|___________|______________|_______|__________|____________|
+    """
+    con, cur = connect()
+    if con == 0 and cur == 0:
+        return 0
+    else:
+        try:
+            dt = datetime.date.today()
+            tt = dt.timetuple()
+            date_start = ''
+            ch_i = 0
+            for it in tt:
+                date_start += str(it)
+                ch_i += 1
+                if ch_i >= 3: break
+                else: date_start += '-'
+            txt_db_com = "INSERT INTO message_tb (user_id, oper_id, date_start, text, status) VALUES (" + user_id + ', ' + oper_id + ", '" + date_start + "', 'TEXT DATABASE', 'open')"
+            cur.execute(txt_db_com)
+            con.commit()
+            print('New data add!')
+            txt_db_com = "UPDATE message_tb SET oper_id = " + oper_id + ", text = '" + "TEXT DATABASE\nOperator: " + oper_id + "\nUser: " + user_id + "\n'" + " WHERE status = 'open' AND user_id = " + user_id
+            cur.execute(txt_db_com)
+            con.commit()
+            print('New data add!')
+            txt_db_com = "SELECT id FROM message_tb WHERE status = 'open' and user_id = " + user_id
+            cur.execute(txt_db_com)
+            ed_text = cur.fetchall()
+            text_adder = ed_text[0]
+            text_adder = '✏️id Переписки: ' + str(text_adder[0])
+            bot.send_message(int(oper_id), text_adder)
+            bot.send_message(int(user_id), text_adder)
+            return 1
+        except Exception as e:
+            print('Error entering new data to message_tb!', e)
+            return 0
+
 
 ### For account_tb
 
