@@ -54,6 +54,18 @@ show_text_dict = {
     	9 : False
     }
 
+select_collection_action_dict = {
+		1 : 'office',
+    	2 : 'terminal_number',
+    	3 : 'cash',
+    	4 : 'cash_return_info',
+    	5 : 'doc_number',
+    	6 : 'PCR',
+    	7 : 'PCR_express',
+    	8 : 'analyzes_count',
+    	9 : 'comment',
+}
+
 	# main def message.text variables
 message_text_dict = {
     	'МО Гор.больница №1' : ['office'],

@@ -1,5 +1,6 @@
 ### defs for database conv
 from lib import classes, psycopg2, datetime, account_settings
+import bot, variables
 
 def connect():
     try:
@@ -237,39 +238,35 @@ def change_data(name, bot):
 
 def dbCollection(person_id, action, step):
     """
-     _________________________________________________________________________________________________________________________
-    |id|office|terminal_number|cash|doc_number|cash_return_info|PCR|PCR_express|analyzes_count|comment|admin_date|cashier_date|                |
-    |__|______|_______________|____|__________|________________|___|___________|______________|_______|__________|____________|
+     ____________________________________________________________________________________________________________________________________________________
+    |id|admin_id|cashier_id|office|terminal_number|cash|cash_return_info|doc_number|PCR|PCR_express|analyzes_count|comment|admin_date|cashier_date|status|
+    |__|________|__________|______|_______________|____|________________|__________|___|___________|______________|_______|__________|____________|______|
     """
     con, cur = connect()
     if con == 0 and cur == 0:
         return 0
     else:
         try:
-            dt = datetime.date.today()
-            tt = dt.timetuple()
-            date_start = ''
-            ch_i = 0
-            for it in tt:
-                date_start += str(it)
-                ch_i += 1
-                if ch_i >= 3: break
-                else: date_start += '-'
-            txt_db_com = "INSERT INTO message_tb (user_id, oper_id, date_start, text, status) VALUES (" + user_id + ', ' + oper_id + ", '" + date_start + "', 'TEXT DATABASE', 'open')"
-            cur.execute(txt_db_com)
-            con.commit()
-            print('New data add!')
-            txt_db_com = "UPDATE message_tb SET oper_id = " + oper_id + ", text = '" + "TEXT DATABASE\nOperator: " + oper_id + "\nUser: " + user_id + "\n'" + " WHERE status = 'open' AND user_id = " + user_id
-            cur.execute(txt_db_com)
-            con.commit()
-            print('New data add!')
-            txt_db_com = "SELECT id FROM message_tb WHERE status = 'open' and user_id = " + user_id
-            cur.execute(txt_db_com)
-            ed_text = cur.fetchall()
-            text_adder = ed_text[0]
-            text_adder = '✏️id Переписки: ' + str(text_adder[0])
-            bot.send_message(int(oper_id), text_adder)
-            bot.send_message(int(user_id), text_adder)
+            if bot.checkOperId(person_id = person_id, action = 'collection_oper_ids_arr'):
+                if step == 0:
+                    date_start = str(datetime.date.today())
+                    database_text_commmit = f"INSERT INTO collection_tb (admin_id, status) VALUES ({person_id}, 'admin')"
+                    cur.execute(database_text_commmit)
+                    con.commit()
+                    print('New collection add by admin!')
+                else:
+                    database_text_commmit = f"UPDATE collection_tb ({variables.select_collection_action_dict[step]}) VALUES ({action}) WHERE (admin_id = {person_id}) AND (status = 'admin')"
+                    cur.execute(database_text_commmit)
+                    con.commit()
+                    print('New collection data add by admin!')
+            elif bot.checkOperId(person_id = person_id, action = 'collection_cash_ids_arr'):
+                pass
+                txt_db_com = "SELECT id FROM message_tb WHERE status = 'open' and user_id = "
+                cur.execute(txt_db_com)
+                ed_text = cur.fetchall()
+                text_adder = ed_text[0]
+                text_adder = '✏️id Переписки: ' + str(text_adder[0])
+                bot.send_message(int(''), text_adder)
             return 1
         except Exception as e:
             print('Error entering new data to message_tb!', e)
