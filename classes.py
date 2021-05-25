@@ -1,4 +1,4 @@
-from lib import *
+import path, database, json
 
 class Account:
 

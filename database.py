@@ -1,10 +1,11 @@
 ### defs for database conv
-from lib import classes, psycopg2, datetime, account_settings
-import bot, variables
+from multiprocessing.context import Process
+import re
+import classes, variables, psycopg2, datetime
 
 def connect():
     try:
-        con = psycopg2.connect(database="postgres",user="postgres",password="postgres", host="127.0.0.1",port="5432")
+        con = psycopg2.connect(database="postgres",user="postgres",password="14072003", host="127.0.0.1",port="5432")
         cur = con.cursor()
         return con, cur
     except (Exception, psycopg2.DatabaseError) as error:
@@ -141,6 +142,7 @@ def closerDataBase(sm_id, bot):
 
 def getDataFromDB(date_start, bot):
     con, cur = connect()
+    account_settings = get_accounts_data()
     if con == 0 and cur == 0:
         return 0
     else:
@@ -165,6 +167,7 @@ def getDataFromDB(date_start, bot):
             return '0'
 def getDataFromFeedBackDB(date_start, bot):
     con, cur = connect()
+    account_settings = get_accounts_data()
     if con == 0 and cur == 0:
         return 0
     else:
@@ -236,41 +239,38 @@ def change_data(name, bot):
 
 ### For collection
 
-def dbCollection(person_id, action, step):
+def checkPulldbData(cur, action = None, step = None):
+    return cur.fetchall() if action == 'show_data' or step == 9 else True
+
+def dbCollection(person_id, step = None, action = None, database_push_data = None, bot = None):
     """
+    create table collection_tb(id serial primary key, admin_id varchar(128), cashier_id varchar(128), office varchar(128), terminal_number text, cash text, cash_return_info text, doc_number text, PCR text, PCR_express text, analyzes_count text, comment text, admin_date varchar(128), cashier_date varchar(128), status varchar(128));
      ____________________________________________________________________________________________________________________________________________________
     |id|admin_id|cashier_id|office|terminal_number|cash|cash_return_info|doc_number|PCR|PCR_express|analyzes_count|comment|admin_date|cashier_date|status|
     |__|________|__________|______|_______________|____|________________|__________|___|___________|______________|_______|__________|____________|______|
     """
     con, cur = connect()
-    if con == 0 and cur == 0:
-        return 0
+    if con == 0 and cur == 0: return False
     else:
         try:
-            if bot.checkOperId(person_id = person_id, action = 'collection_oper_ids_arr'):
-                if step == 0:
-                    date_start = str(datetime.date.today())
-                    database_text_commmit = f"INSERT INTO collection_tb (admin_id, admin_date, status) VALUES ({person_id}, {date_start}, 'admin')"
-                    cur.execute(database_text_commmit)
-                    con.commit()
-                    print('New collection add by admin!')
-                else:
-                    database_text_commmit = f"UPDATE collection_tb ({variables.select_collection_action_dict[step]}) VALUES ({action}) WHERE (admin_id = {person_id}) AND (status = 'admin')"
-                    cur.execute(database_text_commmit)
-                    con.commit()
-                    print('New collection data add by admin!')
-            elif bot.checkOperId(person_id = person_id, action = 'collection_cash_ids_arr'):
-                pass
-                txt_db_com = "SELECT id FROM message_tb WHERE status = 'open' and user_id = "
-                cur.execute(txt_db_com)
-                ed_text = cur.fetchall()
-                text_adder = ed_text[0]
-                text_adder = '✏️id Переписки: ' + str(text_adder[0])
-                bot.send_message(int(''), text_adder)
-            return 1
+            if step == 0:
+                database_text_commmit = f"INSERT INTO collection_tb (admin_id, admin_date, status) VALUES ('{person_id}', '{str(datetime.date.today())}', 'admin')"
+            elif step in [1,2,3,4,5,6,7,8]:
+                database_text_commmit = f"UPDATE collection_tb set {variables.select_collection_action_dict[step]} = '{database_push_data}' WHERE admin_id = '{person_id}' AND status = 'admin'"
+            elif action == 'init_chashier_status':
+                database_text_commmit = f"UPDATE collection_tb set cashier_id = '{person_id}', cashier_date = '{str(datetime.date.today())}', status = 'cashier' WHERE status = 'admin' and office = '{database_push_data}'"
+            elif action == 'confirm_collection':
+                database_text_commmit = f"UPDATE collection_tb set status = 'confirmed' WHERE status = 'cashier' AND cashier_id = '{person_id}'"
+            elif step == 9:
+                database_text_commmit = f"SELECT * FROM collection_tb WHERE status = '{database_push_data}' AND (admin_id = '{person_id}' OR cashier_id = '{person_id}')"
+            cur.execute(database_text_commmit)
+            data = checkPulldbData(cur = cur, step = step)
+            con.commit()
+            print('New collection add by admin!')
+            return data
         except Exception as e:
-            print('Error entering new data to message_tb!', e)
-            return 0
+            print('Error entering new data to collection_tb!', e)
+            return False
 
 
 ### For account_tb
@@ -321,3 +321,10 @@ def get_accounts_data():
         except Exception as e:
             print('Error taking data from account_tb!', e)
             return {}
+
+
+def testingDatabases():
+    print(dbCollection(person_id = '281321076', step=9, database_push_data = 'admin'))
+
+if __name__ == "__main__":
+    testingDatabases()

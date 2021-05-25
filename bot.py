@@ -1,4 +1,11 @@
-from lib import *
+# Main libraries
+import schedule, datetime, psycopg2, telebot, time, json, io, os, traceback
+from PIL import Image, ImageDraw, ImageFont
+from multiprocessing import Process
+from telebot import types
+
+# Project files
+import config, database, classes, path, variables
 
 
 account_settings = database.get_accounts_data()
@@ -328,32 +335,29 @@ def setCollectionKeyboard(message, person_id, show_text = 'Выберите не
     item4 = types.KeyboardButton("МО  Юнусата")
     item5 = types.KeyboardButton("МО  viezd")
     item6 = types.KeyboardButton("🔙 Назад")
-    markup.add(item1, item2, item3, item4, item5)
+    markup.add(item1, item2, item3, item4, item5, item6)
     bot.send_message(person_id, show_text, reply_markup=markup)
 
 def selectOffice(message, person_id, step):
-    if variables.show_text_dict[step]:
-        
-        #Если пишет админ, то данные отправляются в БД для сохранения
-        #Если пишет кассир, то данные только читаются из БД
+    if checkOperId(person_id = person_id, action = 'check_collection_oper'):
+        if variables.show_text_dict[step]:
+            database.dbCollection(person_id = person_id, step = step - 1, database_push_data = message.text)
+            bot.send_message(person_id, variables.show_text_dict[step])
+            bot.register_next_step_handler(message, selectOffice, person_id, step + 1)
+        else:
+            database.dbCollection(person_id = person_id, step = step - 1, database_push_data = message.text)
+            for row in database.dbCollection(person_id = person_id, step = step, database_push_data = 'admin')[0]:
+                bot.send_message(person_id, row)
 
-        #Дописать
-        database.dbCollection()
-        #Запрос на БД с выбранным офисом
+            # Есть описанная функция inline.... (заменить на неё все строки)
 
-        bot.send_message(person_id, variables.show_text_dict[step])
-        bot.register_next_step_handler(message, selectOffice, person_id, step + 1)
-    else:
-        
-        #Вывести отчёт
-
-        # Есть описанная функция inline.... (заменить на неё все строки)
-
-        markup = types.InlineKeyboardMarkup(row_width=2)
-        item1 = types.InlineKeyboardButton('Отправить отчёт', callback_data='Отправить отчёт')
-        item2 = types.InlineKeyboardButton('Исправить', callback_data='Исправить')
-        markup.add(item1, item2)
-        bot.send_message(person_id, 'Можете отправить отчёт или изменить данные', reply_markup=markup)
+            markup = types.InlineKeyboardMarkup(row_width=2)
+            item1 = types.InlineKeyboardButton('Отправить отчёт', callback_data='Отправить отчёт')
+            item2 = types.InlineKeyboardButton('Исправить', callback_data='Исправить')
+            markup.add(item1, item2)
+            bot.send_message(person_id, 'Можете отправить отчёт или изменить данные', reply_markup=markup)
+    elif checkOperId(person_id = person_id, action = 'check_collection_cash'):
+        pass
 
 @bot.message_handler(content_types=['text', 'photo'])
 def lol(message):
@@ -368,7 +372,7 @@ def lol(message):
     
     if message.chat.type == 'private':
         if variables.message_text_dict[message.text][0] == 'office':
-            selectOffice(message = message, office = message.text, person_id = str(message.chat.id), step = 1)
+            selectOffice(message = message, person_id = str(message.chat.id), step = 1)
         elif variables.message_text_dict[message.text][0] == 'text_show':
             pushingLabelFromFile(message, variables.message_text_dict[message.text][1], variables.message_text_dict[message.text][2])
         elif variables.message_text_dict[message.text][0] == 'oper_show':
@@ -511,11 +515,22 @@ def lol(message):
                 database.insert_text_to_data(sm_id, str(message.chat.id), bot)
 
 
-def checkOperId(person_id, action):
-    for pers_id in variables.action_dict[action]:
-    	  if person_id == pers_id:
-           return True
-    return False
+def checkOperId(person_id, action) -> bool:
+    """
+    Use this method to check the role of a person.
+    Parameters below described in variables.py
+
+    'check_all_oper'
+    'check_simple_oper'
+    'check_doc_id'
+    'check_support_id'
+    'check_feedback_oper_id'
+    'check_director_id'
+    'check_label_changer'
+    'check_collection_oper'
+    'check_collection_cash'
+    """
+    return True if person_id in [pers_id for pers_id in variables.action_dict[action]] else False
 
 def keyboardRefMaker(message, lang, pers_id=None):
     global account_settings
@@ -524,7 +539,7 @@ def keyboardRefMaker(message, lang, pers_id=None):
     else:
         person_id = str(message.chat.id)
     if lang == 0:
-        if checkOperId(person_id = person_id, action = ' check_collection_oper'):
+        if checkOperId(person_id = person_id, action = 'check_collection_oper'):
             markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
             item1 = types.KeyboardButton("📞 Телефон")
             item2 = types.KeyboardButton("🏠 Адреса")
@@ -535,7 +550,7 @@ def keyboardRefMaker(message, lang, pers_id=None):
             item7 = types.KeyboardButton("®FAQ Инструкция")
             item9 = types.KeyboardButton("🌐 Соц. сети")
             item11 = types.KeyboardButton("💰 Инкассация")
-            markup.add(item1, item2, item4, item9, item5, item10, item6, item7)
+            markup.add(item1, item2, item4, item9, item5, item10, item6, item7, item11)
         elif checkOperId(person_id = person_id, action = 'check_all_oper'):
             markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
             item1 = types.KeyboardButton("📞 Телефон")
@@ -574,7 +589,7 @@ def keyboardRefMaker(message, lang, pers_id=None):
             database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'personal_data', data = 'YES')      
             account_settings = database.get_accounts_data()
     else:
-        if checkOperId(person_id = person_id, action = ' check_collection_oper'):
+        if checkOperId(person_id = person_id, action = 'check_collection_oper'):
             markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
             item1 = types.KeyboardButton("📞 telefon")
             item2 = types.KeyboardButton("🏠 manzillari")

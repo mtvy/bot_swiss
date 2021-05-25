@@ -1,4 +1,5 @@
 import path
+
 # Last message number
 MESSAGE_ID = 254
 
@@ -31,7 +32,8 @@ action_dict = {
     	'check_feedback_oper_id' : feedback_oper_ids_arr,
     	'check_director_id'      : director_oper_ids_arr,
     	'check_label_changer'    : label_change_ids_arr,
-    	'check_collection_oper'  : collection_oper_ids_arr
+    	'check_collection_oper'  : collection_oper_ids_arr,
+		'check_collection_cash'  : collection_cash_ids_arr
     }
     # sendReqtoOper
 action_oper_select = {
@@ -55,15 +57,15 @@ show_text_dict = {
     }
 
 select_collection_action_dict = {
-		1 : 'office',
-    	2 : 'terminal_number',
-    	3 : 'cash',
-    	4 : 'cash_return_info',
-    	5 : 'doc_number',
-    	6 : 'PCR',
-    	7 : 'PCR_express',
-    	8 : 'analyzes_count',
-    	9 : 'comment',
+		0 : 'office',
+    	1 : 'terminal_number',
+    	2 : 'cash',
+    	3 : 'cash_return_info',
+    	4 : 'doc_number',
+    	5 : 'PCR',
+    	6 : 'PCR_express',
+    	7 : 'analyzes_count',
+    	8 : 'comment',
 }
 
 	# main def message.text variables
@@ -73,16 +75,16 @@ message_text_dict = {
     	'МО  Мирзо Улугбека' : ['office'],
     	'МО  Юнусата'        : ['office'],     
     	'МО  viezd'          : ['office'],
-    	'📞 Телефон'    : ['text_show', path.path_telephone_num, path.path_sec_telephone_num],
-    	'📞 telefon'    : ['text_show', path.path_telephone_num, path.path_sec_telephone_num],
-    	'🏠 Адреса'     : ['text_show', path.path_address_label, path.path_sec_address_label],
-    	'🏠 manzillari' : ['text_show', path.path_address_label, path.path_sec_address_label],
-    	'🌐 Соц. сети'  : ['text_show', path.path_social_web, path.path_sec_social_web],
-    	'🌐 Biz ijtimoiy tarmoqlarda' : ['text_show', path.path_social_web, path.path_sec_social_web],
-    	'®FAQ Инструкция'  : ['text_show', path.path_FAQ_label, path.path_sec_FAQ_label],
-    	"®FAQ Ko'rsatma"   : ['text_show', path.path_FAQ_label, path.path_sec_FAQ_label],
-    	'📝 Создать заказ'     : ['text_show', path.path_order_label, path.path_sec_order_label],
-    	'📝 buyurtma yaratish' : ['text_show', path.path_order_label, path.path_sec_order_label],
+    	'📞 Телефон'    : ['text_show', path.telephone_num, path.sec_telephone_num],
+    	'📞 telefon'    : ['text_show', path.telephone_num, path.sec_telephone_num],
+    	'🏠 Адреса'     : ['text_show', path.address_label, path.sec_address_label],
+    	'🏠 manzillari' : ['text_show', path.address_label, path.sec_address_label],
+    	'🌐 Соц. сети'  : ['text_show', path.social_web, path.sec_social_web],
+    	'🌐 Biz ijtimoiy tarmoqlarda' : ['text_show', path.social_web, path.sec_social_web],
+    	'®FAQ Инструкция'  : ['text_show', path.FAQ_label, path.sec_FAQ_label],
+    	"®FAQ Ko'rsatma"   : ['text_show', path.FAQ_label, path.sec_FAQ_label],
+    	'📝 Создать заказ'     : ['text_show', path.order_label, path.sec_order_label],
+    	'📝 buyurtma yaratish' : ['text_show', path.order_label, path.sec_order_label],
     	'🙋 Оператор'        : ['oper_show', 'check_simple_oper', 'simple_oper'],
     	'🙋 Operator'        : ['oper_show', 'check_simple_oper', 'simple_oper'],
     	'👨‍⚕️ Доктор онлайн'   : ['oper_show', 'check_doc_id', 'doc_oper'],
