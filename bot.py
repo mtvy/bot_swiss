@@ -926,6 +926,9 @@ def userSebdText(message):
 
 
 def inlineMessages(call, text1, text2, callback_data1, callback_data2, markup_text):
+    
+    #Проверить уделение сообщения
+    
     bot.delete_message(call.message.chat.id, call.message.message_id)
     markup = types.InlineKeyboardMarkup(row_width=2)
     item1 = types.InlineKeyboardButton(text=text1, callback_data=callback_data1)

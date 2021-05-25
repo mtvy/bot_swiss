@@ -250,7 +250,7 @@ def dbCollection(person_id, action, step):
             if bot.checkOperId(person_id = person_id, action = 'collection_oper_ids_arr'):
                 if step == 0:
                     date_start = str(datetime.date.today())
-                    database_text_commmit = f"INSERT INTO collection_tb (admin_id, status) VALUES ({person_id}, 'admin')"
+                    database_text_commmit = f"INSERT INTO collection_tb (admin_id, admin_date, status) VALUES ({person_id}, {date_start}, 'admin')"
                     cur.execute(database_text_commmit)
                     con.commit()
                     print('New collection add by admin!')
