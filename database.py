@@ -242,7 +242,7 @@ def change_data(name, bot):
 def checkPulldbData(cur, action = None, step = None):
     return cur.fetchall() if action == 'show_data' or step == 9 else True
 
-def dbCollection(person_id, step = None, action = None, database_push_data = None, bot = None):
+def dbCollection(message, person_id, step = None, database_push_data = None, action = None, bot = None):
     """
     create table collection_tb(id serial primary key, admin_id varchar(128), cashier_id varchar(128), office varchar(128), terminal_number text, cash text, cash_return_info text, doc_number text, PCR text, PCR_express text, analyzes_count text, comment text, admin_date varchar(128), cashier_date varchar(128), status varchar(128));
      ____________________________________________________________________________________________________________________________________________________
