@@ -257,8 +257,10 @@ def dbCollection(message, person_id, step = None, database_push_data = None, act
                 database_text_commmit = f"INSERT INTO collection_tb (admin_id, admin_date, status) VALUES ('{person_id}', '{str(datetime.date.today())}', 'admin')"
             elif step in [1,2,3,4,5,6,7,8]:
                 database_text_commmit = f"UPDATE collection_tb set {variables.select_collection_action_dict[step]} = '{database_push_data}' WHERE admin_id = '{person_id}' AND status = 'admin'"
-            elif action == 'init_chashier_status':
-                database_text_commmit = f"UPDATE collection_tb set cashier_id = '{person_id}', cashier_date = '{str(datetime.date.today())}', status = 'cashier' WHERE status = 'admin' and office = '{database_push_data}'"
+            #elif action == 'init_chashier_status':
+            #    database_text_commmit = f"UPDATE collection_tb set cashier_id = '{person_id}', cashier_date = '{str(datetime.date.today())}', status = 'cashier' WHERE status = 'admin' and office = '{database_push_data}'"
+            elif action == 'send_collection_to_oper':
+                database_text_commmit = f"UPDATE collection_tb set status = 'cashier' WHERE status = 'admin' AND admin_id = '{person_id}'"
             elif action == 'confirm_collection':
                 database_text_commmit = f"UPDATE collection_tb set status = 'confirmed' WHERE status = 'cashier' AND cashier_id = '{person_id}'"
             elif step == 9:

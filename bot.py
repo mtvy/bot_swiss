@@ -338,7 +338,7 @@ def setCollectionKeyboard(message, person_id, show_text = 'Выберите не
     markup.add(item1, item2, item3, item4, item5, item6)
     bot.send_message(person_id, show_text, reply_markup=markup)
 
-def selectOffice(message, person_id, step):
+def selectOffice(message, person_id, step, push_text = ''):
     if checkOperId(person_id = person_id, action = 'check_collection_oper'):
         if variables.show_text_dict[step]:
             database.dbCollection(message = message, person_id = person_id, step = step - 1, database_push_data = message.text)
@@ -346,9 +346,8 @@ def selectOffice(message, person_id, step):
             bot.register_next_step_handler(message, selectOffice, person_id, step + 1)
         else:
             database.dbCollection(message = message, person_id = person_id, step = step - 1, database_push_data = message.text)
-            x = database.dbCollection(message = message, person_id = person_id, step = step, database_push_data = 'admin')[0]
-            for row in x:
-                bot.send_message(person_id, str(row))
+            push_text += [str(row) for row in database.dbCollection(message = message, person_id = person_id, step = step, database_push_data = 'admin')[0]]
+            bot.send_message(person_id, push_text)
 
             # Есть описанная функция inline.... (заменить на неё все строки)
 
@@ -941,8 +940,11 @@ def userSebdText(message):
 
 
 
-def inlineMessages(call, text1, text2, callback_data1, callback_data2, markup_text):
-    
+def inlineMessages(call, text1, text2, callback_data1, callback_data2, markup_text, markup_arr = []):
+    """
+      need param: inline_data = [text, callback_data] to make markup
+    """
+    markup.add([types.InlineKeyboardButton(text=row[0], callback_data=row[1]) for row in 
     #Проверить уделение сообщения
     
     bot.delete_message(call.message.chat.id, call.message.message_id)
@@ -1151,59 +1153,22 @@ def callback_inline(call):
             if account_settings[str(call.message.chat.id)].language == "Русский":
                 bot.send_message(call.message.chat.id, 'Спасибо за оценку!')
             else: bot.send_message(call.message.chat.id, 'Baholash uchun rahmat!')
-        
-        elif call.data == 'Номер терминала':
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            send = bot.send_message(call.message.chat.id, "➕ Введите данные для изменения")
-            bot.register_next_step_handler(send, database.dbCollection, call.message.chat.id, 1, send.text)        	          
-        
-        elif call.data == 'Исправить наличные':
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            send = bot.send_message(call.message.chat.id, "➕ Введите данные для изменения")
-            bot.register_next_step_handler(send.message.chat.id, database.dbCollection, call.message.chat.id, 2, send.message.text)
-        	  
-        elif call.data == 'Информация по возврату средств':
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            send = bot.send_message(call.message.chat.id, "➕ Введите данные для изменения")
-            bot.register_next_step_handler(send, database.dbCollection, call.message.chat.id, 3, call.message.text)
-
-        elif call.data == 'Номер договора':
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            send = bot.send_message(call.message.chat.id, "➕ Введите данные для изменения")
-            bot.register_next_step_handler(send, database.dbCollection, call.message.chat.id, 4, call.message.text)
-        	  
-        elif call.data == 'Данные по ПЦР':
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            send = bot.send_message(call.message.chat.id, "➕ Введите данные для изменения")
-            bot.register_next_step_handler(send, database.dbCollection, call.message.chat.id, 5, call.message.text)
-        	  
-        elif call.data == 'Данные по ПЦР экспресс':
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            send = bot.send_message(call.message.chat.id, "➕ Введите данные для изменения")
-            bot.register_next_step_handler(send, database.dbCollection, call.message.chat.id, 6, call.message.text)
-        	  
-        elif call.data == 'Количество анализов':
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            send = bot.send_message(call.message.chat.id, "➕ Введите данные для изменения")
-            bot.register_next_step_handler(send, database.dbCollection, call.message.chat.id, 7, call.message.text)
-        	  
-        elif call.data == 'Комментарий':
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            send = bot.send_message(call.message.chat.id, "➕ Введите данные для изменения")
-            bot.register_next_step_handler(send, database.dbCollection, call.message.chat.id, 8, call.message.text)
-        	  
-        elif call.data == 'Отправить отчёт':
             
+            
+        elif variables.call_data_office_dict[call.data][0] == 'office_edit':
             bot.delete_message(call.message.chat.id, call.message.message_id)
-
+            send = bot.send_message(call.message.chat.id, "➕ Введите данные для изменения")
+            bot.register_next_step_handler(send, database.dbCollection, person_id = call.message.chat.id, variables.call_data_office_dict[call.data][1], send.text)          
+           
+        elif call.data == 'Отправить отчёт':
+            bot.delete_message(call.message.chat.id, call.message.message_id)
+            database.dbCollection(person_id = call.message.chat.id, action = 'send_collection_to_oper')
             #
             #Описать связь с БД
             #
             #Записать в БД, что отчёт сдан (админ)
             #Записать в БД, что отчёт принят (кассир)
             #
-
-            database.dbCollection()
             
         elif call.data == 'Изменить':
             

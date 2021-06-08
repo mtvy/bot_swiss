@@ -54,10 +54,10 @@ show_text_dict = {
     	7 : 'Введите количество анализов:',
     	8 : 'Введите комментарий: ',
     	9 : False
-    }
+    q}
 
 select_collection_action_dict = {
-		0 : 'office',
+    	0 : 'office',
     	1 : 'terminal_number',
     	2 : 'cash',
     	3 : 'cash_return_info',
@@ -66,6 +66,17 @@ select_collection_action_dict = {
     	6 : 'PCR_express',
     	7 : 'analyzes_count',
     	8 : 'comment',
+}
+
+call_data_office_dict = {
+    	'Номер терминала' : ['office_edit', 1],
+    	'Исправить наличные' : ['office_edit', 2],
+    	'Информация по возврату средств' : ['office_edit', 3],
+    	'Номер договора' : ['office_edit', 4],
+    	'Данные по ПЦР' : ['office_edit', 5],
+    	'Данные по ПЦР экспресс' : ['office_edit', 6],
+    	'Количество анализов' : ['office_edit', 7],
+    	'Комментарий' : ['office_edit', 8]
 }
 
 	# main def message.text variables
