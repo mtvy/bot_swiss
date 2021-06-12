@@ -54,7 +54,7 @@ show_text_dict = {
     	7 : 'Введите количество анализов:',
     	8 : 'Введите комментарий: ',
     	9 : False
-    q}
+    }
 
 select_collection_action_dict = {
     	0 : 'office',
@@ -96,6 +96,8 @@ message_text_dict = {
     	"®FAQ Ko'rsatma"   : ['text_show', path.FAQ_label, path.sec_FAQ_label],
     	'📝 Создать заказ'     : ['text_show', path.order_label, path.sec_order_label],
     	'📝 buyurtma yaratish' : ['text_show', path.order_label, path.sec_order_label],
+    	'% Получить скидку'     : ['discount', path.discount_label],
+    	'% Chegirma oling'      : ['discount', path.sec_discount_label],
     	'🙋 Оператор'        : ['oper_show', 'check_simple_oper', 'simple_oper'],
     	'🙋 Operator'        : ['oper_show', 'check_simple_oper', 'simple_oper'],
     	'👨‍⚕️ Доктор онлайн'   : ['oper_show', 'check_doc_id', 'doc_oper'],
@@ -109,8 +111,6 @@ message_text_dict = {
     	'💰 Инкассация'         : [''],
     	'💽 БД переписок'       : [''],
     	'💽 Yozishmalar bazasi' : [''],
-    	'% Получить скидку'     : ['discount', 'path_FAQoper_label'],
-    	'% Chegirma oling'      : ['discount', 'path_sec_FAQoper_label'],
     	'🔙 Отклонить вызов оператора'      : ['oper_close', 0],
     	'🔙 Operator chaqiruvini rad etish' : ['oper_close', 1],
     	'❗️ Жалоба'         : [''],

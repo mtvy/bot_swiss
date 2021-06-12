@@ -11,10 +11,7 @@ import config, database, classes, path, variables
 account_settings = database.get_accounts_data()
 
 def openfileforRead(action=None, name_path=None, file_text=''):
-    with io.open(name_path, encoding='utf-8') as file_set:
-                    for i in file_set:
-                        file_text += i
-    return file_text
+    return file_text.join([i for i in io.open(name_path, encoding='utf-8')])
 
 def saveNewText(message, name_path):
     word = message.text
@@ -22,6 +19,9 @@ def saveNewText(message, name_path):
         f.write(word)
     bot.send_message(message.chat.id, "Изменения сохранены!")
 
+def langCheck(message):
+    global account_settings
+    return True if account_settings[str(message.chat.id)].language == "Русский" else False
 
 bot = telebot.TeleBot(config.TOKEN)
 
@@ -227,21 +227,13 @@ def FeedBackdbIdSortEnter(message):
 
 
 def pushingLabelFromFile(message, path, path_sec):
-    label_text = ''
-    if account_settings[str(message.chat.id)].language == "Русский":
-        label_text = openfileforRead(None, path)
-    else:
-        label_text = openfileforRead(None, path_sec)
-    bot.send_message(message.chat.id, label_text.format(message.chat, bot.get_me()),parse_mode='html')
+    bot.send_message(message.chat.id, openfileforRead(None, path if langCheck(message) else path_sec).format(message.chat, bot.get_me()),parse_mode='html')
 
 def operInit(message, action, set_act, id_check, deactivation=None):
     if checkOperId(person_id = str(message.chat.id), action = action):
         bot.send_message(message.chat.id, "Вы оператор!")
     else:
-        if account_settings[str(message.chat.id)].language == "Русский":
-            operKeyboardMaker(message = message, which_oper = set_act, lang = 0)
-        else:
-            operKeyboardMaker(message = message, which_oper = set_act, lang = 1)
+        operKeyboardMaker(message = message, which_oper = set_act, lang = 0 if langCheck(message) else 1)
         
 def redirectInit(message, action):
     global account_settings
@@ -270,9 +262,7 @@ def redirectInit(message, action):
             bot.send_message(account_settings[str(message.chat.id)].tags[0], 'Оцените работу оператора!', reply_markup=markup)
         else: bot.send_message(account_settings[str(message.chat.id)].tags[0], 'Operator ishini baholang!', reply_markup=markup)
     else:
-        if account_settings[str(message.chat.id)].language == "Русский":
-                    bot.send_message(str(message.chat.id), 'Оцените работу оператора!', reply_markup=markup)
-        else: bot.send_message(str(message.chat.id), 'Operator ishini baholang!', reply_markup=markup)
+        bot.send_message(str(message.chat.id), 'Оцените работу оператора!' if langCheck(message) else 'Operator ishini baholang!', reply_markup=markup)
         
 def stopConversation(message, lang, pers_id=None):
     global account_settings
@@ -370,7 +360,6 @@ def lol(message):
             redirectInit(message, f"❗ Общение завершено, перенаправление {variables.message_text_dict[message.text][1]}")
             operInit(variables.message_ids_dict[account_settings[str(message.chat.id)].tags[0]], variables.message_text_dict[message.text][2], variables.message_text_dict[message.text][3], closeConversation(message))
         elif variables.message_text_dict[message.text][0] == 'discount':
-            FAQ_txt = ''
             FAQ_txt = openfileforRead(None, variables.message_text_dict[message.text][1])
             bot.send_message(message.chat.id, FAQ_txt.format(message.chat, bot.get_me()),parse_mode='html')
         elif message.text == '🔙 Назад':
@@ -379,82 +368,40 @@ def lol(message):
             if checkOperId(person_id = str(message.chat.id), action = 'check_feedback_oper_id'):
                 feedBackdbDateSortEnter(message)
             else:
-                oper_write = ''
                 account_settings[str(message.chat.id)].feedback_st = 'open'
                 markup = types.InlineKeyboardMarkup(row_width=2)
-                if account_settings[str(message.chat.id)].language == "Русский":
-
-                    oper_write = openfileforRead(None, path.recv_label)
- 
-                    item1 = types.InlineKeyboardButton("Написать жалобу", callback_data='Написать жалобу')
-                else:
-
-                    oper_write = openfileforRead(None, path.sec_recv_label)
-
-                    item1 = types.InlineKeyboardButton("Shikoyat yozing", callback_data='Write a feedback')
-                markup.add(item1)
-                account_settings[str(message.chat.id)].feedback_st = 'open'
-                bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+                button_text = "Написать жалобу" if langCheck(message) else "Shikoyat yozing"
+                markup.add(types.InlineKeyboardButton(button_text, callback_data = button_text))
+                bot.send_message(message.chat.id, openfileforRead(None, path.recv_label if langCheck(message) else path.sec_recv_label).format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
         elif message.text == "💰 Инкассация":
             setCollectionKeyboard(message = message, person_id = str(message.chat.id))
         elif message.text == '💽 БД переписок' or message.text == '💽 Yozishmalar bazasi':
             if checkOperId(person_id = str(message.chat.id), action = 'check_all_oper'):
                 dbDateSortEnter(message)
             else:
-                if account_settings[str(message.chat.id)].language == "Русский":
-                    bot.send_message(message.chat.id, 'У вас нет прав для чтения базы!')
-                else: bot.send_message(message.chat.id, "Sizda bazani o'qish huquqi yo'q!")
+                bot.send_message(message.chat.id, 'У вас нет прав для чтения базы!' if langCheck(message) else "Sizda bazani o'qish huquqi yo'q!")
         elif message.text == '% Получить скидку' or message.text == '% Chegirma oling':
             oper_write = ''
             mess = 'new'
             if (account_settings[str(message.chat.id)].discount == "0" and account_settings[str(message.chat.id)].ref == "0"):
                 markup = types.InlineKeyboardMarkup(row_width=2)
-                if account_settings[str(message.chat.id)].language == "Русский":
-
-                    oper_write = openfileforRead(None, path.discount_label)
-
-                    oper_write += "\nВаш реферальный код: "
-                    oper_write += str(message.chat.id)
-                    bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html')
-                else:
-
-                    oper_write = openfileforRead(None, path.sec_discount_label)
-
-                    oper_write += "\nSizning tavsiyangiz kodi: "
-                    oper_write += str(message.chat.id)
-                    bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html')
+                oper_write = openfileforRead(None, path.discount_label if langCheck(message) else path.sec_discount_label) + ("\nВаш реферальный код: " if langCheck(message) else  f"\nSizning tavsiyangiz kodi: ") + str(message.chat.id)
+                bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html')
             elif account_settings[str(message.chat.id)].ref == "10":
                 
                 database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'discount', data = '10')       
                 account_settings = database.get_accounts_data()
-
-                if account_settings[str(message.chat.id)].language == "Русский":
-                    picPNGmaker(message)
-                    bot.send_message(message.chat.id, "✅ У вас максимальная скидка!")
-                else:
-                    picPNGmaker(message)
-                    bot.send_message(message.chat.id, "✅ Siz maksimal chegirma bor!")
+                picPNGmaker(message)
+                bot.send_message(message.chat.id, "✅ У вас максимальная скидка!" if langCheck(message) else "✅ Siz maksimal chegirma bor!")
             else:
-                if account_settings[str(message.chat.id)].language == "Русский":
-                    if account_settings[str(message.chat.id)].discount == "10":
-                        picPNGmaker(message)
-                        bot.send_message(message.chat.id, "✅ У вас максимальная скидка!")
-                    else:
-                        text_tags = "❌ Ваши друзья ещё не активировали бота!\n❌ Всего активаций "
-                        text_tags += account_settings[str(message.chat.id)].ref
-                        text_tags += " из 10"
-                        bot.send_message(message.chat.id, text_tags)
-                        picPNGmaker(message)
+                if account_settings[str(message.chat.id)].discount == "10":
+                    picPNGmaker(message)
+                    bot.send_message(message.chat.id, "✅ У вас максимальная скидка!" if langCheck(message) else "✅ Siz maksimal chegirma bor!")
                 else:
-                    if account_settings[str(message.chat.id)].discount == "10":
-                        picPNGmaker(message)
-                        bot.send_message(message.chat.id, "✅ Siz maksimal chegirma bor!")
-                    else:
-                        text_tags = "❌ Sizning do'stlaringiz hali botni faollashtirmagan!\n❌ Jami aktivatsiyalar "
-                        text_tags += account_settings[str(message.chat.id)].ref
-                        text_tags += " dan 10"
-                        bot.send_message(message.chat.id, text_tags)
-                        picPNGmaker(message)
+                    ru_text = f"❌ Ваши друзья ещё не активировали бота!\n❌ Всего активаций {account_settings[str(message.chat.id)].ref} из 10"
+                    uz_text = f"❌ Sizning do'stlaringiz hali botni faollashtirmagan!\n❌ Jami aktivatsiyalar {account_settings[str(message.chat.id)].ref} dan 10"    
+                    bot.send_message(message.chat.id, ru_text if langCheck(message) else uz_text)
+                    picPNGmaker(message)
         elif message.text == "❗️ Жалоба":
             
             redirectInit(message, "❗ Общение с оператором завершено, перенаправление в раздел жалоб")
@@ -471,7 +418,7 @@ def lol(message):
 
                 oper_write = openfileforRead(None, path.sec_recv_label)
 
-                item1 = types.InlineKeyboardButton("Shikoyat yozing", callback_data='Write a feedback')
+                item1 = types.InlineKeyboardButton("Shikoyat yozing", callback_data='Shikoyat yozing')
             markup.add(item1)
             account_settings[account_settings[str(message.chat.id)].tags[0]].feedback_st = 'open'
             bot.send_message(account_settings[str(message.chat.id)].tags[0], oper_write.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
@@ -847,10 +794,7 @@ def picPNGmaker(message):
     img.save('newAcc.png')
     with open('newAcc.png', 'rb') as f:
         contents = f.read()
-    if account_settings[str(message.chat.id)].language == "Русский":
-        bot.send_photo(message.chat.id, contents, caption='💳 Ваша карта')
-    else:
-        bot.send_photo(message.chat.id, contents, caption='💳 Sizning kartangiz')
+    bot.send_photo(message.chat.id, contents, caption='💳 Ваша карта' if langCheck(message) else '💳 Sizning kartangiz')
     os.remove('newAcc.png')
 
 
@@ -869,33 +813,16 @@ def refAdd(message):
             
             database.change_account_data(account = account_settings[ref_n], parametr = 'ref', data = str(int(account_settings[ref_n].ref) + 1))
             account_settings = database.get_accounts_data()
-            
-            if account_settings[str(message.chat.id)].language == "Русский":
-                bot.send_message(message.chat.id, "✅ Спасибо за активацию!")
-                bot.send_message(ref_n, "✅ Новый пользователь активировал реферальный код!")
-                keyboardRefMaker(message, 0)
-            else:
-                bot.send_message(message.chat.id, "✅ Faollashtirish uchun rahmat!")
-                bot.send_message(ref_n, "✅ Yangi foydalanuvchi tavsiya kodini faollashtirdi!")
-                keyboardRefMaker(message, 1)
+            bot.send_message(message.chat.id, "✅ Спасибо за активацию!" if langCheck(message) else "✅ Faollashtirish uchun rahmat!")
+            bot.send_message(ref_n, "✅ Новый пользователь активировал реферальный код!" if langCheck(message) else "✅ Yangi foydalanuvchi tavsiya kodini faollashtirdi!")
+            keyboardRefMaker(message, 0 if langCheck(message) else 1)
         else:
-            if account_settings[str(message.chat.id)].language == "Русский":
-                bot.send_message(message.chat.id, "⚠️ Активации кода закончены")
-                keyboardRefMaker(message, 0)
-            else:
-                bot.send_message(message.chat.id, "⚠️ Kodni faollashtirish tugadi")
-                keyboardRefMaker(message, 1)
+            bot.send_message(message.chat.id, "⚠️ Активации кода закончены" if langCheck(message) else "⚠️ Kodni faollashtirish tugadi")
+            keyboardRefMaker(message, 0 if langCheck(message) else 1)
     elif ref_n == "stop":
-        if account_settings[str(message.chat.id)].language == "Русский":
-            keyboardRefMaker(message, 0)
-        else:
-            keyboardRefMaker(message, 1)
+        keyboardRefMaker(message, 0 if langCheck(message) else 1)
     else:
-        if account_settings[str(message.chat.id)].language == "Русский":
-            send = bot.send_message(message.chat.id, '❔ Ваш код не найден, поробуйте ещё раз или напишите - stop')
-        else:
-            send = bot.send_message(message.chat.id, '❔ Sizning kodingiz topilmadi, yana porobuyte yoki yozing - stop')
-        bot.register_next_step_handler(send, refAdd)
+        bot.register_next_step_handler(bot.send_message(message.chat.id, '❔ Ваш код не найден, поробуйте ещё раз или напишите - stop' if langCheck(message) else '❔ Sizning kodingiz topilmadi, yana porobuyte yoki yozing - stop'), refAdd)
 
 
 def userSebdText(message):
@@ -931,7 +858,7 @@ def inlineMessages(call, text1, text2, callback_data1, callback_data2, markup_te
     """
       need param: inline_data = [text, callback_data] to make markup
     """
-    markup.add([types.InlineKeyboardButton(text=row[0], callback_data=row[1]) for row in 
+    #markup.add([types.InlineKeyboardButton(text=row[0], callback_data=row[1]) for row in 
     #Проверить уделение сообщения
     
     bot.delete_message(call.message.chat.id, call.message.message_id)
@@ -1004,7 +931,7 @@ def callback_inline(call):
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Напишите ваше имя')
             bot.register_next_step_handler(send, fdbackName, 0)
-        elif call.data == 'Write a feedback':
+        elif call.data == 'Shikoyat yozing':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Telefon raqamingizni kiriting')
             bot.register_next_step_handler(send, fdbackName, 1)
@@ -1145,7 +1072,7 @@ def callback_inline(call):
         elif variables.call_data_office_dict[call.data][0] == 'office_edit':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, "➕ Введите данные для изменения")
-            bot.register_next_step_handler(send, database.dbCollection, person_id = call.message.chat.id, variables.call_data_office_dict[call.data][1], send.text)          
+            #bot.register_next_step_handler(send, database.dbCollection, person_id = call.message.chat.id, variables.call_data_office_dict[call.data][1], send.text)          
            
         elif call.data == 'Отправить отчёт':
             bot.delete_message(call.message.chat.id, call.message.message_id)
