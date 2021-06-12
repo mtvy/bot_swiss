@@ -276,15 +276,8 @@ def redirectInit(message, action):
         
 def stopConversation(message, lang, pers_id=None):
     global account_settings
-    if pers_id!=None:
-        person_id = pers_id
-    else:
-        person_id = str(message.chat.id)
-    if lang == 0 or lang == 'Русский': 
-        push_text = "❗ Общение с оператором завершено"
-    else:
-        push_text = "❗ Operator bilan aloqa yakunlandi"
-
+    person_id = pers_id if pers_id != None else str(message.chat.id)
+    push_text = "❗ Общение с оператором завершено" if lang == 0 or lang == 'Русский' else "❗ Operator bilan aloqa yakunlandi"
     bot.send_message(person_id, push_text)
     if len(account_settings[person_id].tags) != 0:
         bot.send_message(str(account_settings[person_id].tags[0]), push_text)
@@ -293,16 +286,10 @@ def stopConversation(message, lang, pers_id=None):
         database.change_account_data(account = account_settings[account_settings[person_id].tags[0]], parametr = 'tags', data = [])        
         account_settings = database.get_accounts_data()
 
-
-        if account_settings[account_settings[person_id].tags[0]].language == "Русский":
-            keyboardRefMaker(None, 0, account_settings[person_id].tags[0])
-        else:
-            keyboardRefMaker(None, 1, account_settings[person_id].tags[0])
+        keyboardRefMaker(None, 0 if account_settings[account_settings[person_id].tags[0]].language == "Русский" else 1, account_settings[person_id].tags[0])
     keyboardRefMaker(None, lang, person_id)
     markup = types.InlineKeyboardMarkup(row_width=2)
-    item1 = types.InlineKeyboardButton("👍", callback_data='👍')
-    item2 = types.InlineKeyboardButton("👎", callback_data="👎")
-    markup.add(item1, item2)
+    markup.add(types.InlineKeyboardButton("👍", callback_data='👍'), types.InlineKeyboardButton("👎", callback_data="👎"))
     if checkOperId(person_id = person_id, action = 'check_all_oper'):
         if account_settings[account_settings[person_id].tags[0]].language == "Русский":
             bot.send_message(account_settings[person_id].tags[0], 'Оцените работу оператора!', reply_markup=markup)
