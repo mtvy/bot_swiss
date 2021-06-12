@@ -14,9 +14,7 @@ def openfileforRead(action=None, name_path=None, file_text=''):
     return file_text.join([i for i in io.open(name_path, encoding='utf-8')])
 
 def saveNewText(message, name_path):
-    word = message.text
-    with open(name_path, 'w', encoding='utf-8') as f:
-        f.write(word)
+    open(name_path, 'w', encoding='utf-8').write(message.text)
     bot.send_message(message.chat.id, "Изменения сохранены!")
 
 def langCheck(message):
