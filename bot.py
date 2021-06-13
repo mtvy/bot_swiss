@@ -473,6 +473,9 @@ def keyboardRefMaker(message, lang, pers_id=None):
     if lang == 0:
         if checkOperId(person_id = person_id, action = 'check_collection_oper'):
             markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+            for tag in variables.button_ru_text.keys():
+            		if 'admin' in variables.button_ru_text[tag]:
+            			
             item1 = types.KeyboardButton("📞 Телефон")
             item2 = types.KeyboardButton("🏠 Адреса")
             item4 = types.KeyboardButton("📝 Создать заказ")

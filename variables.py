@@ -79,6 +79,38 @@ call_data_office_dict = {
     	'Комментарий' : ['office_edit', 8]
 }
 
+buttons_ru_text = {
+			'📞 Телефон' : ['oper', 'user', 'admin'],
+			'🏠 Адреса' : ['oper', 'user', 'admin'],
+			'🙋 Оператор' : ['user'],
+			'📝 Создать заказ' : ['oper', 'user', 'admin'],
+			'❗️ Оставить жалобу' : ['oper', 'user', 'admin'],
+			'💽 БД переписок' : ['oper', 'admin'],
+			'% Получить скидку' : ['oper', 'user', 'admin'],
+			'®FAQ Инструкция' : ['oper', 'user', 'admin'],
+			'✍️ Написать директору' : ['user']
+			'🌐 Соц. сети' : ['oper', 'user', 'admin'],
+			'☎️ Тех. поддержка' : ['user'],
+			'👨‍⚕️ Доктор онлайн' : ['user'],
+			'💰 Инкассация' : ['admin']
+	}
+
+buttons_uz_text = {
+			'📞 telefon' : ['oper', 'user', 'admin'],
+			'🏠 manzillari' : ['oper', 'user', 'admin'],
+			'🙋 Operator' : ['user'],
+			'📝 buyurtma yaratish' : ['oper', 'user', 'admin'],
+			'❗️ Shikoyat qoldiring' : ['oper', 'user', 'admin'],
+			'💽 Yozishmalar bazasi' : ['oper', 'admin'],
+			'% Chegirma oling' : ['oper', 'user', 'admin'],
+			"®FAQ Ko'rsatma" : ['oper', 'user', 'admin'],
+			'✍️ Direktorga yozing' : ['user']
+			'🌐 Biz ijtimoiy tarmoqlarda' : ['oper', 'user', 'admin'],
+			"☎️ O'sha.  qo'llab-quvvatlash" : ['user'],
+			'👨‍⚕️ Shifokor onlayn' : ['user'],
+			"💰 Naqd pul yig'ish" : ['admin']
+	}
+
 	# main def message.text variables
 message_text_dict = {
     	'МО Гор.больница №1' : ['office'],
