@@ -7,7 +7,6 @@ from telebot import types
 # Project files
 import config, database, classes, path, variables
 
-
 account_settings = database.get_accounts_data()
 
 def openfileforRead(action=None, name_path=None, file_text=''):
@@ -473,31 +472,28 @@ def keyboardRefMaker(message, lang, pers_id=None):
     if lang == 0:
         if checkOperId(person_id = person_id, action = 'check_collection_oper'):
             markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-            for tag in variables.button_ru_text.keys():
-            		if 'admin' in variables.button_ru_text[tag]:
-            			
             item1 = types.KeyboardButton("📞 Телефон")
             item2 = types.KeyboardButton("🏠 Адреса")
+            item3 = types.KeyboardButton("🙋 Оператор")
             item4 = types.KeyboardButton("📝 Создать заказ")
             item5 = types.KeyboardButton("❗️ Оставить жалобу")
-            item10 = types.KeyboardButton("💽 БД переписок")
             item6 = types.KeyboardButton("% Получить скидку")
             item7 = types.KeyboardButton("®FAQ Инструкция")
+            item8 = types.KeyboardButton("✍️ Написать директору")
             item9 = types.KeyboardButton("🌐 Соц. сети")
-            item11 = types.KeyboardButton("💰 Инкассация")
-            markup.add(item1, item2, item4, item9, item5, item10, item6, item7, item11)
+            item10 = types.KeyboardButton("☎️ Тех. поддержка")
+            item11 = types.KeyboardButton("👨‍⚕️ Доктор онлайн")
+            markup.row(*[item1, item2, item4]).row(item6, item7, item9).row(item11).row(item3, item8).row(item5, item10)
         elif checkOperId(person_id = person_id, action = 'check_all_oper'):
             markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-            item1 = types.KeyboardButton("📞 Телефон")
-            item2 = types.KeyboardButton("🏠 Адреса")
-            item4 = types.KeyboardButton("📝 Создать заказ")
-            item5 = types.KeyboardButton("❗️ Оставить жалобу")
-            item10 = types.KeyboardButton("💽 БД переписок")
-            item6 = types.KeyboardButton("% Получить скидку")
-            item7 = types.KeyboardButton("®FAQ Инструкция")
-            item9 = types.KeyboardButton("🌐 Соц. сети")
-            markup.add(item1, item2, item4, item9, item5, item10, item6, item7)
+            for tag in variables.button_ru_text.keys():
+                if 'oper' in variables.button_ru_text[tag]:
+                    markup.add(tag)
         else:
+            markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+            for tag in variables.button_ru_text.keys():
+                if 'user' in variables.button_ru_text[tag]:
+                    markup.add(tag)
             markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
             item1 = types.KeyboardButton("📞 Телефон")
             item2 = types.KeyboardButton("🏠 Адреса")
@@ -510,7 +506,7 @@ def keyboardRefMaker(message, lang, pers_id=None):
             item9 = types.KeyboardButton("🌐 Соц. сети")
             item10 = types.KeyboardButton("☎️ Тех. поддержка")
             item11 = types.KeyboardButton("👨‍⚕️ Доктор онлайн")
-            markup.row(item1, item2, item4).row(item6, item7, item9).row(item11).row(item3, item8).row(item5, item10)
+            markup.row((item1, item2, item4)).row(item6, item7, item9).row(item11).row(item3, item8).row(item5, item10)
         faq_txt = ''
 
         faq_txt = openfileforRead(None, path.FAQ_label)
