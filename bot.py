@@ -1,7 +1,7 @@
 # Main libraries
 import schedule, datetime, psycopg2, telebot, time, json, io, os, traceback
 from PIL import Image, ImageDraw, ImageFont
-from multiprocessing import Process
+from multiprocessing import Array, Process
 from telebot import types
 
 # Project files
@@ -463,123 +463,32 @@ def checkOperId(person_id, action) -> bool:
     """
     return True if person_id in [pers_id for pers_id in variables.action_dict[action]] else False
 
+def markupMaker(action, button_text, markup = types.ReplyKeyboardMarkup(resize_keyboard=True)) -> types.ReplyKeyboardMarkup():
+    pin = [types.KeyboardButton(tag) for tag in button_text.keys() if action in button_text[tag]]
+    markup.add(*pin) if action != 'user' else markup.row(pin[0], pin[1], pin[3]).row(pin[5], pin[6], pin[8]).row(pin[10]).row(pin[2], pin[7]).row(pin[4], pin[9])
+    return markup
+
 def keyboardRefMaker(message, lang, pers_id=None):
     global account_settings
-    if pers_id != None:
-        person_id = pers_id
-    else:
-        person_id = str(message.chat.id)
-    if lang == 0:
-        if checkOperId(person_id = person_id, action = 'check_collection_oper'):
-            markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-            item1 = types.KeyboardButton("📞 Телефон")
-            item2 = types.KeyboardButton("🏠 Адреса")
-            item3 = types.KeyboardButton("🙋 Оператор")
-            item4 = types.KeyboardButton("📝 Создать заказ")
-            item5 = types.KeyboardButton("❗️ Оставить жалобу")
-            item6 = types.KeyboardButton("% Получить скидку")
-            item7 = types.KeyboardButton("®FAQ Инструкция")
-            item8 = types.KeyboardButton("✍️ Написать директору")
-            item9 = types.KeyboardButton("🌐 Соц. сети")
-            item10 = types.KeyboardButton("☎️ Тех. поддержка")
-            item11 = types.KeyboardButton("👨‍⚕️ Доктор онлайн")
-            markup.row(*[item1, item2, item4]).row(item6, item7, item9).row(item11).row(item3, item8).row(item5, item10)
-        elif checkOperId(person_id = person_id, action = 'check_all_oper'):
-            markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-            for tag in variables.button_ru_text.keys():
-                if 'oper' in variables.button_ru_text[tag]:
-                    markup.add(tag)
-        else:
-            markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-            for tag in variables.button_ru_text.keys():
-                if 'user' in variables.button_ru_text[tag]:
-                    markup.add(tag)
-            markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-            item1 = types.KeyboardButton("📞 Телефон")
-            item2 = types.KeyboardButton("🏠 Адреса")
-            item3 = types.KeyboardButton("🙋 Оператор")
-            item4 = types.KeyboardButton("📝 Создать заказ")
-            item5 = types.KeyboardButton("❗️ Оставить жалобу")
-            item6 = types.KeyboardButton("% Получить скидку")
-            item7 = types.KeyboardButton("®FAQ Инструкция")
-            item8 = types.KeyboardButton("✍️ Написать директору")
-            item9 = types.KeyboardButton("🌐 Соц. сети")
-            item10 = types.KeyboardButton("☎️ Тех. поддержка")
-            item11 = types.KeyboardButton("👨‍⚕️ Доктор онлайн")
-            markup.row((item1, item2, item4)).row(item6, item7, item9).row(item11).row(item3, item8).row(item5, item10)
-        faq_txt = ''
-
-        faq_txt = openfileforRead(None, path.FAQ_label)
-        
-        if person_id == pers_id:
-            bot.send_message(person_id, faq_txt, reply_markup=markup)
-        else:
-            bot.send_message(message.chat.id, faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
-            
-            account_settings = database.get_accounts_data()
-            database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'personal_data', data = 'YES')      
-            account_settings = database.get_accounts_data()
-    else:
-        if checkOperId(person_id = person_id, action = 'check_collection_oper'):
-            markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-            item1 = types.KeyboardButton("📞 telefon")
-            item2 = types.KeyboardButton("🏠 manzillari")
-            item4 = types.KeyboardButton("📝 buyurtma yaratish")
-            item5 = types.KeyboardButton("❗️ Shikoyat qoldiring")
-            item10 = types.KeyboardButton("💽 Yozishmalar bazasi")
-            item6 = types.KeyboardButton("% Chegirma oling")
-            item7 = types.KeyboardButton("®FAQ Ko'rsatma")
-            item9 = types.KeyboardButton("🌐 Biz ijtimoiy tarmoqlarda")
-            item11 = types.KeyboardButton("💰 Naqd pul yig'ish")
-            markup.add(item1, item2, item4, item9, item5, item10, item6, item7, item11)
-        elif checkOperId(person_id = person_id, action = 'check_all_oper'):
-            markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-            item1 = types.KeyboardButton("📞 telefon")
-            item2 = types.KeyboardButton("🏠 manzillari")
-            item4 = types.KeyboardButton("📝 buyurtma yaratish")
-            item5 = types.KeyboardButton("❗️ Shikoyat qoldiring")
-            item10 = types.KeyboardButton("💽 Yozishmalar bazasi")
-            item6 = types.KeyboardButton("% Chegirma oling")
-            item7 = types.KeyboardButton("®FAQ Ko'rsatma")
-            item9 = types.KeyboardButton("🌐 Biz ijtimoiy tarmoqlarda")
-            markup.add(item1, item2, item4, item9, item5, item10, item6, item7)
-        else:
-            markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-            item1 = types.KeyboardButton("📞 telefon")
-            item2 = types.KeyboardButton("🏠 manzillari")
-            item3 = types.KeyboardButton("🙋 Operator")
-            item4 = types.KeyboardButton("📝 buyurtma yaratish")
-            item5 = types.KeyboardButton("❗️ Shikoyat qoldiring")
-            item6 = types.KeyboardButton("% Chegirma oling")
-            item7 = types.KeyboardButton("®FAQ Ko'rsatma")
-            item8 = types.KeyboardButton("✍️ Direktorga yozing")
-            item9 = types.KeyboardButton("🌐 Biz ijtimoiy tarmoqlarda")
-            item10 = types.KeyboardButton("☎️ O'sha.  qo'llab-quvvatlash")
-            item11 = types.KeyboardButton("👨‍⚕️ Shifokor onlayn")
-            markup.row(item1, item2, item4).row(item6, item7, item9).row(item11).row(item3, item8).row(item5, item10)
-        faq_txt = ''
-
-        faq_txt = openfileforRead(None, path.sec_FAQ_label)
-
-        if person_id == pers_id:
-            bot.send_message(person_id, faq_txt, reply_markup=markup)
-        else:
-            bot.send_message(message.chat.id, faq_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
-            
-            account_settings = database.get_accounts_data()
-            database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'personal_data', data = 'YES')
-            account_settings = database.get_accounts_data()
+    person_id = pers_id if pers_id != None else str(message.chat.id)
+    markup = markupMaker(action = 'admin' if checkOperId(person_id = person_id, action = 'check_collection_oper') else 'oper' if  checkOperId(person_id = person_id, action = 'check_all_oper') else 'user', button_text = variables.buttons_ru_text if lang == 0 else variables.buttons_uz_text)
+    bot.send_message(message.chat.id, openfileforRead(None, path.FAQ_label if lang == 0 else path.sec_FAQ_label).format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+    if person_id != pers_id:        
+        account_settings = database.get_accounts_data()
+        database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'personal_data', data = 'YES')
+        account_settings = database.get_accounts_data()
 
 
 def checkBlockedPeople(message, markup, pers_id):
     try:
         bot.send_message(pers_id, txt, reply_markup=markup)
-    except Exception as e:
-        text_push = 'User ' + pers_id + ' blocked!\n\n' + repr(e)
+    except Exception as error:
+        text_push = f"User {pers_id} blocked!\n\n{repr(error)}"
         print(text_push)
         for id_er in variables.label_change_ids_arr:
             bot.send_message(int(id_er), text_push)
-        
+
+
 
 
 def fdbackName(message, lang):
