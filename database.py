@@ -266,7 +266,7 @@ def dbCollection(message, person_id, step = None, database_push_data = None, act
             elif step == 9:
                 database_text_commmit = f"SELECT * FROM collection_tb WHERE status = '{database_push_data}' AND (admin_id = '{person_id}' OR cashier_id = '{person_id}')"
             cur.execute(database_text_commmit)
-            data = checkPulldbData(cur = cur, step = step)
+            data = checkPulldbData(cur = cur, action = action, step = step)
             con.commit()
             print('New collection add by admin!')
             return data

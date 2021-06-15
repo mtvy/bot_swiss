@@ -302,14 +302,8 @@ def selectOffice(message, person_id, step, push_text = ''):
         else:
             database.dbCollection(message = message, person_id = person_id, step = step - 1, database_push_data = message.text)
             bot.send_message(person_id, ''.join([f"{str(row)}\n" for row in database.dbCollection(message = message, person_id = person_id, step = step, database_push_data = 'admin')[0]]))
+            inlineMessages(markup_text = 'Можете отправить отчёт или изменить данные', message = message, markup_arr = [['Отправить отчёт', 'Отправить отчёт'], ['Изменить', 'Изменить']])
 
-            # Есть описанная функция inline.... (заменить на неё все строки)
-
-            markup = types.InlineKeyboardMarkup(row_width=2)
-            item1 = types.InlineKeyboardButton('Отправить отчёт', callback_data='Отправить отчёт')
-            item2 = types.InlineKeyboardButton('Изменить', callback_data='Изменить')
-            markup.add(item1, item2)
-            bot.send_message(person_id, 'Можете отправить отчёт или изменить данные', reply_markup=markup)
     elif checkOperId(person_id = person_id, action = 'check_collection_cash'):
         pass
 
@@ -715,7 +709,7 @@ def userSebdText(message):
 
 
 
-def inlineMessages(call, markup_text, markup_arr = []):
+def inlineMessages(markup_text, call = None, message = None, markup_arr = []):
     """
       need param: inline_data = [text, callback_data] to make markup
     """
@@ -747,7 +741,7 @@ def callback_inline(call):
             bot.delete_message(call.message.chat.id, call.message.message_id)
             bot.send_message(call.message.chat.id, "Вы отказались от обработки персональных данных\n♻️ Для перезапуска бота нажмите /start")
         elif call.data == 'Согласен':
-            inlineMessages(call, markup_text = '♻️ У вас есть реферальная ссылка?', markup_arr = [['Да', 'Да'], ['Нет', 'Нет']])
+            inlineMessages(markup_text = '♻️ У вас есть реферальная ссылка?', call = call, markup_arr = [['Да', 'Да'], ['Нет', 'Нет']])
 
         elif call.data == 'Нет':
             bot.delete_message(call.message.chat.id, call.message.message_id)
@@ -774,7 +768,7 @@ def callback_inline(call):
             bot.delete_message(call.message.chat.id, call.message.message_id)
             bot.send_message(call.message.chat.id, "Siz shaxsiy ma'lumotlarni qayta ishlash uchun rad qilgan\n♻️ Botni qayta ishga tushirish uchun bosing /start")
         elif call.data == 'Agree':
-            inlineMessages(call, markup_text="♻️ Yo'naltiruvchi havola bormi?", markup_arr = [['Ha', 'Yes'], ["Yo'q", 'No']])
+            inlineMessages(markup_text="♻️ Yo'naltiruvchi havola bormi?", call = call, markup_arr = [['Ha', 'Yes'], ["Yo'q", 'No']])
         elif call.data == 'No':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             keyboardRefMaker(call.message, 1)
@@ -804,7 +798,7 @@ def callback_inline(call):
             bot.register_next_step_handler(send, enterTag_Sec)
 
         elif call.data == 'Начальный текст':
-            inlineMessages(call, markup_text = 'Выберите язык блока', markup_arr = [['Русский', 'РусскийLangStart'], ['Ozbek', 'OzbekLangStart']])
+            inlineMessages(markup_text = 'Выберите язык блока', call = call, markup_arr = [['Русский', 'РусскийLangStart'], ['Ozbek', 'OzbekLangStart']])
         elif call.data == 'РусскийLangStart':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
@@ -815,7 +809,7 @@ def callback_inline(call):
             bot.register_next_step_handler(send, saveNewText, path.second_lang)
 
         elif call.data == 'FAQ текст':
-            inlineMessages(call, markup_text = 'Выберите язык блока', markup_arr = [['Русский', 'РусскийLangFAQ'], ['Ozbek', 'OzbekLangFAQ']])
+            inlineMessages(markup_text = 'Выберите язык блока', call = call, markup_arr = [['Русский', 'РусскийLangFAQ'], ['Ozbek', 'OzbekLangFAQ']])
         elif call.data == 'РусскийLangFAQ':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
@@ -826,7 +820,7 @@ def callback_inline(call):
             bot.register_next_step_handler(send, saveNewText, path.sec_FAQ_label)
 
         elif call.data == 'Текст оператора':
-            inlineMessages(call, markup_text = 'Выберите язык блока', markup_arr = [['Русский', 'РусскийLangOper'], ['Ozbek', 'OzbekLangOper']])
+            inlineMessages(markup_text = 'Выберите язык блока', call = call, markup_arr = [['Русский', 'РусскийLangOper'], ['Ozbek', 'OzbekLangOper']])
         elif call.data == 'РусскийLangOper':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
@@ -837,7 +831,7 @@ def callback_inline(call):
             bot.register_next_step_handler(send, saveNewText, path.sec_oper_label)
 
         elif call.data == 'Текст телефона':
-            inlineMessages(call, markup_text = 'Выберите язык блока', markup_arr = [['Русский', 'РусскийLangTele'], ['Ozbek', 'OzbekLangTele']])
+            inlineMessages(markup_text = 'Выберите язык блока', call = call, markup_arr = [['Русский', 'РусскийLangTele'], ['Ozbek', 'OzbekLangTele']])
         elif call.data == 'РусскийLangTele':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
@@ -848,7 +842,7 @@ def callback_inline(call):
             bot.register_next_step_handler(send, saveNewText, path.sec_telephone_num)
 
         elif call.data == 'Текст адресса':
-            inlineMessages(call, markup_text = 'Выберите язык блока', markup_arr = [['Русский', 'РусскийLangAdress'], ['Ozbek', 'OzbekLangAdress']])
+            inlineMessages(markup_text = 'Выберите язык блока', call = call, markup_arr = [['Русский', 'РусскийLangAdress'], ['Ozbek', 'OzbekLangAdress']])
         elif call.data == 'РусскийLangAdress':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
@@ -859,7 +853,7 @@ def callback_inline(call):
             bot.register_next_step_handler(send, saveNewText, path.sec_address_label)
 
         elif call.data == 'Текст создания заказа':
-            inlineMessages(call, markup_text = 'Выберите язык блока', markup_arr = [['Русский', 'РусскийLangOrder'], ['Ozbek', 'OzbekLangOrder']])
+            inlineMessages(markup_text = 'Выберите язык блока', call = call, markup_arr = [['Русский', 'РусскийLangOrder'], ['Ozbek', 'OzbekLangOrder']])
         elif call.data == 'РусскийLangOrder':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
@@ -870,7 +864,7 @@ def callback_inline(call):
             bot.register_next_step_handler(send, saveNewText, path.sec_order_label)
 
         elif call.data == 'Текст отзыва':
-            inlineMessages(call, markup_text = 'Выберите язык блока', markup_arr = [['Русский', 'РусскийLangRecv'], ['Ozbek', 'OzbekLangRecv']])
+            inlineMessages(markup_text = 'Выберите язык блока', call = call, markup_arr = [['Русский', 'РусскийLangRecv'], ['Ozbek', 'OzbekLangRecv']])
         elif call.data == 'РусскийLangRecv':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
@@ -881,7 +875,7 @@ def callback_inline(call):
             bot.register_next_step_handler(send, saveNewText, path.sec_recv_label)
 
         elif call.data == 'Текст скидки':
-            inlineMessages(call, markup_text = 'Выберите язык блока', markup_arr = [['Русский', 'РусскийLangDisc'], ['Ozbek', 'OzbekLangDisc']])
+            inlineMessages(markup_text = 'Выберите язык блока', call = call, markup_arr = [['Русский', 'РусскийLangDisc'], ['Ozbek', 'OzbekLangDisc']])
         elif call.data == 'РусскийLangDisc':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
@@ -892,7 +886,7 @@ def callback_inline(call):
             bot.register_next_step_handler(send, saveNewText, path.sec_discount_label)
 
         elif call.data == 'Текст социальные сети':
-            inlineMessages(call, markup_text = 'Выберите язык блока', markup_arr = [['Русский', 'РусскийLangSocial'], ['Ozbek', 'OzbekLangSocial']])
+            inlineMessages(markup_text = 'Выберите язык блока', call = call, markup_arr = [['Русский', 'РусскийLangSocial'], ['Ozbek', 'OzbekLangSocial']])
         elif call.data == 'РусскийLangSocial':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
@@ -903,7 +897,7 @@ def callback_inline(call):
             bot.register_next_step_handler(send, saveNewText, path.sec_social_web)
 
         elif call.data == 'Текст инструкции оператора':
-            inlineMessages(call, markup_text = 'Выберите язык блока', markup_arr = [['Русский', 'РусскийLangOperFAQ'], ['Ozbek', 'OzbekLangOperFAQ']])
+            inlineMessages(markup_text = 'Выберите язык блока', call = call, markup_arr = [['Русский', 'РусскийLangOperFAQ'], ['Ozbek', 'OzbekLangOperFAQ']])
         elif call.data == 'РусскийLangOperFAQ':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введите текст для изменения')
@@ -941,8 +935,7 @@ def callback_inline(call):
         elif call.data in variables.call_data_office_dict.keys():
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, "➕ Введите данные для изменения")
-            bot.register_next_step_handler(send, database.dbCollection, person_id = call.message.chat.id, step = variables.call_data_office_dict[call.data][1])          
-            selectOffice(message = call.message, person_id = call.message.chat.id, step = 9)
+            bot.register_next_step_handler(send, database.dbCollection, person_id = call.message.chat.id, step = variables.call_data_office_dict[call.data][1], action = 'show_data')
 
         elif call.data == 'Отправить отчёт':
             bot.delete_message(call.message.chat.id, call.message.message_id)
