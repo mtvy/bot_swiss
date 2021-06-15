@@ -118,6 +118,7 @@ message_text_dict = {
     	'МО  Мирзо Улугбека' : ['office'],
     	'МО  Юнусата'        : ['office'],     
     	'МО  viezd'          : ['office'],
+		'🔙 Назад'      : [''],
     	'📞 Телефон'    : ['text_show', path.telephone_num, path.sec_telephone_num],
     	'📞 telefon'    : ['text_show', path.telephone_num, path.sec_telephone_num],
     	'🏠 Адреса'     : ['text_show', path.address_label, path.sec_address_label],
