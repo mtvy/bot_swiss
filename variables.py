@@ -118,7 +118,6 @@ message_text_dict = {
     	'МО  Мирзо Улугбека' : ['office'],
     	'МО  Юнусата'        : ['office'],     
     	'МО  viezd'          : ['office'],
-		'🔙 Назад'      : [''],
     	'📞 Телефон'    : ['text_show', path.telephone_num, path.sec_telephone_num],
     	'📞 telefon'    : ['text_show', path.telephone_num, path.sec_telephone_num],
     	'🏠 Адреса'     : ['text_show', path.address_label, path.sec_address_label],
@@ -139,24 +138,11 @@ message_text_dict = {
     	'☎️ Тех. поддержка'  : ['oper_show', 'check_support_id', 'sup_oper'],
     	'✍️ Написать директору' : ['oper_show', 'check_director_id', 'dir_oper'],
     	'✍️ Direktorga yozing'  : ['oper_show', 'check_director_id', 'dir_oper'],
-    	'❗️ Оставить жалобу'    : [''],
-    	'❗️ Shikoyat qoldiring' : [''],
-    	'💰 Инкассация'         : [''],
-    	'💽 БД переписок'       : [''],
-    	'💽 Yozishmalar bazasi' : [''],
     	'🔙 Отклонить вызов оператора'      : ['oper_close', 0],
     	'🔙 Operator chaqiruvini rad etish' : ['oper_close', 1],
-    	'❗️ Жалоба'         : [''],
-    	'❗️ Жалоба'         : [''],
     	'🙋 Операторская' : ['redirect', 'к оператору', 'check_simple_oper', 'simple_oper'],
     	'☎️ Поддержка'    : ['redirect', 'в тех.поддержку', 'check_support_id', 'sup_oper'],
     	'✍️ Директор'     : ['redirect', 'к директору', 'check_director_id', 'dir_oper' ],
-    	'👨‍⚕️ Доктор'       : ['redirect', 'к доктору', 'check_doc_id', 'doc_oper'],
-    	'❔ Инструкция'   : [''],
-    	"❔ Ko'rsatma"    : [''],
-    	''         : [''],
-    	''         : [''],
-    	''         : [''],
-    	''         : ['']
-    }
+    	'👨‍⚕️ Доктор'       : ['redirect', 'к доктору', 'check_doc_id', 'doc_oper']
+}
 
