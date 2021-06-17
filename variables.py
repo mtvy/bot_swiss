@@ -11,8 +11,8 @@ doctor_oper_ids_arr   = ['281321076', '923118950', '379640085']
 support_oper_ids_arr  = ['281321076', '923118950', '379640085']
 director_oper_ids_arr = ['281321076', '923118950']
 feedback_oper_ids_arr = ['281321076', '923118950', '379640085']
-collection_oper_ids_arr = ['281321076']
-collection_cash_ids_arr = ['']
+collection_oper_ids_arr = []
+collection_cash_ids_arr = ['281321076']
 
 # Global variables
 account_settings = {}
@@ -23,18 +23,6 @@ txt  = ""
 mess = ""
 
 # Short operations variables
-	# checkOperId
-action_dict = {
-    	'check_all_oper'   : all_ids_arr,
-    	'check_simple_oper': simple_oper_ids_arr,
-    	'check_doc_id'     : doctor_oper_ids_arr,
-    	'check_support_id' : support_oper_ids_arr,
-    	'check_feedback_oper_id' : feedback_oper_ids_arr,
-    	'check_director_id'      : director_oper_ids_arr,
-    	'check_label_changer'    : label_change_ids_arr,
-    	'check_collection_oper'  : collection_oper_ids_arr,
-		'check_collection_cash'  : collection_cash_ids_arr
-    }
     # sendReqtoOper
 action_oper_select = {
     	'simple_oper' : simple_oper_ids_arr,
@@ -130,19 +118,19 @@ message_text_dict = {
     	'📝 buyurtma yaratish' : ['text_show', path.order_label, path.sec_order_label],
     	'% Получить скидку'     : ['discount', path.discount_label],
     	'% Chegirma oling'      : ['discount', path.sec_discount_label],
-    	'🙋 Оператор'        : ['oper_show', 'check_simple_oper', 'simple_oper'],
-    	'🙋 Operator'        : ['oper_show', 'check_simple_oper', 'simple_oper'],
-    	'👨‍⚕️ Доктор онлайн'   : ['oper_show', 'check_doc_id', 'doc_oper'],
-    	'👨‍⚕️ Shifokor onlayn' : ['oper_show', 'check_doc_id', 'doc_oper'],
-    	'☎️ Тех. поддержка'  : ['oper_show', 'check_support_id', 'sup_oper'],
-    	'☎️ Тех. поддержка'  : ['oper_show', 'check_support_id', 'sup_oper'],
-    	'✍️ Написать директору' : ['oper_show', 'check_director_id', 'dir_oper'],
-    	'✍️ Direktorga yozing'  : ['oper_show', 'check_director_id', 'dir_oper'],
+    	'🙋 Оператор'        : ['oper_show', simple_oper_ids_arr, 'simple_oper'],
+    	'🙋 Operator'        : ['oper_show', simple_oper_ids_arr, 'simple_oper'],
+    	'👨‍⚕️ Доктор онлайн'   : ['oper_show', doctor_oper_ids_arr, 'doc_oper'],
+    	'👨‍⚕️ Shifokor onlayn' : ['oper_show', doctor_oper_ids_arr, 'doc_oper'],
+    	'☎️ Тех. поддержка'  : ['oper_show', support_oper_ids_arr, 'sup_oper'],
+    	'☎️ Тех. поддержка'  : ['oper_show', support_oper_ids_arr, 'sup_oper'],
+    	'✍️ Написать директору' : ['oper_show', director_oper_ids_arr, 'dir_oper'],
+    	'✍️ Direktorga yozing'  : ['oper_show', director_oper_ids_arr, 'dir_oper'],
     	'🔙 Отклонить вызов оператора'      : ['oper_close', 0],
     	'🔙 Operator chaqiruvini rad etish' : ['oper_close', 1],
-    	'🙋 Операторская' : ['redirect', 'к оператору', 'check_simple_oper', 'simple_oper'],
-    	'☎️ Поддержка'    : ['redirect', 'в тех.поддержку', 'check_support_id', 'sup_oper'],
-    	'✍️ Директор'     : ['redirect', 'к директору', 'check_director_id', 'dir_oper' ],
-    	'👨‍⚕️ Доктор'       : ['redirect', 'к доктору', 'check_doc_id', 'doc_oper']
+    	'🙋 Операторская' : ['redirect', 'к оператору', simple_oper_ids_arr, 'simple_oper'],
+    	'☎️ Поддержка'    : ['redirect', 'в тех.поддержку', support_oper_ids_arr, 'sup_oper'],
+    	'✍️ Директор'     : ['redirect', 'к директору', director_oper_ids_arr, 'dir_oper' ],
+    	'👨‍⚕️ Доктор'       : ['redirect', 'к доктору', doctor_oper_ids_arr, 'doc_oper']
 }
 

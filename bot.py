@@ -1,4 +1,5 @@
 # Main libraries
+from pickle import FALSE
 import schedule, datetime, psycopg2, telebot, time, json, io, os, traceback
 from PIL import Image, ImageDraw, ImageFont
 from multiprocessing import Array, Process
@@ -17,7 +18,7 @@ def langCheck(message = None, person_id = None) -> bool:
     This def returns True if the language is Russian.
     """
     global account_settings
-    return True if account_settings[str(message.chat.id) if person_id == None else person_id].language == "Русский" else False
+    return True if account_settings[str(message.chat.id) if person_id == None else str(person_id)].language == "Русский" else False
 
 def saveNewText(message, name_path) -> None:
     open(name_path, 'w', encoding='utf-8').write(message.text)
@@ -27,18 +28,14 @@ def checkOperId(person_id, action) -> bool:
     """
     Use this method to check the role of a person.
     Parameters below described in variables.py
-
-    'check_all_oper'
-    'check_simple_oper'
-    'check_doc_id'
-    'check_support_id'
-    'check_feedback_oper_id'
-    'check_director_id'
-    'check_label_changer'
-    'check_collection_oper'
-    'check_collection_cash'
+    
+    all_ids_arr
+    label_change_ids_arr        simple_oper_ids_arr
+    doctor_oper_ids_arr         support_oper_ids_arr
+    director_oper_ids_arr       feedback_oper_ids_arr
+    collection_oper_ids_arr     collection_cash_ids_arr
     """
-    return True if person_id in [pers_id for pers_id in variables.action_dict[action]] else False
+    return True if person_id in [pers_id for pers_id in action] else False
 
 
 bot = telebot.TeleBot(config.TOKEN)
@@ -143,7 +140,7 @@ def welcome(message):
 
 @bot.message_handler(commands=['changeLabel'])
 def adderNewLabel(message):
-    if checkOperId(person_id = str(message.chat.id), action = 'check_label_changer'):
+    if checkOperId(person_id = str(message.chat.id), action = variables.label_change_ids_arr):
         markup = types.InlineKeyboardMarkup(row_width=2)
         item1 = types.InlineKeyboardButton("Начальный текст", callback_data='Начальный текст')
         item2 = types.InlineKeyboardButton("FAQ текст", callback_data='FAQ текст')
@@ -265,12 +262,12 @@ def redirectInit(message, action):
     keyboardRefMaker(message, 0)
     markup = types.InlineKeyboardMarkup(row_width=2)
     markup.add(types.InlineKeyboardButton("👍", callback_data='👍'), types.InlineKeyboardButton("👎", callback_data='👎'))
-    bot.send_message(account_settings[str(message.chat.id)].tags[0] if checkOperId(person_id = str(message.chat.id), action = 'check_all_oper') else str(message.chat.id), 'Оцените работу оператора!' if langCheck(message) else 'Operator ishini baholang!', reply_markup=markup)
+    bot.send_message(account_settings[str(message.chat.id)].tags[0] if checkOperId(person_id = str(message.chat.id), action = variables.all_ids_arr) else str(message.chat.id), 'Оцените работу оператора!' if langCheck(message) else 'Operator ishini baholang!', reply_markup=markup)
         
 def stopConversation(message, lang, pers_id=None, action = None):
     global account_settings
     person_id = pers_id if pers_id != None else str(message.chat.id)
-    push_text = "❗ Общение с оператором завершено" if lang == 0 or lang == 'Русский' else "❗ Operator bilan aloqa yakunlandi"
+    push_text = "❗ Завершение диалога" if lang == 0 or lang == 'Русский' else "❗ Muloqotni yakunlash"
     bot.send_message(person_id, push_text)
     if len(account_settings[person_id].tags) != 0:
         bot.send_message(str(account_settings[person_id].tags[0]), push_text)
@@ -281,9 +278,10 @@ def stopConversation(message, lang, pers_id=None, action = None):
 
         keyboardRefMaker(None, 0 if account_settings[account_settings[person_id].tags[0]].language == "Русский" else 1, account_settings[person_id].tags[0])
     keyboardRefMaker(None, lang, person_id)
-    markup = types.InlineKeyboardMarkup(row_width=2)
-    markup.add(types.InlineKeyboardButton("👍", callback_data='👍'), types.InlineKeyboardButton("👎", callback_data="👎"))
-    bot.send_message(account_settings[person_id].tags[0] if checkOperId(person_id = person_id, action = 'check_all_oper') and action == None else person_id, 'Оцените работу оператора!' if langCheck(person_id = person_id) else 'Operator ishini baholang!', reply_markup=markup)
+
+    user_id = account_settings[person_id].tags[0] if checkOperId(person_id = person_id, action = variables.all_ids_arr) and action == None else person_id
+    if not checkOperId(person_id = person_id, action = variables.all_ids_arr):
+        inlineMessages(markup_text = 'Оцените работу оператора!' if langCheck(person_id = user_id) else 'Operator ishini baholang!', person_id = user_id, markup_arr = [['👍', '👍'], ['👎', '👎']], action = False)
             
     database.change_account_data(account = account_settings[person_id], parametr = 'conversation', data = 'close')
     database.change_account_data(account = account_settings[person_id], parametr = 'tags', data = [])        
@@ -312,18 +310,24 @@ def setCollectionKeyboard(message, person_id, show_text = 'Выберите не
     bot.send_message(person_id, show_text, reply_markup=markup)
 
 def selectOffice(message, person_id, step, push_text = ''):
-    if checkOperId(person_id = person_id, action = 'check_collection_oper'):
+    if checkOperId(person_id = person_id, action = variables.collection_oper_ids_arr):
         if variables.show_text_dict[step]:
             database.dbCollection(message = message, person_id = person_id, step = step - 1, database_push_data = message.text)
             bot.send_message(person_id, variables.show_text_dict[step])
             bot.register_next_step_handler(message, selectOffice, person_id, step + 1)
         else:
             database.dbCollection(message = message, person_id = person_id, step = step - 1, database_push_data = message.text)
-            bot.send_message(person_id, ''.join([f"{str(row)}\n" for row in database.dbCollection(message = message, person_id = person_id, step = step, database_push_data = 'admin')[0]]))
+            data = ''.join([f"{str(row)}\n" for row in database.dbCollection(message = message, person_id = person_id, step = step, database_push_data = 'admin')])
+            bot.send_message(person_id, data)
             inlineMessages(markup_text = 'Можете отправить отчёт или изменить данные', message = message, markup_arr = [['Отправить отчёт', 'Отправить отчёт'], ['Изменить', 'Изменить']])
 
-    elif checkOperId(person_id = person_id, action = 'check_collection_cash'):
-        pass
+    elif checkOperId(person_id = person_id, action = variables.collection_cash_ids_arr):
+        data =  database.dbCollection(message = message, person_id = person_id, database_push_data = message.text, step = 9, action = 'show_collection_to_cashier')
+        data = ''.join([f"{str(row)}\n" for row in data[0]]) if len(data) > 0 else 'Данных по этому офису нет!'
+        bot.send_message(person_id, data)
+        inlineMessages(markup_text = 'Можете подтвердить или изменить данные', message = message, markup_arr = [['Подтвердить', 'Подтвердить'], ['Изменить', 'Изменить']])
+
+
 
 @bot.message_handler(content_types=['text', 'photo'])
 def lol(message):
@@ -352,7 +356,7 @@ def lol(message):
         elif message.text == '🔙 Назад':
             stopConversation(message, account_settings[str(message.chat.id)].language, action = 'back')
         elif message.text == '❗️ Оставить жалобу' or message.text == '❗️ Shikoyat qoldiring':
-            if checkOperId(person_id = str(message.chat.id), action = 'check_feedback_oper_id'):
+            if checkOperId(person_id = str(message.chat.id), action = variables.feedback_oper_ids_arr):
                 feedBackdbDateSortEnter(message)
             else:
                 account_settings[str(message.chat.id)].feedback_st = 'open'
@@ -363,7 +367,7 @@ def lol(message):
         elif message.text == "💰 Инкассация":
             setCollectionKeyboard(message = message, person_id = str(message.chat.id))
         elif message.text == '💽 БД переписок' or message.text == '💽 Yozishmalar bazasi':
-            if checkOperId(person_id = str(message.chat.id), action = 'check_all_oper'):
+            if checkOperId(person_id = str(message.chat.id), action = variables.all_ids_arr):
                 dbDateSortEnter(message)
             else:
                 bot.send_message(message.chat.id, 'У вас нет прав для чтения базы!' if langCheck(message) else "Sizda bazani o'qish huquqi yo'q!")
@@ -397,7 +401,7 @@ def lol(message):
             closeConversation(message)        
         else:
             if account_settings[str(message.chat.id)].conversation == 'open':
-                if checkOperId(person_id = str(message.chat.id), action = 'check_all_oper'):
+                if checkOperId(person_id = str(message.chat.id), action = variables.all_ids_arr):
                     database.change_account_data(account = account_settings[account_settings[str(message.chat.id)].tags[0]], parametr = 'timer_conv', data = int(time.time()))
                     sm_id = 'Operator: '
                 else:
@@ -431,8 +435,8 @@ def markupMaker(action, button_text) -> types.ReplyKeyboardMarkup():
 def keyboardRefMaker(message, lang, pers_id=None):
     global account_settings
     person_id = pers_id if pers_id != None else str(message.chat.id)
-    markup = markupMaker(action = 'admin' if checkOperId(person_id = person_id, action = 'check_collection_oper') else 'oper' if  checkOperId(person_id = person_id, action = 'check_all_oper') else 'user', button_text = variables.buttons_ru_text if lang == 0 or lang == 'Русский' else variables.buttons_uz_text)
-    bot.send_message(person_id, openfileforRead(None, path.FAQ_label if lang == 0 or lang == 'Русский' else path.sec_FAQ_label) if not checkOperId(person_id = person_id, action = 'check_all_oper') else 'Открыта клавиатура оператора!', parse_mode='html', reply_markup=markup)
+    markup = markupMaker(action = 'admin' if checkOperId(person_id = person_id, action = variables.collection_cash_ids_arr + variables.collection_oper_ids_arr) else 'oper' if  checkOperId(person_id = person_id, action = variables.all_ids_arr) else 'user', button_text = variables.buttons_ru_text if lang == 0 or lang == 'Русский' else variables.buttons_uz_text)
+    bot.send_message(person_id, openfileforRead(None, path.FAQ_label if lang == 0 or lang == 'Русский' else path.sec_FAQ_label) if not checkOperId(person_id = person_id, action = variables.all_ids_arr) else 'Открыта клавиатура оператора!', parse_mode='html', reply_markup=markup)
     if person_id != pers_id:        
         account_settings = database.get_accounts_data()
         database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'personal_data', data = 'YES')
@@ -709,14 +713,15 @@ def userSebdText(message):
 
 
 
-def inlineMessages(markup_text, call = None, message = None, markup_arr = []):
+def inlineMessages(markup_text, call = None, message = None, person_id = None, markup_arr = [], action = True):
     """
       need param: inline_data = [text, callback_data] to make markup
     """
-    bot.delete_message(call.message.chat.id if call != None else message.chat.id, call.message.message_id if call != None else message.message_id)
+    person_id = person_id if person_id != None else message.chat.id if message != None else call.message.chat.id
+    if action: bot.delete_message(person_id, call.message.message_id if call != None else message.message_id)
     markup = types.InlineKeyboardMarkup(row_width = len(markup_arr))
     markup.add(*[types.InlineKeyboardButton(text = row[0], callback_data = row[1]) for row in markup_arr])
-    bot.send_message(call.message.chat.id if call != None else message.chat.id, markup_text, reply_markup=markup)
+    bot.send_message(person_id, markup_text, reply_markup=markup)
 
 def handlingdbCollection(message, call):
     bot.send_message(message.chat.id, ''.join([f"{str(row)}\n" for row in database.dbCollection(message = message, person_id = message.chat.id, step = variables.call_data_office_dict[call.data][1], action = 'show_data')[0]]))
@@ -935,15 +940,10 @@ def callback_inline(call):
             bot.register_next_step_handler(send, handlingdbCollection, call = call)
         elif call.data == 'Отправить отчёт':
             bot.delete_message(call.message.chat.id, call.message.message_id)
+            #if checkOperId(call.message.chat.id, variables.collection_cash_ids_arr): database.dbCollection(call.message, person_id = call.message.chat.id, action = 'send_collection_to_oper')
             database.dbCollection(call.message, person_id = call.message.chat.id, action = 'send_collection_to_oper')
             bot.send_message(call.message.chat.id, 'Отчёт отправлен!')
             keyboardRefMaker(call.message, 0 if langCheck(person_id = str(call.message.chat.id)) else 1, str(call.message.chat.id))
-            #
-            #Описать связь с БД
-            #
-            #Записать в БД, что отчёт сдан (админ)
-            #Записать в БД, что отчёт принят (кассир)
-            #
             
             
         elif call.data[0] == 'Q':
