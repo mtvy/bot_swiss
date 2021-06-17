@@ -258,9 +258,9 @@ def dbCollection(message, person_id, step = None, database_push_data = None, act
             elif action == 'cashier_init':
                 database_text_commmit = f"UPDATE collection_tb set cashier_id = '{person_id}' WHERE office = '{database_push_data}' AND status = 'cashier'"
             elif step in [1,2,3,4,5,6,7,8] and action == 'show_data':
-                database_text_commmit = f"UPDATE collection_tb set {variables.select_collection_action_dict[step]} = '{database_push_data if database_push_data != None else message.text}' WHERE admin_id = '{person_id}' AND status = 'admin'"
+                database_text_commmit = f"UPDATE collection_tb set {variables.select_collection_action_dict[step]} = '{database_push_data if database_push_data != None else message.text}' WHERE (admin_id = '{person_id}' AND status = 'admin') OR (cashier_id = '{person_id}' AND status = 'cashier')"
                 cur.execute(database_text_commmit)
-                database_text_commmit = f"SELECT * FROM collection_tb WHERE status = '{status}' AND (admin_id = '{person_id}' OR cashier_id = '{person_id}')"
+                database_text_commmit = f"SELECT * FROM collection_tb WHERE (admin_id = '{person_id}' AND status = 'admin') OR (cashier_id = '{person_id}' AND status = 'cashier')"
             elif step in [1,2,3,4,5,6,7,8]:
                 database_text_commmit = f"UPDATE collection_tb set {variables.select_collection_action_dict[step]} = '{database_push_data if database_push_data != None else message.text}' WHERE admin_id = '{person_id}' AND status = 'admin'"
             #elif action == 'init_chashier_status':

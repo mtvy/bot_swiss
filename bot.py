@@ -322,10 +322,11 @@ def selectOffice(message, person_id, step, push_text = ''):
             inlineMessages(markup_text = 'Можете отправить отчёт или изменить данные', message = message, markup_arr = [['Отправить отчёт', 'Отправить отчёт'], ['Изменить', 'Изменить']])
 
     elif checkOperId(person_id = person_id, action = variables.collection_cash_ids_arr):
+        database.dbCollection(message = message, person_id = person_id, database_push_data = message.text, action = 'cashier_init')
         data =  database.dbCollection(message = message, person_id = person_id, database_push_data = message.text, step = 9, action = 'show_collection_to_cashier')
         data = ''.join([f"{str(row)}\n" for row in data[0]]) if len(data) > 0 else 'Данных по этому офису нет!'
         bot.send_message(person_id, data)
-        inlineMessages(markup_text = 'Можете подтвердить или изменить данные', message = message, markup_arr = [['Подтвердить', 'Подтвердить'], ['Изменить', 'Изменить']])
+        if data != 'Данных по этому офису нет!': inlineMessages(markup_text = 'Можете подтвердить или изменить данные', message = message, markup_arr = [['Подтвердить', 'Подтвердить'], ['Изменить', 'Изменить']])
 
 
 
@@ -940,11 +941,14 @@ def callback_inline(call):
             bot.register_next_step_handler(send, handlingdbCollection, call = call)
         elif call.data == 'Отправить отчёт':
             bot.delete_message(call.message.chat.id, call.message.message_id)
-            #if checkOperId(call.message.chat.id, variables.collection_cash_ids_arr): database.dbCollection(call.message, person_id = call.message.chat.id, action = 'send_collection_to_oper')
             database.dbCollection(call.message, person_id = call.message.chat.id, action = 'send_collection_to_oper')
             bot.send_message(call.message.chat.id, 'Отчёт отправлен!')
             keyboardRefMaker(call.message, 0 if langCheck(person_id = str(call.message.chat.id)) else 1, str(call.message.chat.id))
-            
+        elif call.data == 'Подтвердить':
+            bot.delete_message(call.message.chat.id, call.message.message_id)
+            database.dbCollection(call.message, person_id = call.message.chat.id, action = 'confirm_collection')
+            bot.send_message(call.message.chat.id, 'Отчёт подтверждён!')
+            keyboardRefMaker(call.message, 0 if langCheck(person_id = str(call.message.chat.id)) else 1, str(call.message.chat.id))
             
         elif call.data[0] == 'Q':
             if account_settings[call.data[1:]].feedback_st == 'open':
