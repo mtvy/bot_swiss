@@ -58,6 +58,7 @@ class P_schedule:
         for account in account_settings.keys():
             try:
                 bot.forward_message(int(account), variables.CHANNEL_ID, variables.MESSAGE_ID)
+                time.sleep(1)
             except Exception as _:
                 c_ex+=1
                 continue
