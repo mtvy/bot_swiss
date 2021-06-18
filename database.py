@@ -1,6 +1,8 @@
 ### defs for database conv
-from lib import *
-import classes
+from multiprocessing.context import Process
+from os import name
+import re
+import classes, variables, psycopg2, datetime
 
 def connect():
     try:
@@ -139,88 +141,6 @@ def closerDataBase(sm_id, bot):
             print('Error entering data to message_tb!', e)
             return 0
 
-def getDataFromDB(date_start, bot):
-    con, cur = connect()
-    if con == 0 and cur == 0:
-        return 0
-    else:
-        try:
-            txt_db_com = "SELECT id, user_id FROM message_tb WHERE date_start = '" + date_start + "'"
-            cur.execute(txt_db_com)
-            ed_text = cur.fetchall()
-            text_adder = 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n'
-            for i in ed_text:
-                for k in account_settings:
-                    if k == str(i[1]):
-                        if account_settings[k]['login'] != 'None':
-                            name_id = '@' + account_settings[k]['login']
-                        else: name_id = account_settings[k]['name']
-                        break
-                text_adder = text_adder + str(i[0]) + ') ' + 'Name: ' + name_id + ' --- Id: ' + str(i[1]) + '\n'
-            con.commit()
-            if text_adder == 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n': return '0'
-            else: return text_adder
-        except Exception as e:
-            print('Error data message_tb!', e)
-            return '0'
-def getDataFromFeedBackDB(date_start, bot):
-    con, cur = connect()
-    if con == 0 and cur == 0:
-        return 0
-    else:
-        try:
-            txt_db_com = "SELECT id, user_id FROM feedback_tb WHERE date_enter = '" + date_start + "'"
-            cur.execute(txt_db_com)
-            ed_text = cur.fetchall()
-            text_adder = 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n'
-            for i in ed_text:
-                for k in account_settings:
-                    if k == str(i[1]):
-                        if account_settings[k]['login'] != 'None':
-                            name_id = '@' + account_settings[k]['login']
-                        else: name_id = account_settings[k]['name']
-                        break
-                text_adder = text_adder + str(i[0]) + ') ' + 'Name: ' + name_id + ' --- Id: ' + str(i[1]) + '\n'
-            con.commit()
-            if text_adder == 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n': return '0'
-            else: return text_adder
-        except Exception as e:
-            print('Error data feedback_tb!', e)
-            return '0'
-
-def getTextFromDB(id_text, bot):
-    con, cur = connect()
-    if con == 0 and cur == 0:
-        return 0
-    else:
-        try:
-            txt_db_com = "SELECT text FROM message_tb WHERE id = " + id_text
-            cur.execute(txt_db_com)
-            ed_text = cur.fetchall()
-            text_taker = ed_text[0]
-            text_taker = text_taker[0]
-            con.commit()
-            return text_taker
-        except Exception as e:
-            print('Error, wrong id!', e)
-            return '0'
-def getTextFromFeedBackDB(id_text, bot):
-    con, cur = connect()
-    if con == 0 and cur == 0:
-        return 0
-    else:
-        try:
-            txt_db_com = "SELECT text_fb FROM feedback_tb WHERE id = " + id_text
-            cur.execute(txt_db_com)
-            ed_text = cur.fetchall()
-            text_taker = ed_text[0]
-            text_taker = text_taker[0]
-            con.commit()
-            return text_taker
-        except Exception as e:
-            print('Error, wrong id!', e)
-            return '0'
-
 def change_data(name, bot):
     con, cur = connect()
     if con == 0 or cur == 0:
@@ -234,6 +154,84 @@ def change_data(name, bot):
             err_txt = 'Error deleting data from user @' + name + '!'
             print(err_txt, e)
 
+
+### For message_tb and feedback_tb
+
+def getDataFromDB(date_start, action, row_dict = {'message_tb' : 'date_start', 'feedback_tb' : 'date_enter'}):
+    con, cur = connect()
+    account_settings = get_accounts_data()
+    if con == 0 and cur == 0: return 0
+    else:
+        try:
+            cur.execute(f"SELECT id, user_id FROM {action} WHERE {row_dict[action]} = '{date_start}'")
+            text_adder = 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n'
+            for i in cur.fetchall():
+                for k in account_settings:
+                    if k == str(i[1]):
+                        name_id = f"@{account_settings[k].login}" if account_settings[k].login != 'None' else account_settings[k].name
+                        break
+                text_adder = f"{text_adder}{str(i[0])}) Name: {name_id} --- Id: {str(i[1])}\n"
+            con.commit()
+            return text_adder if text_adder != 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n' else 0
+        except Exception as e:
+            print(f"Error data {action}!", e)
+            return 0
+
+def getTextFromDB(id_text, action, row_dict = {'message_tb' : 'text', 'feedback_tb' : 'text_fb'}):
+    con, cur = connect()
+    if con == 0 and cur == 0: return 0
+    else:
+        try:
+            cur.execute(f"SELECT {row_dict[action]} FROM {action} WHERE id = {id_text}")
+            con.commit()
+            return cur.fetchall()[0][0]
+        except Exception as e:
+            print('Error, wrong id!', e)
+            return 0
+
+
+### For collection
+
+def checkPulldbData(cur, action = None, step = None):
+    return cur.fetchall() if action == 'show_data' or step == 9 else True
+
+def dbCollection(message, person_id, step = None, database_push_data = None, action = None, status = None, bot = None):
+    """
+    create table collection_tb(id serial primary key, admin_id varchar(128), cashier_id varchar(128), office varchar(128), terminal_number text, cash text, cash_return_info text, doc_number text, PCR text, PCR_express text, analyzes_count text, comment text, admin_date varchar(128), cashier_date varchar(128), status varchar(128));
+     ____________________________________________________________________________________________________________________________________________________
+    |id|admin_id|cashier_id|office|terminal_number|cash|cash_return_info|doc_number|PCR|PCR_express|analyzes_count|comment|admin_date|cashier_date|status|
+    |__|________|__________|______|_______________|____|________________|__________|___|___________|______________|_______|__________|____________|______|
+    """
+    con, cur = connect()
+    if con == 0 and cur == 0: return False
+    else:
+        try:
+            if step == 0:
+                database_text_commmit = f"INSERT INTO collection_tb (admin_id, office, admin_date, status) VALUES ('{person_id}', '{message.text}', '{str(datetime.date.today())}', 'admin')"
+            elif action == 'cashier_init':
+                database_text_commmit = f"UPDATE collection_tb set cashier_id = '{person_id}' WHERE office = '{database_push_data}' AND status = 'cashier'"
+            elif step in [1,2,3,4,5,6,7,8] and action == 'show_data':
+                database_text_commmit = f"UPDATE collection_tb set {variables.select_collection_action_dict[step]} = '{database_push_data if database_push_data != None else message.text}' WHERE (admin_id = '{person_id}' AND status = 'admin') OR (cashier_id = '{person_id}' AND status = 'cashier')"
+                cur.execute(database_text_commmit)
+                database_text_commmit = f"SELECT * FROM collection_tb WHERE (admin_id = '{person_id}' AND status = 'admin') OR (cashier_id = '{person_id}' AND status = 'cashier')"
+            elif step in [1,2,3,4,5,6,7,8]:
+                database_text_commmit = f"UPDATE collection_tb set {variables.select_collection_action_dict[step]} = '{database_push_data if database_push_data != None else message.text}' WHERE admin_id = '{person_id}' AND status = 'admin'"
+            elif action == 'send_collection_to_oper':
+                database_text_commmit = f"UPDATE collection_tb set status = 'cashier' WHERE status = 'admin' AND admin_id = '{person_id}'"
+            elif action == 'confirm_collection':
+                database_text_commmit = f"UPDATE collection_tb set status = 'confirmed' WHERE status = 'cashier' AND cashier_id = '{person_id}'"
+            elif action == 'show_collection_to_cashier':
+                database_text_commmit = f"SELECT * FROM collection_tb WHERE status = 'cashier' AND office = '{database_push_data}'"
+            elif step == 9:
+                database_text_commmit = f"SELECT * FROM collection_tb WHERE status = '{database_push_data}' AND (admin_id = '{person_id}' OR cashier_id = '{person_id}')"
+            cur.execute(database_text_commmit)
+            data = checkPulldbData(cur = cur, action = action, step = step)
+            con.commit()
+            print('New collection add by admin!')
+            return data
+        except Exception as e:
+            print('Error entering new data to collection_tb!', e)
+            return False
 
 
 ### For account_tb
