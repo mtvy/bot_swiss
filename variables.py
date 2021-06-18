@@ -1,7 +1,8 @@
 import path
 
 # Last message number
-MESSAGE_ID = 254
+MESSAGE_ID = 25
+CHANNEL_ID = -1001216461571
 
 # Id
 all_ids_arr = ['281321076', '923118950', '253208582', '169857618', '557561032', '379640085']

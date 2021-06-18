@@ -44,15 +44,13 @@ bot = telebot.TeleBot(config.TOKEN)
 def start_process():
     _ = Process(target=P_schedule.start_schedule, args=()).start()
 class P_schedule:
-    def start_schedule(self):
+    def start_schedule():
         schedule.every(30).seconds.do(P_schedule.send_post)
         while True:
             schedule.run_pending()
             time.sleep(1)
-    def send_post(self):
-        global MESSAGE_ID
+    def send_post():
         global account_settings
-        global message_ids_dict
         c_ex = 0
 
         account_settings = database.get_accounts_data()
@@ -65,7 +63,7 @@ class P_schedule:
             except Exception as _:
                 pass
             try:
-                bot.forward_message(int(account), -1001229753165, variables.MESSAGE_ID)
+                bot.forward_message(int(account), variables.CHANNEL_ID, variables.MESSAGE_ID)
             except Exception as _:
                 c_ex+=1
                 continue
@@ -73,7 +71,7 @@ class P_schedule:
             c_ex = 0
         else:
             try:
-                bot.forward_message(281321076, -1001229753165, variables.MESSAGE_ID)
+                bot.forward_message(281321076, variables.CHANNEL_ID, variables.MESSAGE_ID)
                 variables.MESSAGE_ID += 1
             except Exception as qt:
                 print("Error pushing news!", repr(qt))
