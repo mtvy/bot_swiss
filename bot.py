@@ -57,16 +57,16 @@ class P_schedule:
 
         for account in account_settings.keys():
             try:
+                bot.forward_message(int(account), variables.CHANNEL_ID, variables.MESSAGE_ID)
+            except Exception as _:
+                c_ex+=1
+                continue
+            try:
                 time_checker = int(time.time()) - account_settings[account].timer_conv
                 if time_checker > 900 and account_settings[account].conversation == 'open':
                     stopConversation(message = None, lang = 0 if langCheck(message = None, person_id = account) else 1, pers_id = account)
             except Exception as _:
                 pass
-            try:
-                bot.forward_message(int(account), variables.CHANNEL_ID, variables.MESSAGE_ID)
-            except Exception as _:
-                c_ex+=1
-                continue
         if c_ex == len(account_settings):
             c_ex = 0
         else:
@@ -74,9 +74,9 @@ class P_schedule:
                 bot.forward_message(281321076, variables.CHANNEL_ID, variables.MESSAGE_ID)
                 variables.MESSAGE_ID += 1
             except Exception as qt:
-                print("Error pushing news!", repr(qt))
+                print(f"Error pushing news!\n\n{repr(qt)}")
                 for id_er in variables.label_change_ids_arr:
-                    bot.send_message(int(id_er), "Error pushing news!" + repr(qt))
+                    bot.send_message(int(id_er), f"Error pushing news!\n\n{repr(qt)}")
 
 
 @bot.message_handler(commands=['start'])
