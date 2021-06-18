@@ -1,7 +1,7 @@
 import path
 
 # Last message number
-MESSAGE_ID = 25
+MESSAGE_ID = 26
 CHANNEL_ID = -1001216461571
 
 # Id
@@ -12,8 +12,8 @@ doctor_oper_ids_arr   = ['281321076', '923118950', '379640085']
 support_oper_ids_arr  = ['281321076', '923118950', '379640085']
 director_oper_ids_arr = ['281321076', '923118950']
 feedback_oper_ids_arr = ['281321076', '923118950', '379640085']
-collection_oper_ids_arr = []
-collection_cash_ids_arr = ['281321076']
+collection_oper_ids_arr = ['281321076']
+collection_cash_ids_arr = ['923118950']
 
 # Global variables
 account_settings = {}
