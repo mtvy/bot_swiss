@@ -195,48 +195,20 @@ def operKeyboardMaker(message, which_oper, lang):
     sendReqtoOper(message, which_oper, oper_send_text, markup)
 		
 
-def dbDateSortEnter(message):
+def dbDateSortEnter(message, action):
     send = bot.send_message(message.chat.id, '➕ Введите дату в формате ГОД-МЕСЯЦ-ДЕНЬ (2000-1-12)')
-    bot.register_next_step_handler(send, dbSortEnter)
-def feedBackdbDateSortEnter(message):
-    send = bot.send_message(message.chat.id, '➕ Введите дату в формате ГОД-МЕСЯЦ-ДЕНЬ (2000-1-12)')
-    bot.register_next_step_handler(send, FeedBackdbSortEnter)
-
-
-def dbSortEnter(message):
-    date_text = message.text
-    date_text = database.getDataFromDB(date_text, bot)
-    if date_text == '0':
+    bot.register_next_step_handler(send, dbSortEnter, action)
+def dbSortEnter(message, action):
+    date_text = database.getDataFromDB(date_start = message.text, action = action)
+    if date_text == 0:
         bot.send_message(message.chat.id, 'Данной даты нет в базе!')
         return
     else: bot.send_message(message.chat.id, date_text)
-    send = bot.send_message(message.chat.id, '➕ Введите номер строки по нужному имени или id')
-    bot.register_next_step_handler(send, dbIdSortEnter)
-def FeedBackdbSortEnter(message):
-    date_text = message.text
-    date_text = database.getDataFromFeedBackDB(date_text, bot)
-    if date_text == '0':
-        bot.send_message(message.chat.id, 'Данной даты нет в базе!')
-        return
-    else: bot.send_message(message.chat.id, date_text)
-    send = bot.send_message(message.chat.id, '➕ Введите номер строки по нужному имени или id')
-    bot.register_next_step_handler(send, FeedBackdbIdSortEnter)
-
-def dbIdSortEnter(message):
-    id_text = message.text
-    id_text = database.getTextFromDB(id_text, bot)
-    if id_text == '0':
-        bot.send_message(message.chat.id, 'Такого номера нет в базе!')
-        return
-    else: bot.send_message(message.chat.id, id_text)
-def FeedBackdbIdSortEnter(message):
-    id_text = message.text
-    id_text = database.getTextFromFeedBackDB(id_text, bot)
-    if id_text == '0':
-        bot.send_message(message.chat.id, 'Такого номера нет в базе!')
-        return
-    else: bot.send_message(message.chat.id, id_text)
-
+    bot.register_next_step_handler(bot.send_message(message.chat.id, '➕ Введите номер строки по нужному имени или id'), dbIdSortEnter, action)
+def dbIdSortEnter(message, action):
+    id_text = database.getTextFromDB(id_text = message.text, action = action)
+    bot.send_message(message.chat.id, id_text if id_text != 0 else 'Такого номера нет в базе!')
+    return
 
 def pushingLabelFromFile(message, path, path_sec):
     bot.send_message(message.chat.id, openfileforRead(None, path if langCheck(message) else path_sec).format(message.chat, bot.get_me()),parse_mode='html')
@@ -358,7 +330,7 @@ def lol(message):
             stopConversation(message, account_settings[str(message.chat.id)].language, action = 'back')
         elif message.text == '❗️ Оставить жалобу' or message.text == '❗️ Shikoyat qoldiring':
             if checkOperId(person_id = str(message.chat.id), action = variables.feedback_oper_ids_arr):
-                feedBackdbDateSortEnter(message)
+                dbDateSortEnter(message = message, action = 'feedback_tb')
             else:
                 account_settings[str(message.chat.id)].feedback_st = 'open'
                 markup = types.InlineKeyboardMarkup(row_width=2)
@@ -369,7 +341,7 @@ def lol(message):
             setCollectionKeyboard(message = message, person_id = str(message.chat.id))
         elif message.text == '💽 БД переписок' or message.text == '💽 Yozishmalar bazasi':
             if checkOperId(person_id = str(message.chat.id), action = variables.all_ids_arr):
-                dbDateSortEnter(message)
+                dbDateSortEnter(message = message, action = 'message_tb')
             else:
                 bot.send_message(message.chat.id, 'У вас нет прав для чтения базы!' if langCheck(message) else "Sizda bazani o'qish huquqi yo'q!")
         elif message.text == '% Получить скидку' or message.text == '% Chegirma oling':

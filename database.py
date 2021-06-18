@@ -1,5 +1,6 @@
 ### defs for database conv
 from multiprocessing.context import Process
+from os import name
 import re
 import classes, variables, psycopg2, datetime
 
@@ -140,89 +141,36 @@ def closerDataBase(sm_id, bot):
             print('Error entering data to message_tb!', e)
             return 0
 
-def getDataFromDB(date_start, bot):
+def getDataFromDB(date_start, action, row_dict = {'message_tb' : 'date_start', 'feedback_tb' : 'date_enter'}):
     con, cur = connect()
     account_settings = get_accounts_data()
-    if con == 0 and cur == 0:
-        return 0
+    if con == 0 and cur == 0: return 0
     else:
         try:
-            txt_db_com = "SELECT id, user_id FROM message_tb WHERE date_start = '" + date_start + "'"
-            cur.execute(txt_db_com)
-            ed_text = cur.fetchall()
+            cur.execute(f"SELECT id, user_id FROM {action} WHERE {row_dict[action]} = '{date_start}'")
             text_adder = 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n'
-            for i in ed_text:
+            for i in cur.fetchall():
                 for k in account_settings:
                     if k == str(i[1]):
-                        if account_settings[k]['login'] != 'None':
-                            name_id = '@' + account_settings[k]['login']
-                        else: name_id = account_settings[k]['name']
+                        name_id = f"@{account_settings[k].login}" if account_settings[k].login != 'None' else account_settings[k].name
                         break
-                text_adder = text_adder + str(i[0]) + ') ' + 'Name: ' + name_id + ' --- Id: ' + str(i[1]) + '\n'
+                text_adder = f"{text_adder}{str(i[0])}) Name: {name_id} --- Id: {str(i[1])}\n"
             con.commit()
-            if text_adder == 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n': return '0'
-            else: return text_adder
+            return text_adder if text_adder != 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n' else 0
         except Exception as e:
-            print('Error data message_tb!', e)
-            return '0'
-def getDataFromFeedBackDB(date_start, bot):
+            print(f"Error data {action}!", e)
+            return 0
+def getTextFromDB(id_text, action, row_dict = {'message_tb' : 'text', 'feedback_tb' : 'text_fb'}):
     con, cur = connect()
-    account_settings = get_accounts_data()
-    if con == 0 and cur == 0:
-        return 0
+    if con == 0 and cur == 0: return 0
     else:
         try:
-            txt_db_com = "SELECT id, user_id FROM feedback_tb WHERE date_enter = '" + date_start + "'"
-            cur.execute(txt_db_com)
-            ed_text = cur.fetchall()
-            text_adder = 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n'
-            for i in ed_text:
-                for k in account_settings:
-                    if k == str(i[1]):
-                        if account_settings[k]['login'] != 'None':
-                            name_id = '@' + account_settings[k]['login']
-                        else: name_id = account_settings[k]['name']
-                        break
-                text_adder = text_adder + str(i[0]) + ') ' + 'Name: ' + name_id + ' --- Id: ' + str(i[1]) + '\n'
+            cur.execute(f"SELECT {row_dict[action]} FROM {action} WHERE id = {id_text}")
             con.commit()
-            if text_adder == 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n': return '0'
-            else: return text_adder
-        except Exception as e:
-            print('Error data feedback_tb!', e)
-            return '0'
-
-def getTextFromDB(id_text, bot):
-    con, cur = connect()
-    if con == 0 and cur == 0:
-        return 0
-    else:
-        try:
-            txt_db_com = "SELECT text FROM message_tb WHERE id = " + id_text
-            cur.execute(txt_db_com)
-            ed_text = cur.fetchall()
-            text_taker = ed_text[0]
-            text_taker = text_taker[0]
-            con.commit()
-            return text_taker
+            return cur.fetchall()[0][0]
         except Exception as e:
             print('Error, wrong id!', e)
-            return '0'
-def getTextFromFeedBackDB(id_text, bot):
-    con, cur = connect()
-    if con == 0 and cur == 0:
-        return 0
-    else:
-        try:
-            txt_db_com = "SELECT text_fb FROM feedback_tb WHERE id = " + id_text
-            cur.execute(txt_db_com)
-            ed_text = cur.fetchall()
-            text_taker = ed_text[0]
-            text_taker = text_taker[0]
-            con.commit()
-            return text_taker
-        except Exception as e:
-            print('Error, wrong id!', e)
-            return '0'
+            return 0
 
 def change_data(name, bot):
     con, cur = connect()
