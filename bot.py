@@ -42,19 +42,21 @@ bot = telebot.TeleBot(config.TOKEN)
 
 
 def start_process():
-    _ = Process(target=P_schedule.start_schedule, args=()).start()
+    Process(target = P_schedule.start_schedule, args = ()).start()
 class P_schedule:
+    """
+    This class repost messages from the telegram channel.
+    """
+
     def start_schedule():
         schedule.every(30).seconds.do(P_schedule.send_post)
         while True:
             schedule.run_pending()
             time.sleep(1)
+
     def send_post():
-        global account_settings
         c_ex = 0
-
         account_settings = database.get_accounts_data()
-
         for account in account_settings.keys():
             try:
                 bot.forward_message(int(account), variables.CHANNEL_ID, variables.MESSAGE_ID)
@@ -63,8 +65,7 @@ class P_schedule:
                 c_ex+=1
                 continue
             try:
-                time_checker = int(time.time()) - account_settings[account].timer_conv
-                if time_checker > 900 and account_settings[account].conversation == 'open':
+                if (int(time.time()) - account_settings[account].timer_conv) > 900 and account_settings[account].conversation == 'open':
                     stopConversation(message = None, lang = 0 if langCheck(message = None, person_id = account) else 1, pers_id = account)
             except Exception as _:
                 pass
@@ -89,70 +90,32 @@ def welcome(message):
     new_account = [str(message.chat.id)]
     for account in account_settings.keys():
         if account_settings[account].telegram_id == new_account[0]:
-            start_txt=''
             if account_settings[account].language == "Русский":
                 if account_settings[account].personal_data == "YES":
                     bot.send_message(message.chat.id,"🔱Вы уже зарегистрированы в системе!")
-                    keyboardRefMaker(message, 0)
+                    keyboardRefMaker(message = message, lang = 0)
                 elif account_settings[account].personal_data == "NO":
-
-                    start_txt = openfileforRead(None, path.first_lang)
-                    
-                    markup = types.InlineKeyboardMarkup(row_width=2)
-                    item1 = types.InlineKeyboardButton("Согласен", callback_data='Согласен')
-                    item2 = types.InlineKeyboardButton("Отказываюсь", callback_data='Отказываюсь')
-                    markup.add(item1, item2)
-                    bot.send_message(message.chat.id, start_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+                    inlineMessages(markup_text = openfileforRead(None, path.first_lang), message = message, markup_arr = [["Согласен", "Согласен"], ["Отказываюсь", "Отказываюсь"]], action = False)
             elif account_settings[account].language == "Ozbek":
                 if account_settings[account].personal_data == "YES":
                     bot.send_message(message.chat.id,"🔱Siz allaqachon ro'yxatdan o'tgansiz!")
-                    keyboardRefMaker(message, 1)
+                    keyboardRefMaker(message = message, lang = 1)
                 elif account_settings[account].personal_data == "NO":
-
-                    start_txt = openfileforRead(None, path.second_lang)
-                    
-                    markup = types.InlineKeyboardMarkup(row_width=2)
-                    item1 = types.InlineKeyboardButton("ROZIMAN", callback_data='Agree')
-                    item2 = types.InlineKeyboardButton("Qo'shilmayman", callback_data='Disagree')
-                    markup.add(item1, item2)
-                    bot.send_message(message.chat.id, start_txt.format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+                    inlineMessages(markup_text = openfileforRead(None, path.second_lang), message = message, markup_arr = [["ROZIMAN", "Agree"], ["Qo'shilmayman", "Disagree"]], action = False)
             else:
-                markup = types.InlineKeyboardMarkup(row_width=2)
-                item1 = types.InlineKeyboardButton("Русский", callback_data='Русский')
-                item2 = types.InlineKeyboardButton("Ozbek", callback_data="Ozbek")
-                markup.add(item1, item2)
-                bot.send_message(message.chat.id,"🔱Choose language", reply_markup=markup)
+                inlineMessages(markup_text = "🔱Choose language", message = message, markup_arr = [["Русский", "Русский"], ["Ozbek", "Ozbek"]], action = False)
             break
     else:
-        markup = types.InlineKeyboardMarkup(row_width=2)
-        item1 = types.InlineKeyboardButton("Русский", callback_data='Русский')
-        item2 = types.InlineKeyboardButton("Ozbek", callback_data="Ozbek")
-        markup.add(item1, item2)
-        
         new_account += [str(message.chat.username), str(message.chat.first_name), [], "close", "0", [], "0", "NO", None, 'close', 0]
-        
         account = classes.Account(new_account)
         database.insert_account_data(account)
         account_settings[account.telegram_id] = account
-
-        bot.send_message(message.chat.id,"🔱Choose language", reply_markup=markup)
+        inlineMessages(markup_text = "🔱Choose language", message = message, markup_arr = [["Русский", "Русский"], ["Ozbek", "Ozbek"]], action = False)
 
 @bot.message_handler(commands=['changeLabel'])
 def adderNewLabel(message):
     if checkOperId(person_id = str(message.chat.id), action = variables.label_change_ids_arr):
-        markup = types.InlineKeyboardMarkup(row_width=2)
-        item1 = types.InlineKeyboardButton("Начальный текст", callback_data='Начальный текст')
-        item2 = types.InlineKeyboardButton("FAQ текст", callback_data='FAQ текст')
-        item3 = types.InlineKeyboardButton("Текст оператора", callback_data='Текст оператора')
-        item4 = types.InlineKeyboardButton("Текст инструкции опер`атора", callback_data='Текст инструкции оператора')
-        item5 = types.InlineKeyboardButton("Текст телефона", callback_data='Текст телефона')
-        item6 = types.InlineKeyboardButton("Текст адресса", callback_data='Текст адресса')
-        item7 = types.InlineKeyboardButton("Текст создания заказа", callback_data='Текст создания заказа')
-        item8 = types.InlineKeyboardButton("Текст отзыва", callback_data='Текст отзыва')
-        item9 = types.InlineKeyboardButton("Текст скидки", callback_data='Текст скидки')
-        item10 = types.InlineKeyboardButton("Текст социальные сети", callback_data='Текст социальные сети')
-        markup.add(item1, item2, item3, item4, item5, item6, item7, item8, item9, item10)
-        bot.send_message(message.chat.id,"Какой блок надо отредактировать?", reply_markup=markup)
+        inlineMessages(markup_text = "Какой блок надо отредактировать?", message = message, markup_arr = variables.markup_change_label_arr, action = False)
 
 
 def sendReqtoOper(message, which_oper, oper_send_text, markup):
@@ -691,7 +654,7 @@ def inlineMessages(markup_text, call = None, message = None, person_id = None, m
     """
     person_id = person_id if person_id != None else message.chat.id if message != None else call.message.chat.id
     if action: bot.delete_message(person_id, call.message.message_id if call != None else message.message_id)
-    markup = types.InlineKeyboardMarkup(row_width = len(markup_arr))
+    markup = types.InlineKeyboardMarkup(row_width = 2)
     markup.add(*[types.InlineKeyboardButton(text = row[0], callback_data = row[1]) for row in markup_arr])
     bot.send_message(person_id, markup_text, reply_markup=markup)
 
