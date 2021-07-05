@@ -124,37 +124,15 @@ def sendReqtoOper(message, which_oper, oper_send_text, markup):
 
 def operKeyboardMaker(message, which_oper, lang):
     global account_settings
-    global message_ids_dict
     account_settings[str(message.chat.id)].conversation = 'mid'
     variables.message_ids_dict[str(message.chat.id)] = message
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    if lang == 0:
-        item1 = types.KeyboardButton("🔙 Отклонить вызов оператора")
-        item2 = types.KeyboardButton("❔ Инструкция")
-        markup.add(item1, item2)
-        bot.send_message(message.chat.id, "🙋 Включён режим переписки с оператором", reply_markup=markup)
-    elif lang == 1:
-        item1 = types.KeyboardButton("🔙 Operator chaqiruvini rad etish")
-        item2 = types.KeyboardButton("❔ Ko'rsatma")
-        markup.add(item1, item2)
-        bot.send_message(message.chat.id, "🙋 Operator bilan yozishmalar rejimi yoqilgan", reply_markup=markup)
-    oper_send_text = f'-------Запрос переписки!-------\nid: {message.chat.id} \nИмя: {message.chat.first_name} \nФамилия: {message.chat.last_name} \nUsername: @ {message.chat.username} \nЯзык: Русский\n----------------------------'
-    oper_send_text = "-------Запрос переписки!-------\nid: "
-    oper_send_text += str(message.chat.id)
-    oper_send_text += "\nИмя: "
-    oper_send_text += str(message.chat.first_name)
-    oper_send_text += "\nФамилия: "
-    oper_send_text += str(message.chat.last_name)
-    oper_send_text += "\nUsername: @"
-    oper_send_text += str(message.chat.username)
-    oper_send_text += "\nЯзык: Русский\n----------------------------"
+    markup.add(types.KeyboardButton("🔙 Отклонить вызов оператора" if lang == 0 else "🔙 Operator chaqiruvini rad etish"), types.KeyboardButton("❔ Инструкция" if lang == 0 else "❔ Ko'rsatma"))
+    bot.send_message(message.chat.id, "🙋 Включён режим переписки с оператором" if lang == 0 else "🙋 Operator bilan yozishmalar rejimi yoqilgan", reply_markup=markup)
     markup = types.InlineKeyboardMarkup(row_width=2)
-    item1 = types.InlineKeyboardButton("Принять", callback_data=str(message.chat.id))
-    markup.add(item1)
-    user_id = str(message.chat.id)
-    oper_id = '0'
-    database.insert_new_data(user_id, oper_id, bot)
-    sendReqtoOper(message, which_oper, oper_send_text, markup)
+    markup.add(types.InlineKeyboardButton("Принять", callback_data=str(message.chat.id)))
+    database.insert_new_data(str(message.chat.id), '0', bot)
+    sendReqtoOper(message, which_oper, f"-------Запрос переписки!-------\nid: {message.chat.id} \nИмя: {message.chat.first_name} \nФамилия: {message.chat.last_name} \nUsername: @ {message.chat.username} \nЯзык: Русский\n----------------------------", markup)
 		
 
 def dbDateSortEnter(message, action):
@@ -191,12 +169,10 @@ def redirectInit(message, action):
         database.change_account_data(account = account_settings[account_settings[str(message.chat.id)].tags[0]], parametr = 'tags', data = [])        
         account_settings = database.get_accounts_data()
 
-        keyboardRefMaker(message, 0 if langCheck(message) else 1, account_settings[str(message.chat.id)].tags[0])
+        keyboardRefMaker(message = message, lang = 0 if langCheck(message) else 1, pers_id = account_settings[str(message.chat.id)].tags[0])
 
-    keyboardRefMaker(message, 0)
-    markup = types.InlineKeyboardMarkup(row_width=2)
-    markup.add(types.InlineKeyboardButton("👍", callback_data='👍'), types.InlineKeyboardButton("👎", callback_data='👎'))
-    bot.send_message(account_settings[str(message.chat.id)].tags[0] if checkOperId(person_id = str(message.chat.id), action = variables.all_ids_arr) else str(message.chat.id), 'Оцените работу оператора!' if langCheck(message) else 'Operator ishini baholang!', reply_markup=markup)
+    keyboardRefMaker(message = message, lang = 0)
+    inlineMessages(markup_text = 'Оцените работу оператора!' if langCheck(message) else 'Operator ishini baholang!', person_id = account_settings[str(message.chat.id)].tags[0] if checkOperId(person_id = str(message.chat.id), action = variables.all_ids_arr) else str(message.chat.id), markup_arr = [["👍", "👍"], ["👎", "👎"]], action = False)
         
 def stopConversation(message, lang, pers_id=None, action = None):
     global account_settings
@@ -267,7 +243,6 @@ def selectOffice(message, person_id, step, push_text = ''):
 @bot.message_handler(content_types=['text', 'photo'])
 def lol(message):
     global account_settings
-    global mess
 
     account_settings = database.get_accounts_data()
     
@@ -286,8 +261,6 @@ def lol(message):
             elif variables.message_text_dict[message.text][0] == 'redirect':
                 redirectInit(message, f"❗ Общение завершено, перенаправление {variables.message_text_dict[message.text][1]}")
                 operInit(variables.message_ids_dict[account_settings[str(message.chat.id)].tags[0]], variables.message_text_dict[message.text][2], variables.message_text_dict[message.text][3], closeConversation(message))
-            elif variables.message_text_dict[message.text][0] == 'discount':
-                bot.send_message(message.chat.id, openfileforRead(None, variables.message_text_dict[message.text][1]).format(message.chat, bot.get_me()),parse_mode='html')
         elif message.text == '🔙 Назад':
             stopConversation(message, account_settings[str(message.chat.id)].language, action = 'back')
         elif message.text == '❗️ Оставить жалобу' or message.text == '❗️ Shikoyat qoldiring':
@@ -295,23 +268,15 @@ def lol(message):
                 dbDateSortEnter(message = message, action = 'feedback_tb')
             else:
                 account_settings[str(message.chat.id)].feedback_st = 'open'
-                markup = types.InlineKeyboardMarkup(row_width=2)
-                button_text = "Написать жалобу" if langCheck(message) else "Shikoyat yozing"
-                markup.add(types.InlineKeyboardButton(button_text, callback_data = button_text))
-                bot.send_message(message.chat.id, openfileforRead(None, path.recv_label if langCheck(message) else path.sec_recv_label).format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+                inlineMessages(markup_text = openfileforRead(None, path.recv_label if langCheck(message) else path.sec_recv_label), message = message, markup_arr = [["Написать жалобу", "Написать жалобу"] if langCheck(message) else ["Shikoyat yozing", "Shikoyat yozing"]], action = False)
         elif message.text == "💰 Инкассация":
             setCollectionKeyboard(message = message, person_id = str(message.chat.id))
         elif message.text == '💽 БД переписок' or message.text == '💽 Yozishmalar bazasi':
-            if checkOperId(person_id = str(message.chat.id), action = variables.all_ids_arr):
-                dbDateSortEnter(message = message, action = 'message_tb')
-            else:
-                bot.send_message(message.chat.id, 'У вас нет прав для чтения базы!' if langCheck(message) else "Sizda bazani o'qish huquqi yo'q!")
+            if checkOperId(person_id = str(message.chat.id), action = variables.all_ids_arr): dbDateSortEnter(message = message, action = 'message_tb')
+            else: bot.send_message(message.chat.id, 'У вас нет прав для чтения базы!' if langCheck(message) else "Sizda bazani o'qish huquqi yo'q!")
         elif message.text == '% Получить скидку' or message.text == '% Chegirma oling':
-            oper_write = ''
-            mess = 'new'
             if (account_settings[str(message.chat.id)].discount == "0" and account_settings[str(message.chat.id)].ref == "0"):
-                oper_write = openfileforRead(None, path.discount_label if langCheck(message) else path.sec_discount_label) + ("\nВаш реферальный код: " if langCheck(message) else  f"\nSizning tavsiyangiz kodi: ") + str(message.chat.id)
-                bot.send_message(message.chat.id, oper_write.format(message.chat, bot.get_me()),parse_mode='html')
+                bot.send_message(message.chat.id, openfileforRead(None, path.discount_label if langCheck(message) else path.sec_discount_label) + ("\nВаш реферальный код: " if langCheck(message) else  f"\nSizning tavsiyangiz kodi: ") + str(message.chat.id).format(message.chat, bot.get_me()),parse_mode='html')
             elif account_settings[str(message.chat.id)].ref == "10":
                 database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'discount', data = '10')       
                 account_settings = database.get_accounts_data()
@@ -322,17 +287,12 @@ def lol(message):
                     picPNGmaker(message)
                     bot.send_message(message.chat.id, "✅ У вас максимальная скидка!" if langCheck(message) else "✅ Siz maksimal chegirma bor!")
                 else:
-                    ru_text = f"❌ Ваши друзья ещё не активировали бота!\n❌ Всего активаций {account_settings[str(message.chat.id)].ref} из 10"
-                    uz_text = f"❌ Sizning do'stlaringiz hali botni faollashtirmagan!\n❌ Jami aktivatsiyalar {account_settings[str(message.chat.id)].ref} dan 10"    
-                    bot.send_message(message.chat.id, ru_text if langCheck(message) else uz_text)
+                    bot.send_message(message.chat.id, f"❌ Ваши друзья ещё не активировали бота!\n❌ Всего активаций {account_settings[str(message.chat.id)].ref} из 10" if langCheck(message) else f"❌ Sizning do'stlaringiz hali botni faollashtirmagan!\n❌ Jami aktivatsiyalar {account_settings[str(message.chat.id)].ref} dan 10")
                     picPNGmaker(message)
         elif message.text == "❗️ Жалоба":
             redirectInit(message, "❗ Общение с оператором завершено, перенаправление в раздел жалоб")
             account_settings[account_settings[str(message.chat.id)].tags[0]].feedback_st = 'open'
-            markup = types.InlineKeyboardMarkup(row_width=2) 
-            markup.add(types.InlineKeyboardButton("Написать жалобу" if langCheck(message) else "Shikoyat yozing", callback_data="Написать жалобу" if langCheck(message) else "Shikoyat yozing"))
-            account_settings[account_settings[str(message.chat.id)].tags[0]].feedback_st = 'open'
-            bot.send_message(account_settings[str(message.chat.id)].tags[0], openfileforRead(None, path.recv_label if langCheck(message) else path.sec_recv_label).format(message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+            inlineMessages(markup_text = openfileforRead(None, path.recv_label if langCheck(message) else path.sec_recv_label), person_id = account_settings[str(message.chat.id)].tags[0], markup_arr = [["Написать жалобу", "Написать жалобу"] if langCheck(message) else ["Shikoyat yozing", "Shikoyat yozing"]], action = False)
             closeConversation(message)        
         else:
             if account_settings[str(message.chat.id)].conversation == 'open':
@@ -353,12 +313,15 @@ def lol(message):
                     bot.send_message(account_settings[str(message.chat.id)].tags[0], message.caption)
                 if message.photo != None:
                     sm_id = sm_id + 'PHOTO\n'
-                    fileID = message.photo[-1].file_id
-                    file_info = bot.get_file(fileID)
-                    downloaded_file = bot.download_file(file_info.file_path)
-                    bot.send_photo(account_settings[str(message.chat.id)].tags[0], downloaded_file)
+                    bot.send_photo(account_settings[str(message.chat.id)].tags[0], bot.download_file(bot.get_file(message.photo[-1].file_id).file_path))
                 database.insert_text_to_data(sm_id, str(message.chat.id), bot)
 
+def picPNGmaker(message):
+    img = Image.open('lab.png')
+    ImageDraw.Draw(img).text((150,280), f"{message.chat.first_name} {'' if message.chat.last_name == None else message.chat.last_name}", fill = 'orange', font = ImageFont.truetype('Arial.ttf', size = 45))
+    img.save('newAcc.png')
+    bot.send_photo(message.chat.id, open('newAcc.png', 'rb').read(), caption = '💳 Ваша карта' if langCheck(message) else '💳 Sizning kartangiz')
+    os.remove('newAcc.png')
 
 
 def markupMaker(action, button_text) -> types.ReplyKeyboardMarkup():
@@ -378,14 +341,11 @@ def keyboardRefMaker(message, lang, pers_id=None):
         account_settings = database.get_accounts_data()
 
 
-def checkBlockedPeople(message, markup, pers_id):
-    try:
-        bot.send_message(pers_id, txt, reply_markup=markup)
+def checkBlockedPeople(markup, pers_id, txt):
+    try: bot.send_message(pers_id, txt, reply_markup=markup)
     except Exception as error:
-        text_push = f"User {pers_id} blocked!\n\n{repr(error)}"
-        print(text_push)
         for id_er in variables.label_change_ids_arr:
-            bot.send_message(int(id_er), text_push)
+            bot.send_message(int(id_er), f"User {pers_id} blocked!\n\n{repr(error)}")
 
 
 def fdbackName(message, lang):
@@ -411,15 +371,9 @@ def fdbackTele(message, lang):
             send = bot.send_message(message.chat.id, '➕ Shikoyat sababini yozing')
         bot.register_next_step_handler(send, fdbackReason, lang)
     elif tele_num == 'stop':
-        if lang == 0:
-            bot.send_message(message.chat.id, '➕ Операция отменена')
-        else:
-            bot.send_message(message.chat.id, '➕ Amal bekor qilindi')
+        bot.send_message(message.chat.id, '➕ Операция отменена' if lang == 0 else '➕ Amal bekor qilindi')
     else:
-        if lang == 0:
-            send = bot.send_message(message.chat.id, '➕ Введите номер телефона в формате 998999999999 или напишите stop')
-        else:
-            send = bot.send_message(message.chat.id, '➕ Telefon raqamingizni formatda kiriting 9997777777777 yoki yozing stop')
+        send = bot.send_message(message.chat.id, '➕ Введите номер телефона в формате 998999999999 или напишите stop' if lang == 0 else '➕ Telefon raqamingizni formatda kiriting 9997777777777 yoki yozing stop')
         bot.register_next_step_handler(send, fdbackTele, lang)
 def fdbackReason(message, lang):
     reason_send = message.text
@@ -427,53 +381,32 @@ def fdbackReason(message, lang):
         if reason_send == None: reason_send = 'Пользователь отправил нечитаемый объект'
         variables.feed_back[str(message.chat.id)].update({"Reason" : reason_send})
         
-        if lang == 0:
-            send = bot.send_message(message.chat.id, '➕ Напишите филиал/место, где произошёл инцидент')
-        else:
-            send = bot.send_message(message.chat.id, '➕ Hodisa sodir bolgan filial/joyni yozing')
-
+        send = bot.send_message(message.chat.id, '➕ Напишите филиал/место, где произошёл инцидент' if lang == 0 else '➕ Hodisa sodir bolgan filial/joyni yozing')
         bot.register_next_step_handler(send, fdbackPlace, lang)
     else:
-        if lang == 0:
-            bot.send_message(message.chat.id, '➕ Операция отменена')
-        else:
-            bot.send_message(message.chat.id, '➕ Amal bekor qilindi')    
+        bot.send_message(message.chat.id, '➕ Операция отменена' if lang == 0 else '➕ Amal bekor qilindi')  
 def fdbackPlace(message, lang):
     place_send = message.text
     if place_send != 'stop':
         if place_send == None: place_send = 'Пользователь отправил нечитаемый объект'
         variables.feed_back[str(message.chat.id)].update({"Place" : place_send})
-
-        if lang == 0:
-            send = bot.send_message(message.chat.id, '➕ Напишите дату инцидента')
-        else:
-            send = bot.send_message(message.chat.id, '➕ Hodisa tarixini yozing')
-        
+        send = bot.send_message(message.chat.id, '➕ Напишите дату инцидента' if lang == 0 else '➕ Hodisa tarixini yozing')
         bot.register_next_step_handler(send, fdbackDate, lang)
     else:
-        if lang == 0:
-            bot.send_message(message.chat.id, '➕ Операция отменена')
-        else:
-            bot.send_message(message.chat.id, '➕ Amal bekor qilindi') 
+        bot.send_message(message.chat.id, '➕ Операция отменена' if lang == 0 else '➕ Amal bekor qilindi')
 def fdbackDate(message, lang):
     date_send = message.text
     if date_send != 'stop':
         if date_send == None: date_send = 'Пользователь отправил нечитаемый объект'
         variables.feed_back[str(message.chat.id)].update({"Date" : date_send})
 
-        if lang == 0:
-            send = bot.send_message(message.chat.id, '➕ Напишите имя или опишите оппонента, с которым произошёл конфликт')
-        else:
-            send = bot.send_message(message.chat.id, '➕ Ismni yozing yoki ziddiyatga duch kelgan raqibni tariflang')
+        if lang == 0: send = bot.send_message(message.chat.id, '➕ Напишите имя или опишите оппонента, с которым произошёл конфликт')
+        else: send = bot.send_message(message.chat.id, '➕ Ismni yozing yoki ziddiyatga duch kelgan raqibni tariflang')
         
         bot.register_next_step_handler(send, fdBack_fill, lang)
     else:
-        if lang == 0:
-            bot.send_message(message.chat.id, '➕ Операция отменена')
-        else:
-            bot.send_message(message.chat.id, '➕ Amal bekor qilindi')
+        bot.send_message(message.chat.id, '➕ Операция отменена' if lang == 0 else '➕ Amal bekor qilindi')
 def fdBack_fill(message, lang):
-    global txt
     feedback_user = message.text
     if lang == 0:
         if feedback_user != '📞 Телефон' and feedback_user != '💽 БД переписок' and feedback_user !='🏠 Адреса' and feedback_user !='🌐 Соц. сети' and feedback_user !='🙋 Оператор' and feedback_user != '☎️ Тех. поддержка' and feedback_user != '✍️ Написать директору' and feedback_user !='📝 Создать заказ' and feedback_user !='❗️ Оставить жалобу' and feedback_user !='% Получить скидку' and feedback_user !='®FAQ Инструкция' and feedback_user != 'stop':
@@ -486,14 +419,11 @@ def fdBack_fill(message, lang):
 
             bot.send_message(message.chat.id, '➕ Контроль сервиса лаборатории SwissLab. Мы благодарим за сделанный выбор и будем рады, если вы поможете улучшить качество нашего сервиса!\n🙋 Наш оператор свяжется с вами при необходимости!')
             markup = types.InlineKeyboardMarkup(row_width=2)
-            item1 = types.InlineKeyboardButton("Ответить", callback_data='Q' + str(message.chat.id))
-            markup.add(item1)
+            markup.add(types.InlineKeyboardButton("Ответить", callback_data = f"Q{str(message.chat.id)}"))
             
             for id_p in variables.all_ids_arr:
-                checkBlockedPeople(message, markup, id_p)
-
-            oper_id = '0'
-            database.insert_new_feedback_data(oper_id,  str(message.chat.id), txt, bot)
+                checkBlockedPeople(markup = markup, pers_id = id_p, txt = txt)
+            database.insert_new_feedback_data(oper_id = '0', user_id = str(message.chat.id), txt = txt, bot = bot)
         else:
             if feedback_user != '📞 telefon' and feedback_user != '💽 Yozishmalar bazasi' and feedback_user !='🏠 manzillari' and feedback_user !='🌐 Biz ijtimoiy tarmoqlarda' and feedback_user !='🙋 Operator' and feedback_user != "☎️ O'sha.  qo'llab-quvvatlash" and feedback_user != '✍️ Direktorga yozing' and feedback_user !='📝 buyurtma yaratish' and feedback_user !='❗️ Shikoyat qoldiring' and feedback_user !='% Chegirma oling' and feedback_user !="®FAQ Ko'rsatma" and feedback_user != 'stop':
                 if feedback_user == None: feedback_user = 'Пользователь отправил нечитаемый объект'
@@ -505,115 +435,66 @@ def fdBack_fill(message, lang):
 
                 bot.send_message(message.chat.id, '➕ Laboratoriya xizmatini nazorat qilish SwissLab. Biz tanlaganingiz uchun tashakkur va xizmatimiz sifatini yaxshilashga yordam bersangiz xursand bolamiz!\n🙋 Agar kerak bolsa, bizning operatorimiz sizga murojaat qiladi!')
                 markup = types.InlineKeyboardMarkup(row_width=2)
-                item1 = types.InlineKeyboardButton("Ответить", callback_data='Q' + str(message.chat.id))
-                markup.add(item1)
+                markup.add(types.InlineKeyboardButton("Ответить", callback_data = f"Q{str(message.chat.id)}"))
 
                 for id_p in variables.all_ids_arr:
-                    checkBlockedPeople(message, markup, id_p)
-
-                oper_id = '0'
-                database.insert_new_feedback_data(oper_id,  str(message.chat.id), txt, bot)
+                    checkBlockedPeople(markup = markup, pers_id = id_p, txt = txt)
+                database.insert_new_feedback_data(oper_id = '0', user_id = str(message.chat.id), txt = txt, bot = bot)
     
     elif feedback_user == 'stop':
-        if lang == 0:
-            bot.send_message(message.chat.id, '➕ Операция отменена')
-        else:
-            bot.send_message(message.chat.id, '➕ Amal bekor qilindi')
+        bot.send_message(message.chat.id, '➕ Операция отменена' if lang == 0 else '➕ Amal bekor qilindi')
     else:
-        if lang == 0:
-            send = bot.send_message(message.chat.id, '➕ Введите ваш отзыв в правильном формате или напишите stop')
-        else:
-            send = bot.send_message(message.chat.id, '➕ Iltimos, sharhingizni togri formatda kiriting yoki yozing stop')
+        if lang == 0: send = bot.send_message(message.chat.id, '➕ Введите ваш отзыв в правильном формате или напишите stop')
+        else: send = bot.send_message(message.chat.id, '➕ Iltimos, sharhingizni togri formatda kiriting yoki yozing stop')
         bot.register_next_step_handler(send, fdBack_fill, lang)
 
 
-def enterTag(message):
+def enterTag(message, mess):
     global account_settings
-    global mess
-    tags = message.text
     if mess == "new":
-        database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'tags', data = [])
-        mess = ""
-        
+        database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'tags', data = [])        
         account_settings = database.get_accounts_data()
 
-    account_settings[str(message.chat.id)].tags.append(tags)
-    
+    account_settings[str(message.chat.id)].tags.append(message.text)
     database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'tags', data = account_settings[str(message.chat.id)].tags)       
 
     it = len(account_settings[str(message.chat.id)].tags)
-    tet = "➕ Введено "
-    tet += str(it)
-    tet += " из 10 пользователей"
-    send = bot.send_message(message.chat.id, tet)
-    if (it < 10):
-        bot.register_next_step_handler(send, enterTag)
-    else:
-        bot.send_message(message.chat.id, "❗️ Вы получите скидку после того как пользователи активируют бота\n❗️ Если хотите изменить список друзей нажмите на /tags")
-def enterTag_Sec(message):
+    send = bot.send_message(message.chat.id, f"➕ Введено {str(it)} из 10 пользователей")
+    if it < 10: bot.register_next_step_handler(send, enterTag, "")
+    else: bot.send_message(message.chat.id, "❗️ Вы получите скидку после того как пользователи активируют бота\n❗️ Если хотите изменить список друзей нажмите на /tags")
+def enterTag_Sec(message, mess):
     global account_settings
-    global mess
-    tags = message.text
     if mess == "new":
         database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'tags', data = [])        
-        mess = ""
-
         account_settings = database.get_accounts_data()
 
-    account_settings[str(message.chat.id)].tags.append(tags)
-    
+    account_settings[str(message.chat.id)].tags.append(message.text)
     database.change_account_data(account = account_settings[str(message.chat.id)], parametr = 'tags', data = account_settings[str(message.chat.id)].tags)
 
     it = len(account_settings[str(message.chat.id)].tags)
-    tet = "➕ Kirilgan "
-    tet += str(it)
-    tet += " 10 foydalanuvchilar"
-    send = bot.send_message(message.chat.id, tet)
-    if (it < 10):
-        bot.register_next_step_handler(send, enterTag_Sec)
-    else:
-        bot.send_message(message.chat.id, "❗️ Foydalanuvchilar botni aktivlashtirgandan so'ng chegirmaga ega bo'lasiz agar do'stlaringiz ro'yxatini o'zgartirmoqchi bo'lsangiz bosing /tags")
+    send = bot.send_message(message.chat.id, f"➕ Kirilgan {str(it)} 10 foydalanuvchilar")
+    if it < 10: bot.register_next_step_handler(send, enterTag_Sec, "")
+    else: bot.send_message(message.chat.id, "❗️ Foydalanuvchilar botni aktivlashtirgandan so'ng chegirmaga ega bo'lasiz agar do'stlaringiz ro'yxatini o'zgartirmoqchi bo'lsangiz bosing /tags")
 
-
-def picPNGmaker(message):
-    global account_settings
-    img_text = message.chat.first_name
-    img_text += ' '
-    if message.chat.last_name != None:
-        img_text += message.chat.last_name
-    img = Image.open('lab.png')
-    idraw = ImageDraw.Draw(img)
-    hd = ImageFont.truetype('Arial.ttf', size = 45)
-    idraw.text((150,280), img_text, fill = 'orange', font = hd)
-    img.save('newAcc.png')
-    with open('newAcc.png', 'rb') as f:
-        contents = f.read()
-    bot.send_photo(message.chat.id, contents, caption='💳 Ваша карта' if langCheck(message) else '💳 Sizning kartangiz')
-    os.remove('newAcc.png')
 
 
 def refAdd(message):
     global account_settings
-    ref_n = message.text    
     account_settings = database.get_accounts_data()
-    ch_ref = "none"
-    for k in account_settings.keys():
-        if k == ref_n:
-            ch_ref = "yes"
-            break
-    if ch_ref == "yes":
-        if int(account_settings[ref_n].ref) < 10:
-            account_settings[ref_n].ref = str(int(account_settings[ref_n].ref) + 1)
+    if True in [True for person_id in account_settings.keys() if person_id == message.text]:
+        if int(account_settings[message.text].ref) < 10:
             
-            database.change_account_data(account = account_settings[ref_n], parametr = 'ref', data = str(int(account_settings[ref_n].ref) + 1))
+            account_settings[message.text].ref = str(int(account_settings[message.text].ref) + 1)
+            database.change_account_data(account = account_settings[message.text], parametr = 'ref', data = str(int(account_settings[message.text].ref) + 1))
             account_settings = database.get_accounts_data()
+            
             bot.send_message(message.chat.id, "✅ Спасибо за активацию!" if langCheck(message) else "✅ Faollashtirish uchun rahmat!")
-            bot.send_message(ref_n, "✅ Новый пользователь активировал реферальный код!" if langCheck(message) else "✅ Yangi foydalanuvchi tavsiya kodini faollashtirdi!")
-            keyboardRefMaker(message, 0 if langCheck(message) else 1)
+            bot.send_message(message.text, "✅ Новый пользователь активировал реферальный код!" if langCheck(message) else "✅ Yangi foydalanuvchi tavsiya kodini faollashtirdi!")
+            keyboardRefMaker(message = message, lang = 0 if langCheck(message) else 1)
         else:
             bot.send_message(message.chat.id, "⚠️ Активации кода закончены" if langCheck(message) else "⚠️ Kodni faollashtirish tugadi")
-            keyboardRefMaker(message, 0 if langCheck(message) else 1)
-    elif ref_n == "stop":
+            keyboardRefMaker(message = message, lang = 0 if langCheck(message) else 1)
+    elif message.text == "stop":
         keyboardRefMaker(message, 0 if langCheck(message) else 1)
     else:
         bot.register_next_step_handler(bot.send_message(message.chat.id, '❔ Ваш код не найден, поробуйте ещё раз или напишите - stop' if langCheck(message) else '❔ Sizning kodingiz topilmadi, yana porobuyte yoki yozing - stop'), refAdd)
@@ -622,20 +503,15 @@ def refAdd(message):
 def userSebdText(message):
     global account_settings
     if message.text != 'stop':
-        if account_settings[account_settings[str(message.chat.id)].feedback_st].language == 'Русский':
-            oper_ans = 'Ответ оператора #' + account_settings[str(message.chat.id)].feedback_st + ' на вашу жалобу!👇'
-            bot.send_message(account_settings[str(message.chat.id)].feedback_st, oper_ans)
+        if langCheck(person_id = account_settings[str(message.chat.id)].feedback_st):
+            bot.send_message(account_settings[str(message.chat.id)].feedback_st, f"Ответ оператора #{account_settings[str(message.chat.id)].feedback_st} на вашу жалобу!👇")
         else:  
-            oper_ans = 'Sizning shikoyatingizga javob beruvchi operator #' + account_settings[str(message.chat.id)].feedback_st + ' !👇'
-            bot.send_message(account_settings[str(message.chat.id)].feedback_st, oper_ans)
+            bot.send_message(account_settings[str(message.chat.id)].feedback_st, f"Sizning shikoyatingizga javob beruvchi operator #{account_settings[str(message.chat.id)].feedback_st} !👇")
         if message.photo != None:
-            fileID = message.photo[-1].file_id
-            file_info = bot.get_file(fileID)
-            word_user_send = bot.download_file(file_info.file_path)
-            bot.send_photo(account_settings[str(message.chat.id)].feedback_st, word_user_send)
-        if message.text != None or message.caption != None:
-            if message.text != None: word_user_send = message.text
-            else: word_user_send = message.caption
+            file_info = bot.get_file(message.photo[-1].file_id)
+            bot.send_photo(account_settings[str(message.chat.id)].feedback_st, bot.download_file(file_info.file_path))
+        if message.text or message.caption != None:
+            word_user_send = message.text if message.text != None else message.caption
             bot.send_message(account_settings[str(message.chat.id)].feedback_st, word_user_send)
             database.insert_new_feedback_data(str(message.chat.id), account_settings[str(message.chat.id)].feedback_st, word_user_send, bot)
         bot.send_message(message.chat.id, "Сообщение отправлено!")
@@ -650,7 +526,9 @@ def userSebdText(message):
 
 def inlineMessages(markup_text, call = None, message = None, person_id = None, markup_arr = [], action = True):
     """
-      need param: inline_data = [text, callback_data] to make markup
+      This definition make and push markup.
+      param: markup_arr = [[text1, callback_data1], [text2, callback_data2]]
+      param: action -> activate delete_message
     """
     person_id = person_id if person_id != None else message.chat.id if message != None else call.message.chat.id
     if action: bot.delete_message(person_id, call.message.message_id if call != None else message.message_id)
@@ -666,21 +544,11 @@ def handlingdbCollection(message, call):
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
     global account_settings
-    global mess
     try:
         if call.data == 'Русский':
-            bot.delete_message(call.message.chat.id, call.message.message_id)
             database.change_account_data(account = account_settings[str(call.message.chat.id)], parametr = 'language', data = 'Русский')
-            
             account_settings = database.get_accounts_data()
-
-            start_txt = openfileforRead(None, path.first_lang)
-
-            markup = types.InlineKeyboardMarkup(row_width=2)
-            item1 = types.InlineKeyboardButton("Согласен", callback_data='Согласен')
-            item2 = types.InlineKeyboardButton("Отказываюсь", callback_data='Отказываюсь')
-            markup.add(item1, item2)
-            bot.send_message(call.message.chat.id, start_txt.format(call.message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+            inlineMessages(markup_text = openfileforRead(None, path.first_lang), call = call, markup_arr = [["Согласен", "Согласен"], ["Отказываюсь", "Отказываюсь"]])
         elif call.data == 'Отказываюсь':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             bot.send_message(call.message.chat.id, "Вы отказались от обработки персональных данных\n♻️ Для перезапуска бота нажмите /start")
@@ -696,18 +564,9 @@ def callback_inline(call):
             bot.register_next_step_handler(send, refAdd)
 
         elif call.data == 'Ozbek':
-            bot.delete_message(call.message.chat.id, call.message.message_id)
             database.change_account_data(account = account_settings[str(call.message.chat.id)], parametr = 'language', data = 'Ozbek')
-            
             account_settings = database.get_accounts_data()
-
-            start_txt = openfileforRead(None, path.second_lang)
-
-            markup = types.InlineKeyboardMarkup(row_width=2)
-            item1 = types.InlineKeyboardButton("ROZIMAN", callback_data='Agree')
-            item2 = types.InlineKeyboardButton("Qo'shilmayman", callback_data='Disagree')
-            markup.add(item1, item2)
-            bot.send_message(call.message.chat.id, start_txt.format(call.message.chat, bot.get_me()),parse_mode='html', reply_markup=markup)
+            inlineMessages(markup_text = openfileforRead(None, path.second_lang), call = call, markup_arr = [["ROZIMAN", "Agree"], ["Qo'shilmayman", "Disagree"]])
         elif call.data == 'Disagree':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             bot.send_message(call.message.chat.id, "Siz shaxsiy ma'lumotlarni qayta ishlash uchun rad qilgan\n♻️ Botni qayta ishga tushirish uchun bosing /start")
@@ -731,15 +590,13 @@ def callback_inline(call):
             bot.register_next_step_handler(send, fdbackName, 1)
 
         elif call.data == 'Отправить tag друзей':
-            mess = "new"
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ Введено 0 из 10 пользователей')
-            bot.register_next_step_handler(send, enterTag)
+            bot.register_next_step_handler(send, enterTag, "new")
         elif call.data == 'Send friends @tags':
-            mess = "new"
             bot.delete_message(call.message.chat.id, call.message.message_id)
             send = bot.send_message(call.message.chat.id, '➕ 10 ta foydalanuvchidan 0 ga kirgan')
-            bot.register_next_step_handler(send, enterTag_Sec)
+            bot.register_next_step_handler(send, enterTag_Sec, "new")
 
         elif call.data == 'Начальный текст':
             inlineMessages(markup_text = 'Выберите язык блока', call = call, markup_arr = [['Русский', 'РусскийLangStart'], ['Ozbek', 'OzbekLangStart']])
@@ -856,18 +713,7 @@ def callback_inline(call):
             bot.send_message(call.message.chat.id, 'Спасибо за оценку!' if langCheck(person_id = call.message.chat.id) else 'Baholash uchun rahmat!')
             
         elif call.data == 'Изменить': 
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            markup = types.InlineKeyboardMarkup(row_width=2)
-            item1 = types.InlineKeyboardButton('Номер терминала', callback_data='Номер терминала')
-            item2 = types.InlineKeyboardButton('Исправить наличные', callback_data='Исправить наличные')
-            item3 = types.InlineKeyboardButton('Номер договора', callback_data='Номер договора')
-            item4 = types.InlineKeyboardButton('Информация по возврату средств', callback_data='Информация по возврату средств')
-            item5 = types.InlineKeyboardButton('Данные по ПЦР', callback_data='Данные по ПЦР')
-            item6 = types.InlineKeyboardButton('Данные по ПЦР экспресс', callback_data='Данные по ПЦР экспресс')
-            item7 = types.InlineKeyboardButton('Количество анализов', callback_data='Количество анализов')
-            item8 = types.InlineKeyboardButton('Комментарий', callback_data='Комментарий')
-            markup.add(item1, item2, item3, item4, item5, item6, item7, item8)
-            bot.send_message(call.message.chat.id, 'Что нужно исправить?', reply_markup=markup)
+            inlineMessages(markup_text = 'Что нужно исправить?', call = call, markup_arr = variables.markup_change_label_arr)
             
         elif call.data in variables.call_data_office_dict.keys():
             bot.delete_message(call.message.chat.id, call.message.message_id)
@@ -933,9 +779,8 @@ def callback_inline(call):
                             oper_ans = "📞 Operator #" + str(call.message.chat.id) + " topildi, yozishmalar faollashtirildi"
                             bot.send_message(k, oper_ans)
                         bot.send_message(str(call.message.chat.id), "📞 Вы подтвердили заявку!", reply_markup=markup)
-                        user_id = str(k)
-                        oper_id = str(call.message.chat.id)
-                        database.insert_new_data(user_id, oper_id, bot)
+
+                        database.insert_new_data(user_id = str(k), oper_id = str(call.message.chat.id), bot = bot)
                         break
                 if account_settings[str(call.message.chat.id)].conversation != 'open':
                     if account_settings[str(call.data)].conversation != 'open':
@@ -978,9 +823,7 @@ def callback_inline(call):
                                 oper_ans = "📞 Operator #" + str(call.message.chat.id) + " yozishmalarni faollashtirdi"
                                 bot.send_message(str(call.data), oper_ans, reply_markup=user_markup)
                             bot.send_message(str(call.message.chat.id), "📞 Вы подтвердили заявку!", reply_markup=markup)
-                            user_id = str(call.data)
-                            oper_id = str(call.message.chat.id)
-                            database.insert_new_data(user_id, oper_id, bot)
+                            database.insert_new_data(user_id = str(call.data), oper_id = str(call.message.chat.id), bot = bot)
                         except Exception as e:
                             database.change_account_data(account = account_settings[str(call.message.chat.id)], parametr = 'conversation', data = 'close')
                             database.change_account_data(account = account_settings[str(call.data)], parametr = 'tags', data = [])
