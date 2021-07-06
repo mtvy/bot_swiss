@@ -1,8 +1,7 @@
 # Main libraries
-from pickle import FALSE
-import schedule, datetime, psycopg2, telebot, time, json, io, os, traceback
+import schedule, telebot, time, io, os, traceback
 from PIL import Image, ImageDraw, ImageFont
-from multiprocessing import Array, Process
+from multiprocessing import Process
 from telebot import types
 
 # Project files
@@ -208,15 +207,7 @@ def closeConversation(message):
     database.closerDataBase(str(message.chat.id), bot)
 
 def setCollectionKeyboard(message, person_id, show_text = 'Выберите необходимый мед офис'):
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    item1 = types.KeyboardButton("МО Гор.больница №1")
-    item2 = types.KeyboardButton("МО Кушбеги")
-    item3 = types.KeyboardButton("МО  Мирзо Улугбека")
-    item4 = types.KeyboardButton("МО  Юнусата")
-    item5 = types.KeyboardButton("МО  viezd")
-    item6 = types.KeyboardButton("🔙 Назад")
-    markup.add(item1, item2, item3, item4, item5, item6)
-    bot.send_message(person_id, show_text, reply_markup=markup)
+    bot.send_message(person_id, show_text, reply_markup = markupMaker(action = 'office', button_text = variables.office_markup_dict))
 
 def selectOffice(message, person_id, step, push_text = ''):
     if checkOperId(person_id = person_id, action = variables.collection_oper_ids_arr):
@@ -540,25 +531,16 @@ def callback_inline(call):
                 nextStepWait(person_id = call.message.chat.id, text = '➕ Введите текст для изменения', func = saveNewText, args = [variables.call_data_dict[call.data][1]], action = True, message_id = call.message.message_id)
             elif variables.call_data_dict[call.data][0] == 'office_edit':
                 nextStepWait(person_id = call.message.chat.id, text = "➕ Введите данные для изменения", func = handlingdbCollection, args = [call], action = True, message_id = call.message.message_id)
-
         elif call.data == '👍' or call.data == '👎':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             bot.send_message(call.message.chat.id, 'Спасибо за оценку!' if langCheck(person_id = call.message.chat.id) else 'Baholash uchun rahmat!')
-            
         elif call.data == 'Изменить': 
             inlineMessages(markup_text = 'Что нужно исправить?', call = call, markup_arr = variables.markup_change_label_arr)
-            
-        elif call.data == 'Отправить отчёт':
+        elif call.data == 'Отправить отчёт' or call.data == 'Подтвердить':
             bot.delete_message(call.message.chat.id, call.message.message_id)
-            database.dbCollection(call.message, person_id = call.message.chat.id, action = 'send_collection_to_oper')
-            bot.send_message(call.message.chat.id, 'Отчёт отправлен!')
+            database.dbCollection(call.message, person_id = call.message.chat.id, action = 'send_collection_to_oper' if call.data == 'Отправить отчёт' else 'confirm_collection')
+            bot.send_message(call.message.chat.id, 'Отчёт отправлен!' if call.data == 'Отправить отчёт' else 'Отчёт подтверждён!')
             keyboardRefMaker(call.message, 0 if langCheck(person_id = str(call.message.chat.id)) else 1, str(call.message.chat.id))
-        elif call.data == 'Подтвердить':
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            database.dbCollection(call.message, person_id = call.message.chat.id, action = 'confirm_collection')
-            bot.send_message(call.message.chat.id, 'Отчёт подтверждён!')
-            keyboardRefMaker(call.message, 0 if langCheck(person_id = str(call.message.chat.id)) else 1, str(call.message.chat.id))
-            
         elif call.data[0] == 'Q':
             if account_settings[call.data[1:]].feedback_st == 'open':
                 

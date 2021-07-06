@@ -1,7 +1,10 @@
-import path, database, json
+import database
 
 class Account:
-
+    """
+    This class creates account_settings with all user data.
+    Need array acc that includes twelve params.
+    """
     def __init__(self, acc):
         self.telegram_id = acc[0]
         self.login = acc[1]
@@ -32,21 +35,6 @@ class Account:
             'timer_conv': self.timer_conv,
         })
 
-        
-def openfileforRead(action=None, name_path=None):
-    global account_settings
-    if action == 'set':
-        with open(path.acc_settings, 'r') as file_set:
-            if(file_set.readline() == ""): 
-                account_settings = {}
-            else:
-                file_set.close()
-                with open(path.acc_settings, 'r') as file_set:
-                    account_settings = json.load(file_set)
-        return account_settings
-        
-def read():
+if __name__ == "__main__":
     acc = database.get_accounts_data()
-    for i in acc.keys(): print(acc[i])
-if __name__ == '__main__':
-    read()
+    for i in acc.keys(): print(acc[i], '\n')

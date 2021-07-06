@@ -1,7 +1,3 @@
-### defs for database conv
-from multiprocessing.context import Process
-from os import name
-import re
 import classes, variables, psycopg2, datetime
 
 def connect():
