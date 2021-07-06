@@ -57,8 +57,52 @@ select_collection_action_dict = {
     	8 : 'comment',
 }
 
-call_data_office_dict = {
-    	'Номер терминала' : ['office_edit', 1],
+call_data_dict = {
+		'Русский'  : ['set_lang', path.first_lang, [["Согласен", "Согласен"], ["Отказываюсь", "Отказываюсь"]]],
+    	'Ozbek'    : ['set_lang', path.second_lang, [["ROZIMAN", "Agree"], ["Qo'shilmayman", "Disagree"]]],
+		'Отказываюсь' : ['disagree_data', "Вы отказались от обработки персональных данных\n♻️ Для перезапуска бота нажмите /start"],
+		'Disagree' : ['disagree_data', "Siz shaxsiy ma'lumotlarni qayta ishlash uchun rad qilgan\n♻️ Botni qayta ishga tushirish uchun bosing /start"],
+		'Согласен' : ['agree_data', '♻️ У вас есть реферальная ссылка?', [['Да', 'Да'], ['Нет', 'Нет']]],
+		'Agree' : ['agree_data', "♻️ Yo'naltiruvchi havola bormi?", [['Ha', 'Yes'], ["Yo'q", 'No']]],
+		'Нет' : ['no_code', 0],
+		'No'  : ['no_code', 1],
+		'Да'  : ['has_code', '➕ Отправьте код'],
+		'Yes'  : ['has_code', '➕ Kodni yuboring'],
+		'Написать жалобу' : ['feedback', '➕ Напишите ваше имя', 0],
+		'Shikoyat yozing' : ['feedback', '➕ Telefon raqamingizni kiriting', 1],
+		'Отправить tag друзей' : ['friends_tag', '➕ Введено 0 из 10 пользователей'],
+		'Send friends @tags'   : ['friends_tag', '➕ 10 ta foydalanuvchidan 0 ga kirgan'],
+		'Начальный текст' : ['edit_label', [['Русский', 'РусскийLangStart'], ['Ozbek', 'OzbekLangStart']]],
+		'FAQ текст' : ['edit_label', [['Русский', 'РусскийLangFAQ'], ['Ozbek', 'OzbekLangFAQ']]],
+		'Текст оператора': ['edit_label', [['Русский', 'РусскийLangOper'], ['Ozbek', 'OzbekLangOper']]],
+		'Текст телефона' : ['edit_label', [['Русский', 'РусскийLangTele'], ['Ozbek', 'OzbekLangTele']]],
+		'Текст адресса': ['edit_label', [['Русский', 'РусскийLangAdress'], ['Ozbek', 'OzbekLangAdress']]],
+		'Текст создания заказа': ['edit_label', [['Русский', 'РусскийLangOrder'], ['Ozbek', 'OzbekLangOrder']]],
+		'Текст отзыва': ['edit_label', [['Русский', 'РусскийLangRecv'], ['Ozbek', 'OzbekLangRecv']]],
+		'Текст скидки': ['edit_label', [['Русский', 'РусскийLangDisc'], ['Ozbek', 'OzbekLangDisc']]],
+		'Текст социальные сети': ['edit_label', [['Русский', 'РусскийLangSocial'], ['Ozbek', 'OzbekLangSocial']]],
+		'Текст инструкции оператора': ['edit_label', [['Русский', 'РусскийLangOperFAQ'], ['Ozbek', 'OzbekLangOperFAQ']]],
+		'РусскийLangStart': ['edit_label_sec', path.first_lang],
+		'OzbekLangStart': ['edit_label_sec', path.second_lang],
+		'РусскийLangFAQ': ['edit_label_sec', path.FAQ_label],
+		'OzbekLangFAQ': ['edit_label_sec', path.sec_FAQ_label],
+		'РусскийLangOper': ['edit_label_sec', path.oper_label],
+		'OzbekLangOper': ['edit_label_sec', path.sec_oper_label],
+		'РусскийLangTele': ['edit_label_sec', path.telephone_num],
+		'OzbekLangTele': ['edit_label_sec', path.sec_telephone_num],
+		'РусскийLangAdress': ['edit_label_sec', path.address_label],
+		'OzbekLangAdress': ['edit_label_sec', path.sec_address_label],
+		'РусскийLangOrder': ['edit_label_sec', path.order_label],
+		'OzbekLangOrder': ['edit_label_sec', path.sec_order_label],
+		'РусскийLangRecv': ['edit_label_sec', path.recv_label],
+		'OzbekLangRecv': ['edit_label_sec', path.sec_recv_label],
+		'РусскийLangDisc': ['edit_label_sec', path.discount_label],
+		'OzbekLangDisc': ['edit_label_sec', path.sec_discount_label],
+		'РусскийLangSocial': ['edit_label_sec', path.social_web],
+		'OzbekLangSocial': ['edit_label_sec', path.sec_social_web],
+		'РусскийLangOperFAQ': ['edit_label_sec', path.FAQoper_label],
+		'OzbekLangOperFAQ': ['edit_label_sec', path.sec_FAQoper_label],
+		'Номер терминала' : ['office_edit', 1],
     	'Исправить наличные' : ['office_edit', 2],
     	'Информация по возврату средств' : ['office_edit', 3],
     	'Номер договора' : ['office_edit', 4],
@@ -100,6 +144,21 @@ buttons_uz_text = {
 		"💰 Naqd pul yig'ish" : ['admin']
 	}
 
+buttons_oper_text = {
+		'🔙 Отклонить вызов оператора' : ['redirect', 'person'],
+		'❔ Инструкция' : ['redirect', 'person'],
+		'❗️ Жалоба' : ['redirect'],
+		'🙋 Операторская' : ['redirect'],
+		'☎️ Поддержка' : ['redirect'],
+		'✍️ Директор' : ['redirect'],
+		'👨‍⚕️ Доктор' : ['redirect']
+	}
+
+buttons_user_uz_text = {
+	"🔙 Operator chaqiruvini rad etish" :['person'],
+	"❔ Ko'rsatma" : ['person']
+}
+
 	# main def message.text variables
 message_text_dict = {
     	'МО Гор.больница №1' : ['office'],
@@ -107,6 +166,8 @@ message_text_dict = {
     	'МО  Мирзо Улугбека' : ['office'],
     	'МО  Юнусата'        : ['office'],     
     	'МО  viezd'          : ['office'],
+		'❔ Инструкция' : ['text_show', path.FAQoper_label, path.sec_FAQoper_label],
+		"❔ Ko'rsatma"  : ['text_show', path.FAQoper_label, path.sec_FAQoper_label],
     	'📞 Телефон'    : ['text_show', path.telephone_num, path.sec_telephone_num],
     	'📞 telefon'    : ['text_show', path.telephone_num, path.sec_telephone_num],
     	'🏠 Адреса'     : ['text_show', path.address_label, path.sec_address_label],
@@ -147,7 +208,7 @@ markup_change_label_arr = [
 ]
 
 markup_change_collection_arr = [
-	['Комментарий', 'Комментарий']
+	['Комментарий', 'Комментарий'],
 	['Данные по ПЦР', 'Данные по ПЦР'],
 	['Номер договора', 'Номер договора'],
 	['Номер терминала', 'Номер терминала'],
