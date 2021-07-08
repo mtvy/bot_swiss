@@ -36,12 +36,14 @@ def checkOperId(person_id, action) -> bool:
     """
     return True if person_id in [pers_id for pers_id in action] else False
 
+def markupMaker(action, button_text) -> types.ReplyKeyboardMarkup():
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    pin = [types.KeyboardButton(tag) for tag in button_text.keys() if action in button_text[tag]]
+    markup.add(*pin) if action != 'user' and action != 'redirect' else markup.row(pin[0], pin[1], pin[3]).row(pin[5], pin[6], pin[8]).row(pin[10]).row(pin[2], pin[7]).row(pin[4], pin[9]) if action != 'redirect' else markup.row(pin[0], pin[1]).row(pin[2], pin[3], pin[4]).row(pin[5], pin[6])
+    return markup
 
 bot = telebot.TeleBot(config.TOKEN)
 
-
-def start_process():
-    Process(target = P_schedule.start_schedule, args = ()).start()
 class P_schedule:
     """
     This class repost messages from the telegram channel.
@@ -66,10 +68,8 @@ class P_schedule:
             try:
                 if (int(time.time()) - account_settings[account].timer_conv) > 900 and account_settings[account].conversation == 'open':
                     stopConversation(message = None, lang = 0 if langCheck(message = None, person_id = account) else 1, pers_id = account)
-            except Exception as _:
-                pass
-        if c_ex == len(account_settings):
-            c_ex = 0
+            except Exception as _: pass
+        if c_ex == len(account_settings): c_ex = 0
         else:
             try:
                 bot.forward_message(281321076, variables.CHANNEL_ID, variables.MESSAGE_ID)
@@ -116,8 +116,7 @@ def adderNewLabel(message):
     if checkOperId(person_id = str(message.chat.id), action = variables.label_change_ids_arr):
         inlineMessages(markup_text = "Какой блок надо отредактировать?", message = message, markup_arr = variables.markup_change_label_arr, action = False)
 
-
-def sendReqtoOper(message, which_oper, oper_send_text, markup):
+def sendReqtoOper(which_oper, oper_send_text, markup):
     for oper_id in variables.action_oper_select[which_oper]:
         bot.send_message(int(oper_id), oper_send_text, reply_markup=markup)
 
@@ -131,8 +130,7 @@ def operKeyboardMaker(message, which_oper, lang):
     markup = types.InlineKeyboardMarkup(row_width=2)
     markup.add(types.InlineKeyboardButton("Принять", callback_data=str(message.chat.id)))
     database.insert_new_data(str(message.chat.id), '0', bot)
-    sendReqtoOper(message, which_oper, f"-------Запрос переписки!-------\nid: {message.chat.id} \nИмя: {message.chat.first_name} \nФамилия: {message.chat.last_name} \nUsername: @ {message.chat.username} \nЯзык: Русский\n----------------------------", markup)
-		
+    sendReqtoOper(which_oper = which_oper, oper_send_text = f"-------Запрос переписки!-------\nid: {message.chat.id} \nИмя: {message.chat.first_name} \nФамилия: {message.chat.last_name} \nUsername: @ {message.chat.username} \nЯзык: Русский\n----------------------------", markup = markup)
 
 def dbDateSortEnter(message, action):
     nextStepWait(person_id = message.chat.id, text = '➕ Введите дату в формате ГОД-МЕСЯЦ-ДЕНЬ (2000-1-12)', func = dbSortEnter, args = [action])
@@ -302,13 +300,6 @@ def picPNGmaker(message):
     bot.send_photo(message.chat.id, open('newAcc.png', 'rb').read(), caption = '💳 Ваша карта' if langCheck(message) else '💳 Sizning kartangiz')
     os.remove('newAcc.png')
 
-
-def markupMaker(action, button_text) -> types.ReplyKeyboardMarkup():
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    pin = [types.KeyboardButton(tag) for tag in button_text.keys() if action in button_text[tag]]
-    markup.add(*pin) if action != 'user' and action != 'redirect' else markup.row(pin[0], pin[1], pin[3]).row(pin[5], pin[6], pin[8]).row(pin[10]).row(pin[2], pin[7]).row(pin[4], pin[9]) if action != 'redirect' else markup.row(pin[0], pin[1]).row(pin[2], pin[3], pin[4]).row(pin[5], pin[6])
-    return markup
-
 def keyboardRefMaker(message, lang, pers_id=None):
     global account_settings
     person_id = pers_id if pers_id != None else str(message.chat.id)
@@ -452,10 +443,8 @@ def refAdd(message):
         else:
             bot.send_message(message.chat.id, "⚠️ Активации кода закончены" if langCheck(message) else "⚠️ Kodni faollashtirish tugadi")
             keyboardRefMaker(message = message, lang = 0 if langCheck(message) else 1)
-    elif message.text == "stop":
-        keyboardRefMaker(message, 0 if langCheck(message) else 1)
-    else:
-        nextStepWait(person_id = message.chat.id, text = '❔ Ваш код не найден, поробуйте ещё раз или напишите - stop' if langCheck(message) else '❔ Sizning kodingiz topilmadi, yana porobuyte yoki yozing - stop', func = refAdd)
+    elif message.text == "stop": keyboardRefMaker(message, 0 if langCheck(message) else 1)
+    else: nextStepWait(person_id = message.chat.id, text = '❔ Ваш код не найден, поробуйте ещё раз или напишите - stop' if langCheck(message) else '❔ Sizning kodingiz topilmadi, yana porobuyte yoki yozing - stop', func = refAdd)
 
 def userSebdText(message):
     global account_settings
@@ -619,7 +608,7 @@ def callback_inline(call):
             bot.send_message(int(id_er), f"Error in the 'call' part!\n\n{traceback.format_exc()}")
 
 if __name__ == '__main__':
-    start_process()
+    Process(target = P_schedule.start_schedule, args = ()).start()
     try: bot.polling(none_stop=True)
     except Exception as _:
         for id_er in variables.label_change_ids_arr:

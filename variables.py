@@ -1,7 +1,7 @@
 import path
 
 # Last message number
-MESSAGE_ID = 26
+MESSAGE_ID = 42
 CHANNEL_ID = -1001216461571
 
 # Id
