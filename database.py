@@ -230,6 +230,10 @@ def dbCollection(message, person_id, step = None, database_push_data = None, act
             return False
 
 
+### For check MESSAGE_ID
+
+
+
 ### For account_tb
 
 def insert_account_data(account):
