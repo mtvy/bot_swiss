@@ -210,23 +210,28 @@ def closeConversation(message):
 def setCollectionKeyboard(message, person_id, show_text = 'Выберите необходимый мед офис'):
     bot.send_message(person_id, show_text, reply_markup = markupMaker(action = 'office', button_text = variables.office_markup_dict))
 
-def selectOffice(message, person_id, step, push_text = ''):
+def selectOffice(message, person_id, step, push_text = '', data = ''):
     if checkOperId(person_id = person_id, action = variables.collection_oper_ids_arr):
         if variables.show_text_dict[step]:
             database.dbCollection(message = message, person_id = person_id, step = step - 1, database_push_data = message.text)
             nextStepWait(person_id = person_id, text = variables.show_text_dict[step], func = selectOffice, args = [person_id, step + 1])
         else:
             database.dbCollection(message = message, person_id = person_id, step = step - 1, database_push_data = message.text)
-            data = ''.join([f"{str(row)}\n" for row in database.dbCollection(message = message, person_id = person_id, step = step, database_push_data = 'admin')])
+            for line, row in zip(variables.add_text_dict, database.dbCollection(message = message, person_id = person_id, step = step, database_push_data = 'admin')[-1]):
+                data += f"{line} {row}\n"
             bot.send_message(person_id, data)
             inlineMessages(markup_text = 'Можете отправить отчёт или изменить данные', message = message, markup_arr = [['Отправить отчёт', 'Отправить отчёт'], ['Изменить', 'Изменить']])
 
     elif checkOperId(person_id = person_id, action = variables.collection_cash_ids_arr):
         database.dbCollection(message = message, person_id = person_id, database_push_data = message.text, action = 'cashier_init')
-        data =  database.dbCollection(message = message, person_id = person_id, database_push_data = message.text, step = 9, action = 'show_collection_to_cashier')
-        data = ''.join([f"{str(row)}\n" for row in data[0]]) if len(data) > 0 else 'Данных по этому офису нет!'
-        bot.send_message(person_id, data)
-        if data != 'Данных по этому офису нет!': inlineMessages(markup_text = 'Можете подтвердить или изменить данные', message = message, markup_arr = [['Подтвердить', 'Подтвердить'], ['Изменить', 'Изменить']])
+        database_data = database.dbCollection(message = message, person_id = person_id, database_push_data = message.text, step = 9, action = 'show_collection_to_cashier')
+        if len(database_data) > 0:
+            for line, row in zip(variables.add_text_dict, database_data[-1]):
+                data += f"{line} {row}\n"
+            bot.send_message(person_id, data)
+            inlineMessages(markup_text = 'Можете подтвердить или изменить данные', message = message, markup_arr = [['Подтвердить', 'Подтвердить'], ['Изменить', 'Изменить']])
+        else:
+            bot.send_message(person_id, 'Данных по этому офису нет!')
 
 
 @bot.message_handler(content_types=['text', 'photo'])
@@ -243,7 +248,7 @@ def lol(message):
             elif variables.message_text_dict[message.text][0] == 'redirect':
                 redirectInit(message, f"❗ Общение завершено, перенаправление {variables.message_text_dict[message.text][1]}")
                 operInit(variables.message_ids_dict[account_settings[str(message.chat.id)].tags[0]], variables.message_text_dict[message.text][2], variables.message_text_dict[message.text][3], closeConversation(message))
-        elif message.text == '🔙 Назад': stopConversation(message, account_settings[str(message.chat.id)].language, action = 'back')
+        elif message.text == '🔙 Назад': keyboardRefMaker(message = message, lang = account_settings[str(message.chat.id)].language)
         elif message.text == '❗️ Оставить жалобу' or message.text == '❗️ Shikoyat qoldiring':
             if checkOperId(person_id = str(message.chat.id), action = variables.feedback_oper_ids_arr): dbDateSortEnter(message = message, action = 'feedback_tb')
             else:
@@ -484,9 +489,11 @@ def inlineMessages(markup_text, call = None, message = None, person_id = None, m
     markup.add(*[types.InlineKeyboardButton(text = row[0], callback_data = row[1]) for row in markup_arr])
     bot.send_message(person_id, markup_text, reply_markup=markup)
 
-def handlingdbCollection(message, call):
-    bot.send_message(message.chat.id, ''.join([f"{str(row)}\n" for row in database.dbCollection(message = message, person_id = message.chat.id, step = variables.call_data_dict[call.data][1], action = 'show_data')[0]]))
-    inlineMessages(markup_text = 'Можете отправить отчёт или изменить данные', message = message, markup_arr = [['Отправить отчёт', 'Отправить отчёт'], ['Изменить', 'Изменить']])
+def handlingdbCollection(message, call, data = ''):
+    for line, row in zip(variables.add_text_dict, database.dbCollection(message = message, person_id = message.chat.id, step = variables.call_data_dict[call.data][1], action = 'show_data')[-1]):
+                data += f"{line} {row}\n"
+    bot.send_message(message.chat.id, data)
+    inlineMessages(markup_text = 'Можете отправить отчёт или изменить данные', message = message, markup_arr = [['Отправить отчёт', 'Отправить отчёт'] if checkOperId(person_id = str(message.chat.id), action = variables.collection_oper_ids_arr) else ['Подтвердить', 'Подтвердить'], ['Изменить', 'Изменить']])
 
 def nextStepWait(person_id, text, func, args = None, action = False, message_id = None):
     if action: bot.delete_message(person_id, message_id)
@@ -526,7 +533,7 @@ def callback_inline(call):
             bot.delete_message(call.message.chat.id, call.message.message_id)
             bot.send_message(call.message.chat.id, 'Спасибо за оценку!' if langCheck(person_id = call.message.chat.id) else 'Baholash uchun rahmat!')
         elif call.data == 'Изменить': 
-            inlineMessages(markup_text = 'Что нужно исправить?', call = call, markup_arr = variables.markup_change_label_arr)
+            inlineMessages(markup_text = 'Что нужно исправить?', call = call, markup_arr = variables.markup_change_collection_arr)
         elif call.data == 'Отправить отчёт' or call.data == 'Подтвердить':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             database.dbCollection(call.message, person_id = call.message.chat.id, action = 'send_collection_to_oper' if call.data == 'Отправить отчёт' else 'confirm_collection')

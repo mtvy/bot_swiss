@@ -246,7 +246,6 @@ def dbMessageId(action, message_id = None):
             cur.execute(database_text_commmit)
             data = checkPulldbData(cur = cur, action = 'show_data' if action == 'take_id' else None)
             con.commit()
-            print('Changes in messageId_tb!')
             return data
         except Exception as error:
             print('Error changing data in messageId_tb!', error)
