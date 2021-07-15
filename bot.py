@@ -46,7 +46,7 @@ bot = telebot.TeleBot(config.TOKEN)
 
 class P_schedule:
     """
-    This class repost messages from the telegram channel.
+    This class reposts messages from the telegram channel.
     """
 
     def start_schedule():
@@ -57,10 +57,11 @@ class P_schedule:
 
     def send_post():
         c_ex = 0
+        message_id = database.dbMessageId(action = 'take_id')[0][0]
         account_settings = database.get_accounts_data()
         for account in account_settings.keys():
             try:
-                bot.forward_message(int(account), variables.CHANNEL_ID, variables.MESSAGE_ID)
+                bot.forward_message(int(account), variables.CHANNEL_ID, message_id)
                 time.sleep(1)
             except Exception as _:
                 c_ex+=1
@@ -72,12 +73,12 @@ class P_schedule:
         if c_ex == len(account_settings): c_ex = 0
         else:
             try:
-                bot.forward_message(281321076, variables.CHANNEL_ID, variables.MESSAGE_ID)
-                variables.MESSAGE_ID += 1
-            except Exception as qt:
-                print(f"Error pushing news!\n\n{repr(qt)}")
+                bot.forward_message(281321076, variables.CHANNEL_ID, message_id)
+                database.dbMessageId(action = 'save_id', message_id = message_id + 1)
+            except Exception as error:
+                print(f"Error pushing news!\n\n{repr(error)}")
                 for id_er in variables.label_change_ids_arr:
-                    bot.send_message(int(id_er), f"Error pushing news!\n\n{repr(qt)}")
+                    bot.send_message(int(id_er), f"Error pushing news!\n\n{repr(error)}")
 
 
 @bot.message_handler(commands=['start'])

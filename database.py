@@ -2,7 +2,7 @@ import classes, variables, psycopg2, datetime
 
 def connect():
     try:
-        con = psycopg2.connect(database="postgres",user="postgres",password="postgres", host="127.0.0.1",port="5432")
+        con = psycopg2.connect(database="postgres",user="postgres",password="111", host="127.0.0.1",port="5432")
         cur = con.cursor()
         return con, cur
     except (Exception, psycopg2.DatabaseError) as error:
@@ -193,7 +193,7 @@ def checkPulldbData(cur, action = None, step = None):
 
 def dbCollection(message, person_id, step = None, database_push_data = None, action = None, status = None, bot = None):
     """
-    create table collection_tb(id serial primary key, admin_id varchar(128), cashier_id varchar(128), office varchar(128), terminal_number text, cash text, cash_return_info text, doc_number text, PCR text, PCR_express text, analyzes_count text, comment text, admin_date varchar(128), cashier_date varchar(128), status varchar(128));
+    To create table: create table collection_tb(id serial primary key, admin_id varchar(128), cashier_id varchar(128), office varchar(128), terminal_number text, cash text, cash_return_info text, doc_number text, PCR text, PCR_express text, analyzes_count text, comment text, admin_date varchar(128), cashier_date varchar(128), status varchar(128));
      ____________________________________________________________________________________________________________________________________________________
     |id|admin_id|cashier_id|office|terminal_number|cash|cash_return_info|doc_number|PCR|PCR_express|analyzes_count|comment|admin_date|cashier_date|status|
     |__|________|__________|______|_______________|____|________________|__________|___|___________|______________|_______|__________|____________|______|
@@ -225,13 +225,32 @@ def dbCollection(message, person_id, step = None, database_push_data = None, act
             con.commit()
             print('New collection add by admin!')
             return data
-        except Exception as e:
-            print('Error entering new data to collection_tb!', e)
+        except Exception as error:
+            print('Error entering new data to collection_tb!', error)
             return False
 
 
 ### For check MESSAGE_ID
-
+def dbMessageId(action, message_id = None):
+    """
+    This definition hanles id of posting message.
+    To create table: create table messageId_tb(message_id integer);
+    """
+    con, cur = connect()
+    if con == 0 and cur == 0: return False
+    else:
+        try:
+            if action == 'take_id': database_text_commmit = 'SELECT message_id FROM messageId_tb'
+            elif action == 'save_id': database_text_commmit = f"UPDATE messageId_tb set message_id = {message_id}"
+            elif action == 'init_id': database_text_commmit = f"INSERT INTO messageId_tb (message_id) VALUES ({message_id})"
+            cur.execute(database_text_commmit)
+            data = checkPulldbData(cur = cur, action = 'show_data' if action == 'take_id' else None)
+            con.commit()
+            print('Changes in messageId_tb!')
+            return data
+        except Exception as error:
+            print('Error changing data in messageId_tb!', error)
+            return False
 
 
 ### For account_tb
