@@ -170,7 +170,8 @@ def redirectInit(message, action):
 
     keyboardRefMaker(message = message, lang = 0)
     inlineMessages(markup_text = 'Оцените работу оператора!' if langCheck(message) else 'Operator ishini baholang!', person_id = account_settings[str(message.chat.id)].tags[0] if checkOperId(person_id = str(message.chat.id), action = variables.all_ids_arr) else str(message.chat.id), markup_arr = [["👍", "👍"], ["👎", "👎"]], action = False)
-        
+
+   
 def stopConversation(message, lang, pers_id=None, action = None):
     global account_settings
     person_id = pers_id if pers_id != None else str(message.chat.id)
@@ -205,6 +206,7 @@ def closeConversation(message):
             
     database.closerDataBase(str(message.chat.id), bot)
 
+
 def setCollectionKeyboard(message, person_id, show_text = 'Выберите необходимый мед офис'):
     bot.send_message(person_id, show_text, reply_markup = markupMaker(action = 'office', button_text = variables.office_markup_dict))
 
@@ -225,7 +227,6 @@ def selectOffice(message, person_id, step, push_text = ''):
         data = ''.join([f"{str(row)}\n" for row in data[0]]) if len(data) > 0 else 'Данных по этому офису нет!'
         bot.send_message(person_id, data)
         if data != 'Данных по этому офису нет!': inlineMessages(markup_text = 'Можете подтвердить или изменить данные', message = message, markup_arr = [['Подтвердить', 'Подтвердить'], ['Изменить', 'Изменить']])
-
 
 
 @bot.message_handler(content_types=['text', 'photo'])
