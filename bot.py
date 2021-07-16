@@ -186,9 +186,9 @@ def stopConversation(message, lang, pers_id=None, action = None):
 
         keyboardRefMaker(None, 0 if account_settings[account_settings[person_id].tags[0]].language == "Русский" else 1, account_settings[person_id].tags[0])
     keyboardRefMaker(None, lang, person_id)
-
-    user_id = account_settings[person_id].tags[0] if checkOperId(person_id = person_id, action = variables.all_ids_arr) and action == None else person_id
+    
     if not checkOperId(person_id = person_id, action = variables.all_ids_arr):
+        user_id = account_settings[person_id].tags[0] if checkOperId(person_id = person_id, action = variables.all_ids_arr) and action == None else person_id
         inlineMessages(markup_text = 'Оцените работу оператора!' if langCheck(person_id = user_id) else 'Operator ishini baholang!', person_id = user_id, markup_arr = [['👍', '👍'], ['👎', '👎']], action = False)
             
     database.change_account_data(account = account_settings[person_id], parametr = 'conversation', data = 'close')
