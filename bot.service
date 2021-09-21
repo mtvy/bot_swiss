@@ -5,11 +5,11 @@ After=network.target
 
 [Service]
 Type=simple
-User=bot
-WorkingDirectory=/home/bot/bot_swiss
-ExecStart=/usr/bin/python3 /home/bot/bot_swiss/bot.py
+User=tbot
+WorkingDirectory=/home/tbot/bot_swiss
+ExecStart=/usr/bin/python3 /home/tbot/bot_swiss/bot.py
 
-RestartSec=10
+RestartSec=30
 Restart=ALWAYS
 
 [Install]
