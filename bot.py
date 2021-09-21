@@ -339,9 +339,9 @@ def fdbackTele(message, lang):
     if tele_num.isdigit() == True:
         if tele_num == None: tele_num = 'Пользователь отправил нечитаемый объект'
         variables.feed_back[str(message.chat.id)].update({"Telephone number" : tele_num})
-        if lang == 0: bot.send_message(message.chat.id, '➕ Жалоба составляется в четыре этапа:\n1) Причина жалобы\n2) Обозначение филиала/места, где произошёл инцидент\n3) Дата инцидента\n4) Имя или опишите оппонента, с которым произошёл конфликт\n❌ Для отмены операции напишите stop')
+        if lang == 0: bot.send_message(message.chat.id, '➕ Жалоба составляется в четыре этапа:\n1) Причина жалобы и номер заявки\n2) Обозначение филиала/места, где произошёл инцидент\n3) Дата инцидента\n4) Имя или опишите оппонента, с которым произошёл конфликт\n❌ Для отмены операции напишите stop')
         else: bot.send_message(message.chat.id, '➕ Shikoyat tort bosqichda tuziladi:\n1) Shikoyat sababi\n2) Hodisa sodir bolgan filial/joyni belgilash\n3) Hodisa sanasi\n4) Mojaro yuz bergan raqibning nomi yoki tarifi\n❌ Operatsiyani bekor qilish uchun yozing stop')
-        nextStepWait(person_id = message.chat.id, text = '➕ Напишите причину жалобы' if lang == 0 else '➕ Shikoyat sababini yozing', func = fdbackReason, args = [lang])
+        nextStepWait(person_id = message.chat.id, text = '➕ Напишите причину жалобы и номер заявки' if lang == 0 else '➕ Shikoyat sababini va ariza raqamini yozing', func = fdbackReason, args = [lang])
     elif tele_num == 'stop': bot.send_message(message.chat.id, '➕ Операция отменена' if lang == 0 else '➕ Amal bekor qilindi')
     else: nextStepWait(person_id = message.chat.id, text = '➕ Введите номер телефона в формате 998999999999 или напишите stop' if lang == 0 else '➕ Telefon raqamingizni formatda kiriting 9997777777777 yoki yozing stop', func = fdbackTele, args = [lang])
 def fdbackReason(message, lang):
@@ -509,26 +509,36 @@ def callback_inline(call):
                 database.change_account_data(account = account_settings[str(call.message.chat.id)], parametr = 'language', data = call.data)
                 account_settings = database.get_accounts_data()
                 inlineMessages(markup_text = openfileforRead(None, variables.call_data_dict[call.data][1]), call = call, markup_arr = variables.call_data_dict[call.data][2])
+            
             elif variables.call_data_dict[call.data][0] == 'disagree_data':
                 bot.delete_message(call.message.chat.id, call.message.message_id)
                 bot.send_message(call.message.chat.id, variables.call_data_dict[call.data][1])
+            
             elif variables.call_data_dict[call.data][0] == 'agree_data':
                 inlineMessages(markup_text = variables.call_data_dict[call.data][1], call = call, markup_arr = variables.call_data_dict[call.data][2])
+            
             elif variables.call_data_dict[call.data][0] == 'no_code':
                 bot.delete_message(call.message.chat.id, call.message.message_id)
                 keyboardRefMaker(call.message, variables.call_data_dict[call.data][1])
+            
             elif variables.call_data_dict[call.data][0] == 'has_code':
                 nextStepWait(person_id = call.message.chat.id, text = variables.call_data_dict[call.data][1], func = refAdd, args = None, action = True, message_id = call.message.message_id)
+            
             elif variables.call_data_dict[call.data][0] == 'feedback':
                 nextStepWait(person_id = call.message.chat.id, text = variables.call_data_dict[call.data][1], func = fdbackName, args = [variables.call_data_dict[call.data][2]], action = True, message_id = call.message.message_id)
+            
             elif variables.call_data_dict[call.data][0] == 'friends_tag':
                 nextStepWait(person_id = call.message.chat.id, text = variables.call_data_dict[call.data][1], func = enterTag, args = ["new"], action = True, message_id = call.message.message_id)
+            
             elif variables.call_data_dict[call.data][0] == 'edit_label':
                 inlineMessages(markup_text = 'Выберите язык блока', call = call, markup_arr = variables.call_data_dict[call.data][1])
+            
             elif variables.call_data_dict[call.data][0] == 'edit_label_sec':
                 nextStepWait(person_id = call.message.chat.id, text = '➕ Введите текст для изменения', func = saveNewText, args = [variables.call_data_dict[call.data][1]], action = True, message_id = call.message.message_id)
+            
             elif variables.call_data_dict[call.data][0] == 'office_edit':
                 nextStepWait(person_id = call.message.chat.id, text = "➕ Введите данные для изменения", func = handlingdbCollection, args = [call], action = True, message_id = call.message.message_id)
+        
         elif call.data == '👍' or call.data == '👎':
             bot.delete_message(call.message.chat.id, call.message.message_id)
             bot.send_message(call.message.chat.id, 'Спасибо за оценку!' if langCheck(person_id = call.message.chat.id) else 'Baholash uchun rahmat!')

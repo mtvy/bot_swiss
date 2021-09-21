@@ -137,19 +137,6 @@ def closerDataBase(sm_id, bot):
             print('Error entering data to message_tb!', e)
             return 0
 
-def change_data(name, bot):
-    con, cur = connect()
-    if con == 0 or cur == 0:
-        return 0
-    else:
-        try:
-            txt_data_del = "UPDATE user_tb set phone = NULL where name = '" + name + "'"
-            cur.execute(txt_data_del)
-            con.commit()
-        except Exception as e:
-            err_txt = 'Error deleting data from user @' + name + '!'
-            print(err_txt, e)
-
 
 ### For message_tb and feedback_tb
 
