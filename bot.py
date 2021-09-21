@@ -433,7 +433,6 @@ def enterTag_Sec(message, mess):
     else: bot.send_message(message.chat.id, "❗️ Foydalanuvchilar botni aktivlashtirgandan so'ng chegirmaga ega bo'lasiz agar do'stlaringiz ro'yxatini o'zgartirmoqchi bo'lsangiz bosing /tags")
 
 
-
 def refAdd(message):
     global account_settings
     account_settings = database.get_accounts_data()
@@ -474,7 +473,6 @@ def userSebdText(message):
         account_settings = database.get_accounts_data()
 
     else: bot.send_message(message.chat.id, 'Операция отменена!')
-
 
 
 def inlineMessages(markup_text, call = None, message = None, person_id = None, markup_arr = [], action = True):
