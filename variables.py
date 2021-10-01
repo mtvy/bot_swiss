@@ -169,84 +169,84 @@ buttons_ru_text = {
 }
 
 buttons_uz_text = {
-	f'{EMJ_TELEPHONE} telefon' 							: ['oper', 'user', 'admin'],
-	f'{EMJ_HOUSE} manzillari'							: ['oper', 'user', 'admin'],
-	f'{EMJ_RAISING_HAND} Operator'						: ['user'                 ],
-	f'{EMJ_NOTE} buyurtma yaratish'						: ['user'                 ],
-	f'{EMJ_BACK_ARROW} Operator chaqiruvini rad etish'	: ['oper', 'admin'        ],
-	f'{EMJ_EXCLAMATION} Shikoyat qoldiring' 			: ['oper', 'user', 'admin'],
-	f'{EMJ_DISK} Yozishmalar bazasi'					: ['oper', 'admin'        ],
-	'% Chegirma oling'									: ['oper', 'user', 'admin'],
-	f"{EMJ_INFO} FAQ Ko'rsatma"							: ['oper', 'user', 'admin'],
-	f'{EMJ_WRITING_HAND} Direktorga yozing'				: ['user'                 ],
-	f'{EMJ_GLOBE} Biz ijtimoiy tarmoqlarda'				: ['oper', 'user', 'admin'],
-	f"{EMJ_OLD_TELEPHONE} O'sha.  qo'llab-quvvatlash"	: ['user'                 ],
-	f'{EMJ_DOCTOR} Shifokor onlayn'						: ['user'                 ],
-	f"{EMJ_MONEY_BAG} Naqd pul yig'ish"					: ['admin'                ]
+	f'{EMJ_TELEPHONE} telefon'                          : ['oper', 'user', 'admin'],
+	f'{EMJ_HOUSE} manzillari'                           : ['oper', 'user', 'admin'],
+	f'{EMJ_RAISING_HAND} Operator'                      : ['user'                 ],
+	f'{EMJ_NOTE} buyurtma yaratish'                     : ['user'                 ],
+	f'{EMJ_BACK_ARROW} Operator chaqiruvini rad etish'  : ['oper', 'admin'        ],
+	f'{EMJ_EXCLAMATION} Shikoyat qoldiring'             : ['oper', 'user', 'admin'],
+	f'{EMJ_DISK} Yozishmalar bazasi'                    : ['oper', 'admin'        ],
+	'% Chegirma oling'                                  : ['oper', 'user', 'admin'],
+	f"{EMJ_INFO} FAQ Ko'rsatma"                         : ['oper', 'user', 'admin'],
+	f'{EMJ_WRITING_HAND} Direktorga yozing'             : ['user'                 ],
+	f'{EMJ_GLOBE} Biz ijtimoiy tarmoqlarda'             : ['oper', 'user', 'admin'],
+	f"{EMJ_OLD_TELEPHONE} O'sha.  qo'llab-quvvatlash"   : ['user'                 ],
+	f'{EMJ_DOCTOR} Shifokor onlayn'                     : ['user'                 ],
+	f"{EMJ_MONEY_BAG} Naqd pul yig'ish"                 : ['admin'                ]
 }
 
 buttons_oper_text = {
-	f'{EMJ_BACK_ARROW} Отклонить вызов оператора' 		: ['redirect', 'person'],
-	f'{EMJ_QUESTION} Инструкция' 				   		: ['redirect', 'person'],
-	f'{EMJ_EXCLAMATION} Жалоба' 						: ['redirect'          ],
-	f'{EMJ_RAISING_HAND} Операторская' 					: ['redirect'          ],
-	f'{EMJ_OLD_TELEPHONE} Поддержка'					: ['redirect'          ],
-	f'{EMJ_WRITING_HAND} Директор'					 	: ['redirect'          ],
-	f'{EMJ_DOCTOR} Доктор'								: ['redirect'          ]
+	f'{EMJ_BACK_ARROW} Отклонить вызов оператора'       : ['redirect', 'person'],
+	f'{EMJ_QUESTION} Инструкция'                        : ['redirect', 'person'],
+	f'{EMJ_EXCLAMATION} Жалоба'                         : ['redirect'          ],
+	f'{EMJ_RAISING_HAND} Операторская'                  : ['redirect'          ],
+	f'{EMJ_OLD_TELEPHONE} Поддержка'                    : ['redirect'          ],
+	f'{EMJ_WRITING_HAND} Директор'                      : ['redirect'          ],
+	f'{EMJ_DOCTOR} Доктор'                              : ['redirect'          ]
 }
 
 buttons_user_uz_text = {
-	f"{EMJ_BACK_ARROW} Operator chaqiruvini rad etish"	: ['person'],
-	f"{EMJ_QUESTION} Ko'rsatma" 						: ['person']
+	f"{EMJ_BACK_ARROW} Operator chaqiruvini rad etish"  : ['person'],
+	f"{EMJ_QUESTION} Ko'rsatma"                         : ['person']
 }
 
 
 	# main def message.text variables
 message_text_dict = {
-    'МО Гор.больница №1' 				: ['office'],
-    'МО Кушбеги'         				: ['office'],
-    'МО  Мирзо Улугбека' 				: ['office'],
-    'МО  Юнусата'        				: ['office'],     
-    'МО  viezd'          				: ['office'],
-	f'{EMJ_QUESTION} Инструкция' 				   		: ['text_show' , path.FAQoper_label   , path.sec_FAQoper_label],
-	f"{EMJ_QUESTION} Ko'rsatma"  				   		: ['text_show' , path.FAQoper_label   , path.sec_FAQoper_label],
-    f'{EMJ_TELEPHONE} Телефон'    	 				 	: ['text_show' , path.telephone_num   , path.sec_telephone_num],
-    f'{EMJ_TELEPHONE} telefon'    	 				 	: ['text_show' , path.telephone_num   , path.sec_telephone_num],
-    f'{EMJ_HOUSE} Адреса'     	 				 		: ['text_show' , path.address_label   , path.sec_address_label],
-    f'{EMJ_HOUSE} manzillari' 	 				 		: ['text_show' , path.address_label   , path.sec_address_label],
-    f'{EMJ_GLOBE} Соц. сети'  	 				 		: ['text_show' , path.social_web      , path.sec_social_web	  ],
-    f'{EMJ_GLOBE} Biz ijtimoiy tarmoqlarda'		 		: ['text_show' , path.social_web      , path.sec_social_web   ],
-    f'{EMJ_INFO} FAQ Инструкция'  					 	: ['text_show' , path.FAQ_label       , path.sec_FAQ_label    ],
-    f"{EMJ_INFO} FAQ Ko'rsatma"   					 	: ['text_show' , path.FAQ_label       , path.sec_FAQ_label    ],
-    f'{EMJ_NOTE} Создать заказ'     				 	: ['text_show' , path.order_label     , path.sec_order_label  ],
-    f'{EMJ_NOTE} buyurtma yaratish' 				 	: ['text_show' , path.order_label     , path.sec_order_label  ],
-    f'{EMJ_RAISING_HAND} Оператор'        				: ['oper_show' , simple_oper_ids_arr  , 'simple_oper'         ],
-    f'{EMJ_RAISING_HAND} Operator'        				: ['oper_show' , simple_oper_ids_arr  , 'simple_oper'         ],
-    f'{EMJ_DOCTOR} Доктор онлайн'   		   			: ['oper_show' , doctor_oper_ids_arr  , 'doc_oper'            ],
-    f'{EMJ_DOCTOR} Shifokor onlayn' 		   			: ['oper_show' , doctor_oper_ids_arr  , 'doc_oper'            ],
-    f'{EMJ_OLD_TELEPHONE} Тех. поддержка'  			 	: ['oper_show' , support_oper_ids_arr , 'sup_oper'            ],
-    f'{EMJ_OLD_TELEPHONE} Тех. поддержка'  			 	: ['oper_show' , support_oper_ids_arr , 'sup_oper'            ],
-    f'{EMJ_WRITING_HAND} Написать директору' 		 	: ['oper_show' , director_oper_ids_arr, 'dir_oper'            ],
-    f'{EMJ_WRITING_HAND} Direktorga yozing'  	     	: ['oper_show' , director_oper_ids_arr, 'dir_oper'            ],
+    'МО Гор.больница №1'                                : ['office'],
+    'МО Кушбеги'                                        : ['office'],
+    'МО  Мирзо Улугбека' 				                : ['office'],
+    'МО  Юнусата'                                       : ['office'],
+    'МО  viezd'                                         : ['office'],
+	f'{EMJ_QUESTION} Инструкция'                        : ['text_show' , path.FAQoper_label   , path.sec_FAQoper_label],
+	f"{EMJ_QUESTION} Ko'rsatma"                         : ['text_show' , path.FAQoper_label   , path.sec_FAQoper_label],
+    f'{EMJ_TELEPHONE} Телефон'                          : ['text_show' , path.telephone_num   , path.sec_telephone_num],
+    f'{EMJ_TELEPHONE} telefon'                          : ['text_show' , path.telephone_num   , path.sec_telephone_num],
+    f'{EMJ_HOUSE} Адреса'                               : ['text_show' , path.address_label   , path.sec_address_label],
+    f'{EMJ_HOUSE} manzillari'                           : ['text_show' , path.address_label   , path.sec_address_label],
+    f'{EMJ_GLOBE} Соц. сети'                            : ['text_show' , path.social_web      , path.sec_social_web	  ],
+    f'{EMJ_GLOBE} Biz ijtimoiy tarmoqlarda'             : ['text_show' , path.social_web      , path.sec_social_web   ],
+    f'{EMJ_INFO} FAQ Инструкция'                        : ['text_show' , path.FAQ_label       , path.sec_FAQ_label    ],
+    f"{EMJ_INFO} FAQ Ko'rsatma"                         : ['text_show' , path.FAQ_label       , path.sec_FAQ_label    ],
+    f'{EMJ_NOTE} Создать заказ'                         : ['text_show' , path.order_label     , path.sec_order_label  ],
+    f'{EMJ_NOTE} buyurtma yaratish'                     : ['text_show' , path.order_label     , path.sec_order_label  ],
+    f'{EMJ_RAISING_HAND} Оператор'                      : ['oper_show' , simple_oper_ids_arr  , 'simple_oper'         ],
+    f'{EMJ_RAISING_HAND} Operator'                      : ['oper_show' , simple_oper_ids_arr  , 'simple_oper'         ],
+    f'{EMJ_DOCTOR} Доктор онлайн'                       : ['oper_show' , doctor_oper_ids_arr  , 'doc_oper'            ],
+    f'{EMJ_DOCTOR} Shifokor onlayn'                     : ['oper_show' , doctor_oper_ids_arr  , 'doc_oper'            ],
+    f'{EMJ_OLD_TELEPHONE} Тех. поддержка'               : ['oper_show' , support_oper_ids_arr , 'sup_oper'            ],
+    f'{EMJ_OLD_TELEPHONE} Тех. поддержка'               : ['oper_show' , support_oper_ids_arr , 'sup_oper'            ],
+    f'{EMJ_WRITING_HAND} Написать директору'            : ['oper_show' , director_oper_ids_arr, 'dir_oper'            ],
+    f'{EMJ_WRITING_HAND} Direktorga yozing'             : ['oper_show' , director_oper_ids_arr, 'dir_oper'            ],
     f'{EMJ_BACK_ARROW} Отклонить вызов оператора'       : ['oper_close', 0                                            ],
     f'{EMJ_BACK_ARROW} Operator chaqiruvini rad etish'  : ['oper_close', 1                                            ],
-    f'{EMJ_RAISING_HAND} Операторская' 					: ['redirect'  , 'к оператору'    , simple_oper_ids_arr  , 'simple_oper'],
-    f'{EMJ_OLD_TELEPHONE} Поддержка'    				: ['redirect'  , 'в тех.поддержку', support_oper_ids_arr , 'sup_oper'   ],
-    f'{EMJ_WRITING_HAND} Директор'     					: ['redirect'  , 'к директору'    , director_oper_ids_arr, 'dir_oper'   ],
-    f'{EMJ_DOCTOR} Доктор'       				    	: ['redirect'  , 'к доктору'      , doctor_oper_ids_arr  , 'doc_oper'   ]
+    f'{EMJ_RAISING_HAND} Операторская'                  : ['redirect'  , 'к оператору'    , simple_oper_ids_arr  , 'simple_oper'],
+    f'{EMJ_OLD_TELEPHONE} Поддержка'                    : ['redirect'  , 'в тех.поддержку', support_oper_ids_arr , 'sup_oper'   ],
+    f'{EMJ_WRITING_HAND} Директор'                      : ['redirect'  , 'к директору'    , director_oper_ids_arr, 'dir_oper'   ],
+    f'{EMJ_DOCTOR} Доктор'                              : ['redirect'  , 'к доктору'      , doctor_oper_ids_arr  , 'doc_oper'   ]
 }
 
 markup_change_label_arr = [
-		["FAQ текст"		         ,	"FAQ текст"					], 
-		["Текст отзыва"		         ,	"Текст отзыва"				], 
-		["Текст скидки"		         , 	"Текст скидки"				],
-		["Текст адресса"	         , 	"Текст адресса"				], 
-		["Текст телефона"	         , 	"Текст телефона"			], 
-        ["Начальный текст"	         , 	"Начальный текст"			], 
-		["Текст оператора"	         , 	"Текст оператора"			],
-		["Текст создания заказа"     , 	"Текст создания заказа"		], 
-        ["Текст социальные сети"	 , 	"Текст социальные сети"		], 
-		["Текст инструкции оператора",	"Текст инструкции оператора"]
+		["FAQ текст"                 ,  "FAQ текст"                 ],
+		["Текст отзыва"              ,  "Текст отзыва"              ],
+		["Текст скидки"              ,  "Текст скидки"              ],
+		["Текст адресса"             ,  "Текст адресса"             ],
+		["Текст телефона"            ,  "Текст телефона"            ],
+		["Начальный текст"           ,  "Начальный текст"           ],
+		["Текст оператора"           ,  "Текст оператора"           ],
+		["Текст создания заказа"     ,  "Текст создания заказа"     ],
+        ["Текст социальные сети"     ,  "Текст социальные сети"     ],
+		["Текст инструкции оператора",  "Текст инструкции оператора"]
 ]
 
 markup_change_collection_arr = [
