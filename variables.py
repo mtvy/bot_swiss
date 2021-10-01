@@ -152,20 +152,20 @@ call_data_dict = {
 }
 
 buttons_ru_text = {
-	f'{EMJ_TELEPHONE} Телефон'						: ['oper' , 'user' , 'admin'],
-	f'{EMJ_HOUSE} Адреса'							: ['oper' , 'user' , 'admin'],
-	f'{EMJ_RAISING_HAND} Оператор'					: ['user'                   ],
-	f'{EMJ_NOTE} Создать заказ'						: ['user'                   ],
-	f'{EMJ_BACK_ARROW} Отклонить вызов оператора'	: ['oper' , 'admin'         ],
-	f'{EMJ_EXCLAMATION} Оставить жалобу' 			: ['oper' , 'user' , 'admin'],
-	f'{EMJ_DISK} БД переписок'						: ['oper' , 'admin'         ],
-	'% Получить скидку'								: ['oper' , 'user' , 'admin'],
-	f'{EMJ_INFO} FAQ Инструкция'					: ['oper' , 'user' , 'admin'],
-	f'{EMJ_WRITING_HAND} Написать директору'		: ['user'                   ],
-	f'{EMJ_GLOBE} Соц. сети'						: ['oper' , 'user' , 'admin'],
-	f'{EMJ_OLD_TELEPHONE} Тех. поддержка'			: ['user'                   ],
-	f'{EMJ_DOCTOR} Доктор онлайн'					: ['user'                   ],
-	f'{EMJ_MONEY_BAG} Инкассация'					: ['admin'                  ]
+	f'{EMJ_TELEPHONE} Телефон'                      : ['oper' , 'user' , 'admin'],
+	f'{EMJ_HOUSE} Адреса'                           : ['oper' , 'user' , 'admin'],
+	f'{EMJ_RAISING_HAND} Оператор'                  : ['user'                   ],
+	f'{EMJ_NOTE} Создать заказ'                     : ['user'                   ],
+	f'{EMJ_BACK_ARROW} Отклонить вызов оператора'   : ['oper' , 'admin'         ],
+	f'{EMJ_EXCLAMATION} Оставить жалобу'            : ['oper' , 'user' , 'admin'],
+	f'{EMJ_DISK} БД переписок'                      : ['oper' , 'admin'         ],
+	'% Получить скидку'                             : ['oper' , 'user' , 'admin'],
+	f'{EMJ_INFO} FAQ Инструкция'                    : ['oper' , 'user' , 'admin'],
+	f'{EMJ_WRITING_HAND} Написать директору'        : ['user'                   ],
+	f'{EMJ_GLOBE} Соц. сети'                        : ['oper' , 'user' , 'admin'],
+	f'{EMJ_OLD_TELEPHONE} Тех. поддержка'           : ['user'                   ],
+	f'{EMJ_DOCTOR} Доктор онлайн'                   : ['user'                   ],
+	f'{EMJ_MONEY_BAG} Инкассация'                   : ['admin'                  ]
 }
 
 buttons_uz_text = {
