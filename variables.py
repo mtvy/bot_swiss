@@ -3,6 +3,8 @@ import emj
 
 CHANNEL_ID = -1001216461571
 
+STEP_FIRST = 1
+
 # Id
 all_ids_arr              =  [ '281321076'  , '923118950'  , '253208582'  ]
 simple_oper_ids_arr      =  [ '281321076'  , '923118950'  , '253208582'  ] 
