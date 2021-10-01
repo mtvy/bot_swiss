@@ -205,7 +205,7 @@ buttons_user_uz_text = {
 message_text_dict = {
     'МО Гор.больница №1'                                : ['office'],
     'МО Кушбеги'                                        : ['office'],
-    'МО  Мирзо Улугбека' 				                : ['office'],
+    'МО  Мирзо Улугбека'                                : ['office'],
     'МО  Юнусата'                                       : ['office'],
     'МО  viezd'                                         : ['office'],
 	f'{EMJ_QUESTION} Инструкция'                        : ['text_show' , path.FAQoper_label   , path.sec_FAQoper_label],
