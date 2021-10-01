@@ -3,6 +3,19 @@ import emoji
 
 CHANNEL_ID = -1001216461571
 
+# Id
+all_ids_arr				= ['281321076' , '923118950' , '253208582' ]
+simple_oper_ids_arr		= ['281321076' , '923118950' , '253208582' ] 
+doctor_oper_ids_arr		= ['281321076' , '923118950' , '253208582' ]
+label_change_ids_arr	= ['281321076' , '923118950' 			   ]
+support_oper_ids_arr	= ['281321076' , '923118950' , '253208582' ]
+director_oper_ids_arr	= ['281321076' , '923118950' , '253208582' ]
+feedback_oper_ids_arr	= ['281321076' , '923118950' , '253208582' ]
+collection_oper_ids_arr	= ['923118950' , '1670603092', '1704859354', 
+						   '1778013650', '1788724487', '1527064392']
+collection_cash_ids_arr	= ['281321076' , '992113168']
+
+# Emoji used in bot interface
 EMJ_OLD_TELEPHONE	= emoji.emojize(':telephone:'				, use_aliases=True)
 EMJ_WRITING_HAND	= emoji.emojize(':writing_hand:'			, use_aliases=True)
 EMJ_RAISING_HAND	= emoji.emojize(':person_raising_hand:'		, use_aliases=True)
@@ -24,17 +37,6 @@ EMJ_DISK			= emoji.emojize(':computer_disk:'			, use_aliases=True)
 
 
 
-# Id
-all_ids_arr				= ['281321076' , '923118950' , '253208582' ]
-label_change_ids_arr	= ['281321076' , '923118950' 			   ]
-simple_oper_ids_arr		= ['281321076' , '923118950' , '253208582' ] 
-doctor_oper_ids_arr		= ['281321076' , '923118950' , '253208582' ]
-support_oper_ids_arr	= ['281321076' , '923118950' , '253208582' ]
-director_oper_ids_arr	= ['281321076' , '923118950' , '253208582' ]
-feedback_oper_ids_arr	= ['281321076' , '923118950' , '253208582' ]
-collection_oper_ids_arr	= ['923118950' , '1670603092', '1704859354', 
-						   '1778013650', '1788724487', '1527064392']
-collection_cash_ids_arr	= ['281321076' , '992113168']
 
 # Global variables
 account_settings	= {}
@@ -45,6 +47,7 @@ txt					= ""
 mess				= ""
 
 # Short operations variables
+
     # sendReqtoOper
 action_oper_select = {
     'simple_oper' : simple_oper_ids_arr  ,
@@ -94,13 +97,13 @@ select_collection_action_dict = {
 }
 
 call_data_dict = {
-	'Русский'						: ['set_lang'      , path.first_lang , [["Согласен", "Согласен"], ["Отказываюсь"  , "Отказываюсь"]]],
-    'Ozbek'							: ['set_lang'      , path.second_lang, [["ROZIMAN", "Agree"]    , ["Qo'shilmayman", "Disagree"   ]]],
+	'Русский'						: ['set_lang'      , path.first_lang , [["Согласен", "Согласен"], ["Отказываюсь"  , "Отказываюсь"]]        ],
+    'Ozbek'							: ['set_lang'      , path.second_lang, [["ROZIMAN", "Agree"]    , ["Qo'shilmayman", "Disagree"   ]]        ],
 	'Отказываюсь'					: ['disagree_data' , "Вы отказались от обработки персональных данных\n Для перезапуска бота нажмите /start"],
 	'Disagree'						: ['disagree_data' , f"Siz shaxsiy ma'lumotlarni qayta ishlash uchun rad qilgan\n\
-														   {EMJ_RECYCLING} Botni qayta ishga tushirish uchun bosing /start"],
-	'Согласен'						: ['agree_data'    , f'{EMJ_RECYCLING} У вас есть реферальная ссылка?', [['Да', 'Да' ], ['Нет', 'Нет']]],
-	'Agree'							: ['agree_data'    , f"{EMJ_RECYCLING} Yo'naltiruvchi havola bormi?"  , [['Ha', 'Yes'], ["Yo'q", 'No']]],
+														   {EMJ_RECYCLING} Botni qayta ishga tushirish uchun bosing /start"                    ],
+	'Согласен'						: ['agree_data'    , f'{EMJ_RECYCLING} У вас есть реферальная ссылка?', [['Да', 'Да' ], ['Нет', 'Нет']]    ],
+	'Agree'							: ['agree_data'    , f"{EMJ_RECYCLING} Yo'naltiruvchi havola bormi?"  , [['Ha', 'Yes'], ["Yo'q", 'No']]    ],
 	'Нет'							: ['no_code'       , 0                                                                 ],
 	'No'							: ['no_code'       , 1                                                                 ],
 	'Да'							: ['has_code'      , f'{EMJ_PLUS} Отправьте код'                                       ],
@@ -169,18 +172,18 @@ buttons_ru_text = {
 buttons_uz_text = {
 	f'{EMJ_TELEPHONE} telefon' 							: ['oper', 'user', 'admin'],
 	f'{EMJ_HOUSE} manzillari'							: ['oper', 'user', 'admin'],
-	f'{EMJ_RAISING_HAND} Operator'						: ['user'],
-	f'{EMJ_NOTE} buyurtma yaratish'						: ['user'],
-	f'{EMJ_BACK_ARROW} Operator chaqiruvini rad etish'	: ['oper', 'admin'],
+	f'{EMJ_RAISING_HAND} Operator'						: ['user'                 ],
+	f'{EMJ_NOTE} buyurtma yaratish'						: ['user'                 ],
+	f'{EMJ_BACK_ARROW} Operator chaqiruvini rad etish'	: ['oper', 'admin'        ],
 	f'{EMJ_EXCLAMATION} Shikoyat qoldiring' 			: ['oper', 'user', 'admin'],
-	f'{EMJ_DISK} Yozishmalar bazasi'					: ['oper', 'admin'],
+	f'{EMJ_DISK} Yozishmalar bazasi'					: ['oper', 'admin'        ],
 	'% Chegirma oling'									: ['oper', 'user', 'admin'],
 	f"{EMJ_INFO} FAQ Ko'rsatma"							: ['oper', 'user', 'admin'],
-	f'{EMJ_WRITING_HAND} Direktorga yozing'				: ['user'],
+	f'{EMJ_WRITING_HAND} Direktorga yozing'				: ['user'                 ],
 	f'{EMJ_GLOBE} Biz ijtimoiy tarmoqlarda'				: ['oper', 'user', 'admin'],
-	f"{EMJ_OLD_TELEPHONE} O'sha.  qo'llab-quvvatlash"	: ['user'],
-	f'{EMJ_DOCTOR} Shifokor onlayn'						: ['user'],
-	f"{EMJ_MONEY_BAG} Naqd pul yig'ish"					: ['admin']
+	f"{EMJ_OLD_TELEPHONE} O'sha.  qo'llab-quvvatlash"	: ['user'                 ],
+	f'{EMJ_DOCTOR} Shifokor onlayn'						: ['user'                 ],
+	f"{EMJ_MONEY_BAG} Naqd pul yig'ish"					: ['admin'                ]
 }
 
 buttons_oper_text = {
@@ -225,12 +228,12 @@ message_text_dict = {
     f'{EMJ_OLD_TELEPHONE} Тех. поддержка'  			 	: ['oper_show' , support_oper_ids_arr , 'sup_oper'            ],
     f'{EMJ_WRITING_HAND} Написать директору' 		 	: ['oper_show' , director_oper_ids_arr, 'dir_oper'            ],
     f'{EMJ_WRITING_HAND} Direktorga yozing'  	     	: ['oper_show' , director_oper_ids_arr, 'dir_oper'            ],
-    f'{EMJ_BACK_ARROW} Отклонить вызов оператора'       : ['oper_close', 0],
-    f'{EMJ_BACK_ARROW} Operator chaqiruvini rad etish'  : ['oper_close', 1],
-    f'{EMJ_RAISING_HAND} Операторская' 					: ['redirect'  , 'к оператору', simple_oper_ids_arr, 'simple_oper'],
-    f'{EMJ_OLD_TELEPHONE} Поддержка'    				: ['redirect'  , 'в тех.поддержку', support_oper_ids_arr, 'sup_oper'],
-    f'{EMJ_WRITING_HAND} Директор'     					: ['redirect'  , 'к директору', director_oper_ids_arr, 'dir_oper' ],
-    f'{EMJ_DOCTOR} Доктор'       				    	: ['redirect'  , 'к доктору', doctor_oper_ids_arr, 'doc_oper']
+    f'{EMJ_BACK_ARROW} Отклонить вызов оператора'       : ['oper_close', 0                                            ],
+    f'{EMJ_BACK_ARROW} Operator chaqiruvini rad etish'  : ['oper_close', 1                                            ],
+    f'{EMJ_RAISING_HAND} Операторская' 					: ['redirect'  , 'к оператору'    , simple_oper_ids_arr  , 'simple_oper'],
+    f'{EMJ_OLD_TELEPHONE} Поддержка'    				: ['redirect'  , 'в тех.поддержку', support_oper_ids_arr , 'sup_oper'   ],
+    f'{EMJ_WRITING_HAND} Директор'     					: ['redirect'  , 'к директору'    , director_oper_ids_arr, 'dir_oper'   ],
+    f'{EMJ_DOCTOR} Доктор'       				    	: ['redirect'  , 'к доктору'      , doctor_oper_ids_arr  , 'doc_oper'   ]
 }
 
 markup_change_label_arr = [
