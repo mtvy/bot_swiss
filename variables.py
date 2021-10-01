@@ -140,15 +140,15 @@ call_data_dict = {
 	'РусскийLangSocial'             : ['edit_label_sec', path.social_web        ],
 	'OzbekLangSocial'               : ['edit_label_sec', path.sec_social_web    ],
 	'РусскийLangOperFAQ'            : ['edit_label_sec', path.FAQoper_label     ],
-	'OzbekLangOperFAQ'              : ['edit_label_sec', path.sec_FAQoper_label	],
+	'OzbekLangOperFAQ'              : ['edit_label_sec', path.sec_FAQoper_label ],
 	'Номер терминала'               : ['office_edit'   , 1                      ],
-	'Исправить наличные'            : ['office_edit'   , 2						],
-	'Информация по возврату средств': ['office_edit'   , 3						],
-	'Номер договора'                : ['office_edit'   , 4						],
-	'Данные по ПЦР'                 : ['office_edit'   , 5						],
-	'Данные по ПЦР экспресс'        : ['office_edit'   , 6						],
-	'Количество анализов'           : ['office_edit'   , 7						],
-	'Комментарий'                   : ['office_edit'   , 8						]
+	'Исправить наличные'            : ['office_edit'   , 2                      ],
+	'Информация по возврату средств': ['office_edit'   , 3                      ],
+	'Номер договора'                : ['office_edit'   , 4                      ],
+	'Данные по ПЦР'                 : ['office_edit'   , 5                      ],
+	'Данные по ПЦР экспресс'        : ['office_edit'   , 6                      ],
+	'Количество анализов'           : ['office_edit'   , 7                      ],
+	'Комментарий'                   : ['office_edit'   , 8                      ]
 }
 
 buttons_ru_text = {
