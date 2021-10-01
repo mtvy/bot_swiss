@@ -15,6 +15,7 @@ collection_oper_ids_arr	= ['923118950' , '1670603092', '1704859354',
 						   '1778013650', '1788724487', '1527064392']
 collection_cash_ids_arr	= ['281321076' , '992113168']
 
+
 # Emoji used in bot interface
 EMJ_OLD_TELEPHONE	= emoji.emojize(':telephone:'				, use_aliases=True)
 EMJ_WRITING_HAND	= emoji.emojize(':writing_hand:'			, use_aliases=True)
@@ -34,10 +35,6 @@ EMJ_INFO			= emoji.emojize(':information:'				, use_aliases=True)
 EMJ_DISK			= emoji.emojize(':computer_disk:'			, use_aliases=True)
 
 
-
-
-
-
 # Global variables
 account_settings	= {}
 message_ids_dict	= {}
@@ -45,6 +42,7 @@ feed_back			= {}
 new_acc_id 			= ""
 txt					= ""
 mess				= ""
+
 
 # Short operations variables
 
@@ -55,6 +53,7 @@ action_oper_select = {
     'dir_oper'    : director_oper_ids_arr,
     'sup_oper'    : support_oper_ids_arr
 }
+
 
 	# selectOffice
 add_text_dict = [
@@ -200,6 +199,7 @@ buttons_user_uz_text = {
 	f"{EMJ_BACK_ARROW} Operator chaqiruvini rad etish"	: ['person'],
 	f"{EMJ_QUESTION} Ko'rsatma" 						: ['person']
 }
+
 
 	# main def message.text variables
 message_text_dict = {
