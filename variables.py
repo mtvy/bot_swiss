@@ -80,8 +80,8 @@ call_data_dict = {
 	'Русский'                       : ['set_lang'      , path.first_lang , [["Согласен", "Согласен"], ["Отказываюсь"  , "Отказываюсь"]]         ],
 	'Ozbek'                         : ['set_lang'      , path.second_lang, [["ROZIMAN" , "Agree"   ], ["Qo'shilmayman", "Disagree"   ]]         ],
 	'Отказываюсь'                   : ['disagree_data' , "Вы отказались от обработки персональных данных\n Для перезапуска бота нажмите /start" ],
-	'Disagree'                      : ['disagree_data' , f"Siz shaxsiy ma'lumotlarni qayta ishlash uchun rad qilgan\n\
-                                                           {emj.EMJ_RECYCLING} Botni qayta ishga tushirish uchun bosing /start"                 ],
+	'Disagree'                      : ['disagree_data' , f"Siz shaxsiy ma'lumotlarni qayta ishlash uchun rad qilgan\n"
+                                                         f"{emj.EMJ_RECYCLING} Botni qayta ishga tushirish uchun bosing /start"                 ],
 	'Согласен'                      : ['agree_data'    , f'{emj.EMJ_RECYCLING} У вас есть реферальная ссылка?', [['Да', 'Да' ], ['Нет' , 'Нет']]],
 	'Agree'                         : ['agree_data'    , f"{emj.EMJ_RECYCLING} Yo'naltiruvchi havola bormi?"  , [['Ha', 'Yes'], ["Yo'q", 'No' ]]],
 	'Нет'                           : ['no_code'       , 0                                                                     ],
