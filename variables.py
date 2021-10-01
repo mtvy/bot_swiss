@@ -261,10 +261,10 @@ markup_change_collection_arr = [
 ]
 
 office_markup_dict = {
-	"МО Гор.больница №1"		: ['office'],
-	"МО Кушбеги"				: ['office'],
-	"МО  Мирзо Улугбека"		: ['office'],
-	"МО  Юнусата"				: ['office'],
-	"МО  viezd"					: ['office'],
-	f"{EMJ_BACK_ARROW} Назад"	: ['office']
+	"МО Гор.больница №1"        : ['office'],
+	"МО Кушбеги"                : ['office'],
+	"МО  Мирзо Улугбека"        : ['office'],
+	"МО  Юнусата"               : ['office'],
+	"МО  viezd"                 : ['office'],
+	f"{EMJ_BACK_ARROW} Назад"   : ['office']
 }
