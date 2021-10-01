@@ -9,7 +9,6 @@ User=tbot
 WorkingDirectory=/home/tbot/bot_swiss
 ExecStart=/usr/bin/python3 /home/tbot/bot_swiss/bot.py
 ExecReload=/usr/bin/python3 /home/tbot/bot_swiss/bot.py
-KillMode=process
 RestartSec=10
 Restart=ALWAYS
 
