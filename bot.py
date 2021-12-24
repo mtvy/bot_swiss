@@ -88,6 +88,7 @@ def welcome(message):
     account_settings = database.get_accounts_data()
 
     new_account = [str(message.chat.id)]
+    
     for account in account_settings.keys():
         if account_settings[account].telegram_id == new_account[0]:
             if account_settings[account].language == "Русский":
@@ -96,14 +97,18 @@ def welcome(message):
                     keyboardRefMaker(message = message, lang = 0)
                 elif account_settings[account].personal_data == "NO":
                     inlineMessages(markup_text = openfileforRead(None, path.first_lang), message = message, 
-                                   markup_arr = [["Согласен", "Согласен"], ["Отказываюсь", "Отказываюсь"]], action = False)
+                                   markup_arr = [["Согласен"   , "Согласен"   ], 
+                                                 ["Отказываюсь", "Отказываюсь"]], action = False
+                                  )
             elif account_settings[account].language == "Ozbek":
                 if account_settings[account].personal_data == "YES":
                     bot.send_message(message.chat.id,"🔱Siz allaqachon ro'yxatdan o'tgansiz!")
                     keyboardRefMaker(message = message, lang = 1)
                 elif account_settings[account].personal_data == "NO":
-                    inlineMessages(markup_text = openfileforRead(None, path.second_lang), message = message, 
-                                   markup_arr = [["ROZIMAN", "Agree"], ["Qo'shilmayman", "Disagree"]], action = False)
+                    inlineMessages(markup_text = openfileforRead(None, path.second_lang), message = message,
+                                   markup_arr = [["ROZIMAN"      , "Agree"   ], 
+                                                 ["Qo'shilmayman", "Disagree"]], action = False
+                                  )
             else:
                 inlineMessages(markup_text = "🔱Choose language", message = message, 
                                markup_arr = [["Русский", "Русский"], ["Ozbek", "Ozbek"]], action = False)
@@ -340,7 +345,7 @@ def lol(message):
                 database.insert_text_to_data(sm_id, str(message.chat.id), bot)
 
 def picPNGmaker(message):
-    img = Image.open('lab.png')
+    img = Image.open('bonus_card/lab.png')
     ImageDraw.Draw(img).text((150,280), f"{message.chat.first_name} {'' if message.chat.last_name == None else message.chat.last_name}", fill = 'orange', font = ImageFont.truetype('Arial.ttf', size = 45))
     img.save('newAcc.png')
     bot.send_photo(message.chat.id, open('newAcc.png', 'rb').read(), caption = '💳 Ваша карта' if langCheck(message) else '💳 Sizning kartangiz')

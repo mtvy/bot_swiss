@@ -1,16 +1,16 @@
 [Unit]
-Description=Telegram bot 'bot_swiss'
-After=syslog.target
-After=network.target
+Description = Telegram bot 'bot_swiss'
+After = syslog.target
+After = network.target
 
 [Service]
-Type=simple
-User=tbot
-WorkingDirectory=/home/tbot/bot_swiss
-ExecStart=/usr/bin/python3 /home/tbot/bot_swiss/bot.py
-ExecReload=/usr/bin/python3 /home/tbot/bot_swiss/bot.py
-RestartSec=10
-Restart=ALWAYS
+Type = simple
+User = tbot
+WorkingDirectory = /home/tbot/bot_swiss
+ExecStart  = /usr/bin/python3 /home/tbot/bot_swiss/bot.py
+ExecReload = /usr/bin/python3 /home/tbot/bot_swiss/bot.py
+RestartSec = 10
+Restart    = ALWAYS
 
 [Install]
-WantedBy=multi-user.target
+WantedBy = multi-user.target
