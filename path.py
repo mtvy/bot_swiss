@@ -23,3 +23,6 @@ sec_recv_label     = os.path.join(  'second_language' ,  'sl_recv_label.txt'    
 sec_social_web     = os.path.join(  'second_language' ,  'sl_social_web.txt'          )
 sec_FAQ_label      = os.path.join(  'second_language' ,  'sl_FAQ_label.txt'           )
 second_lang        = os.path.join(  'second_language' ,  'sl_start_label.txt'         )
+
+### Debug
+log_file           = os.path.join(  'server_configs'  ,  'bot.txt'                    )

@@ -1,12 +1,20 @@
-import classes, variables, psycopg2, datetime
+import classes, variables, psycopg2, datetime, debug
 
 def connect():
     try:
-        con = psycopg2.connect(database="postgres",user="postgres",password="111", host="127.0.0.1",port="5432")
-        cur = con.cursor()
-        return con, cur
+        con = psycopg2.connect(
+                               database = "postgres" ,
+                               password = "111"      ,
+                               user     = "postgres" ,
+                               host     = "127.0.0.1",
+                               port     = "5432"
+                              )        
+        
+        return con, con.cursor()
+    
     except (Exception, psycopg2.DatabaseError) as error:
-        print("Error while connecting PostgreSQL!", error)
+        open(name_path, 'w', encoding='utf-8').write(message.text)
+        print("", error)
         return 0
 
 def insert_new_data(user_id, oper_id, bot):
