@@ -1,21 +1,19 @@
-import classes, variables, psycopg2, datetime, debug
+import classes, variables, psycopg2, datetime, debug, path
 
 def connect():
     try:
-        con = psycopg2.connect(
-                               database = "postgres" ,
-                               password = "111"      ,
+        con = psycopg2.connect(database = "postgres" ,
+                               password = "11"      ,
                                user     = "postgres" ,
                                host     = "127.0.0.1",
-                               port     = "5432"
-                              )        
+                               port     = "5432")        
         
         return con, con.cursor()
     
     except (Exception, psycopg2.DatabaseError) as error:
-        open(name_path, 'w', encoding='utf-8').write(message.text)
-        print("", error)
-        return 0
+        debug.saveLogs(error, path.log_file)
+    
+    return 0
 
 def insert_new_data(user_id, oper_id, bot):
     con, cur = connect()
@@ -295,3 +293,12 @@ def get_accounts_data():
         except Exception as e:
             print('Error taking data from account_tb!', e)
             return {}
+
+
+def test():
+    print(connect())
+
+
+if __name__ == '__main__':
+    test()
+    

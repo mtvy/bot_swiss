@@ -1,9 +1,8 @@
 import path, datetime
 
-def saveLogs(text) -> int:
-    text = f'\nDate: {datetime.date.ctime}\n {text}'
-    return open(path.log_file, 'w+', encoding='utf-8').write(f'\nDate: {datetime.date.ctime}\n'
-                                                             f'\n      {text}')
+def saveLogs(text, log_file) -> int:
+    return open(log_file, 'a', encoding='utf-8').write(f'\nDate: {datetime.datetime.now()}\n'
+                                                        f'\n      {text}')
 
 
 
