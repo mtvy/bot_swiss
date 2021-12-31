@@ -3,7 +3,7 @@ import classes, variables, psycopg2, datetime, debug, path
 def connect():
     try:
         con = psycopg2.connect(database = "postgres" ,
-                               password = "11"      ,
+                               password = "111"      ,
                                user     = "postgres" ,
                                host     = "127.0.0.1",
                                port     = "5432")        
@@ -294,11 +294,4 @@ def get_accounts_data():
             print('Error taking data from account_tb!', e)
             return {}
 
-
-def test():
-    print(connect())
-
-
-if __name__ == '__main__':
-    test()
     

@@ -1,11 +1,12 @@
 # Main libraries
+from logging import debug
 import schedule, telebot, time, io, os, traceback
 from PIL import Image, ImageDraw, ImageFont
 from multiprocessing import Process
 from telebot import types
 
 # Project files
-import config, database, classes, path, variables
+import config, database, classes, path, variables, debug
 
 account_settings = database.get_accounts_data()
 
@@ -698,7 +699,8 @@ def callback_inline(call):
 
                 nextStepWait(person_id = call.message.chat.id, text = f"{variables.emj.EMJ_PLUS} Введите текст для ответа пользователю", func = userSebdText)
             else:
-                bot.send_message(call.message.chat.id, "Оператор уже ответил этому пользователю!\nДля отмены повторного ответа напишите stop")
+                bot.send_message(call.message.chat.id, "Оператор уже ответил этому пользователю!\n"
+                                                       "Для отмены повторного ответа напишите stop")
                 
                 database.change_account_data(account = account_settings[call.data[1:]], parametr = 'feedback_st', data = 'close')        
                 database.change_account_data(account = account_settings[str(call.message.chat.id)], parametr = 'feedback_st', data = call.data[1:])
@@ -769,14 +771,14 @@ def callback_inline(call):
                 bot.send_message(call.message.chat.id, "Закончите старый диалог, чтобы начать новый!")
 
 
-    except Exception as e:
-        print("Error in the 'call' part!", repr(e))
-        for id_er in variables.label_change_ids_arr:
-            bot.send_message(int(id_er), f"Error in the 'call' part!\n\n{traceback.format_exc()}")
+    except Exception as error:
+        debug.saveLogs(f"Error in the 'call' part!\n\n[\n{traceback.format_exc()}\n]", path.log_file)
+        for id in variables.label_change_ids_arr:
+            bot.send_message(int(id), f"Error in the 'call' part!\n\n{traceback.format_exc()}")
 
 if __name__ == '__main__':
     Process(target = P_schedule.start_schedule, args = ()).start()
     try: bot.polling(none_stop=True)
     except Exception as _:
-        for id_er in variables.label_change_ids_arr:
-            bot.send_message(int(id_er), f"Program error!\n\n{traceback.format_exc()}")
+        for id in variables.label_change_ids_arr:
+            bot.send_message(int(id), f"Program error!\n\n{traceback.format_exc()}")
