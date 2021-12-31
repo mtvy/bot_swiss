@@ -1,19 +1,19 @@
-import classes, variables, psycopg2, datetime, debug, path
+import classes, variables, psycopg2, datetime, path, debug, traceback
 
 def connect():
     try:
-        con = psycopg2.connect(database = "postgres" ,
-                               password = "111"      ,
-                               user     = "postgres" ,
-                               host     = "127.0.0.1",
-                               port     = "5432")        
+        con = psycopg2.connect(database = 'postgres' ,
+                               password = 'postgres'      ,
+                               user     = 'postgres' ,
+                               host     = '127.0.0.1',
+                               port     = '5432')        
         
         return con, con.cursor()
     
     except (Exception, psycopg2.DatabaseError) as error:
-        debug.saveLogs(error, path.log_file)
+        debug.saveLogs(f'ERROR! CANNOT ESTABLISH CONTACT WITH THE DATABASE\n\n{traceback.format_exc()}', path.log_file)
     
-    return 0
+    return (False, False)
 
 def insert_new_data(user_id, oper_id, bot):
     con, cur = connect()

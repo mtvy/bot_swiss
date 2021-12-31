@@ -251,3 +251,14 @@ office_markup_dict = {
 	"МО  viezd"                            :   ['office'],
 	f"{emj.EMJ_BACK_ARROW} Назад"          :   ['office']
 }
+
+changes_message = [
+	'Изменения сохранены!',
+	'Ошибка сохранения!'
+]
+
+db_conv_message = {
+	'date'        : f'{emj.EMJ_PLUS} Введите дату в формате ГОД-МЕСЯЦ-ДЕНЬ (2000-1-12)',
+	'name'        : f'{emj.EMJ_PLUS} Введите номер строки по нужному имени или id'     ,
+	'no_date'     : 'Данной даты нет в базе!'
+}
