@@ -148,7 +148,9 @@ def operKeyboardMaker(message, which_oper, lang):
 
     markup = types.InlineKeyboardMarkup(row_width=2)
     markup.add(types.InlineKeyboardButton("Принять", callback_data=str(message.chat.id)))
-    database.insert_new_data(str(message.chat.id), '0', bot)
+    
+    database.insert_new_data(str(message.chat.id), '0')
+
     sendReqtoOper(which_oper = which_oper, oper_send_text = (f"-------Запрос переписки!-------\n"
                                                              f"id: {message.chat.id} \n"
                                                              f"Имя: {message.chat.first_name} \n"
@@ -728,7 +730,9 @@ def callback_inline(call):
                         if langCheck(person_id = k): bot.send_message(k, f"{variables.emj.EMJ_TELEPHONE} Найден оператор #{str(call.message.chat.id)}, переписка активирована")
                         else: bot.send_message(k, f"{variables.emj.EMJ_TELEPHONE} Operator #{str(call.message.chat.id)} topildi, yozishmalar faollashtirildi")
                         bot.send_message(str(call.message.chat.id), f"{variables.emj.EMJ_TELEPHONE} Вы подтвердили заявку!", reply_markup=markup)
-                        database.insert_new_data(user_id = str(k), oper_id = str(call.message.chat.id), bot = bot)
+                        db_answer = database.insert_new_data(str(k), str(call.message.chat.id))
+                        bot.send_message(str(k)                   , db_answer)
+                        bot.send_message(str(call.message.chat.id), db_answer)
                         break
                 if account[str(call.message.chat.id)].conversation != 'open':
                     if account[str(call.data)].conversation != 'open':
@@ -758,7 +762,9 @@ def callback_inline(call):
                             else: bot.send_message(str(call.data), f"{variables.emj.EMJ_TELEPHONE} Operator #{str(call.message.chat.id)} yozishmalarni faollashtirdi", 
                                                                                                        reply_markup=user_markup)
                             bot.send_message(str(call.message.chat.id), f"{variables.emj.EMJ_TELEPHONE} Вы подтвердили заявку!", reply_markup=markup)
-                            database.insert_new_data(user_id = str(call.data), oper_id = str(call.message.chat.id), bot = bot)
+                            db_answer = database.insert_new_data(str(call.data), str(call.message.chat.id))
+                            bot.send_message(str(call.data)           , db_answer)
+                            bot.send_message(str(call.message.chat.id), db_answer)
                         except Exception as e:
                             database.change_account_data(account = account[str(call.message.chat.id)], parametr = 'conversation', data = 'close')
                             database.change_account_data(account = account[str(call.data)], parametr = 'tags', data = [])

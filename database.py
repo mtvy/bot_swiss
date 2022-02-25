@@ -3,15 +3,15 @@ import classes, variables, psycopg2, datetime, path, debug, traceback
 def connect():
     try:
         con = psycopg2.connect(database = 'postgres' ,
-                               password = 'postgres'      ,
+                               password = 'postgres' ,
                                user     = 'postgres' ,
                                host     = '127.0.0.1',
-                               port     = '5432')        
+                               port     = '5432'     )        
         
         return con, con.cursor()
     
     except (Exception, psycopg2.DatabaseError) as error:
-        debug.saveLogs(f'ERROR! CANNOT ESTABLISH CONTACT WITH THE DATABASE\n\n{traceback.format_exc()}', path.log_file)
+        debug.saveLogs(f'ERROR! Wrong database connection.\n\n{traceback.format_exc()}', path.log_file)
     
     return (False, False)
 
@@ -35,7 +35,7 @@ def insert_new_data(user_id, oper_id, bot):
                 cur.execute(txt_db_com)
                 con.commit()
                 print('New data add!')
-                return 1
+                return True
             elif user_id != '0' and oper_id != '0':
                 txt_db_com = "UPDATE message_tb SET oper_id = " + oper_id + ", text = '" + "TEXT DATABASE\nOperator: " + oper_id + "\nUser: " + user_id + "\n'" + " WHERE status = 'open' AND user_id = " + user_id
                 cur.execute(txt_db_com)
@@ -46,12 +46,11 @@ def insert_new_data(user_id, oper_id, bot):
                 ed_text = cur.fetchall()
                 text_adder = ed_text[0]
                 text_adder = '✏️id Переписки: ' + str(text_adder[0])
-                bot.send_message(int(oper_id), text_adder)
-                bot.send_message(int(user_id), text_adder)
-                return 1
+                return text_adder
         except Exception as e:
             print('Error entering new data to message_tb!', e)
-            return 0
+            return False
+
 def insert_new_feedback_data(oper_id, user_id, txt, bot):
     con, cur = connect()
     if con == 0 and cur == 0:
@@ -293,5 +292,19 @@ def get_accounts_data():
         except Exception as e:
             print('Error taking data from account_tb!', e)
             return {}
+
+def test_database() -> bool:
+    
+    test_connect, _ = connect()
+    debug.saveLogs(f'CONNECTION [{True if test_connect else False}] <- connect()\n\n', path.log_file)
+
+    test_insert_data = insert_new_data('0', '0')
+    debug.saveLogs(f'CONNECTION [{True if test_connect else False}] <- connect()\n\n', path.log_file)
+
+    
+
+if __name__ == "__main__":
+    test_database()
+
 
     
