@@ -1,106 +1,111 @@
 import classes, variables, psycopg2, datetime, path, debug, traceback
 
-def connect():
+from typing import Any, Literal, Tuple
+
+
+def connect() -> Tuple[Any, Any] or Tuple[Literal[False], Literal[False]]:
+    """
+    This definition returns connection to database.
+    """
     try:
-        con = psycopg2.connect(database = 'postgres' ,
-                               password = 'postgres' ,
-                               user     = 'postgres' ,
-                               host     = '127.0.0.1',
-                               port     = '5432'     )        
+        connect = psycopg2.connect(database = 'postgres' ,
+                                   password = '111' ,
+                                   user     = 'postgres' ,
+                                   host     = '127.0.0.1',
+                                   port     = '5432'     )        
         
-        return con, con.cursor()
+        return connect, connect.cursor()
     
-    except (Exception, psycopg2.DatabaseError) as error:
-        debug.saveLogs(f'ERROR! Wrong database connection.\n\n{traceback.format_exc()}', path.log_file)
+    except:
+        debug.saveLogs(f'------ERROR!------\n\n{traceback.format_exc()}', path.log_file)
     
     return (False, False)
 
-def insert_new_data(user_id, oper_id, bot):
-    con, cur = connect()
-    if con == 0 and cur == 0:
-        return 0
-    else:
-        try:
-            if oper_id == '0':
-                dt = datetime.date.today()
-                tt = dt.timetuple()
-                date_start = ''
-                ch_i = 0
-                for it in tt:
-                    date_start += str(it)
-                    ch_i += 1
-                    if ch_i >= 3: break
-                    else: date_start += '-'
-                txt_db_com = "INSERT INTO message_tb (user_id, oper_id, date_start, text, status) VALUES (" + user_id + ', ' + oper_id + ", '" + date_start + "', 'TEXT DATABASE', 'open')"
-                cur.execute(txt_db_com)
-                con.commit()
-                print('New data add!')
-                return True
-            elif user_id != '0' and oper_id != '0':
-                txt_db_com = "UPDATE message_tb SET oper_id = " + oper_id + ", text = '" + "TEXT DATABASE\nOperator: " + oper_id + "\nUser: " + user_id + "\n'" + " WHERE status = 'open' AND user_id = " + user_id
-                cur.execute(txt_db_com)
-                con.commit()
-                print('New data add!')
-                txt_db_com = "SELECT id FROM message_tb WHERE status = 'open' and user_id = " + user_id
-                cur.execute(txt_db_com)
-                ed_text = cur.fetchall()
-                text_adder = ed_text[0]
-                text_adder = '✏️id Переписки: ' + str(text_adder[0])
-                return text_adder
-        except Exception as e:
-            print('Error entering new data to message_tb!', e)
-            return False
 
-def insert_new_feedback_data(oper_id, user_id, txt, bot):
+def insert_message(user_id, oper_id, text = 'TEXT DATABASE', status = 'open') -> bool or str:
+    """
+    This definition connect user and operator in database.
+
+    params:
+           user_id : int
+           oper_id : int
+
+    To create table use:
+    CREATE TABLE message_tb(id serial primary key, user_id INTEGER        , 
+                            oper_id INTEGER      , date_start VARCHAR(255), 
+                            text TEXT            , status VARCHAR(255)    );
+    """
     con, cur = connect()
-    if con == 0 and cur == 0:
-        return 0
-    else:
+    if con and cur:
         try:
-            if oper_id == '0' and user_id != '0':
-                dt = datetime.date.today()
-                tt = dt.timetuple()
-                date_enter = ''
-                ch_i = 0
-                for it in tt:
-                    date_enter += str(it)
-                    ch_i += 1
-                    if ch_i >= 3: break
-                    else: date_enter += '-'
-                txt_db_com = "INSERT INTO feedback_tb (user_id, oper_id, date_enter, text_fb, status) VALUES (" + user_id + ', ' + oper_id + ", '" + date_enter + "', '" + txt +"', 'open')"
-                cur.execute(txt_db_com)
+            if not oper_id:
+
+                cur.execute("INSERT INTO message_tb (date_start, user_id, oper_id, text, status) "
+                            f"VALUES ('{datetime.date.today().timetuple()[0:3]}', "
+                            f"         {user_id}, {oper_id}, '{text}', '{status}')")
+
                 con.commit()
-                print('New data add!')
-                txt_db_com = "SELECT id FROM feedback_tb WHERE status = 'open' and user_id = " + user_id
-                cur.execute(txt_db_com)
-                ed_text = cur.fetchall()
-                text_adder = ed_text[0]
-                text_adder = '✏️id Жалобы: ' + str(text_adder[0])
-                bot.send_message(int(user_id), text_adder)
-                return 1
+                return True
+
+            elif user_id and oper_id:
+            
+                cur.execute(f"UPDATE message_tb          SET oper_id = {oper_id},   "
+                            f"text =   '{text}\nOper: {oper_id}\nUser: {user_id}\n' " 
+                            f"WHERE  status = '{status}' AND user_id = {user_id};   "
+                             "SELECT id         FROM      message_tb    WHERE       "
+                            f"       status = '{status}' AND user_id = {user_id}    ")
+                
+                text = f'#id Переписки: {cur.fetchall()[0][0]}'
+                con.commit()
+                return text
+
+        except:
+            debug.saveLogs(f'------ERROR!------\n\n{traceback.format_exc()}', path.log_file)
+    
+    return False
+
+def insert_feedback(oper_id, user_id, text, status = 'open'):
+    con, cur = connect()
+    if con and cur:
+        try:
+            if not oper_id and user_id:
+                
+                cur.execute( "INSERT                INTO              feedback_tb  "
+                             "(user_id,  oper_id,  text_fb,  status,  date_enter)  "
+                            f"VALUES ({user_id}, {oper_id}, '{text}', '{status}',  "
+                            f"       '{datetime.date.today().timetuple()[0:3] }'); "
+                            f"SELECT id FROM feedback_tb WHERE status = '{status }'" 
+                            f"                           AND  user_id =  {user_id} ")
+
+                text = f'#id Жалобы: {cur.fetchall()[0][0]}'
+                con.commit()
+                return text
+
             else:
-                txt_db_com = "SELECT text_fb FROM feedback_tb WHERE status = 'open' and user_id = " + user_id
-                cur.execute(txt_db_com)
-                ed_text = cur.fetchall()
-                text_adder = ed_text[0]
-                text_adder = text_adder[0] + '\n' + "Operator: " + oper_id + '\nТекст: ' + txt
-                txt_db_com = "UPDATE feedback_tb SET oper_id = " + oper_id + ", text_fb = '" + "TEXT FEEDBACK\n" + text_adder + "'" + " WHERE status = 'open' AND user_id = " + user_id
-                cur.execute(txt_db_com)
+
+                cur.execute(f"SELECT text_fb FROM feedback_tb WHERE status = '{status }' "
+                            f"                                AND  user_id =  {user_id}; "
+                            f"UPDATE              feedback_tb SET  oper_id =  {oper_id}, "
+                            f"text_fb = 'TEXT FEEDBACK\n"
+                                       f"{cur.fetchall()[0][0]}\n"
+                                       f"Operator: {oper_id}\n"
+                                       f"Текст: {text}'    "
+                            f"WHERE  status = '{status}' AND  user_id =  {user_id}; "
+                            f"SELECT id FROM feedback_tb WHERE status = '{status }' "
+                            f"                           AND  user_id =  {user_id}  ")
+ 
+                text = f'#id Жалобы: {cur.fetchall()[0][0]}'
+                
+                cur.execute(f"UPDATE feedback_tb SET status = 'close' WHERE status = '{status }' "
+                            f"                                        AND  user_id =  {user_id}  ")
+                
                 con.commit()
-                print('New data add!')
-                txt_db_com = "SELECT id FROM feedback_tb WHERE status = 'open' and user_id = " + user_id
-                cur.execute(txt_db_com)
-                ed_text = cur.fetchall()
-                text_adder = ed_text[0]
-                text_adder = '✏️id Жалобы: ' + str(text_adder[0])
-                bot.send_message(int(oper_id), text_adder)
-                txt_db_com = "UPDATE feedback_tb SET status = 'close' WHERE status = 'open' AND user_id = " + user_id
-                cur.execute(txt_db_com)
-                con.commit()
-                return 1
-        except Exception as e:
-            print('Error entering new data to feedback_tb!', e)
-            return 0
+                return text
+        
+        except:
+            debug.saveLogs(f'------ERROR!------\n\n{traceback.format_exc()}', path.log_file)
+        
+        return False
 
 def insert_text_to_data(text_val, sm_id, bot):
     con, cur = connect()
@@ -223,6 +228,7 @@ def dbCollection(message, person_id, step = None, database_push_data = None, act
 
 
 ### For check MESSAGE_ID
+
 def dbMessageId(action, message_id = None):
     """
     This definition hanles id of posting message.
@@ -232,10 +238,10 @@ def dbMessageId(action, message_id = None):
     if con == 0 and cur == 0: return False
     else:
         try:
-            if action == 'take_id': database_text_commmit = 'SELECT message_id FROM messageId_tb'
-            elif action == 'save_id': database_text_commmit = f"UPDATE messageId_tb set message_id = {message_id}"
-            elif action == 'init_id': database_text_commmit = f"INSERT INTO messageId_tb (message_id) VALUES ({message_id})"
-            cur.execute(database_text_commmit)
+            if   action == 'take_id': text_commmit = 'SELECT message_id FROM messageId_tb'
+            elif action == 'save_id': text_commmit = f'UPDATE messageId_tb set message_id = {message_id}'
+            elif action == 'init_id': text_commmit = f'INSERT INTO messageId_tb (message_id) VALUES ({message_id})'
+            cur.execute(text_commmit)
             data = checkPulldbData(cur = cur, action = 'show_data' if action == 'take_id' else None)
             con.commit()
             return data
@@ -293,15 +299,20 @@ def get_accounts_data():
             print('Error taking data from account_tb!', e)
             return {}
 
+
+### Unit test for database.py
+
 def test_database() -> bool:
     
     test_connect, _ = connect()
-    debug.saveLogs(f'CONNECTION [{True if test_connect else False}] <- connect()\n\n', path.log_file)
+    debug.saveLogs(f'DB_CONNECTION [{True if test_connect else False}] <- connect()\n\n', path.log_file)
 
-    test_insert_data = insert_new_data('0', '0')
-    debug.saveLogs(f'CONNECTION [{True if test_connect else False}] <- connect()\n\n', path.log_file)
+    test_insert_data = insert_message(8881, 0)
+    debug.saveLogs(f'DB_INSERT_1 [{True if test_insert_data else False}] <- connect()\n\n', path.log_file)
 
-    
+    test_insert_data = insert_message(8881, 8882)
+    debug.saveLogs(f'DB_INSERT_2 [{True if test_insert_data else False}] <- connect()\n\n', path.log_file)
+
 
 if __name__ == "__main__":
     test_database()

@@ -149,7 +149,7 @@ def operKeyboardMaker(message, which_oper, lang):
     markup = types.InlineKeyboardMarkup(row_width=2)
     markup.add(types.InlineKeyboardButton("Принять", callback_data=str(message.chat.id)))
     
-    database.insert_new_data(str(message.chat.id), '0')
+    database.insert_message(message.chat.id, 0)
 
     sendReqtoOper(which_oper = which_oper, oper_send_text = (f"-------Запрос переписки!-------\n"
                                                              f"id: {message.chat.id} \n"
@@ -484,7 +484,8 @@ def fdBack_fill(message, lang):
             for id_p in variables.all_ids_arr:
                 checkBlockedPeople(markup = markup, pers_id = id_p, txt = txt)
 
-            database.insert_new_feedback_data(oper_id = '0', user_id = str(message.chat.id), txt = txt, bot = bot)
+            db_answer = database.insert_feedback(0, message.chat.id, txt)
+            bot.send_message(message.chat.id, db_answer)
 
         elif (
                 feedback_user not in [
@@ -521,8 +522,9 @@ def fdBack_fill(message, lang):
 
                 for id_p in variables.all_ids_arr: checkBlockedPeople(markup = markup, pers_id = id_p, txt = txt)
 
-                database.insert_new_feedback_data(oper_id = '0', user_id = str(message.chat.id), txt = txt, bot = bot)
-    
+                db_answer = database.insert_feedback(0, message.chat.id, txt, bot)
+                bot.send_message(message.chat.id, db_answer)
+
     elif feedback_user == 'stop': bot.send_message(message.chat.id, f'{variables.emj.EMJ_PLUS} Операция отменена' 
                                                   if lang == 0 else f'{variables.emj.EMJ_PLUS} Amal bekor qilindi')
                                                   
@@ -597,7 +599,8 @@ def userSebdText(message):
         if message.text != None or message.caption != None:
             word_user_send = message.text if message.text != None else message.caption
             bot.send_message(account[str(message.chat.id)].feedback_st, word_user_send)
-            database.insert_new_feedback_data(str(message.chat.id), account[str(message.chat.id)].feedback_st, word_user_send, bot)
+            db_answer = database.insert_feedback(message.chat.id, int(account[str(message.chat.id)].feedback_st), word_user_send)
+            bot.send_message(message.chat.id, db_answer)
         bot.send_message(message.chat.id, "Сообщение отправлено!")
         
         database.change_account_data(account = account[account[str(message.chat.id)].feedback_st], parametr = 'feedback_st', data = 'close')
@@ -730,7 +733,7 @@ def callback_inline(call):
                         if langCheck(person_id = k): bot.send_message(k, f"{variables.emj.EMJ_TELEPHONE} Найден оператор #{str(call.message.chat.id)}, переписка активирована")
                         else: bot.send_message(k, f"{variables.emj.EMJ_TELEPHONE} Operator #{str(call.message.chat.id)} topildi, yozishmalar faollashtirildi")
                         bot.send_message(str(call.message.chat.id), f"{variables.emj.EMJ_TELEPHONE} Вы подтвердили заявку!", reply_markup=markup)
-                        db_answer = database.insert_new_data(str(k), str(call.message.chat.id))
+                        db_answer = database.insert_message(k, call.message.chat.id)
                         bot.send_message(str(k)                   , db_answer)
                         bot.send_message(str(call.message.chat.id), db_answer)
                         break
@@ -762,7 +765,7 @@ def callback_inline(call):
                             else: bot.send_message(str(call.data), f"{variables.emj.EMJ_TELEPHONE} Operator #{str(call.message.chat.id)} yozishmalarni faollashtirdi", 
                                                                                                        reply_markup=user_markup)
                             bot.send_message(str(call.message.chat.id), f"{variables.emj.EMJ_TELEPHONE} Вы подтвердили заявку!", reply_markup=markup)
-                            db_answer = database.insert_new_data(str(call.data), str(call.message.chat.id))
+                            db_answer = database.insert_message(call.data, call.message.chat.id)
                             bot.send_message(str(call.data)           , db_answer)
                             bot.send_message(str(call.message.chat.id), db_answer)
                         except Exception as e:
