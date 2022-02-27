@@ -64,7 +64,7 @@ def insert_message(user_id, oper_id, text = 'TEXT DATABASE', status = 'open') ->
     
     return False
 
-def insert_feedback(oper_id, user_id, text, status = 'open'):
+def insert_feedback(oper_id, user_id, text, status = 'open') -> str or Literal[False]:
     con, cur = connect()
     if con and cur:
         try:
@@ -96,8 +96,8 @@ def insert_feedback(oper_id, user_id, text, status = 'open'):
  
                 text = f'#id Жалобы: {cur.fetchall()[0][0]}'
                 
-                cur.execute(f"UPDATE feedback_tb SET status = 'close' WHERE status = '{status }' "
-                            f"                                        AND  user_id =  {user_id}  ")
+                cur.execute( "UPDATE feedback_tb SET status = 'close' WHERE "
+                            f"status = '{status}' AND user_id = {user_id}   ")
                 
                 con.commit()
                 return text
@@ -105,70 +105,79 @@ def insert_feedback(oper_id, user_id, text, status = 'open'):
         except:
             debug.saveLogs(f'------ERROR!------\n\n{traceback.format_exc()}', path.log_file)
         
-        return False
+    return False
 
-def insert_text_to_data(text_val, sm_id, bot):
+def insert_text(text, id, status = 'open') -> bool:
     con, cur = connect()
-    if con == 0 and cur == 0:
-        return 0
-    else:
+    if con and cur:
         try:
-            txt_db_com = "SELECT text FROM message_tb WHERE status = 'open' and (oper_id = " + sm_id + ' or user_id = ' + sm_id + ')'
-            cur.execute(txt_db_com)
-            ed_text = cur.fetchall()
-            text_adder = ed_text[0]
-            text_adder = text_adder[0] + '\n' + text_val
-            txt_db_com = "UPDATE message_tb SET text = '" + text_adder + "' WHERE status = 'open' and (user_id = " + sm_id + ' or oper_id = ' + sm_id + ')'
-            cur.execute(txt_db_com)
+
+            cur.execute( "SELECT text FROM message_tb WHERE status = '{status}' "
+                        f"AND    (oper_id = {id}      OR   user_id =  {id}   ); "
+                        f"UPDATE message_tb SET text = '{cur.fetchall()[0][0]}\n{text}'   "
+                        f"WHERE status = '{status}' AND (user_id = {id} OR oper_id = {id})")
+
             con.commit()
-            return 1
-        except Exception as e:
-            print('Error entering data to message_tb!', e)
-            return 0
+            return True
 
-def closerDataBase(sm_id, bot):
+        except:
+            debug.saveLogs(f'------ERROR!------\n\n{traceback.format_exc()}', path.log_file)
+
+    return False
+
+def closerDataBase(id, status = 'open', set = 'close') -> bool:
     con, cur = connect()
-    if con == 0 and cur == 0:
-        return 0
-    else:
+    if con and cur:
         try:
-            txt_db_com = "SELECT user_id, oper_id FROM message_tb WHERE status = 'open' and (oper_id = " + sm_id + ' or user_id = ' + sm_id + ')'
-            cur.execute(txt_db_com)
-            ed_text = cur.fetchall()
-            if ed_text[0][0] == 0 or ed_text[0][1] == 0:
-                txt_db_com = "delete from message_tb where status = 'open' and (oper_id = " + sm_id + ' or user_id = ' + sm_id + ')'
-                cur.execute(txt_db_com)
+
+            cur.execute( "SELECT user_id, oper_id FROM message_tb WHERE status = '{status}' "
+                        f"AND (oper_id = {id} OR user_id = {id})")
+
+            user_id, oper_id = cur.fetchall()[0][:2]
+
+            if user_id and oper_id:
+                cur.execute(f"UPDATE message_tb SET status = '{set}' WHERE status = '{status}' "
+                            f"AND user_id = {id} OR oper_id = {id}                             ")
             else:
-                txt_db_com = "UPDATE message_tb SET status = 'close' WHERE status = 'open' and user_id = " + sm_id + ' or oper_id = ' + sm_id
-                cur.execute(txt_db_com)
+                cur.execute(f"DELETE FROM message_tb WHERE status = '{status}' "
+                            f"AND (oper_id = {id} OR user_id = {id})           ")
+
             con.commit()
-            return 1
-        except Exception as e:
-            print('Error entering data to message_tb!', e)
-            return 0
+            return True
+
+        except:
+            debug.saveLogs(f'------ERROR!------\n\n{traceback.format_exc()}', path.log_file)
+    
+    return False
 
 
 ### For message_tb and feedback_tb
 
-def getDataFromDB(date_start, action, row_dict = {'message_tb' : 'date_start', 'feedback_tb' : 'date_enter'}):
+def getDataFromDB(date_start, action, row_dict = {'message_tb'  : 'date_start', 
+                                                  'feedback_tb' : 'date_enter'} ):
     con, cur = connect()
-    account_settings = get_accounts_data()
-    if con == 0 and cur == 0: return 0
-    else:
+    if con and cur:
         try:
+            accounts = get_accounts_data()
+
             cur.execute(f"SELECT id, user_id FROM {action} WHERE {row_dict[action]} = '{date_start}'")
+
+            db_accounts = cur.fetchall()
+
             text_adder = 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n'
-            for i in cur.fetchall():
-                for k in account_settings:
+            
+            for i in db_accounts:
+                for k in accounts:
                     if k == str(i[1]):
-                        name_id = f"@{account_settings[k].login}" if account_settings[k].login != 'None' else account_settings[k].name
+                        name_id = f"@{accounts[k].login}" if accounts[k].login != 'None' else accounts[k].name
                         break
                 text_adder = f"{text_adder}{str(i[0])}) Name: {name_id} --- Id: {str(i[1])}\n"
             con.commit()
-            return text_adder if text_adder != 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n' else 0
-        except Exception as e:
-            print(f"Error data {action}!", e)
-            return 0
+            return text_adder if text_adder != 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n' else False
+        except:
+            debug.saveLogs(f'------ERROR!------\n\n{traceback.format_exc()}', path.log_file)
+
+    return 0
 
 def getTextFromDB(id_text, action, row_dict = {'message_tb' : 'text', 'feedback_tb' : 'text_fb'}):
     con, cur = connect()

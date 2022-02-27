@@ -224,7 +224,7 @@ def stopConversation(message, lang, pers_id=None, action = None):
     database.change_account_data(account = account[person_id], parametr = 'tags', data = [])        
     account = database.get_accounts_data()
             
-    database.closerDataBase(person_id, bot)
+    database.closerDataBase(person_id)
 
 def closeConversation(message):
     global account
@@ -233,7 +233,7 @@ def closeConversation(message):
     database.change_account_data(account = account[str(message.chat.id)], parametr = 'tags', data = [])        
     account = database.get_accounts_data()
             
-    database.closerDataBase(str(message.chat.id), bot)
+    database.closerDataBase(message.chat.id)
 
 
 def setCollectionKeyboard(message, person_id, show_text = 'Выберите необходимый мед офис'):
@@ -343,7 +343,7 @@ def lol(message):
                 if message.photo != None:
                     sm_id = f'{sm_id}PHOTO\n'
                     bot.send_photo(account[str(message.chat.id)].tags[0], bot.download_file(bot.get_file(message.photo[-1].file_id).file_path))
-                database.insert_text_to_data(sm_id, str(message.chat.id), bot)
+                database.insert_text(sm_id, message.chat.id)
 
 def picPNGmaker(message):
     img = Image.open('bonus_card/lab.png')
