@@ -7,7 +7,7 @@ from telebot import types
 # Project files
 import config, database, classes, path, variables, utility, debug
 
-account = database.get_accounts_data()
+account = database.get_accounts()
 
 def openfileforRead(action = None, file = None, text = '') -> str:
     return text.join([i for i in io.open(file, encoding='utf-8')])
@@ -59,7 +59,7 @@ class P_schedule:
     def send_post():
         c_ex = 0
         message_id = database.dbMessageId(action = 'take_id')[0][0]
-        account = database.get_accounts_data()
+        account = database.get_accounts()
         for account in account.keys():
             try:
                 bot.forward_message(int(account), variables.CHANNEL_ID, message_id)
@@ -86,7 +86,7 @@ class P_schedule:
 def welcome(message):
     global account
     
-    account = database.get_accounts_data()
+    account = database.get_accounts()
 
     new_account = [str(message.chat.id)]
     
@@ -161,14 +161,14 @@ def operKeyboardMaker(message, which_oper, lang):
 def dbDateSortEnter(message, action):
     nextStepWait(person_id = message.chat.id, text = variables.db_conv_message['date'], func = dbSortEnter, args = [action])
 def dbSortEnter(message, action):
-    date_text = database.getDataFromDB(date_start = message.text, action = action)
+    date_text = database.get_data(date = message.text, action = action)
     if date_text: 
         bot.send_message(message.chat.id, variables.db_conv_message['no_date'])
     else:
         bot.send_message(message.chat.id, date_text)
         nextStepWait(person_id = message.chat.id, text = variables.db_conv_message['name'], func = dbIdSortEnter, args = [action])
 def dbIdSortEnter(message, action):
-    id_text = database.getTextFromDB(id_text = message.text, action = action)
+    id_text = database.get_text(message.text, action)
     bot.send_message(message.chat.id, id_text if id_text != 0 else 'Такого номера нет в базе!')
     return
 
@@ -188,9 +188,9 @@ def redirectInit(message, action):
 
         bot.send_message(str(account[str(message.chat.id)].tags[0]), action)
         
-        database.change_account_data(account = account[account[str(message.chat.id)].tags[0]], parametr = 'conversation', data = 'close')
-        database.change_account_data(account = account[account[str(message.chat.id)].tags[0]], parametr = 'tags', data = [])        
-        account = database.get_accounts_data()
+        database.update_account(account = account[account[str(message.chat.id)].tags[0]], parametr = 'conversation', data = 'close')
+        database.update_account(account = account[account[str(message.chat.id)].tags[0]], parametr = 'tags', data = [])        
+        account = database.get_accounts()
 
         keyboardRefMaker(message = message, lang = 0 if langCheck(message) else 1, pers_id = account[str(message.chat.id)].tags[0])
 
@@ -208,9 +208,9 @@ def stopConversation(message, lang, pers_id=None, action = None):
     if len(account[person_id].tags) != 0:
         bot.send_message(str(account[person_id].tags[0]), push_text)
             
-        database.change_account_data(account = account[account[person_id].tags[0]], parametr = 'conversation', data = 'close')
-        database.change_account_data(account = account[account[person_id].tags[0]], parametr = 'tags', data = [])        
-        account = database.get_accounts_data()
+        database.update_account(account = account[account[person_id].tags[0]], parametr = 'conversation', data = 'close')
+        database.update_account(account = account[account[person_id].tags[0]], parametr = 'tags', data = [])        
+        account = database.get_accounts()
 
         keyboardRefMaker(None, 0 if account[account[person_id].tags[0]].language == "Русский" else 1, account[person_id].tags[0])
     keyboardRefMaker(None, lang, person_id)
@@ -220,20 +220,20 @@ def stopConversation(message, lang, pers_id=None, action = None):
         inlineMessages(markup_text = 'Оцените работу оператора!' if langCheck(person_id = user_id) else 'Operator ishini baholang!', 
                        person_id = user_id, markup_arr = [['👍', '👍'], ['👎', '👎']], action = False)
             
-    database.change_account_data(account = account[person_id], parametr = 'conversation', data = 'close')
-    database.change_account_data(account = account[person_id], parametr = 'tags', data = [])        
-    account = database.get_accounts_data()
+    database.update_account(account = account[person_id], parametr = 'conversation', data = 'close')
+    database.update_account(account = account[person_id], parametr = 'tags', data = [])        
+    account = database.get_accounts()
             
-    database.closerDataBase(person_id)
+    database.change_status(person_id)
 
 def closeConversation(message):
     global account
             
-    database.change_account_data(account = account[str(message.chat.id)], parametr = 'conversation', data = 'close')
-    database.change_account_data(account = account[str(message.chat.id)], parametr = 'tags', data = [])        
-    account = database.get_accounts_data()
+    database.update_account(account = account[str(message.chat.id)], parametr = 'conversation', data = 'close')
+    database.update_account(account = account[str(message.chat.id)], parametr = 'tags', data = [])        
+    account = database.get_accounts()
             
-    database.closerDataBase(message.chat.id)
+    database.change_status(message.chat.id)
 
 
 def setCollectionKeyboard(message, person_id, show_text = 'Выберите необходимый мед офис'):
@@ -267,7 +267,7 @@ def selectOffice(message, person_id, step, push_text = '', data = ''):
 @bot.message_handler(content_types=['text', 'photo'])
 def lol(message):
     global account
-    account = database.get_accounts_data()
+    account = database.get_accounts()
     
     if message.chat.type == 'private':
         if message.text in variables.message_text_dict.keys():
@@ -300,8 +300,8 @@ def lol(message):
             if account[str(message.chat.id)].discount == "0" and account[str(message.chat.id)].ref == "0":
                 bot.send_message(message.chat.id, openfileforRead(None, path.discount_label if langCheck(message) else path.sec_discount_label) + ("\nВаш реферальный код: " if langCheck(message) else  f"\nSizning tavsiyangiz kodi: ") + str(message.chat.id).format(message.chat, bot.get_me()),parse_mode='html')
             elif account[str(message.chat.id)].ref == "10":
-                database.change_account_data(account = account[str(message.chat.id)], parametr = 'discount', data = '10')       
-                account = database.get_accounts_data()
+                database.update_account(account = account[str(message.chat.id)], parametr = 'discount', data = '10')       
+                account = database.get_accounts()
                 bot.send_message(message.chat.id, f"{variables.emj.EMJ_DONE} У вас максимальная скидка!" if langCheck(message) 
                                              else f"{variables.emj.EMJ_DONE} Siz maksimal chegirma bor!")
                 picPNGmaker(message)
@@ -326,13 +326,13 @@ def lol(message):
         else:
             if account[str(message.chat.id)].conversation == 'open':
                 if checkOperId(person_id = str(message.chat.id), action = variables.all_ids_arr):
-                    database.change_account_data(account = account[account[str(message.chat.id)].tags[0]], parametr = 'timer_conv', data = int(time.time()))
+                    database.update_account(account = account[account[str(message.chat.id)].tags[0]], parametr = 'timer_conv', data = int(time.time()))
                     sm_id = 'Operator: '
                 else:
-                    database.change_account_data(account = account[str(message.chat.id)], parametr = 'timer_conv', data = int(time.time()))
+                    database.update_account(account = account[str(message.chat.id)], parametr = 'timer_conv', data = int(time.time()))
                     sm_id = 'User: '
       
-                account = database.get_accounts_data()
+                account = database.get_accounts()
 
                 if message.text != None:
                     sm_id = f'{sm_id}{message.text}\n'
@@ -364,9 +364,9 @@ def keyboardRefMaker(message, lang, pers_id=None):
                                 if not checkOperId(person_id, variables.all_ids_arr) else 'Открыта клавиатура оператора!', parse_mode='html', reply_markup=markup)
     
     if person_id != pers_id:        
-        account = database.get_accounts_data()
-        database.change_account_data(account = account[str(message.chat.id)], parametr = 'personal_data', data = 'YES')
-        account = database.get_accounts_data()
+        account = database.get_accounts()
+        database.update_account(account = account[str(message.chat.id)], parametr = 'personal_data', data = 'YES')
+        account = database.get_accounts()
 
 
 def checkBlockedPeople(markup, pers_id, txt):
@@ -535,11 +535,11 @@ def fdBack_fill(message, lang):
 def enterTag(message, mess):
     global account
     if mess == "new":
-        database.change_account_data(account = account[str(message.chat.id)], parametr = 'tags', data = [])        
-        account = database.get_accounts_data()
+        database.update_account(account = account[str(message.chat.id)], parametr = 'tags', data = [])        
+        account = database.get_accounts()
 
     account[str(message.chat.id)].tags.append(message.text)
-    database.change_account_data(account = account[str(message.chat.id)], parametr = 'tags', data = account[str(message.chat.id)].tags)       
+    database.update_account(account = account[str(message.chat.id)], parametr = 'tags', data = account[str(message.chat.id)].tags)       
 
     it = len(account[str(message.chat.id)].tags)
     send = bot.send_message(message.chat.id, f"{variables.emj.EMJ_PLUS} Введено {str(it)} из 10 пользователей")
@@ -549,11 +549,11 @@ def enterTag(message, mess):
 def enterTag_Sec(message, mess):
     global account
     if mess == "new":
-        database.change_account_data(account = account[str(message.chat.id)], parametr = 'tags', data = [])        
-        account = database.get_accounts_data()
+        database.update_account(account = account[str(message.chat.id)], parametr = 'tags', data = [])        
+        account = database.get_accounts()
 
     account[str(message.chat.id)].tags.append(message.text)
-    database.change_account_data(account = account[str(message.chat.id)], parametr = 'tags', data = account[str(message.chat.id)].tags)
+    database.update_account(account = account[str(message.chat.id)], parametr = 'tags', data = account[str(message.chat.id)].tags)
 
     it = len(account[str(message.chat.id)].tags)
     send = bot.send_message(message.chat.id, f"{variables.emj.EMJ_PLUS} Kirilgan {str(it)} 10 foydalanuvchilar")
@@ -564,13 +564,13 @@ def enterTag_Sec(message, mess):
 
 def refAdd(message):
     global account
-    account = database.get_accounts_data()
+    account = database.get_accounts()
     if True in [True for person_id in account.keys() if person_id == message.text]:
         if int(account[message.text].ref) < 10:
             
             account[message.text].ref = str(int(account[message.text].ref) + 1)
-            database.change_account_data(account = account[message.text], parametr = 'ref', data = str(int(account[message.text].ref) + 1))
-            account = database.get_accounts_data()
+            database.update_account(account = account[message.text], parametr = 'ref', data = str(int(account[message.text].ref) + 1))
+            account = database.get_accounts()
             
             bot.send_message(message.chat.id, f"{variables.emj.EMJ_DONE} Спасибо за активацию!" if langCheck(message) 
                                          else f"{variables.emj.EMJ_DONE} Faollashtirish uchun rahmat!")
@@ -603,9 +603,9 @@ def userSebdText(message):
             bot.send_message(message.chat.id, db_answer)
         bot.send_message(message.chat.id, "Сообщение отправлено!")
         
-        database.change_account_data(account = account[account[str(message.chat.id)].feedback_st], parametr = 'feedback_st', data = 'close')
-        database.change_account_data(account = account[str(message.chat.id)], parametr = 'feedback_st', data = 'close')        
-        account = database.get_accounts_data()
+        database.update_account(account = account[account[str(message.chat.id)].feedback_st], parametr = 'feedback_st', data = 'close')
+        database.update_account(account = account[str(message.chat.id)], parametr = 'feedback_st', data = 'close')        
+        account = database.get_accounts()
 
     else: bot.send_message(message.chat.id, 'Операция отменена!')
 
@@ -642,8 +642,8 @@ def callback_inline(call):
     try:
         if call.data in variables.call_data_dict.keys():
             if variables.call_data_dict[call.data][0] == 'set_lang':
-                database.change_account_data(account = account[str(call.message.chat.id)], parametr = 'language', data = call.data)
-                account = database.get_accounts_data()
+                database.update_account(account = account[str(call.message.chat.id)], parametr = 'language', data = call.data)
+                account = database.get_accounts()
                 inlineMessages(markup_text = openfileforRead(None, variables.call_data_dict[call.data][1]), call = call, 
                                markup_arr = variables.call_data_dict[call.data][2])
             
@@ -698,18 +698,18 @@ def callback_inline(call):
         elif call.data[0] == 'Q':
             if account[call.data[1:]].feedback_st == 'open':
                 
-                database.change_account_data(account = account[call.data[1:]], parametr = 'feedback_st', data = 'close')        
-                database.change_account_data(account = account[str(call.message.chat.id)], parametr = 'feedback_st', data = call.data[1:])
-                account = database.get_accounts_data()
+                database.update_account(account = account[call.data[1:]], parametr = 'feedback_st', data = 'close')        
+                database.update_account(account = account[str(call.message.chat.id)], parametr = 'feedback_st', data = call.data[1:])
+                account = database.get_accounts()
 
                 nextStepWait(person_id = call.message.chat.id, text = f"{variables.emj.EMJ_PLUS} Введите текст для ответа пользователю", func = userSebdText)
             else:
                 bot.send_message(call.message.chat.id, "Оператор уже ответил этому пользователю!\n"
                                                        "Для отмены повторного ответа напишите stop")
                 
-                database.change_account_data(account = account[call.data[1:]], parametr = 'feedback_st', data = 'close')        
-                database.change_account_data(account = account[str(call.message.chat.id)], parametr = 'feedback_st', data = call.data[1:])
-                account = database.get_accounts_data()
+                database.update_account(account = account[call.data[1:]], parametr = 'feedback_st', data = 'close')        
+                database.update_account(account = account[str(call.message.chat.id)], parametr = 'feedback_st', data = call.data[1:])
+                account = database.get_accounts()
 
                 nextStepWait(person_id = call.message.chat.id, text = f"{variables.emj.EMJ_PLUS} Введите текст для ответа пользователю", func = userSebdText)
         else:
@@ -718,18 +718,18 @@ def callback_inline(call):
                     if k == call.data and account[k].conversation == 'mid':
                         markup = markupMaker(action = 'redirect', button_text = variables.buttons_oper_text)
                         account[str(call.message.chat.id)].tags.append(str(k))
-                        database.change_account_data(account = account[str(call.message.chat.id)], parametr = 'tags', 
+                        database.update_account(account = account[str(call.message.chat.id)], parametr = 'tags', 
                                                      data = account[str(call.message.chat.id)].tags)        
-                        database.change_account_data(account = account[str(call.message.chat.id)], parametr = 'conversation', 
+                        database.update_account(account = account[str(call.message.chat.id)], parametr = 'conversation', 
                                                      data = 'open')
-                        database.change_account_data(account = account[str(call.message.chat.id)], parametr = 'timer_conv', 
+                        database.update_account(account = account[str(call.message.chat.id)], parametr = 'timer_conv', 
                                                      data = int(time.time()))
                         account[k].tags.append(str(call.message.chat.id))
                         account[k].tags.append("0")
-                        database.change_account_data(account = account[k], parametr = 'tags', data = account[k].tags)        
-                        database.change_account_data(account = account[k], parametr = 'conversation', data = 'open')
-                        database.change_account_data(account = account[k], parametr = 'timer_conv', data = int(time.time()))
-                        account = database.get_accounts_data()
+                        database.update_account(account = account[k], parametr = 'tags', data = account[k].tags)        
+                        database.update_account(account = account[k], parametr = 'conversation', data = 'open')
+                        database.update_account(account = account[k], parametr = 'timer_conv', data = int(time.time()))
+                        account = database.get_accounts()
                         if langCheck(person_id = k): bot.send_message(k, f"{variables.emj.EMJ_TELEPHONE} Найден оператор #{str(call.message.chat.id)}, переписка активирована")
                         else: bot.send_message(k, f"{variables.emj.EMJ_TELEPHONE} Operator #{str(call.message.chat.id)} topildi, yozishmalar faollashtirildi")
                         bot.send_message(str(call.message.chat.id), f"{variables.emj.EMJ_TELEPHONE} Вы подтвердили заявку!", reply_markup=markup)
@@ -745,18 +745,18 @@ def callback_inline(call):
                         user_markup = markupMaker(action = 'person', button_text = variables.buttons_oper_text if langCheck(person_id = str(call.data)) else variables.buttons_user_uz_text)
                         
                         account[str(call.message.chat.id)].tags.append(str(call.data))
-                        database.change_account_data(account = account[str(call.message.chat.id)], parametr = 'tags', data = account[str(call.message.chat.id)].tags)
-                        database.change_account_data(account = account[str(call.message.chat.id)], parametr = 'conversation', data = 'open')
-                        database.change_account_data(account = account[str(call.message.chat.id)], parametr = 'timer_conv', data = int(time.time()))
+                        database.update_account(account = account[str(call.message.chat.id)], parametr = 'tags', data = account[str(call.message.chat.id)].tags)
+                        database.update_account(account = account[str(call.message.chat.id)], parametr = 'conversation', data = 'open')
+                        database.update_account(account = account[str(call.message.chat.id)], parametr = 'timer_conv', data = int(time.time()))
 
                         account[str(call.data)].tags.append(str(call.message.chat.id))
-                        database.change_account_data(account = account[str(call.data)], parametr = 'tags', data = account[str(call.data)].tags)
+                        database.update_account(account = account[str(call.data)], parametr = 'tags', data = account[str(call.data)].tags)
                         
                         account[str(call.data)].tags.append("0")
-                        database.change_account_data(account = account[str(call.data)], parametr = 'tags', data = account[str(call.data)].tags)
-                        database.change_account_data(account = account[str(call.data)], parametr = 'conversation', data = 'open')
-                        database.change_account_data(account = account[str(call.data)], parametr = 'timer_conv', data = int(time.time()))
-                        account = database.get_accounts_data()
+                        database.update_account(account = account[str(call.data)], parametr = 'tags', data = account[str(call.data)].tags)
+                        database.update_account(account = account[str(call.data)], parametr = 'conversation', data = 'open')
+                        database.update_account(account = account[str(call.data)], parametr = 'timer_conv', data = int(time.time()))
+                        account = database.get_accounts()
 
                         try:
                             if langCheck(person_id = str(call.data)): bot.send_message(str(call.data), f"{variables.emj.EMJ_TELEPHONE} Оператор"
@@ -769,10 +769,10 @@ def callback_inline(call):
                             bot.send_message(str(call.data)           , db_answer)
                             bot.send_message(str(call.message.chat.id), db_answer)
                         except Exception as e:
-                            database.change_account_data(account = account[str(call.message.chat.id)], parametr = 'conversation', data = 'close')
-                            database.change_account_data(account = account[str(call.data)], parametr = 'tags', data = [])
-                            database.change_account_data(account = account[str(call.message.chat.id)], parametr = 'tags', data = [])
-                            account = database.get_accounts_data()
+                            database.update_account(account = account[str(call.message.chat.id)], parametr = 'conversation', data = 'close')
+                            database.update_account(account = account[str(call.data)], parametr = 'tags', data = [])
+                            database.update_account(account = account[str(call.message.chat.id)], parametr = 'tags', data = [])
+                            account = database.get_accounts()
                             bot.send_message(call.message.chat.id, 'Пользователь выключил бота!')
                     else:
                         bot.send_message(str(call.message.chat.id), "Другой оператор отвечает на заявку!")

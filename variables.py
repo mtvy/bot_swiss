@@ -66,7 +66,7 @@ show_text_dict = {
 	9 : False
 }
 
-select_collection_action_dict = {
+collection_actions = {
 	0 : 'office'           ,
 	1 : 'terminal_number'  ,
 	2 : 'cash'             ,

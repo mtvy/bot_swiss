@@ -1,4 +1,4 @@
-import database
+
 
 class Account:
     """
@@ -34,7 +34,3 @@ class Account:
             'feedback_st': self.feedback_st,
             'timer_conv': self.timer_conv,
         })
-
-if __name__ == "__main__":
-    acc = database.get_accounts_data()
-    for i in acc.keys(): print(acc[i], '\n')

@@ -24,3 +24,6 @@ restart_bot:
 
 clean:
 	rm -Rfv bot_swiss
+
+db_debug:
+	python3 database.py
