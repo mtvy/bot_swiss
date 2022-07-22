@@ -3,11 +3,12 @@ Postgresql database processor.
 """
 import path              ,\
        debug             ,\
-       classes   as cl   ,\
        utility   as ut   ,\
        variables as var  ,\
        psycopg2  as psql ,\
        traceback as error
+
+from classes import *
 
 from datetime import date
 from typing   import Any, Dict, Literal, Tuple
@@ -19,7 +20,7 @@ def connect() -> Tuple[Any, Any] or Tuple[Literal[False], Literal[False]]:
     """
     try:
         con = psql.connect(database = 'postgres' ,
-                           password = 'postgres' ,
+                           password = '111' ,
                            user     = 'postgres' ,
                            host     = '127.0.0.1',
                            port     = '5432'     )        
@@ -27,7 +28,7 @@ def connect() -> Tuple[Any, Any] or Tuple[Literal[False], Literal[False]]:
         return con, con.cursor()
     
     except:
-        debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}', path.log_file)
+        debug.saveLogs(f'[connect]---->{error.format_exc()}')
     
     return (False, False)
 
@@ -70,7 +71,7 @@ def insert_message(user_id, oper_id, text = 'TEXT DATABASE', status = 'open') ->
                 return text
 
         except:
-            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}', path.log_file)
+            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}')
     
     return False
 
@@ -113,7 +114,7 @@ def insert_feedback(oper_id, user_id, text, status = 'open') -> str or Literal[F
                 return text
         
         except:
-            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}', path.log_file)
+            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}')
         
     return False
 
@@ -131,7 +132,7 @@ def insert_text(text, id, status = 'open') -> bool:
             return True
 
         except:
-            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}', path.log_file)
+            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}')
 
     return False
 
@@ -156,7 +157,7 @@ def change_status(id, status = 'open', set = 'close') -> bool:
             return True
 
         except:
-            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}', path.log_file)
+            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}')
     
     return False
 
@@ -189,7 +190,7 @@ def get_data(dating, action, text = 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n',
             return text if text != 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n' else False
 
         except:
-            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}', path.log_file)
+            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}')
 
     return False
 
@@ -204,7 +205,7 @@ def get_text(id, action, row = {'message_tb' : 'text', 'feedback_tb' : 'text_fb'
             return cur.fetchall()[0][0]
 
         except:
-            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}', path.log_file)
+            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}')
     
     return False
 
@@ -307,7 +308,7 @@ def dbCollection(message, id, **kwargs) -> Any or bool:
             return data
 
         except:
-            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}', path.log_file)
+            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}')
     
     return False
 
@@ -336,14 +337,14 @@ def dbMessageId(action, message_id = None) -> Any or bool:
             return data
 
         except:
-            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}', path.log_file)
+            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}')
     
     return False
 
 
 ### For account_tb
 
-def insert_account(acc : cl.Account) -> bool:
+def insert_account(acc : Account) -> bool:
     """
     This definition inserts an Account class object into the database.
     """
@@ -365,11 +366,11 @@ def insert_account(acc : cl.Account) -> bool:
             return True
 
         except:
-            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}', path.log_file)
+            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}')
     
     return False
 
-def update_account(acc : cl.Account , param, data) -> bool:
+def update_account(acc : Account , param, data) -> bool:
     """
     This definition updates an Account class object in the database.
     """
@@ -384,11 +385,11 @@ def update_account(acc : cl.Account , param, data) -> bool:
             return True
 
         except:
-            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}', path.log_file)
+            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}')
     
     return False
 
-def get_accounts(accounts : Dict = {}, attr = 'telegram_id') -> Dict:
+def get_accounts(accounts : Dict = {}, attr = 'telegram_id') -> Dict[int, Account]:
     """
     This definition gets an Account class object from the database.
     """
@@ -402,11 +403,9 @@ def get_accounts(accounts : Dict = {}, attr = 'telegram_id') -> Dict:
                         "       personal_data, language  , "
                         "       feedback_st  , timer_conv  "
                         "FROM   account_tb                 ")
-            
-            db_accounts = cur.fetchall()
 
             for accounts in cur.fetchall():
-                accounts = ut.takeClassDict(inst = cl.Account(accounts), 
+                accounts = ut.takeClassDict(inst = Account(accounts), 
                                             attr = attr                , 
                                             var  = accounts            )
 
@@ -414,7 +413,7 @@ def get_accounts(accounts : Dict = {}, attr = 'telegram_id') -> Dict:
             return accounts
 
         except:
-            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}', path.log_file)
+            debug.saveLogs(f'[get_accounts]---->{error.format_exc()}')
     
     return {}
 
@@ -424,13 +423,13 @@ def get_accounts(accounts : Dict = {}, attr = 'telegram_id') -> Dict:
 def test_database() -> bool:
     
     test_connect, _ = connect()
-    debug.saveLogs(f'DB_CONNECTION [{True if test_connect else False}] <- connect()\n\n', path.log_file)
+    debug.saveLogs(f'DB_CONNECTION [{True if test_connect else False}] <- connect()\n\n')
 
     test_insert_data = insert_message(8881, 0)
-    debug.saveLogs(f'DB_INSERT_1 [{True if test_insert_data else False}] <- connect()\n\n', path.log_file)
+    debug.saveLogs(f'DB_INSERT_1 [{True if test_insert_data else False}] <- connect()\n\n')
 
     test_insert_data = insert_message(8881, 8882)
-    debug.saveLogs(f'DB_INSERT_2 [{True if test_insert_data else False}] <- connect()\n\n', path.log_file)
+    debug.saveLogs(f'DB_INSERT_2 [{True if test_insert_data else False}] <- connect()\n\n')
 
 
 if __name__ == "__main__":

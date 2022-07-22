@@ -1,0 +1,12 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/matvey/Documents/code/bot_swiss'
+sudo apt-get update
+sudo apt-get install python-pip
+sudo apt-get install libpq-dev python-dev
+sudo pip install psycopg2
+sudo pip install pyTelegramBotAPI
+sudo pip install telebot
+sudo pip install Pillow
+sudo pip install schedule
+make: Leaving directory `/Users/matvey/Documents/code/bot_swiss'
+ 
