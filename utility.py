@@ -7,4 +7,4 @@ def takeFilled(*args) -> Any or None:
     return [var for var in args if var]
 
 def takeClassDict(inst, attr : str, var : Dict = {}) -> Dict:
-    return var | dict.fromkeys(getattr(inst, attr), inst)
+    return {**var , getattr(inst, attr) : inst}

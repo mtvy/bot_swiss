@@ -1,8 +1,7 @@
 """
 Postgresql database processor.
 """
-import path              ,\
-       debug             ,\
+import debug             ,\
        utility   as ut   ,\
        variables as var  ,\
        psycopg2  as psql ,\
@@ -20,7 +19,7 @@ def connect() -> Tuple[Any, Any] or Tuple[Literal[False], Literal[False]]:
     """
     try:
         con = psql.connect(database = 'postgres' ,
-                           password = '111' ,
+                           password = 'postgres' ,
                            user     = 'postgres' ,
                            host     = '127.0.0.1',
                            port     = '5432'     )        
@@ -50,10 +49,19 @@ def insert_message(user_id, oper_id, text = 'TEXT DATABASE', status = 'open') ->
     if con and cur:
         try:
             if not oper_id:
-
-                cur.execute("INSERT INTO message_tb (date_start, user_id, oper_id, text, status) "
-                            f"VALUES ('{date.today().timetuple()[0:3]}', "
-                            f"         {user_id}, {oper_id}, '{text}', '{status}')")
+                _date = date.today().timetuple()[0:3]
+                txt = 'INSERT INTO message_tb (  '\
+                    '   date_start            ,'   \
+                    '   user_id               ,'\
+                    '   oper_id               ,'\
+                    '   text                  ,'\
+                    '   status                 '\
+                    ')'\
+                    'VALUES (%s, %s, %s, %s, %s)',\
+                    _date, user_id, oper_id, text, status
+                cur.execute(
+                    txt
+                )
 
                 con.commit()
                 return True
@@ -71,7 +79,7 @@ def insert_message(user_id, oper_id, text = 'TEXT DATABASE', status = 'open') ->
                 return text
 
         except:
-            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}')
+            debug.saveLogs(f'[insert_message]---->{error.format_exc()}')
     
     return False
 
@@ -164,30 +172,53 @@ def change_status(id, status = 'open', set = 'close') -> bool:
 
 ### For message_tb and feedback_tb
 
-def get_data(dating, action, text = 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n', 
-             row = {'message_tb'  : 'date_start', 'feedback_tb' : 'date_enter'} ) -> str or bool:
+def get_data(dating : str, 
+             action : str, 
+             text : str =  'ID ПОЛЬЗОВАТЕЛЕЙ\n\n', 
+             row  : Dict[str, str] = {'message_tb'  : 'date_start', 
+                                      'feedback_tb' : 'date_enter'} ) -> str or bool:
     con, cur = connect()
     if con and cur:
         try:
 
-            accounts = get_accounts()
+            accs = get_accounts()
 
             cur.execute(f"SELECT id, user_id FROM {action} WHERE {row[action]} = '{dating}'")
 
-            db_accounts = cur.fetchall()
-
-            text = 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n'
+            db_accs = cur.fetchall()
             
-            for db_account in db_accounts:
-                for account in accounts:
-                    if account == db_account[1]:
-                        name_id = (f"@{accounts[account].login}" if   accounts[account].login != None 
-                                                                 else accounts[account].name)
-                        text = f"{text}{db_account[0]}) Name: {name_id} --- Id: {db_account[1]}\n"
+            for db_acc in db_accs:
+                for acc in accs:
+                    if acc == db_acc[1]:
+                        name_id = (f"@{accs[acc].login}" if   accs[acc].login != None 
+                                                                 else accs[acc].name)
+                        text = f"{text}{db_acc[0]}) Name: {name_id} --- Id: {db_acc[1]}\n"
                         break
 
             con.commit()
             return text if text != 'ID ПОЛЬЗОВАТЕЛЕЙ\n\n' else False
+
+        except psql.errors.UndefinedTable as ex:
+            debug.saveLogs(f'[get_accounts][{action}]---->{ex}')
+            
+            create_db(
+                'CREATE TABLE feedback_tb(    '
+                '    id serial primary key   ,' 
+                '    oper_id integer         ,'
+                '    user_id integer         ,'
+                '    date_enter varchar(255) ,' 
+                '    text_fb text            ,'
+                '    status varchar(255)      '
+                ');' if action == 'feedback_tb' else
+                'CREATE TABLE message_tb(     '
+                '    id serial primary key   ,'
+                '    oper_id integer         ,'
+                '    user_id integer         ,'
+                '    date_start varchar(255) ,'
+                '    text text               ,'
+                '    status varchar(255)      '
+                ');                           '
+            )
 
         except:
             debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}')
@@ -351,16 +382,17 @@ def insert_account(acc : Account) -> bool:
     con, cur = connect()
     if con and cur:
         try:
-            cur.execute( "INSERT INTO account_tb (telegram_id  , login     ,   "
-                         "                        name         , oper_ids  ,   "
-                         "                        conversation , discount  ,   "
-                         "                        tags         , ref       ,   "
-                         "                        personal_data, language  ,   "
-                         "                        feedback_st  , timer_conv)   "
-                        f"VALUES ({acc.telegram_id}, {acc.login}       , {acc.name}         ,"
-                        f"        {acc.oper_ids }  , {acc.conversation}, {acc.discount}     ," 
-                        f"        {acc.tags}       , {acc.ref}         , {acc.personal_data},"
-                        f"        {acc.language}   , {acc.feedback_st} , {acc.timer_conv}   )")
+            cur.execute( 'INSERT INTO account_tb (telegram_id  , login     ,     '
+                         '                        name         , oper_ids  ,     '
+                         '                        conversation , discount  ,     '
+                         '                        tags         , ref       ,     '
+                         '                        personal_data, language  ,     '
+                         '                        feedback_st  , timer_conv)     '
+                         'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'     , 
+                         (acc.telegram_id, acc.login   , acc.name       , acc.oper_ids  , 
+                          acc.conversation, acc.discount, acc.tags       , acc.ref       , 
+                          acc.personal_data, acc.language, acc.feedback_st, acc.timer_conv)
+            )
 
             con.commit()
             return True
@@ -378,8 +410,10 @@ def update_account(acc : Account , param, data) -> bool:
     if con and cur:
         try:
 
-            cur.execute(f"UPDATE account_tb SET {param} = {data           } "
-                        f"WHERE             telegram_id = {acc.telegram_id}")
+            cur.execute(f'UPDATE account_tb SET {param}'' = %s '
+                         'WHERE               telegram_id = %s ', 
+                        (data, acc.telegram_id)
+            )
             
             con.commit()
             return True
@@ -404,18 +438,54 @@ def get_accounts(accounts : Dict = {}, attr = 'telegram_id') -> Dict[int, Accoun
                         "       feedback_st  , timer_conv  "
                         "FROM   account_tb                 ")
 
-            for accounts in cur.fetchall():
-                accounts = ut.takeClassDict(inst = Account(accounts), 
+            for account in cur.fetchall():
+                accounts = ut.takeClassDict(inst = Account(account), 
                                             attr = attr                , 
                                             var  = accounts            )
 
             con.commit()
             return accounts
 
+        except psql.errors.UndefinedTable as ex:
+            debug.saveLogs(f'[get_accounts][account_tb]---->{ex}')
+
+            create_db(
+                'CREATE TABLE account_tb(           '
+                '       id serial primary key     , '
+                '       telegram_id varchar(255)  , '
+                '       login varchar(255)        , '
+                '       name varchar(255)         , '
+                '       oper_ids varchar(10)[]    , '
+                '       conversation varchar(255) , '
+                '       discount varchar(255)     , '
+                '       tags varchar(10)[]        , '
+                '       ref varchar(255)          , '
+                '       personal_data varchar(255), '
+                '       language varchar(255)     , '
+                '       feedback_st varchar(255)  , '
+                '       timer_conv integer          '
+                ');                                 '
+            )
+        
         except:
             debug.saveLogs(f'[get_accounts]---->{error.format_exc()}')
     
     return {}
+
+
+def create_db(com : str) -> bool:
+    """
+    """
+    con, cur = connect()
+    if con and cur:
+        try:
+            cur.execute(com)
+            con.commit()
+            return True
+        except:
+            debug.saveLogs(f'[create_db]---->{error.format_exc()}')
+    
+    return False
 
 
 ### Unit test for database.py

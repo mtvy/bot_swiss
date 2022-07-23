@@ -1,1358 +1,675 @@
 
-Date: 2022-07-12 21:11:04.353908
+Date: 2022-07-23 09:39:31.768478
+
+[get_accounts][account_tb]---->ОШИБКА:  отношение "account_tb" не существует
+LINE 1: ...guage  ,        feedback_st  , timer_conv  FROM   account_tb...
+                                                             ^
+
+Date: 2022-07-23 09:39:39.616483
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 354, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 09:44:36.700261
+
+[get_accounts][account_tb]---->ОШИБКА:  отношение "account_tb" не существует
+LINE 1: ...guage  ,        feedback_st  , timer_conv  FROM   account_tb...
+                                                             ^
+
+Date: 2022-07-23 09:47:39.358395
+
+[keyboardRefMaker]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\bot.py", line 549, in keyboardRefMaker
+    markup = markupMaker('admin'
+  File "c:\code\bot_swiss\bot.py", line 75, in markupMaker
+    elif         mode != 'redirect': markup.row(*pin[0:2], pin[3]).row(*pin[5:6], pin[8]).row(pin[10]).row(pin[2:8:5]).row(pin[4:10:5])
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\types.py", line 804, in row
+    btn_array.append(button.to_dic())
+AttributeError: 'list' object has no attribute 'to_dic'
+
+Date: 2022-07-23 09:47:39.358395
+
+Error in the 'call' part!
+
+[
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\bot.py", line 892, in callback_inline
+    bot.delete_message(_id, call.message.message_id)
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\__init__.py", line 622, in delete_message
+    return apihelper.delete_message(self.token, chat_id, message_id)
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\apihelper.py", line 713, in delete_message
+    return _make_request(token, method_url, params=payload, method='post')
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\apihelper.py", line 60, in _make_request
+    return _check_result(method_name, result)['result']
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\apihelper.py", line 79, in _check_result
+    raise ApiException(msg, method_name, result)
+telebot.apihelper.ApiException: A request to the Telegram API was unsuccessful. The server returned HTTP 400 Bad Request. Response body:
+[b'{"ok":false,"error_code":400,"description":"Bad Request: message to delete not found"}']
+
+]
+Date: 2022-07-23 09:49:02.198893
+
+[keyboardRefMaker]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\bot.py", line 549, in keyboardRefMaker
+    markup = markupMaker('admin'
+  File "c:\code\bot_swiss\bot.py", line 75, in markupMaker
+    elif         mode != 'redirect': markup.row(*pin[0:2], pin[3]).row(*pin[5:6], pin[8]).row(pin[10]).row(pin[2:8:5]).row(pin[4:10:5])
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\types.py", line 804, in row
+    btn_array.append(button.to_dic())
+AttributeError: 'list' object has no attribute 'to_dic'
+
+Date: 2022-07-23 09:49:22.992934
+
+[keyboardRefMaker]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\bot.py", line 549, in keyboardRefMaker
+    markup = markupMaker('admin'
+  File "c:\code\bot_swiss\bot.py", line 75, in markupMaker
+    elif         mode != 'redirect': markup.row(*pin[0:2], pin[3]).row(*pin[5:6], pin[8]).row(pin[10]).row(pin[2:8:5]).row(pin[4:10:5])
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\types.py", line 804, in row
+    btn_array.append(button.to_dic())
+AttributeError: 'list' object has no attribute 'to_dic'
+
+Date: 2022-07-23 09:49:25.782005
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 354, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 09:50:54.792165
+
+[keyboardRefMaker]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\bot.py", line 549, in keyboardRefMaker
+    markup = markupMaker('admin'
+  File "c:\code\bot_swiss\bot.py", line 75, in markupMaker
+    elif         mode != 'redirect': markup.row(*pin[0:2], pin[3]).row(*pin[5:6], pin[8]).row(pin[10]).row(pin[2:8:5]).row(pin[4:10:5])
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\types.py", line 804, in row
+    btn_array.append(button.to_dic())
+AttributeError: 'list' object has no attribute 'to_dic'
+
+Date: 2022-07-23 09:54:47.668706
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 354, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 10:00:59.064630
+
+[markupMaker]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\bot.py", line 80, in markupMaker
+    markup.row(*pin[0:2], pin[3]).row(*pin[5:6], pin[8]).row(pin[10]).row(pin[2:8:5]).row(pin[4:10:5])
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\types.py", line 804, in row
+    btn_array.append(button.to_dic())
+AttributeError: 'list' object has no attribute 'to_dic'
+
+Date: 2022-07-23 10:01:31.311396
+
+[markupMaker]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\bot.py", line 80, in markupMaker
+    markup.row(*pin[0:2], pin[3]).row(*pin[5:6], pin[8]).row(pin[10]).row(pin[2:8:5]).row(pin[4:10:5])
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\types.py", line 804, in row
+    btn_array.append(button.to_dic())
+AttributeError: 'list' object has no attribute 'to_dic'
+
+Date: 2022-07-23 10:05:34.074903
+
+[markupMaker]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\bot.py", line 82, in markupMaker
+    markup.row(a).row(b).row(pin[10]).row(pin[2:8:5]).row(pin[4:10:5])
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\types.py", line 804, in row
+    btn_array.append(button.to_dic())
+AttributeError: 'tuple' object has no attribute 'to_dic'
+
+Date: 2022-07-23 10:05:37.679557
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 354, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 10:06:54.089346
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 354, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 10:07:49.415420
+
+[markupMaker]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\bot.py", line 82, in markupMaker
+    markup.row(a).row(b).row(pin[10]).row(*pin[2:8:5]).row(*pin[4:10:5])
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\types.py", line 804, in row
+    btn_array.append(button.to_dic())
+AttributeError: 'tuple' object has no attribute 'to_dic'
+
+Date: 2022-07-23 10:08:07.798797
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 354, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 10:09:41.889323
+
+[markupMaker]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\bot.py", line 82, in markupMaker
+    markup.row(a
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\types.py", line 804, in row
+    btn_array.append(button.to_dic())
+AttributeError: 'tuple' object has no attribute 'to_dic'
+
+Date: 2022-07-23 10:09:52.537839
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 354, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 10:11:52.315024
+
+[markupMaker]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\bot.py", line 82, in markupMaker
+    markup.row(a).row(b).row(pin[10])
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\types.py", line 804, in row
+    btn_array.append(button.to_dic())
+AttributeError: 'tuple' object has no attribute 'to_dic'
+
+Date: 2022-07-23 10:12:16.678852
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 354, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 10:13:08.554371
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 354, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 10:14:47.460717
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 354, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 10:21:23.803915
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 354, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 10:21:28.813683
+
+[get_accounts][account_tb]---->ОШИБКА:  отношение "account_tb" не существует
+LINE 1: ...guage  ,        feedback_st  , timer_conv  FROM   account_tb...
+                                                             ^
+
+Date: 2022-07-23 10:21:49.690616
+
+[get_accounts][account_tb]---->ОШИБКА:  отношение "account_tb" не существует
+LINE 1: ...guage  ,        feedback_st  , timer_conv  FROM   account_tb...
+                                                             ^
+
+Date: 2022-07-23 10:22:21.985113
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 354, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 10:24:54.115926
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 354, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 10:25:36.884566
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 354, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 10:42:08.922763
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 354, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 10:42:43.670337
+
+[lol]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\bot.py", line 466, in lol
+    operInit(msg, key[1], key[2], _id)
+TypeError: operInit() takes 3 positional arguments but 4 were given
+
+Date: 2022-07-23 10:44:43.681646
+
+[operInit]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\bot.py", line 318, in operInit
+    operKeyboardMaker(msg, set_act, 0 if isRu(msg) else 1)
+  File "c:\code\bot_swiss\bot.py", line 52, in isRu
+    return True if _accs[str(msg.chat.id) if id == None else str(id)].language == "Русский" else False
+AttributeError: 'NoneType' object has no attribute 'chat'
+
+Date: 2022-07-23 10:44:48.511708
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 354, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 10:46:31.441657
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 354, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 10:47:55.817298
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 53, in insert_message
+    cur.execute("INSERT INTO message_tb (date_start, user_id, oper_id, text, status) "
+psycopg2.errors.NumericValueOutOfRange: ОШИБКА:  целое вне диапазона
+
+
+Date: 2022-07-23 10:47:56.008353
+
+[operKeyboardMaker]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\bot.py", line 269, in operKeyboardMaker
+    sendReqtoOper(which_oper,
+  File "c:\code\bot_swiss\bot.py", line 227, in sendReqtoOper
+    bot.send_message(int(oper_id),
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\__init__.py", line 600, in send_message
+    apihelper.send_message(self.token, chat_id, text, disable_web_page_preview, reply_to_message_id,
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\apihelper.py", line 154, in send_message
+    return _make_request(token, method_url, params=payload, method='post')
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\apihelper.py", line 60, in _make_request
+    return _check_result(method_name, result)['result']
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\apihelper.py", line 79, in _check_result
+    raise ApiException(msg, method_name, result)
+telebot.apihelper.ApiException: A request to the Telegram API was unsuccessful. The server returned HTTP 400 Bad Request. Response body:
+[b'{"ok":false,"error_code":400,"description":"Bad Request: chat not found"}']
+
+Date: 2022-07-23 10:48:09.584790
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 354, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 10:55:28.315307
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 354, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 10:56:09.813247
+
+Error in the 'call' part!
+
+[
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\bot.py", line 992, in callback_inline
+    'Спасибо за оценку!' if isRu(person_id = _id)
+TypeError: isRu() got an unexpected keyword argument 'person_id'
+
+]
+Date: 2022-07-23 10:58:40.168973
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 53, in insert_message
+    cur.execute("INSERT INTO message_tb (date_start, user_id, oper_id, text, status) "
+psycopg2.errors.NumericValueOutOfRange: ОШИБКА:  целое вне диапазона
+
+
+Date: 2022-07-23 10:58:58.013544
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 354, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 11:02:12.252303
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 53, in insert_message
+    cur.execute("INSERT INTO message_tb (date_start, user_id, oper_id, text, status) "
+psycopg2.errors.NumericValueOutOfRange: ОШИБКА:  целое вне диапазона
+
+
+Date: 2022-07-23 11:10:57.482572
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 363, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 11:11:18.457561
+
+[insert_message]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 54, in insert_message
+    cur.execute(
+psycopg2.errors.NumericValueOutOfRange: ОШИБКА:  целое вне диапазона
+
+
+Date: 2022-07-23 11:19:32.751514
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 363, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 11:19:35.366902
+
+[insert_message]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 54, in insert_message
+    cur.execute(
+ValueError: unsupported format character 'i' (0x69) at index %Id
+
+Date: 2022-07-23 11:20:03.122558
 
 DB_CONNECTION [True] <- connect()
 
 
-Date: 2022-07-12 21:11:04.403462
+Date: 2022-07-23 11:20:10.871511
 
-DB_INSERT_1 [True] <- connect()
+[insert_message]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 54, in insert_message
+    cur.execute(
+ValueError: unsupported format character 'd' (0x64) at index %Id
 
+Date: 2022-07-23 11:20:10.872509
 
-Date: 2022-07-12 21:11:04.447468
-
-DB_INSERT_2 [True] <- connect()
-
-
-Date: 2022-07-12 21:12:49.891153
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:12:54.929113
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:12:57.935062
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:13:19.947410
-
-DB_CONNECTION [True] <- connect()
+DB_INSERT_1 [False] <- connect()
 
 
-Date: 2022-07-12 21:13:19.973515
+Date: 2022-07-23 11:20:13.646218
 
-DB_INSERT_1 [True] <- connect()
+[insert_message]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 77, in insert_message
+    text = f'#id Переписки: {cur.fetchall()[0][0]}'
+IndexError: list index out of range
+
+Date: 2022-07-23 11:20:13.647220
+
+DB_INSERT_2 [False] <- connect()
 
 
-Date: 2022-07-12 21:13:19.992575
+Date: 2022-07-23 11:20:45.612944
 
-DB_INSERT_2 [True] <- connect()
+[insert_message]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 54, in insert_message
+    cur.execute(
+ValueError: unsupported format character 'd' (0x64) at index %Id
 
-
-Date: 2022-07-12 21:25:00.264638
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:25:03.226976
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:25:11.999516
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:25:12.016871
+Date: 2022-07-23 11:20:59.173304
 
 ------ERROR!------
 
 Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 354, in insert_account
-    cur.execute( "INSERT INTO account_tb (telegram_id  , login     ,   "
-psycopg2.errors.SyntaxError: syntax error at or near "["
-LINE 1: ...(281321076, mtvyp       , Matvei         ,        []  , clos...
-                                                             ^
+  File "c:\code\bot_swiss\database.py", line 363, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
 
 
-Date: 2022-07-12 21:25:13.385332
+Date: 2022-07-23 11:22:43.680702
+
+[insert_message]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 60, in insert_message
+    _date, user_id, oper_id, text, status)
+UnboundLocalError: local variable '_date' referenced before assignment
+
+Date: 2022-07-23 11:23:34.698487
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 363, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 11:23:47.325632
+
+[insert_message]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 62, in insert_message
+    cur.execute(
+TypeError: argument 1 must be a string or unicode object: got tuple instead
+
+Date: 2022-07-23 11:24:36.611905
+
+[insert_message]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 62, in insert_message
+    cur.execute(
+TypeError: argument 1 must be a string or unicode object: got tuple instead
+
+Date: 2022-07-23 11:24:40.701820
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 363, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 11:25:23.750908
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 363, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 12:34:49.429535
 
 Program error!
 
 Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/bot.py", line 1078, in <module>
-    bot.polling(none_stop=True)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/__init__.py", line 620, in polling
-    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/__init__.py", line 694, in __threaded_polling
-    raise e
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/__init__.py", line 650, in __threaded_polling
-    self.worker_pool.raise_exceptions()
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/util.py", line 143, in raise_exceptions
-    raise self.exception_info
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/util.py", line 89, in run
-    task(*args, **kwargs)
-  File "/Users/matvey/Documents/code/bot_swiss/bot.py", line 188, in welcome
-    inlineMessages(
-TypeError: inlineMessages() got an unexpected keyword argument 'message'
-
-Date: 2022-07-12 21:26:31.434784
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:26:33.889214
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:26:34.773626
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:26:34.785182
-
-------ERROR!------
-
-Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 354, in insert_account
-    cur.execute( "INSERT INTO account_tb (telegram_id  , login     ,   "
-psycopg2.errors.SyntaxError: syntax error at or near "["
-LINE 1: ...(281321076, mtvyp       , Matvei         ,        []  , clos...
-                                                             ^
-
-
-Date: 2022-07-12 21:27:04.232533
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:27:20.127240
-
-------ERROR!------
-
-Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 381, in update_account
-    cur.execute(f"UPDATE account_tb SET {param} = {data           } "
-psycopg2.errors.UndefinedFunction: operator does not exist: character varying = integer
-LINE 1: ... language = Русский WHERE             telegram_id = 28132107...
-                                                             ^
-HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
-
-
-Date: 2022-07-12 21:27:26.551528
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:27:34.321126
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:39:14.137064
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:39:15.783528
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:39:15.800144
-
-------ERROR!------
-
-Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 354, in insert_account
-    cur.execute( "INSERT INTO account_tb (telegram_id  , login     ,   "
-psycopg2.errors.SyntaxError: syntax error at or near "["
-LINE 1: ...(281321076, mtvyp       , Matvei         ,        []  , clos...
-                                                             ^
-
-
-Date: 2022-07-12 21:39:17.568603
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:39:30.372712
-
-------ERROR!------
-
-Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 381, in update_account
-    cur.execute(f"UPDATE account_tb SET {param} = {data           } "
-psycopg2.errors.UndefinedFunction: operator does not exist: character varying = integer
-LINE 1: ... language = Русский WHERE             telegram_id = 28132107...
-                                                             ^
-HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
-
-
-Date: 2022-07-12 21:39:47.797841
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:40:17.957025
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:40:48.215205
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:41:18.515165
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:41:48.708825
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:42:19.257250
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:42:49.446819
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:43:19.656580
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:43:49.886336
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:44:20.022434
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:44:50.173206
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:45:20.315467
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:45:50.558236
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:46:20.852361
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:46:51.427151
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:47:21.635471
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:47:51.915152
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:48:22.170910
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:48:52.507555
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:49:22.762605
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:49:53.052982
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:50:23.403505
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:50:53.704488
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:51:24.013952
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:51:54.303207
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:52:24.587112
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:52:54.908069
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:53:25.178965
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:53:55.488893
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:54:25.777037
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:54:56.070625
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:55:26.407052
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:55:56.717041
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:56:27.042702
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:56:57.345594
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:57:27.586992
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:57:57.913185
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:58:28.213894
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:58:58.546758
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:59:28.864131
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 21:59:59.137957
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:00:29.451075
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:00:59.682709
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:01:30.021337
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:02:00.340276
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:02:30.566144
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:03:00.943856
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:03:31.334261
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:04:01.665106
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:04:32.075641
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:05:02.435366
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:05:32.778084
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:06:03.100294
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:06:33.432501
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:07:03.781006
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:07:34.103560
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:08:04.422885
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:08:34.707745
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:09:04.986677
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:09:35.312332
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:10:05.629863
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:10:35.935100
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:11:06.182319
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:11:36.531685
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:12:06.817546
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:12:37.107000
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:13:07.405132
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:13:37.708042
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:14:08.022763
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:14:38.460105
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:14:53.375717
-
-Program error!
-
-Traceback (most recent call last):
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/connectionpool.py", line 426, in _make_request
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\urllib3\connectionpool.py", line 421, in _make_request
     six.raise_from(e, None)
   File "<string>", line 3, in raise_from
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/connectionpool.py", line 421, in _make_request
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\urllib3\connectionpool.py", line 416, in _make_request
     httplib_response = conn.getresponse()
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/http/client.py", line 1332, in getresponse
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\http\client.py", line 1322, in getresponse
     response.begin()
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/http/client.py", line 303, in begin
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\http\client.py", line 303, in begin
     version, status, reason = self._read_status()
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/http/client.py", line 264, in _read_status
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\http\client.py", line 264, in _read_status
     line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/socket.py", line 669, in readinto
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\socket.py", line 669, in readinto
     return self._sock.recv_into(b)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/ssl.py", line 1241, in recv_into
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\ssl.py", line 1241, in recv_into
     return self.read(nbytes, buffer)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/ssl.py", line 1099, in read
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\ssl.py", line 1099, in read
     return self._sslobj.read(len, buffer)
 socket.timeout: The read operation timed out
 
 During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/requests/adapters.py", line 440, in send
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\requests\adapters.py", line 439, in send
     resp = conn.urlopen(
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/connectionpool.py", line 726, in urlopen
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\urllib3\connectionpool.py", line 719, in urlopen
     retries = retries.increment(
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/util/retry.py", line 410, in increment
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\urllib3\util\retry.py", line 400, in increment
     raise six.reraise(type(error), error, _stacktrace)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/packages/six.py", line 735, in reraise
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\urllib3\packages\six.py", line 735, in reraise
     raise value
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/connectionpool.py", line 670, in urlopen
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\urllib3\connectionpool.py", line 665, in urlopen
     httplib_response = self._make_request(
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/connectionpool.py", line 428, in _make_request
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\urllib3\connectionpool.py", line 423, in _make_request
     self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/connectionpool.py", line 335, in _raise_timeout
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\urllib3\connectionpool.py", line 330, in _raise_timeout
     raise ReadTimeoutError(
-urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=25)
+urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=30)
 
 During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/bot.py", line 1078, in <module>
+  File "c:\code\bot_swiss\bot.py", line 1237, in <module>
     bot.polling(none_stop=True)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/__init__.py", line 620, in polling
-    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/__init__.py", line 694, in __threaded_polling
-    raise e
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/__init__.py", line 649, in __threaded_polling
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\__init__.py", line 392, in polling
+    self.__threaded_polling(none_stop, interval, timeout)
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\__init__.py", line 415, in __threaded_polling
     polling_thread.raise_exceptions()
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/util.py", line 107, in raise_exceptions
-    raise self.exception_info
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/util.py", line 89, in run
-    task(*args, **kwargs)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/__init__.py", line 359, in __retrieve_updates
-    updates = self.get_updates(offset=(self.last_update_id + 1),
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/__init__.py", line 337, in get_updates
-    json_updates = apihelper.get_updates(self.token, offset, limit, timeout, allowed_updates, long_polling_timeout)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/apihelper.py", line 322, in get_updates
-    return _make_request(token, method_url, params=payload)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/apihelper.py", line 146, in _make_request
-    result = _get_req_session().request(
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/requests/sessions.py", line 529, in request
-    resp = self.send(prep, **send_kwargs)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/requests/sessions.py", line 645, in send
-    r = adapter.send(request, **kwargs)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/requests/adapters.py", line 532, in send
-    raise ReadTimeout(e, request=request)
-requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=25)
-
-Date: 2022-07-12 22:15:08.606108
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:19:17.530677
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:19:20.374709
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:19:30.530043
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:19:30.544486
-
-------ERROR!------
-
-Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 354, in insert_account
-    cur.execute( "INSERT INTO account_tb (telegram_id  , login     ,   "
-psycopg2.errors.SyntaxError: syntax error at or near "["
-LINE 1: ...(281321076, mtvyp       , Matvei         ,        []  , clos...
-                                                             ^
-
-
-Date: 2022-07-12 22:19:50.632068
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:19:58.087406
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:19:58.093334
-
-------ERROR!------
-
-Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 354, in insert_account
-    cur.execute( "INSERT INTO account_tb (telegram_id  , login     ,   "
-psycopg2.errors.SyntaxError: syntax error at or near "["
-LINE 1: ...(281321076, mtvyp       , Matvei         ,        []  , clos...
-                                                             ^
-
-
-Date: 2022-07-12 22:20:01.782939
-
-------ERROR!------
-
-Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 381, in update_account
-    cur.execute(f"UPDATE account_tb SET {param} = {data           } "
-psycopg2.errors.UndefinedFunction: operator does not exist: character varying = integer
-LINE 1: ... language = Русский WHERE             telegram_id = 28132107...
-                                                             ^
-HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
-
-
-Date: 2022-07-12 22:20:07.313619
-
-------ERROR!------
-
-Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 381, in update_account
-    cur.execute(f"UPDATE account_tb SET {param} = {data           } "
-psycopg2.errors.UndefinedFunction: operator does not exist: character varying = integer
-LINE 1: ... language = Русский WHERE             telegram_id = 28132107...
-                                                             ^
-HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
-
-
-Date: 2022-07-12 22:20:20.946135
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:20:51.396989
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:21:21.693780
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:21:30.400721
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:21:30.413222
-
-------ERROR!------
-
-Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 354, in insert_account
-    cur.execute( "INSERT INTO account_tb (telegram_id  , login     ,   "
-psycopg2.errors.SyntaxError: syntax error at or near "["
-LINE 1: ...(281321076, mtvyp       , Matvei         ,        []  , clos...
-                                                             ^
-
-
-Date: 2022-07-12 22:21:51.847381
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:22:22.040813
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:22:52.244476
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:23:16.231244
-
-Program error!
-
-Traceback (most recent call last):
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/connectionpool.py", line 426, in _make_request
-    six.raise_from(e, None)
-  File "<string>", line 3, in raise_from
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/connectionpool.py", line 421, in _make_request
-    httplib_response = conn.getresponse()
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/http/client.py", line 1332, in getresponse
-    response.begin()
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/http/client.py", line 303, in begin
-    version, status, reason = self._read_status()
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/http/client.py", line 264, in _read_status
-    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/socket.py", line 669, in readinto
-    return self._sock.recv_into(b)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/ssl.py", line 1241, in recv_into
-    return self.read(nbytes, buffer)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/ssl.py", line 1099, in read
-    return self._sslobj.read(len, buffer)
-socket.timeout: The read operation timed out
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/requests/adapters.py", line 440, in send
-    resp = conn.urlopen(
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/connectionpool.py", line 726, in urlopen
-    retries = retries.increment(
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/util/retry.py", line 410, in increment
-    raise six.reraise(type(error), error, _stacktrace)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/packages/six.py", line 735, in reraise
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\util.py", line 79, in raise_exceptions
+    six.reraise(self.exc_info[0], self.exc_info[1], self.exc_info[2])
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\six.py", line 703, in reraise
     raise value
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/connectionpool.py", line 670, in urlopen
-    httplib_response = self._make_request(
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/connectionpool.py", line 428, in _make_request
-    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/connectionpool.py", line 335, in _raise_timeout
-    raise ReadTimeoutError(
-urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=25)
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/bot.py", line 1081, in <module>
-    bot.polling(none_stop=True)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/__init__.py", line 620, in polling
-    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/__init__.py", line 694, in __threaded_polling
-    raise e
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/__init__.py", line 649, in __threaded_polling
-    polling_thread.raise_exceptions()
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/util.py", line 107, in raise_exceptions
-    raise self.exception_info
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/util.py", line 89, in run
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\util.py", line 60, in run
     task(*args, **kwargs)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/__init__.py", line 359, in __retrieve_updates
-    updates = self.get_updates(offset=(self.last_update_id + 1),
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/__init__.py", line 337, in get_updates
-    json_updates = apihelper.get_updates(self.token, offset, limit, timeout, allowed_updates, long_polling_timeout)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/apihelper.py", line 322, in get_updates
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\__init__.py", line 279, in __retrieve_updates
+    updates = self.get_updates(offset=(self.last_update_id + 1), timeout=timeout)
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\__init__.py", line 249, in get_updates
+    json_updates = apihelper.get_updates(self.token, offset, limit, timeout, allowed_updates)
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\apihelper.py", line 194, in get_updates
     return _make_request(token, method_url, params=payload)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/apihelper.py", line 146, in _make_request
-    result = _get_req_session().request(
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/requests/sessions.py", line 529, in request
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\telebot\apihelper.py", line 57, in _make_request
+    result = _get_req_session().request(method, request_url, params=params, files=files,
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\requests\sessions.py", line 530, in request
     resp = self.send(prep, **send_kwargs)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/requests/sessions.py", line 645, in send
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\requests\sessions.py", line 643, in send
     r = adapter.send(request, **kwargs)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/requests/adapters.py", line 532, in send
+  File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\requests\adapters.py", line 529, in send
     raise ReadTimeout(e, request=request)
-requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=25)
-
-Date: 2022-07-12 22:23:22.469712
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:31:34.487113
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:31:36.403592
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:31:36.417736
-
-------ERROR!------
-
-Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 354, in insert_account
-    cur.execute( "INSERT INTO account_tb (telegram_id  , login     ,   "
-psycopg2.errors.SyntaxError: syntax error at or near "["
-LINE 1: ...(281321076, mtvyp       , Matvei         ,        []  , clos...
-                                                             ^
-
-
-Date: 2022-07-12 22:31:36.665632
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:31:48.801115
-
-------ERROR!------
-
-Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 381, in update_account
-    cur.execute(f"UPDATE account_tb SET {param} = {data           } "
-psycopg2.errors.UndefinedFunction: operator does not exist: character varying = integer
-LINE 1: ... language = Русский WHERE             telegram_id = 28132107...
-                                                             ^
-HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
-
-
-Date: 2022-07-12 22:32:06.921923
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:32:37.109477
-
-[get_accounts]---->Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/database.py", line 408, in get_accounts
-    accounts = ut.takeClassDict(inst = Account(accounts),
-  File "/Users/matvey/Documents/code/bot_swiss/utility.py", line 10, in takeClassDict
-    return var | dict.fromkeys(getattr(inst, attr), inst)
-TypeError: unsupported operand type(s) for |: 'tuple' and 'dict'
-
-Date: 2022-07-12 22:32:42.398473
-
-Program error!
-
-Traceback (most recent call last):
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/connectionpool.py", line 426, in _make_request
-    six.raise_from(e, None)
-  File "<string>", line 3, in raise_from
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/connectionpool.py", line 421, in _make_request
-    httplib_response = conn.getresponse()
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/http/client.py", line 1332, in getresponse
-    response.begin()
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/http/client.py", line 303, in begin
-    version, status, reason = self._read_status()
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/http/client.py", line 264, in _read_status
-    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/socket.py", line 669, in readinto
-    return self._sock.recv_into(b)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/ssl.py", line 1241, in recv_into
-    return self.read(nbytes, buffer)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/ssl.py", line 1099, in read
-    return self._sslobj.read(len, buffer)
-socket.timeout: The read operation timed out
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/requests/adapters.py", line 440, in send
-    resp = conn.urlopen(
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/connectionpool.py", line 726, in urlopen
-    retries = retries.increment(
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/util/retry.py", line 410, in increment
-    raise six.reraise(type(error), error, _stacktrace)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/packages/six.py", line 735, in reraise
-    raise value
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/connectionpool.py", line 670, in urlopen
-    httplib_response = self._make_request(
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/connectionpool.py", line 428, in _make_request
-    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/urllib3/connectionpool.py", line 335, in _raise_timeout
-    raise ReadTimeoutError(
-urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=25)
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/Users/matvey/Documents/code/bot_swiss/bot.py", line 1081, in <module>
-    bot.polling(none_stop=True)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/__init__.py", line 620, in polling
-    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/__init__.py", line 694, in __threaded_polling
-    raise e
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/__init__.py", line 649, in __threaded_polling
-    polling_thread.raise_exceptions()
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/util.py", line 107, in raise_exceptions
-    raise self.exception_info
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/util.py", line 89, in run
-    task(*args, **kwargs)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/__init__.py", line 359, in __retrieve_updates
-    updates = self.get_updates(offset=(self.last_update_id + 1),
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/__init__.py", line 337, in get_updates
-    json_updates = apihelper.get_updates(self.token, offset, limit, timeout, allowed_updates, long_polling_timeout)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/apihelper.py", line 322, in get_updates
-    return _make_request(token, method_url, params=payload)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/telebot/apihelper.py", line 146, in _make_request
-    result = _get_req_session().request(
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/requests/sessions.py", line 529, in request
-    resp = self.send(prep, **send_kwargs)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/requests/sessions.py", line 645, in send
-    r = adapter.send(request, **kwargs)
-  File "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/requests/adapters.py", line 532, in send
-    raise ReadTimeout(e, request=request)
-requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=25)
+requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=30)
