@@ -49,18 +49,20 @@ def insert_message(user_id, oper_id, text = 'TEXT DATABASE', status = 'open') ->
     if con and cur:
         try:
             if not oper_id:
+                
                 _date = date.today().timetuple()[0:3]
-                txt = 'INSERT INTO message_tb (  '\
-                    '   date_start            ,'   \
-                    '   user_id               ,'\
-                    '   oper_id               ,'\
-                    '   text                  ,'\
-                    '   status                 '\
-                    ')'\
-                    'VALUES (%s, %s, %s, %s, %s)',\
-                    _date, user_id, oper_id, text, status
                 cur.execute(
-                    txt
+                    'INSERT INTO message_tb (  '
+                    '   date_start            ,'   
+                    '   user_id               ,'
+                    '   oper_id               ,'
+                    '   text                  ,'
+                    '   status                 '
+                    ') VALUES (                '
+                   f'    {_date}  , {user_id} ,'
+                   f'    {oper_id}, \'{text}\','
+                   f'    \'{status}\'              '
+                   ')                          '
                 )
 
                 con.commit()
@@ -204,16 +206,16 @@ def get_data(dating : str,
             create_db(
                 'CREATE TABLE feedback_tb(    '
                 '    id serial primary key   ,' 
-                '    oper_id integer         ,'
-                '    user_id integer         ,'
+                '    oper_id varchar(15)     ,'
+                '    user_id varchar(15)     ,'
                 '    date_enter varchar(255) ,' 
                 '    text_fb text            ,'
                 '    status varchar(255)      '
                 ');' if action == 'feedback_tb' else
                 'CREATE TABLE message_tb(     '
                 '    id serial primary key   ,'
-                '    oper_id integer         ,'
-                '    user_id integer         ,'
+                '    oper_id varchar(15)     ,'
+                '    user_id varchar(15)     ,'
                 '    date_start varchar(255) ,'
                 '    text text               ,'
                 '    status varchar(255)      '

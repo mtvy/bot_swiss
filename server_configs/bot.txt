@@ -673,3 +673,168 @@ Traceback (most recent call last):
   File "C:\Users\mdpru\AppData\Local\Programs\Python\Python38\lib\site-packages\requests\adapters.py", line 529, in send
     raise ReadTimeout(e, request=request)
 requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=30)
+
+Date: 2022-07-23 13:43:18.095879
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 363, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 13:44:38.734790
+
+[insert_message]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 62, in insert_message
+    cur.execute(
+TypeError: argument 1 must be a string or unicode object: got tuple instead
+
+Date: 2022-07-23 13:44:40.552223
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 363, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 13:45:26.619250
+
+DB_CONNECTION [True] <- connect()
+
+
+Date: 2022-07-23 13:46:18.549047
+
+[insert_message]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 62, in insert_message
+    cur.execute(
+TypeError: argument 1 must be a string or unicode object: got tuple instead
+
+Date: 2022-07-23 13:46:32.902211
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 363, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 13:48:12.870789
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 363, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 13:48:15.856746
+
+[insert_message]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 62, in insert_message
+    cur.execute(
+psycopg2.errors.NumericValueOutOfRange: ОШИБКА:  целое вне диапазона
+
+
+Date: 2022-07-23 13:52:40.398494
+
+[get_accounts][feedback_tb]---->ОШИБКА:  отношение "feedback_tb" не существует
+LINE 1: SELECT id, user_id FROM feedback_tb WHERE date_enter = '🏠 Ад...
+                                ^
+
+Date: 2022-07-23 13:52:56.323029
+
+[get_accounts][message_tb]---->ОШИБКА:  отношение "message_tb" не существует
+LINE 1: SELECT id, user_id FROM message_tb WHERE date_start = '🏠 Адр...
+                                ^
+
+Date: 2022-07-23 13:53:04.849658
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 365, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 13:53:33.845105
+
+[insert_message]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 54, in insert_message
+    cur.execute(
+psycopg2.errors.SyntaxError: ОШИБКА:  ошибка синтаксиса (примерное положение: "DATABASE")
+LINE 1: ...          (2022, 7, 23)  , 5472647497,    0, TEXT DATABASE  ...
+                                                             ^
+
+
+Date: 2022-07-23 13:54:52.355582
+
+[insert_message]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 54, in insert_message
+    cur.execute(
+psycopg2.errors.UndefinedColumn: ОШИБКА:  столбец "open" не существует
+LINE 1: ... 7, 23)  , 5472647497 ,    0, 'TEXT DATABASE',    open      ...
+                                                             ^
+
+
+Date: 2022-07-23 13:55:09.249761
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 365, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 13:56:16.339946
+
+[insert_message]---->Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 54, in insert_message
+    cur.execute(
+psycopg2.errors.UndefinedColumn: ОШИБКА:  столбец "TEXT DATABASE" не существует
+LINE 1: ...              (2022, 7, 23)  , 5472647497 ,    0, "TEXT DATA...
+                                                             ^
+
+
+Date: 2022-07-23 13:56:18.808885
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 365, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
+
+Date: 2022-07-23 13:58:15.782042
+
+------ERROR!------
+
+Traceback (most recent call last):
+  File "c:\code\bot_swiss\database.py", line 365, in dbMessageId
+    cur.execute(text)
+psycopg2.errors.UndefinedTable: ОШИБКА:  отношение "messageid_tb" не существует
+LINE 1: SELECT      message_id   FROM  messageId_tb                
+                                       ^
+
