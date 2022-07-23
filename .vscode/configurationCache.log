@@ -1,1 +1,0 @@
-{"buildTargets":["clean","configs","db_debug","restart_bot","start_bot","stop_bot"],"launchTargets":[],"customConfigurationProvider":{"workspaceBrowse":{"browsePath":[],"compilerArgs":[]},"fileIndex":[]}}
