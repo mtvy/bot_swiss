@@ -86,7 +86,7 @@ def markupMaker(mode : str, button : Dict[str, str]) -> types.ReplyKeyboardMarku
         else: 
             markup.row(          pin[0], pin[1]
                 ).row(        pin[2], pin[3], pin[4]
-                ).row(              pin[5:7]
+                ).row(           pin[5], pin[6]
             )
         return markup
     except:
@@ -348,10 +348,10 @@ def redirectInit(message, action):
                    action = all_ids_arr) else str(message.chat.id), markup_arr = [["👍", "👍"], ["👎", "👎"]], action = False)
 
    
-def stopConversation(message, lang, _id = None, action = None) -> None:
+def stopConversation(msg, lang, _id = None, action = None) -> None:
     global accounts
 
-    u_id : str = _id if _id != None else str(message.chat.id)
+    u_id : str = _id if _id != None else str(msg.chat.id)
 
     push_text = f"{EMJ_EXCLAMATION} Завершение диалога" \
                 if lang == 0 or lang == 'Русский' else  \
@@ -392,6 +392,8 @@ def stopConversation(message, lang, _id = None, action = None) -> None:
                           ['👎', '👎']], 
             action = False
         )
+
+        change_status(msg.chat.id)
             
     update_account(acc, 'conversation', 'close')
     update_account(acc, 'tags', [])
@@ -1064,10 +1066,7 @@ def callback_inline(call):
             if accounts[str(_id)].conversation == 'close':
                 for u_id in accounts.keys():
                     if u_id == _data and accounts[u_id].conversation == 'mid':
-                        markup = markupMaker(
-                            action = 'redirect', 
-                            button_text = buttons_oper_text
-                        )
+                        markup = markupMaker('redirect', buttons_oper_text)
                         accounts[str(_id)].tags.append(str(u_id))
                         update_account(
                             accounts[str(_id)], 
@@ -1220,13 +1219,7 @@ def callback_inline(call):
 
 
     except:
-        saveLogs(
-            f"Error in the 'call' part!\n\n[\n{traceback.format_exc()}\n]"
-        )
-        for id in label_change_ids_arr:
-            bot.send_message(int(id), 
-                f"Error in the 'call' part!\n\n{traceback.format_exc()}"
-            )
+        saveLogs(f"[call]---->{traceback.format_exc()}\n]")
 #\==================================================================/#
 
 

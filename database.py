@@ -146,28 +146,38 @@ def insert_text(text, id, status = 'open') -> bool:
 
     return False
 
-def change_status(id, status = 'open', set = 'close') -> bool:
+def change_status(_id, status = 'open', _set = 'close') -> bool:
     con, cur = connect()
     if con and cur:
         try:
 
-            cur.execute( "SELECT user_id, oper_id FROM message_tb WHERE status = '{status}' "
-                        f"AND (oper_id = {id} OR user_id = {id})")
+            cur.execute(
+                 'SELECT user_id, oper_id FROM message_tb     '
+                f"WHERE status = '{status}'                   "
+                f"AND (oper_id = '{_id}' OR user_id = '{_id}')"
+            )
 
-            user_id, oper_id = cur.fetchall()[0][:2]
+            user_id, oper_id = map(int, cur.fetchall()[0][:2])
 
             if user_id and oper_id:
-                cur.execute(f"UPDATE message_tb SET status = '{set}' WHERE status = '{status}' "
-                            f"AND user_id = {id} OR oper_id = {id}                             ")
+                cur.execute(
+                    f"UPDATE message_tb SET status = '{_set}'    "
+                    f"WHERE status = '{status}'                  "
+                    f"AND (user_id = '{_id}' OR oper_id = '{_id}')"
+                )
             else:
-                cur.execute(f"DELETE FROM message_tb WHERE status = '{status}' "
-                            f"AND (oper_id = {id} OR user_id = {id})           ")
+                cur.execute(
+                     'DELETE FROM message_tb    '
+                    f"WHERE status = '{status}' "
+                    f"AND (oper_id = '{_id}'    "
+                    f"  OR user_id = '{_id}')   "
+                )
 
             con.commit()
             return True
 
         except:
-            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}')
+            debug.saveLogs(f'[change_status]---->{error.format_exc()}')
     
     return False
 
@@ -492,7 +502,7 @@ def create_db(com : str) -> bool:
 
 ### Unit test for database.py
 
-def test_database() -> bool:
+def __test_database() -> bool:
     
     test_connect, _ = connect()
     debug.saveLogs(f'DB_CONNECTION [{True if test_connect else False}] <- connect()\n\n')
@@ -505,7 +515,7 @@ def test_database() -> bool:
 
 
 if __name__ == "__main__":
-    test_database()
+    __test_database()
     
     
     #acc = database.get_accounts_data()
