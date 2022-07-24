@@ -9,12 +9,7 @@ import traceback, \
          schedule, \
            telebot, \
                time, \
-                  io, \
-                  os
-from numpy import save
-from PIL import Image,  \
-            ImageDraw,   \
-            ImageFont 
+                  io
 
 from multiprocessing import Process
 from telebot import types
@@ -133,10 +128,8 @@ class P_schedule:
             try:
                 bot.forward_message(281321076, CHANNEL_ID, message_id)
                 dbMessageId(action = 'save_id', message_id = message_id + 1)
-            except Exception as error:
-                print(f"Error pushing news!\n\n{repr(error)}")
-                for id_er in label_change_ids_arr:
-                    bot.send_message(int(id_er), f"Error pushing news!\n\n{repr(error)}")
+            except:
+                saveLogs(f'[send_post]---->{traceback.format_exc()}')
 #\==================================================================/#
 
 
@@ -235,14 +228,16 @@ def sendReqtoOper(_oper : str, op_txt : str, markup) -> None:
         except:
             saveLogs(f'[sendReqtoOper]---->{traceback.format_exc()}')
         
-def operKeyboardMaker(msg, which_oper, lang) -> None:
+def operKeyboardMaker(msg, which_oper, lang, u_id = None) -> None:
     global accounts
 
-    _id : str = str(msg.chat.id)
+    _id : str = u_id if u_id else str(msg.chat.id)
+    
+    f_name = accounts[_id].name
+    u_name = accounts[_id].login
 
     try:
         accounts[_id].conversation = 'mid'
-        message_ids_dict[_id] = msg
 
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         markup.add(
@@ -270,15 +265,14 @@ def operKeyboardMaker(msg, which_oper, lang) -> None:
             types.InlineKeyboardButton("Принять", callback_data=_id)
         )
 
-        insert_message(msg.chat.id, 0)
+        insert_message(int(_id), 0)
 
         sendReqtoOper(which_oper, 
-            f'-------Запрос переписки!-------  \n'
-            f'id:        {msg.chat.id}         \n'
-            f'Имя:       {msg.chat.first_name} \n'
-            f'Фамилия:   {msg.chat.last_name}  \n'
-            f'Username: @{msg.chat.username}   \n'
-            f'Язык: Русский\n'
+            f'-------Запрос переписки!------- \n'
+            f'id:        {_id}                \n'
+            f'Имя:       {f_name}             \n'
+            f'Username: @{u_name}             \n'
+            f'Язык: Русский                   \n'
             '--------------------------------', 
             markup
         )
@@ -318,34 +312,56 @@ def pushingLabelFromFile(msg, _accs, path1, path2) -> None:
         openfileforRead(None, path1 if isRu(_accs, msg = msg) else path2)
     )
 
-def operInit(msg, accs, action, set_act):
+def operInit(msg, accs, action, set_act, u_id = None):
     try:
-        if checkOperId(str(msg.chat.id), action): 
+        if checkOperId(str(msg.chat.id), action):
             bot.send_message(msg.chat.id, "Вы оператор!")
-        else: 
-            operKeyboardMaker(msg, set_act, 0 if isRu(accs, msg) else 1)
+        else:
+            operKeyboardMaker(msg, set_act, 
+                0 if isRu(accs, msg) else 1, u_id
+            )
     except:
         saveLogs(f'[operInit]---->{traceback.format_exc()}')
         work_msg(msg.chat.id)
         
-def redirectInit(message, action):
-    global account
+def redirectInit(msg, action) -> None:
+    global accounts
 
-    bot.send_message(str(message.chat.id), action)
-    if len(account[str(message.chat.id)].tags) != 0:
+    _id : str = str(msg.chat.id)
+    
+    try:
+        bot.send_message(_id, action)
 
-        bot.send_message(str(account[str(message.chat.id)].tags[0]), action)
-        
-        update_account(account = account[account[str(message.chat.id)].tags[0]], parametr = 'conversation', data = 'close')
-        update_account(account = account[account[str(message.chat.id)].tags[0]], parametr = 'tags', data = [])        
-        account = get_accounts()
+        if len(accounts[_id].tags) != 0:
 
-        keyboardRefMaker(message = message, lang = 0 if isRu(message) else 1, pers_id = account[str(message.chat.id)].tags[0])
+            _tag : str = accounts[_id].tags[0]
 
-    keyboardRefMaker(message = message, lang = 0)
-    inlineMessages(markup_text = 'Оцените работу оператора!' if isRu(message) else 'Operator ishini baholang!', 
-                   person_id = account[str(message.chat.id)].tags[0] if checkOperId(person_id = str(message.chat.id), 
-                   action = all_ids_arr) else str(message.chat.id), markup_arr = [["👍", "👍"], ["👎", "👎"]], action = False)
+            bot.send_message(str(_tag), action)
+
+            tag : str = accounts[_tag]
+
+            update_account(tag, 'conversation', 'close')
+            update_account(tag, 'tags', [])        
+            accounts = get_accounts()
+
+            keyboardRefMaker(msg, 
+                0 if isRu(accounts, msg) else 1, _tag
+            )
+
+        keyboardRefMaker(msg, 0)
+        inlineMessages(
+            markup_text = 'Оцените работу оператора!' 
+                if isRu(accounts, msg) else 
+                'Operator ishini baholang!', 
+            _id = accounts[_id].tags[0] 
+                if checkOperId(_id, all_ids_arr) else _id, 
+            markup_arr = [["👍", "👍"], 
+                          ["👎", "👎"]], 
+            action = False
+        )
+    except:
+        saveLogs(f'[redirectInit]---->{traceback.format_exc()}')
+        bot.send_message(_id, 'Forwarding error!')
 
    
 def stopConversation(msg, lang, _id = None, action = None) -> None:
@@ -393,21 +409,26 @@ def stopConversation(msg, lang, _id = None, action = None) -> None:
             action = False
         )
 
-        change_status(msg.chat.id)
+    change_status(msg.chat.id)
             
     update_account(acc, 'conversation', 'close')
     update_account(acc, 'tags', [])
 
     accounts = get_accounts()
 
-def closeConversation(message):
-    global account
+def closeConversation(msg):
+    global accounts
+
+    try:
+        acc = accounts[str(msg.chat.id)]
             
-    update_account(account = account[str(message.chat.id)], parametr = 'conversation', data = 'close')
-    update_account(account = account[str(message.chat.id)], parametr = 'tags', data = [])        
-    account = get_accounts()
+        update_account(acc, 'conversation', 'close')
+        update_account(acc, 'tags', [])        
+        accounts = get_accounts()
             
-    change_status(message.chat.id)
+        change_status(msg.chat.id)
+    except:
+        saveLogs(f'[closeConversation]---->{traceback.format_exc()}')
 
 
 def setCollectionKeyboard(message, person_id, show_text = 'Выберите необходимый мед офис'):
@@ -479,35 +500,34 @@ def lol(msg) -> bool:
                         stopConversation(msg, key[1])
 
                     elif key[0] == 'redirect':
-                        redirectInit(msg, 
+                        redirectInit(msg,
                             f"{EMJ_EXCLAMATION} Общение завершено, перенаправление {key[1]}"
                         )
-                        operInit(message_ids_dict[acc.tags[0]], 
-                            key[2], key[3], closeConversation(msg)
-                        )
+                        operInit(msg, accounts, key[3], key[3], acc.tags[0])
+                        closeConversation(msg)
 
                 elif txt == f'{EMJ_BACK_ARROW} Назад': 
                     keyboardRefMaker(msg, acc.language)
 
                 elif txt in (f'{EMJ_EXCLAMATION} Оставить жалобу', 
                              f'{EMJ_EXCLAMATION} Shikoyat qoldiring'):
-
-                    if checkOperId(_id, feedback_oper_ids_arr): 
-                        dbDateSortEnter(msg, 'feedback_tb')
-                    else:
-                        acc.feedback_st = 'open'
-                        inlineMessages(
-                            markup_text = openfileforRead(None, 
-                                recv_label if isRu(accounts, msg = msg) else sec_recv_label
-                            ), 
-                            msg = msg, 
-                            markup_arr = [["Написать жалобу", 
-                                           "Написать жалобу"] if isRu(msg) else 
-                                          ["Shikoyat yozing", 
-                                           "Shikoyat yozing"]
-                            ], 
-                            action = False
-                        )
+                    work_msg(msg.chat.id)
+                    #if checkOperId(_id, feedback_oper_ids_arr): 
+                    #    dbDateSortEnter(msg, 'feedback_tb')
+                    #else:
+                    #    acc.feedback_st = 'open'
+                    #    inlineMessages(
+                    #        markup_text = openfileforRead(None, 
+                    #            recv_label if isRu(accounts, msg = msg) else sec_recv_label
+                    #        ), 
+                    #        msg = msg, 
+                    #        markup_arr = [["Написать жалобу", 
+                    #                       "Написать жалобу"] if isRu(msg) else 
+                    #                      ["Shikoyat yozing", 
+                    #                       "Shikoyat yozing"]
+                    #        ], 
+                    #        action = False
+                    #    )
 
                 elif txt == f"{EMJ_MONEY_BAG} Инкассация":
                     #setCollectionKeyboard(message = msg, person_id = _id)
@@ -940,7 +960,9 @@ def callback_inline(call):
             
             elif _key[0] in ('no_code', 'has_code'):
                 del_msg(_id, m_id)
-                keyboardRefMaker(call.message, _key[1])
+                keyboardRefMaker(call.message, 
+                    accounts[str(_id)].language
+                )
             
             elif _key[0] == 'feedback':
                 nextStepWait(
@@ -1084,7 +1106,6 @@ def callback_inline(call):
                             int(time.time())
                         )
                         accounts[u_id].tags.append(str(_id))
-                        accounts[u_id].tags.append("0")
                         update_account(
                             accounts[u_id], 
                             'tags', 
@@ -1103,34 +1124,34 @@ def callback_inline(call):
                         accounts = get_accounts()
 
                         bot.send_message(u_id, 
-                            f"{EMJ_TELEPHONE} Найден оператор #{str(_id)}, "
-                            "переписка активирована" if isRu(person_id = u_id) 
-                            else 
-                            f"{EMJ_TELEPHONE} Operator #{str(_id)} topildi, "
+                            f"{EMJ_TELEPHONE} Найден оператор #{_id}, "
+                            "переписка активирована" 
+                            if isRu(accounts, id = u_id) else 
+                            f"{EMJ_TELEPHONE} Operator #{_id} topildi, "
                             "yozishmalar faollashtirildi"
                         )
                         
-                        bot.send_message(str(_id), 
+                        bot.send_message(_id, 
                             f"{EMJ_TELEPHONE} Вы подтвердили заявку!",
                             reply_markup=markup
                         )
                         db_answer = insert_message(u_id, _id)
 
-                        bot.send_message(str(u_id), db_answer)
-                        bot.send_message(str( _id), db_answer)
+                        bot.send_message(u_id, db_answer)
+                        bot.send_message( _id, db_answer)
 
                         break
 
                 if accounts[str(_id)].conversation != 'open':
                     if accounts[str(_data)].conversation != 'open':
                         bot.send_message(_id, 
-                            f"Пользователь id: {str(_data)} отменил режим!\n"
+                            f"Пользователь id: {_data} отменил режим!\n"
                             "Повторный вызов..."
                         )
                         
                         markup = markupMaker('redirect', buttons_oper_text)
                         user_markup = markupMaker('person', buttons_oper_text 
-                            if isRu(person_id = str(_data)) else buttons_user_uz_text
+                            if isRu(accounts, id = str(_data)) else buttons_user_uz_text
                         )
                         
                         accounts[str(_id)].tags.append(str(_data))
@@ -1155,14 +1176,7 @@ def callback_inline(call):
                             accounts[str(_data)], 
                             'tags', 
                             accounts[str(_data)].tags
-                        )
-                        
-                        accounts[str(_data)].tags.append("0")
-                        update_account(
-                            accounts[str(_data)], 
-                            'tags', 
-                            accounts[str(_data)].tags
-                        )
+                        )                        
                         update_account(
                             accounts[str(_data)], 
                             'conversation', 
@@ -1175,30 +1189,35 @@ def callback_inline(call):
                         accounts = get_accounts()
 
                         try:
-                            if isRu(person_id = str(_data)): 
-                                bot.send_message(str(_data), 
+                            if isRu(accounts, id = str(_data)): 
+                                bot.send_message(_data, 
                                     f"{EMJ_TELEPHONE} Оператор"
                                     f" #{str(_id)} активировал переписку", 
                                     reply_markup=user_markup
                                 )
                             else: 
-                                bot.send_message(str(_data), 
+                                bot.send_message(_data, 
                                     f"{EMJ_TELEPHONE} Operator #{str(_id)} "
                                     "yozishmalarni faollashtirdi", 
                                     reply_markup=user_markup
                                 )
 
-                            bot.send_message(str(_id), 
+                            bot.send_message(_id, 
                                 f"{EMJ_TELEPHONE} Вы подтвердили заявку!", 
                                 reply_markup=markup
                             )
                             db_answer = insert_message(_data, _id)
 
-                            bot.send_message(str(_data), db_answer)
-                            bot.send_message(str(  _id), db_answer)
+                            bot.send_message(_data, db_answer)
+                            bot.send_message(  _id, db_answer)
                         except:
                             update_account(
                                 accounts[str(_id)], 
+                                'conversation', 
+                                'close'
+                            )
+                            update_account(
+                                accounts[str(_data)], 
                                 'conversation', 
                                 'close'
                             )
@@ -1209,7 +1228,7 @@ def callback_inline(call):
 
                             bot.send_message(_id, 'Пользователь выключил бота!')
                     else:
-                        bot.send_message(str(_id), 
+                        bot.send_message(_id, 
                             "Другой оператор отвечает на заявку!"
                         )
             else:

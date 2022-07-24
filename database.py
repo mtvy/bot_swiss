@@ -1,6 +1,10 @@
 """
 Postgresql database processor.
 """
+from doctest import FAIL_FAST
+from ftplib import error_proto
+from inspect import trace
+import re
 import debug             ,\
        utility   as ut   ,\
        variables as var  ,\
@@ -32,6 +36,19 @@ def connect() -> Tuple[Any, Any] or Tuple[Literal[False], Literal[False]]:
     return (False, False)
 
 
+def __is_exist(cur, tb : str, status : str, _id : str, t_id : str) -> bool:
+    try:
+        cur.execute(
+            f'SELECT id FROM {tb} WHERE  '
+            f'status      = \'{status}\' '
+            f'AND {t_id} = \'{_id}\'     '
+        )
+        return bool(cur.fetchall())
+    except:
+        debug.saveLogs(f'[__is_exist]---->{error.format_exc()}')
+
+    return False
+
 def insert_message(user_id, oper_id, text = 'TEXT DATABASE', status = 'open') -> bool or str:
     """
     This definition connect user and operator in database.
@@ -48,9 +65,15 @@ def insert_message(user_id, oper_id, text = 'TEXT DATABASE', status = 'open') ->
     con, cur = connect()
     if con and cur:
         try:
-            if not oper_id:
+            is_id = not __is_exist(cur, 'message_tb', 
+                status, user_id, 'user_id'
+            )
+            
+            if not oper_id or is_id:
                 
                 _date = date.today().timetuple()[0:3]
+                _date = f'{_date[0]}-{_date[1]}-{_date[2]}'
+                    
                 cur.execute(
                     'INSERT INTO message_tb (  '
                     '   date_start            ,'   
@@ -59,22 +82,22 @@ def insert_message(user_id, oper_id, text = 'TEXT DATABASE', status = 'open') ->
                     '   text                  ,'
                     '   status                 '
                     ') VALUES (                '
-                   f'    {_date}  , {user_id} ,'
+                   f'    \'{_date}\'  , {user_id} ,'
                    f'    {oper_id}, \'{text}\','
                    f'    \'{status}\'              '
                    ')                          '
                 )
 
                 con.commit()
-                return True
+                if not is_id: return True
 
-            elif user_id and oper_id:
+            if user_id and oper_id:
             
-                cur.execute(f"UPDATE message_tb          SET oper_id = {oper_id},   "
+                cur.execute(f"UPDATE message_tb          SET oper_id = '{oper_id}',   "
                             f"text =   '{text}\nOper: {oper_id}\nUser: {user_id}\n' " 
-                            f"WHERE  status = '{status}' AND user_id = {user_id};   "
+                            f"WHERE  status = '{status}' AND user_id = '{user_id}';   "
                              "SELECT id         FROM      message_tb    WHERE       "
-                            f"       status = '{status}' AND user_id = {user_id}    ")
+                            f"       status = '{status}' AND user_id = '{user_id}'    ")
                 
                 text = f'#id Переписки: {cur.fetchall()[0][0]}'
                 con.commit()
@@ -133,16 +156,19 @@ def insert_text(text, id, status = 'open') -> bool:
     if con and cur:
         try:
 
-            cur.execute( "SELECT text FROM message_tb WHERE status = '{status}' "
-                        f"AND    (oper_id = {id}      OR   user_id =  {id}   ); "
-                        f"UPDATE message_tb SET text = '{cur.fetchall()[0][0]}\n{text}'   "
-                        f"WHERE status = '{status}' AND (user_id = {id} OR oper_id = {id})")
-
+            cur.execute(
+                f"SELECT text FROM message_tb WHERE status = '{status}' "
+                f"AND (oper_id = '{id}' OR user_id = '{id}')           ;"
+            )
+            cur.execute(
+                f"UPDATE message_tb SET text = '{cur.fetchall()[0][0]}\n{text}' "
+                f"WHERE status = '{status}' AND (user_id = '{id}' OR oper_id = '{id}')"
+            )
             con.commit()
             return True
 
         except:
-            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}')
+            debug.saveLogs(f'[insert_text]---->{error.format_exc()}')
 
     return False
 
@@ -150,30 +176,40 @@ def change_status(_id, status = 'open', _set = 'close') -> bool:
     con, cur = connect()
     if con and cur:
         try:
-
-            cur.execute(
-                 'SELECT user_id, oper_id FROM message_tb     '
-                f"WHERE status = '{status}'                   "
-                f"AND (oper_id = '{_id}' OR user_id = '{_id}')"
+            is_id = __is_exist(cur, 'message_tb', 
+                status, _id, 'user_id'
             )
 
-            user_id, oper_id = map(int, cur.fetchall()[0][:2])
+            if not is_id:
+                is_id = __is_exist(cur, 'message_tb', 
+                    status, _id, 'oper_id'
+                )
 
-            if user_id and oper_id:
+            if is_id:
                 cur.execute(
-                    f"UPDATE message_tb SET status = '{_set}'    "
-                    f"WHERE status = '{status}'                  "
-                    f"AND (user_id = '{_id}' OR oper_id = '{_id}')"
+                     'SELECT user_id, oper_id FROM message_tb     '
+                    f"WHERE status = '{status}'                   "
+                    f"AND (oper_id = '{_id}' OR user_id = '{_id}')"
                 )
-            else:
-                cur.execute(
-                     'DELETE FROM message_tb    '
-                    f"WHERE status = '{status}' "
-                    f"AND (oper_id = '{_id}'    "
-                    f"  OR user_id = '{_id}')   "
-                )
+
+                user_id, oper_id = map(int, cur.fetchall()[0][:2])
+
+                if user_id and oper_id:
+                    cur.execute(
+                        f"UPDATE message_tb SET status = '{_set}'    "
+                        f"WHERE status = '{status}'                  "
+                        f"AND (user_id = '{_id}' OR oper_id = '{_id}')"
+                    )
+                else:
+                    cur.execute(
+                         'DELETE FROM message_tb    '
+                        f"WHERE status = '{status}' "
+                        f"AND (oper_id = '{_id}'    "
+                        f"  OR user_id = '{_id}')   "
+                    )
 
             con.commit()
+
             return True
 
         except:
@@ -368,19 +404,28 @@ def dbMessageId(action, message_id = None) -> Any or bool:
     con, cur = connect()
     if con and cur:
         try:
-            if   action == 'take_id': text =  'SELECT      message_id   FROM  messageId_tb                '
-            elif action == 'save_id': text = f'UPDATE      messageId_tb SET   message_id  =  {message_id} '
-            elif action == 'init_id': text = f'INSERT INTO messageId_tb (message_id) VALUES ({message_id})'
+            COMMANDS_MOD = {
+                'take_id' : 'SELECT message_id FROM messageId_tb',
+                'save_id' : f'UPDATE messageId_tb SET message_id = {message_id}',
+                'init_id' : f'INSERT INTO messageId_tb (message_id) VALUES ({message_id})'
+            }
 
-            cur.execute(text)
+            cur.execute(COMMANDS_MOD[action])
 
             data = check_pull(cur = cur, action = 'show_data' if action == 'take_id' else None)
 
             con.commit()
             return data
 
+        except psql.errors.UndefinedTable as ex:
+            debug.saveLogs(f'[dbMessageId][messageId_tb]---->{ex}')
+
+            create_db(
+                'CREATE TABLE messageId_tb(message_id INTEGER);'
+            )
+
         except:
-            debug.saveLogs(f'------ERROR!------\n\n{error.format_exc()}')
+            debug.saveLogs(f'[dbMessageId]---->{error.format_exc()}')
     
     return False
 
@@ -515,7 +560,9 @@ def __test_database() -> bool:
 
 
 if __name__ == "__main__":
-    __test_database()
+    dbMessageId('init_id', int(input()))
+    dbMessageId('init_id', int(input()))
+    #__test_database()
     
     
     #acc = database.get_accounts_data()
