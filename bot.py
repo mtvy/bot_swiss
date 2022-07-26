@@ -130,7 +130,7 @@ class P_schedule:
                 bot.forward_message(281321076, CHANNEL_ID, message_id)
                 dbMessageId(action = 'save_id', message_id = message_id + 1)
             except:
-                saveLogs(f'[send_post]---->{traceback.format_exc()}')
+                pass
 #\==================================================================/#
 
 
