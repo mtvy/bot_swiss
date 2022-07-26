@@ -1,10 +1,6 @@
 """
 Postgresql database processor.
 """
-from doctest import FAIL_FAST
-from ftplib import error_proto
-from inspect import trace
-import re
 import debug             ,\
        utility   as ut   ,\
        variables as var  ,\

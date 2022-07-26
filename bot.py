@@ -29,6 +29,7 @@ from emj import *
 
 #\==================================================================/#
 TOKEN = '1906159626:AAGKTES1G1rOt6hqkDMk_N6JX8grLlSJd1k'
+#TOKEN = '5361529726:AAHkDG9SoOJUA_1F9rWnIjTXkxW_kpq4vQg'
 #\==================================================================/#
 
 
@@ -544,16 +545,9 @@ def lol(msg) -> bool:
                         )
 
                 elif txt in ('% Получить скидку', '% Chegirma oling'):
-                    if isRu(accounts, msg):
-                        bot.send_message(msg.chat.id, 
-                            f'{openfileforRead(None, discount_label)}'
-                            f'\nВаш реферальный код: {msg.chat.id}',
-                        )
-                    else:
-                        bot.send_message(msg.chat.id, 
-                            f'{openfileforRead(None, sec_discount_label)}'
-                            f'\nSizning tavsiyangiz kodi: {msg.chat.id}',
-                        )
+                    id_txt = "Ваш ID:" \
+                        if isRu(accounts, id = _id) else "Sizning ID:"
+                    bot.send_message(_id, f'{EMJ_NOTE} {id_txt} {_id}')
 
                 elif txt == f"{EMJ_EXCLAMATION} Жалоба":
                     redirectInit(msg, 
