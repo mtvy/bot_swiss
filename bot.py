@@ -29,6 +29,7 @@ from emj import *
 
 #\==================================================================/#
 TOKEN = '1906159626:AAGKTES1G1rOt6hqkDMk_N6JX8grLlSJd1k'
+#TOKEN = '5361529726:AAHkDG9SoOJUA_1F9rWnIjTXkxW_kpq4vQg'
 #\==================================================================/#
 
 
@@ -466,7 +467,6 @@ def lol(msg) -> bool:
     global accounts
 
     try:
-
             accounts = get_accounts()
 
             _id : str = str(msg.chat.id)
@@ -950,10 +950,9 @@ def callback_inline(call):
 
                     accounts = get_accounts()
 
-                    inlineMessages(
-                        markup_text = _key[1], 
-                        call = call, 
-                        markup_arr = _key[2]
+                    del_msg(_id, m_id)
+                    keyboardRefMaker(call.message, 
+                        accounts[str(_id)].language
                     )
                 else:
                     work_msg(_id)
