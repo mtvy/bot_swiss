@@ -130,7 +130,7 @@ class P_schedule:
                 bot.forward_message(281321076, CHANNEL_ID, message_id)
                 dbMessageId(action = 'save_id', message_id = message_id + 1)
             except:
-                saveLogs(f'[send_post]---->{traceback.format_exc()}')
+                pass
 #\==================================================================/#
 
 
@@ -543,17 +543,10 @@ def lol(msg) -> bool:
                             'Sizda bazani o\'qish huquqi yo\'q!'
                         )
 
-                elif txt in ('% Получить скидку', '% Chegirma oling'):
-                    if isRu(accounts, msg):
-                        bot.send_message(msg.chat.id, 
-                            f'{openfileforRead(None, discount_label)}'
-                            f'\nВаш реферальный код: {msg.chat.id}',
-                        )
-                    else:
-                        bot.send_message(msg.chat.id, 
-                            f'{openfileforRead(None, sec_discount_label)}'
-                            f'\nSizning tavsiyangiz kodi: {msg.chat.id}',
-                        )
+                elif txt in (f'{EMJ_PLUS} Мой ID', f'{EMJ_PLUS} Mening ID'):
+                    id_txt = "Ваш ID:" \
+                        if isRu(accounts, id = _id) else "Sizning ID:"
+                    bot.send_message(_id, f'{EMJ_NOTE} {id_txt} {_id}')
 
                 elif txt == f"{EMJ_EXCLAMATION} Жалоба":
                     redirectInit(msg, 
@@ -713,7 +706,7 @@ def fdBack_fill(message, lang):
                     f'{EMJ_RAISING_HAND} Оператор'           ,  f'{EMJ_DISK} БД переписок'           ,
                     f'{EMJ_INFO} FAQ Инструкция'             ,  f'{EMJ_GLOBE} Соц. сети'             ,
                     f'{EMJ_TELEPHONE} Телефон'               ,  f'{EMJ_HOUSE} Адреса'                ,
-                     '% Получить скидку'                                   ,  'stop'                                              ]
+                    f'{EMJ_PLUS} Мой ID'                     ,  'stop'                                              ]
             ):
             
             if feedback_user is None: feedback_user = 'Пользователь отправил нечитаемый объект'
@@ -751,7 +744,7 @@ def fdBack_fill(message, lang):
                     f'{EMJ_WRITING_HAND} Direktorga yozing'           , f"{EMJ_INFO} FAQ Ko'rsatma"            ,
                     f'{EMJ_NOTE} buyurtma yaratish'                   , f'{EMJ_TELEPHONE} telefon'             ,
                     f'{EMJ_RAISING_HAND} Operator'                    , f'{EMJ_HOUSE} manzillari'              ,
-                     '% Chegirma oling'                                             ,  'stop' 
+                    f'{EMJ_PLUS} Mening ID'                           ,  'stop' 
                 ]
              ):
 
