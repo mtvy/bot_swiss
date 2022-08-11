@@ -14,7 +14,7 @@ from typing   import Any, Dict, Literal, Tuple
 
 CONN_ADRGS = {
     'database' : 'postgres' ,
-    'password' : '111' ,
+    'password' : 'postgres' ,
     'user'     : 'postgres' ,
     'host'     : '127.0.0.1',
     'port'     : '5432'     
