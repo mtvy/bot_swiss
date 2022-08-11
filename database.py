@@ -12,17 +12,21 @@ from classes import *
 from datetime import date
 from typing   import Any, Dict, Literal, Tuple
 
+CONN_ADRGS = {
+    'database' : 'postgres' ,
+    'password' : '111' ,
+    'user'     : 'postgres' ,
+    'host'     : '127.0.0.1',
+    'port'     : '5432'     
+}
+
 
 def connect() -> Tuple[Any, Any] or Tuple[Literal[False], Literal[False]]:
     """
     This definition returns connection to database.
     """
     try:
-        con = psql.connect(database = 'postgres' ,
-                           password = 'postgres' ,
-                           user     = 'postgres' ,
-                           host     = '127.0.0.1',
-                           port     = '5432'     )        
+        con = psql.connect(**CONN_ADRGS)        
         
         return con, con.cursor()
     
@@ -556,9 +560,9 @@ def __test_database() -> bool:
 
 
 if __name__ == "__main__":
-    dbMessageId('init_id', int(input()))
-    dbMessageId('init_id', int(input()))
-    #__test_database()
+    #dbMessageId('init_id', int(input()))
+    #dbMessageId('init_id', int(input()))
+    __test_database()
     
     
     #acc = database.get_accounts_data()

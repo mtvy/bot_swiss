@@ -104,7 +104,7 @@ class P_schedule:
     """
 
     def start_schedule():
-        schedule.every(30).seconds.do(P_schedule.send_post)
+        schedule.every(2).hours.do(P_schedule.send_post)
         while True:
             schedule.run_pending()
             time.sleep(1)
@@ -1239,13 +1239,15 @@ if __name__ == '__main__':
     Process(target = P_schedule.start_schedule, args = ()).start()
     try: 
         bot.polling(none_stop=True)
+
+    except OSError:
+        saveLogs(f"[OSError]---->{traceback.format_exc()}\n")
+        time.sleep(120)
+
+        bot.send_message(281321076, [OSError])
+
     except:
         saveLogs(f"Program error!\n\n{traceback.format_exc()}")
-        try:
-            for id in label_change_ids_arr:
-                bot.send_message(int(id), 
-                    f"Program error!\n\n{traceback.format_exc()}"
-                )
-        except:
-            pass
+
+        bot.send_message(281321076, 'Program error!')
 #\==================================================================/#
