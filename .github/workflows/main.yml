@@ -13,10 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Connect to host via SSH
-        uses: appleboy/ssh-action@master
+      - name: Deploy to Server
+        uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.HOST }}
+          port: ${{ secrets.PORT }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.KEY }}
           command: |
