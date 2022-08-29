@@ -19,6 +19,7 @@ jobs:
           host: ${{ secrets.HOST }}
           key: ${{ secrets.KEY }}
           username: ${{ secrets.USER }}
+          pass: ${{ secrets.PASS }}
           command: |
             sudo touch hello.txt
           
