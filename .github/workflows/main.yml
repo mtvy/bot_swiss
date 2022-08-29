@@ -16,6 +16,7 @@ jobs:
       - name: Connect to host via SSH
         uses: fifsky/ssh-action@master
         with:
+          host: ${{ secrets.HOST }}
           user: ${{ secrets.USER }}
           pass: ${{ secrets.PASS }}
           command: |
