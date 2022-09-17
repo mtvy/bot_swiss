@@ -303,7 +303,11 @@ def dbSortEnter(msg, mod) -> None:
             args = [mod]
         )
 def dbIdSortEnter(msg, mod) -> None:
-    id_text = get_text(msg.text, mod)
+    id_text = False
+    try:
+        int(msg.text); id_text = get_text(msg.text, mod)
+    except:
+        pass
     bot.send_message(msg.chat.id, 
         id_text if id_text else 'Такого номера нет в базе!'
     )
@@ -382,7 +386,10 @@ def stopConversation(msg, lang, _id = None, action = None) -> None:
 
         t_id : str = acc.tags[0]
 
-        bot.send_message(t_id, push_text)
+        try:
+            bot.send_message(t_id, push_text)
+        except:
+            pass
 
         t_acc : Account = accounts[t_id]
             
