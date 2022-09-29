@@ -1237,15 +1237,14 @@ def callback_inline(call):
 
 #\==================================================================/#
 if __name__ == '__main__':
-    Process(target = P_schedule.start_schedule, args = ()).start()
+    proc = Process(target = P_schedule.start_schedule, args = ())
+    proc.start()
     try: 
         bot.polling(none_stop=True)
 
     except OSError:
-        saveLogs(f"[OSError]---->{traceback.format_exc()}\n")
-        time.sleep(120)
-
         bot.send_message(281321076, [OSError])
+        proc.kill()
 
     except:
         saveLogs(f"Program error!\n\n{traceback.format_exc()}")
