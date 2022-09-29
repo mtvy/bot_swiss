@@ -3,7 +3,7 @@ name: Server-Setup
 on:
   push:
     branches:
-    - V0.1
+    - V1.6
     
 jobs:
   
