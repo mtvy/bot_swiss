@@ -1,6 +1,9 @@
 from path import *
 from emj import *
 
+#TOKEN = '1906159626:AAGKTES1G1rOt6hqkDMk_N6JX8grLlSJd1k'
+TOKEN = '5361529726:AAHkDG9SoOJUA_1F9rWnIjTXkxW_kpq4vQg'
+
 CHANNEL_ID = -1001216461571
 
 STEP_FIRST = 1

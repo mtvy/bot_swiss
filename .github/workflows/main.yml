@@ -1,24 +1,27 @@
-name: CI
+name: Server-Setup
 
 on:
   push:
     branches:
-      - V1.6
-
-
+    - V0.1
+    
 jobs:
-  build:
+  
+  deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Connect to host via SSH
+      - name: Connect to host via SSH and update containers
         uses: fifsky/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
           user: ${{ secrets.USER }}
-          pass: ${{ secrets.PASS }}
+          key: ${{ secrets.SSH_KEY }}
           command: |
-            sudo touch hello.txt
-          
+            
+            rm -Rfv bot_swiss
+            git clone https://github.com/mtvy/bot_swiss.git
+            
+            cd bot_swiss
+            
+            docker-compose up -d --build

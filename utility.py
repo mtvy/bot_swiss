@@ -8,3 +8,4 @@ def takeFilled(*args) -> Any or None:
 
 def takeClassDict(inst, attr : str, var : Dict = {}) -> Dict:
     return {**var , getattr(inst, attr) : inst}
+    
