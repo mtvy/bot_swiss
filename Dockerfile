@@ -6,4 +6,4 @@ COPY . .
 
 RUN pip3 install -r server_configs/requirements.txt
 
-CMD ["python3", "bot.py"]
+CMD ["python", "bot.py"]
