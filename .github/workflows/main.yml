@@ -16,7 +16,7 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           user: ${{ secrets.USER }}
-          key: ${{ secrets.SSH_KEY }}
+          pass: ${{ secrets.PASS }}
           command: |
             
             rm -Rfv bot_swiss
