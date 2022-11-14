@@ -17,7 +17,7 @@ CONN_ADRGS = {
     'password' : 'postgres' ,
     'user'     : 'postgres' ,
     'host'     : 'postgres',
-    'port'     : '5433'     
+    'port'     : '5434'     
 }
 
 
