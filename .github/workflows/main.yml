@@ -15,13 +15,20 @@ jobs:
         uses: fifsky/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
-          user: tbot
           key: ${{ secrets.SSH_KEY }}
+          user: ${{ secrets.USER }}
           command: |
+          
+            if [ -d ./bot_swiss ]
+            then 
+              cd bot_swiss
+              docker-compose down
+              git pull
+            else
+              git clone https://github.com/mtvy/bot_swiss.git
+              cd bot_swiss
+            fi
             
-            rm -Rfv bot_swiss
-            git clone https://github.com/mtvy/bot_swiss.git
+            echo TOKEN=\'${{ secrets.TOKEN }}\' > setup/.env
+            echo ${{ secrets.PASS }} | sudo -S docker-compose up -d --build
             
-            cd bot_swiss
-            
-            sudo docker-compose up -d --build

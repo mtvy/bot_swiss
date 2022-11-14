@@ -87,7 +87,10 @@ def markupMaker(mode : str, button : Dict[str, str]) -> types.ReplyKeyboardMarku
 
 
 #\==================================================================/#
-bot = telebot.TeleBot(TOKEN)
+from dotenv import load_dotenv
+import os
+load_dotenv('./setup/.env')
+bot = telebot.TeleBot(os.getenv('TOKEN'))
 #\==================================================================/#
 
 
