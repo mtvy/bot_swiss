@@ -53,7 +53,7 @@ services:
       - postgres
     
   postgres_exporter:
-    container_name: exporter_container
+    container_name: db_export_cont
     image: prometheuscommunity/postgres-exporter:v0.10.0
     environment:
       DATA_SOURCE_URI: "postgres:5434/postgres?sslmode=disable"
