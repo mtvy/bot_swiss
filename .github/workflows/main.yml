@@ -23,13 +23,9 @@ jobs:
             then 
               cd bot_swiss
               docker-compose down
-              git pull
-              echo mtvy
-              echo ${{ secrets.GIT_TOKEN }}
+              echo mtvy && ${{ secrets.GIT_TOKEN }} | git pull
             else
-              git clone https://github.com/mtvy/bot_swiss.git
-              echo mtvy
-              echo ${{ secrets.GIT_TOKEN }}
+              echo mtvy && ${{ secrets.GIT_TOKEN }} | git clone https://github.com/mtvy/bot_swiss.git
               cd bot_swiss
             fi
             
