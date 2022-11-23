@@ -39,7 +39,7 @@ CREATE TABLE messageId_tb(
     message_id INTEGER
 );
 
-INSERT INTO messageId_tb SET (message_id) VALUES (403)
+INSERT INTO messageId_tb (message_id) VALUES (403)
 
 CREATE TABLE account_tb(
     id            serial primary key,
