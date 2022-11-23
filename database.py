@@ -75,17 +75,8 @@ def insert_message(user_id, oper_id, text = 'TEXT DATABASE', status = 'open') ->
                 _date = f'{_date[0]}-{_date[1]}-{_date[2]}'
                     
                 cur.execute(
-                    'INSERT INTO message_tb (  '
-                    '   date_start            ,'   
-                    '   user_id               ,'
-                    '   oper_id               ,'
-                    '   text                  ,'
-                    '   status                 '
-                    ') VALUES (                '
-                   f'    \'{_date}\'  , {user_id} ,'
-                   f'    {oper_id}, \'{text}\','
-                   f'    \'{status}\'              '
-                   ')                          '
+                    f'''INSERT INTO message_tb (date_start, user_id, oper_id, text, status') 
+                        VALUES (\'{_date}\', \'{user_id}\', \'{oper_id}\', \'{text}\', \'{status}\')'''
                 )
 
                 con.commit()

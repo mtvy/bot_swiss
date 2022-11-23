@@ -1,8 +1,8 @@
 
 CREATE TABLE message_tb(
     id serial primary key, 
-    user_id INTEGER, 
-    oper_id INTEGER, 
+    user_id varchar(15), 
+    oper_id varchar(15), 
     date_start VARCHAR(255), 
     text TEXT, 
     status VARCHAR(255)
@@ -38,6 +38,8 @@ CREATE TABLE collection_tb(
 CREATE TABLE messageId_tb(
     message_id INTEGER
 );
+
+INSERT INTO messageId_tb SET (message_id) VALUES (403)
 
 CREATE TABLE account_tb(
     id            serial primary key,
