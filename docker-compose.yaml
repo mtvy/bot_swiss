@@ -32,7 +32,7 @@ services:
       - "pg_stat_statements.max=10000"
       - "-c"
       - "pg_stat_statements.track=all"
-      - -p 5434
+      - -p 5433
     environment:
       POSTGRES_DB: "postgres"
       POSTGRES_USER: "postgres"
@@ -42,7 +42,7 @@ services:
       - ./setup:/docker-entrypoint-initdb.d
       - .:/var/lib/postgresql/data
     ports:
-      - "5434:5434"
+      - "5433:5433"
     restart: unless-stopped
     deploy:
       resources:
@@ -53,17 +53,17 @@ services:
       - postgres
     
   postgres_exporter:
-    container_name: db_export_cont
+    container_name: exporter_container
     image: prometheuscommunity/postgres-exporter:v0.10.0
     environment:
-      DATA_SOURCE_URI: "postgres:5434/postgres?sslmode=disable"
+      DATA_SOURCE_URI: "postgres:5433/postgres?sslmode=disable"
       DATA_SOURCE_USER: "postgres"
       DATA_SOURCE_PASS: "postgres"
       PG_EXPORTER_EXTEND_QUERY_PATH: "/postgres_exporter/queries.yaml"
     volumes:
       - ./queries.yaml:/postgres_exporter/queries.yaml:ro
     ports:
-      - "9188:9188"
+      - "9187:9187"
     restart: unless-stopped
     deploy:
       resources:
@@ -77,7 +77,10 @@ services:
     build: ./
     ports:
       - "443:443"
-    restart: unless-stopped
+    restart: always
+    links:
+      - postgres
+      - postgres_exporter
     networks:
       - postgres
 
