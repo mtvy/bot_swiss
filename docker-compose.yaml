@@ -77,9 +77,6 @@ services:
   bs_grafana:
     image: grafana/grafana
     user: root
-    command: 
-      - -e "GF_SERVER_HTTP_PORT=2999"
-      - "-p 2999:2999"
     ports:
       - 2999:2999
     volumes:
@@ -89,6 +86,7 @@ services:
     hostname: grafana
     restart: unless-stopped
     environment:
+      GF_SERVER_HTTP_PORT: "2999"
       TZ: "Europe/Moscow"
     networks:
       - default
