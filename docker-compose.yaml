@@ -78,7 +78,7 @@ services:
     image: grafana/grafana
     user: root
     ports:
-      - 2999:2999
+      - 3000:3000
     volumes:
       - ./setup/grafana:/var/lib/grafana
       - ./setup/grafana/provisioning/:/etc/grafana/provisioning/
@@ -107,4 +107,4 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 172.28.0.1/16
+        - subnet: 172.27.0.0/15
