@@ -78,7 +78,7 @@ services:
     image: grafana/grafana
     user: root
     ports:
-      - 3000:3000
+      - 2999:2999
     volumes:
       - ./setup/grafana:/var/lib/grafana
       - ./setup/grafana/provisioning/:/etc/grafana/provisioning/
