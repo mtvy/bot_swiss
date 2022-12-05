@@ -1,4 +1,5 @@
-version: "3"
+version: '3.3'
+
 services:
   postgres:
     image: postgres:13.3
@@ -39,8 +40,8 @@ services:
       POSTGRES_PASSWORD: "postgres"
       PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
-      - ./setup:/docker-entrypoint-initdb.d
-      - .:/var/lib/postgresql/data
+      - ./setup/database:/docker-entrypoint-initdb.d
+      - ./setup:/var/lib/postgresql/data
     ports:
       - "5433:5433"
     restart: unless-stopped
@@ -50,7 +51,7 @@ services:
           cpus: '1'
           memory: 4G
     networks:
-      - postgres
+      - default
     
   postgres_exporter:
     container_name: exporter_container
@@ -61,7 +62,7 @@ services:
       DATA_SOURCE_PASS: "postgres"
       PG_EXPORTER_EXTEND_QUERY_PATH: "/postgres_exporter/queries.yaml"
     volumes:
-      - ./queries.yaml:/postgres_exporter/queries.yaml:ro
+      - ./setup/queries.yaml:/postgres_exporter/queries.yaml:ro
     ports:
       - "9187:9187"
     restart: unless-stopped
@@ -71,7 +72,23 @@ services:
           cpus: '0.2'
           memory: 500M
     networks:
-      - postgres
+      - default
+
+  grafana:
+    image: grafana/grafana
+    user: root
+    ports:
+      - 3000:3000
+    volumes:
+      - ./setup/grafana:/var/lib/grafana
+      - ./setup/grafana/provisioning/:/etc/grafana/provisioning/
+    container_name: grafana
+    hostname: grafana
+    restart: unless-stopped
+    environment:
+      TZ: "Europe/Moscow"
+    networks:
+      - default
 
   bot:
     build: ./
@@ -81,9 +98,13 @@ services:
     links:
       - postgres
       - postgres_exporter
+      - grafana
     networks:
-      - postgres
+      - default
 
 networks:
-  postgres:
-    driver: bridge
+  default:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/15
