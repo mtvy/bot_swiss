@@ -74,7 +74,7 @@ services:
     networks:
       - default
 
-  grafana:
+  bs_grafana:
     image: grafana/grafana
     user: root
     ports:
