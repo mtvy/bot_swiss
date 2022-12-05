@@ -77,6 +77,8 @@ services:
   bs_grafana:
     image: grafana/grafana
     user: root
+    command: 
+      - "-p 2999:2999"
     ports:
       - 2999:2999
     volumes:
@@ -107,4 +109,4 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 172.27.0.0/15
+        - subnet: 172.27.0.0/16
