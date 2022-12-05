@@ -82,7 +82,7 @@ services:
     volumes:
       - ./setup/grafana:/var/lib/grafana
       - ./setup/grafana/provisioning/:/etc/grafana/provisioning/
-    container_name: grafana
+    container_name: bs_grafana
     hostname: grafana
     restart: unless-stopped
     environment:
