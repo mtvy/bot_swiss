@@ -76,7 +76,7 @@ services:
 
   bs_grafana:
     image: grafana/grafana
-    user: root
+    user: tbot
     command: 
       - "-p 2999:2999"
     ports:
