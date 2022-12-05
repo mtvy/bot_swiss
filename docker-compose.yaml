@@ -78,7 +78,7 @@ services:
     image: grafana/grafana
     user: root
     command: 
-      - "GF_SERVER_HTTP_PORT=2999"
+      - "-e GF_SERVER_HTTP_PORT=2999"
       - "-p 2999:2999"
     ports:
       - 2999:2999
