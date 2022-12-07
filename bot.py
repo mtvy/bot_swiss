@@ -106,28 +106,32 @@ class P_schedule:
             schedule.run_pending()
             time.sleep(1)
 
+
     def send_post():
-        c_ex = 0
-        message_id = dbMessageId(action = 'take_id')[0][0]
-        accounts = get_accounts()
-        for ind in accounts.keys():
+        
+        def get_time():
+            return int(time.time())
+        
+        cex = 0; msg_id = dbMessageId('take_id')[0][0]
+        accs = get_accounts()
+        
+        for ind in accs.keys():
             try:
-                if (int(time.time()) - accounts[ind].timer_conv > 900) and accounts[ind].conversation == 'open':
-                    stopConversation(message = None, lang = 0 if isRu(accounts, message = None, person_id = ind) else 1, pers_id = ind)
-            except Exception as _: 
+                if (get_time() - accs[ind].timer_conv > 900) and accs[ind].conversation == 'open':
+                    stopConversation(msg=None, lang=0 if isRu(accs, None, int(ind)) else 1, _id=ind)
+            except: 
                 pass
             try:
-                bot.forward_message(int(ind), CHANNEL_ID, message_id)
+                bot.forward_message(int(ind), CHANNEL_ID, msg_id)
                 time.sleep(1)
-            except Exception as _:
-                c_ex+=1
-                continue
-        if c_ex == len(accounts): 
-            c_ex = 0
+            except:
+                cex+=1
+        if cex == len(accs): 
+            cex = 0
         else:
             try:
-                bot.forward_message(281321076, CHANNEL_ID, message_id)
-                dbMessageId(action = 'save_id', message_id = message_id + 1)
+                bot.forward_message(281321076, CHANNEL_ID, msg_id)
+                dbMessageId('save_id', msg_id+1)
             except:
                 pass
 #\==================================================================/#
