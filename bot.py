@@ -101,7 +101,7 @@ class P_schedule:
     """
 
     def start_schedule():
-        schedule.every(2).hours.do(P_schedule.send_post)
+        schedule.every(30).minutes.do(P_schedule.send_post)
         while True:
             schedule.run_pending()
             time.sleep(1)
@@ -109,19 +109,21 @@ class P_schedule:
     def send_post():
         c_ex = 0
         message_id = dbMessageId(action = 'take_id')[0][0]
-        account = get_accounts()
-        for account in account.keys():
+        accounts = get_accounts()
+        for ind in accounts.keys():
             try:
-                bot.forward_message(int(account), CHANNEL_ID, message_id)
+                if (int(time.time()) - accounts[ind].timer_conv > 900) and accounts[ind].conversation == 'open':
+                    stopConversation(message = None, lang = 0 if isRu(accounts, message = None, person_id = ind) else 1, pers_id = account)
+            except Exception as _: 
+                pass
+            try:
+                bot.forward_message(int(ind), CHANNEL_ID, message_id)
                 time.sleep(1)
             except Exception as _:
                 c_ex+=1
                 continue
-            try:
-                if (int(time.time()) - account[account].timer_conv) > 900 and account[account].conversation == 'open':
-                    stopConversation(message = None, lang = 0 if isRu(account, message = None, person_id = account) else 1, pers_id = account)
-            except Exception as _: pass
-        if c_ex == len(account): c_ex = 0
+        if c_ex == len(accounts): 
+            c_ex = 0
         else:
             try:
                 bot.forward_message(281321076, CHANNEL_ID, message_id)
