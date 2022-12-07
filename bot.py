@@ -113,7 +113,7 @@ class P_schedule:
         for ind in accounts.keys():
             try:
                 if (int(time.time()) - accounts[ind].timer_conv > 900) and accounts[ind].conversation == 'open':
-                    stopConversation(message = None, lang = 0 if isRu(accounts, message = None, person_id = ind) else 1, pers_id = account)
+                    stopConversation(message = None, lang = 0 if isRu(accounts, message = None, person_id = ind) else 1, pers_id = ind)
             except Exception as _: 
                 pass
             try:
