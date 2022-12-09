@@ -326,8 +326,7 @@ def operInit(msg, accs, action, set_act, u_id = None):
             bot.send_message(msg.chat.id, "Вы оператор!")
         else:
             operKeyboardMaker(msg, set_act, 
-                0 if isRu(accs, msg) else 1, u_id
-            )
+                0 if isRu(accs, msg) else 1, u_id)
     except:
         saveLogs(f'[operInit]---->{traceback.format_exc()}')
         work_msg(msg.chat.id)
@@ -477,135 +476,135 @@ def lol(msg) -> bool:
     global accounts
 
     try:
-            accounts = get_accounts()
+        accounts = get_accounts()
 
-            _id : str = str(msg.chat.id)
+        _id : str = str(msg.chat.id)
 
-            if _id in accounts.keys():
-                acc : Account = accounts[_id]
-            else:
-                bot.send_message(_id, 
-                    'Please restart the bot for authorization.'
-                )
-                return False
+        if _id in accounts.keys():
+            acc : Account = accounts[_id]
+        else:
+            bot.send_message(_id, 
+                'Please restart the bot for authorization.'
+            )
+            return False
 
-            if msg.chat.type == 'private' and acc.personal_data == 'YES':
+        if msg.chat.type == 'private' and acc.personal_data == 'YES':
 
-                txt : str = msg.text
+            txt : str = msg.text
 
-                if txt in message_text_dict.keys():
+            if txt in message_text_dict.keys():
 
-                    key : Dict = message_text_dict[txt]
+                key : Dict = message_text_dict[txt]
 
-                    if key[0] == 'office': 
-                        selectOffice(msg, _id, STEP_FIRST)
+                if key[0] == 'office': 
+                    selectOffice(msg, _id, STEP_FIRST)
 
-                    elif key[0] == 'text_show': 
-                        pushingLabelFromFile(msg, accounts, key[1], key[2])
+                elif key[0] == 'text_show': 
+                    pushingLabelFromFile(msg, accounts, key[1], key[2])
 
-                    elif key[0] == 'oper_show': 
-                        operInit(msg, accounts, key[1], key[2])
+                elif key[0] == 'oper_show': 
+                    operInit(msg, accounts, key[1], key[2])
 
-                    elif key[0] == 'oper_close': 
-                        stopConversation(msg, key[1])
+                elif key[0] == 'oper_close': 
+                    stopConversation(msg, key[1])
 
-                    elif key[0] == 'redirect':
-                        redirectInit(msg,
-                            f"{EMJ_EXCLAMATION} Общение завершено, перенаправление {key[1]}"
-                        )
-                        operInit(msg, accounts, key[3], key[3], acc.tags[0])
-                        closeConversation(msg)
-
-                elif txt == f'{EMJ_BACK_ARROW} Назад': 
-                    keyboardRefMaker(msg, acc.language)
-
-                elif txt in (f'{EMJ_EXCLAMATION} Оставить жалобу', 
-                             f'{EMJ_EXCLAMATION} Shikoyat qoldiring'):
-                    work_msg(msg.chat.id)
-                    #if checkOperId(_id, feedback_oper_ids_arr): 
-                    #    dbDateSortEnter(msg, 'feedback_tb')
-                    #else:
-                    #    acc.feedback_st = 'open'
-                    #    inlineMessages(
-                    #        markup_text = openfileforRead(None, 
-                    #            recv_label if isRu(accounts, msg = msg) else sec_recv_label
-                    #        ), 
-                    #        msg = msg, 
-                    #        markup_arr = [["Написать жалобу", 
-                    #                       "Написать жалобу"] if isRu(msg) else 
-                    #                      ["Shikoyat yozing", 
-                    #                       "Shikoyat yozing"]
-                    #        ], 
-                    #        action = False
-                    #    )
-
-                elif txt == f"{EMJ_MONEY_BAG} Инкассация":
-                    #setCollectionKeyboard(message = msg, person_id = _id)
-                    work_msg(msg.chat.id)
-
-                elif txt in (f'{EMJ_DISK} БД переписок', f'{EMJ_DISK} Yozishmalar bazasi'):
-                    if checkOperId(_id, all_ids_arr): 
-                        dbDateSortEnter(msg, 'message_tb')
-                    else: 
-                        bot.send_message(msg.chat.id, 
-                            'У вас нет прав для чтения базы!' 
-                            if isRu(msg) else 
-                            'Sizda bazani o\'qish huquqi yo\'q!'
-                        )
-
-                elif txt in (f'{EMJ_PLUS} Мой ID', f'{EMJ_PLUS} Mening ID'):
-                    id_txt = "Ваш ID:" \
-                        if isRu(accounts, id = _id) else "Sizning ID:"
-                    bot.send_message(_id, f'{EMJ_NOTE} {id_txt} {_id}')
-
-                elif txt == f"{EMJ_EXCLAMATION} Жалоба":
-                    redirectInit(msg, 
-                        f'{EMJ_EXCLAMATION} Общение с оператором завершено, перенаправление в раздел жалоб'
+                elif key[0] == 'redirect':
+                    redirectInit(msg,
+                        f"{EMJ_EXCLAMATION} Общение завершено, перенаправление {key[1]}"
                     )
-                    accounts[acc.tags[0]].feedback_st = 'open'
-
-                    inlineMessages(
-                        markup_text = openfileforRead(None, recv_label if isRu(msg) else sec_recv_label), 
-                        _id = acc.tags[0], 
-                        markup_arr = [["Написать жалобу", 
-                                       "Написать жалобу"] 
-                                      if isRu(msg) else 
-                                      ["Shikoyat yozing", 
-                                       "Shikoyat yozing"]], 
-                        action = False
-                    )
+                    operInit(msg, accounts, key[3], key[3], acc.tags[0])
                     closeConversation(msg)
 
-                elif acc.conversation == 'open':
-                    if checkOperId(_id, all_ids_arr):
-                        update_account(accounts[acc.tags[0]], 
-                            'timer_conv', int(time.time())
+            elif txt == f'{EMJ_BACK_ARROW} Назад': 
+                keyboardRefMaker(msg, acc.language)
+
+            elif txt in (f'{EMJ_EXCLAMATION} Оставить жалобу', 
+                         f'{EMJ_EXCLAMATION} Shikoyat qoldiring'):
+                work_msg(msg.chat.id)
+                #if checkOperId(_id, feedback_oper_ids_arr): 
+                #    dbDateSortEnter(msg, 'feedback_tb')
+                #else:
+                #    acc.feedback_st = 'open'
+                #    inlineMessages(
+                #        markup_text = openfileforRead(None, 
+                #            recv_label if isRu(accounts, msg = msg) else sec_recv_label
+                #        ), 
+                #        msg = msg, 
+                #        markup_arr = [["Написать жалобу", 
+                #                       "Написать жалобу"] if isRu(msg) else 
+                #                      ["Shikoyat yozing", 
+                #                       "Shikoyat yozing"]
+                #        ], 
+                #        action = False
+                #    )
+
+            elif txt == f"{EMJ_MONEY_BAG} Инкассация":
+                #setCollectionKeyboard(message = msg, person_id = _id)
+                work_msg(msg.chat.id)
+
+            elif txt in (f'{EMJ_DISK} БД переписок', f'{EMJ_DISK} Yozishmalar bazasi'):
+                if checkOperId(_id, all_ids_arr): 
+                    dbDateSortEnter(msg, 'message_tb')
+                else: 
+                    bot.send_message(msg.chat.id, 
+                        'У вас нет прав для чтения базы!' 
+                        if isRu(msg) else 
+                        'Sizda bazani o\'qish huquqi yo\'q!'
+                    )
+
+            elif txt in (f'{EMJ_PLUS} Мой ID', f'{EMJ_PLUS} Mening ID'):
+                id_txt = "Ваш ID:" \
+                    if isRu(accounts, id = _id) else "Sizning ID:"
+                bot.send_message(_id, f'{EMJ_NOTE} {id_txt} {_id}')
+
+            elif txt == f"{EMJ_EXCLAMATION} Жалоба":
+                redirectInit(msg, 
+                    f'{EMJ_EXCLAMATION} Общение с оператором завершено, перенаправление в раздел жалоб'
+                )
+                accounts[acc.tags[0]].feedback_st = 'open'
+
+                inlineMessages(
+                    markup_text = openfileforRead(None, recv_label if isRu(msg) else sec_recv_label), 
+                    _id = acc.tags[0], 
+                    markup_arr = [["Написать жалобу", 
+                                   "Написать жалобу"] 
+                                  if isRu(msg) else 
+                                  ["Shikoyat yozing", 
+                                   "Shikoyat yozing"]], 
+                    action = False
+                )
+                closeConversation(msg)
+
+            elif acc.conversation == 'open':
+                if checkOperId(_id, all_ids_arr):
+                    update_account(accounts[acc.tags[0]], 
+                        'timer_conv', int(time.time())
+                    )
+                    sm_id = 'Operator: '
+                else:
+                    update_account(acc, 
+                        'timer_conv', int(time.time())
+                    )
+                    sm_id = 'User: '
+
+                accounts = get_accounts()
+
+                if txt:
+                    sm_id = f'{sm_id}{txt}\n'
+                    bot.send_message(acc.tags[0], txt)
+                elif msg.caption:
+                    sm_id = f'{sm_id}{msg.caption}\n'
+                    bot.send_message(acc.tags[0], msg.caption)
+
+                if msg.photo:
+                    sm_id = f'{sm_id}PHOTO\n'
+                    bot.send_photo(acc.tags[0], 
+                        bot.download_file(
+                            bot.get_file(msg.photo[-1].file_id).file_path
                         )
-                        sm_id = 'Operator: '
-                    else:
-                        update_account(acc, 
-                            'timer_conv', int(time.time())
-                        )
-                        sm_id = 'User: '
+                    )
 
-                    accounts = get_accounts()
-
-                    if txt:
-                        sm_id = f'{sm_id}{txt}\n'
-                        bot.send_message(acc.tags[0], txt)
-                    elif msg.caption:
-                        sm_id = f'{sm_id}{msg.caption}\n'
-                        bot.send_message(acc.tags[0], msg.caption)
-
-                    if msg.photo:
-                        sm_id = f'{sm_id}PHOTO\n'
-                        bot.send_photo(acc.tags[0], 
-                            bot.download_file(
-                                bot.get_file(msg.photo[-1].file_id).file_path
-                            )
-                        )
-
-                    insert_text(sm_id, msg.chat.id)
+                insert_text(sm_id, msg.chat.id)
     except:
         saveLogs(f'[lol]---->{traceback.format_exc()}')
         work_msg(msg.chat.id)

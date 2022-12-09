@@ -49,7 +49,7 @@ def __is_exist(cur, tb : str, status : str, _id : str, t_id : str) -> bool:
 
     return False
 
-def insert_message(user_id, oper_id, text = 'TEXT DATABASE', status = 'open') -> bool or str:
+def insert_message(user_id, oper_id, text='TEXT DATABASE', status='open') -> bool or str:
     """
     This definition connect user and operator in database.
 
@@ -74,13 +74,11 @@ def insert_message(user_id, oper_id, text = 'TEXT DATABASE', status = 'open') ->
                 _date = date.today().timetuple()[0:3]
                 _date = f'{_date[0]}-{_date[1]}-{_date[2]}'
                     
-                cur.execute(
-                    f'''INSERT INTO message_tb (date_start, user_id, oper_id, text, status') 
-                        VALUES (\'{_date}\', \'{user_id}\', \'{oper_id}\', \'{text}\', \'{status}\')'''
-                )
+                cur.execute(f"INSERT INTO message_tb (date_start, user_id, oper_id, text, status) VALUES ('{_date}', '{user_id}', '{oper_id}', '{text}', '{status}')")
 
                 con.commit()
-                if not is_id: return True
+                if not is_id: 
+                    return True
 
             if user_id and oper_id:
             
