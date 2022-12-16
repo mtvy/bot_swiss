@@ -171,11 +171,13 @@ def welcome(msg):
                 if isRu(accounts, msg = msg) else
                 "🔱Siz allaqachon ro'yxatdan o'tgansiz!"
             )
-            keyboardRefMaker(msg, not isRu(accounts, msg = msg))
+            
             if acc.link_enter and acc.link_enter.isdigit() and not checkOperId(str(_id), 'all_ids_arr'):
                 key : Dict = message_text_dict[f'{EMJ_RAISING_HAND} Оператор']
                 update_account(acc, 'link_enter', None)
                 operInit(msg, accounts, [acc.link_enter], [acc.link_enter])
+            else:
+                keyboardRefMaker(msg, not isRu(accounts, msg = msg))
             
         elif acc.personal_data == 'NO':
             inlineMessages(
@@ -708,13 +710,15 @@ def callback_inline(call):
                     accounts = get_accounts()
 
                     del_msg(_id, m_id)
-                    keyboardRefMaker(call.message, 
-                        accounts[str(_id)].language
-                    )
+                    
                     if accounts[str(_id)].link_enter and accounts[str(_id)].link_enter.isdigit() and not checkOperId(str(_id), 'all_ids_arr'):
                         key : Dict = message_text_dict[f'{EMJ_RAISING_HAND} Оператор']
                         update_account(accounts[str(_id)], 'link_enter', None)
                         operInit(call.message, accounts, [accounts[str(_id)].link_enter], [accounts[str(_id)].link_enter])
+                    else:
+                        keyboardRefMaker(call.message, 
+                            accounts[str(_id)].language
+                        )
                 else:
                     work_msg(_id)
             elif _key[0] in ('no_code', 'has_code'):
