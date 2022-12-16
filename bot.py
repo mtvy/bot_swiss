@@ -175,7 +175,7 @@ def welcome(msg):
             if acc.link_enter and acc.link_enter.isdigit() and not checkOperId(str(_id), 'all_ids_arr'):
                 key : Dict = message_text_dict[f'{EMJ_RAISING_HAND} Оператор']
                 update_account(acc, 'link_enter', None)
-                operInit(msg, accounts, [acc.link_enter], key[2])
+                operInit(msg, accounts, [acc.link_enter], [acc.link_enter])
             
         elif acc.personal_data == 'NO':
             inlineMessages(
@@ -222,7 +222,7 @@ def adderNewLabel(message) -> None:
 
 #\==================================================================/#
 def sendReqtoOper(_oper : str, op_txt : str, markup) -> None:
-    for oper_id in action_oper_select[_oper]:
+    for oper_id in action_oper_select[_oper] if isinstance(_oper, str) else _oper:
         try:
             bot.send_message(int(oper_id), 
                op_txt, reply_markup=markup
@@ -714,7 +714,7 @@ def callback_inline(call):
                     if accounts[str(_id)].link_enter and accounts[str(_id)].link_enter.isdigit() and not checkOperId(str(_id), 'all_ids_arr'):
                         key : Dict = message_text_dict[f'{EMJ_RAISING_HAND} Оператор']
                         update_account(accounts[str(_id)], 'link_enter', None)
-                        operInit(call.message, accounts, [accounts[str(_id)].link_enter], key[2])
+                        operInit(call.message, accounts, [accounts[str(_id)].link_enter], [accounts[str(_id)].link_enter])
                 else:
                     work_msg(_id)
             elif _key[0] in ('no_code', 'has_code'):
