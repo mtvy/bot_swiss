@@ -54,5 +54,6 @@ CREATE TABLE account_tb(
     personal_data varchar(255), 
     language      varchar(255), 
     feedback_st   varchar(255), 
-    timer_conv    integer          
+    timer_conv    integer,
+    link_enter    VARCHAR(64)        
 ); 

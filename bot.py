@@ -141,15 +141,23 @@ class P_schedule:
 @bot.message_handler(commands=['start'])
 def welcome(msg):
     global accounts
-    
+
+    _id = str(msg.chat.id)
+
     accounts = get_accounts()
 
-    _accounts = [str(msg.chat.id)]
+    _accounts = [_id]
 
-    _id = _accounts[0]
-
+    if len(msg.html_text.split()) > 1 and msg.html_text.split()[1].isdigit():
+        run_id = msg.html_text.split()[1]
+    else:
+        run_id = None
+    
     if _id in accounts.keys():
-        if not accounts[_id].language:
+        acc = accounts[_id]
+        acc.link_enter = run_id
+        update_account(accounts[str(_id)], 'link_enter', run_id)
+        if not acc.language:
             inlineMessages(
                 markup_text = "🔱Choose language", 
                 msg         = msg, 
@@ -157,14 +165,19 @@ def welcome(msg):
                                ["Ozbek", "Ozbek"]], 
                 action      = False
             )
-        elif accounts[_id].personal_data == 'YES':
+        elif acc.personal_data == 'YES':
             bot.send_message(msg.chat.id,
                 f'{EMJ_DOCTOR}Вы уже зарегистрированы в системе!'
                 if isRu(accounts, msg = msg) else
                 "🔱Siz allaqachon ro'yxatdan o'tgansiz!"
             )
             keyboardRefMaker(msg, not isRu(accounts, msg = msg))
-        elif accounts[_id].personal_data == 'NO':
+            if acc.link_enter and acc.link_enter.isdigit() and not checkOperId(str(_id), 'all_ids_arr'):
+                key : Dict = message_text_dict[f'{EMJ_RAISING_HAND} Оператор']
+                update_account(acc, 'link_enter', None)
+                operInit(msg, accounts, [acc.link_enter], key[2])
+            
+        elif acc.personal_data == 'NO':
             inlineMessages(
                 markup_text = openfileforRead(None, 
                     first_lang if isRu(accounts, msg = msg) else second_lang
@@ -178,18 +191,7 @@ def welcome(msg):
                 action = False
             )
     else:
-        _accounts += [str(msg.chat.username)    , 
-                      str(msg.chat.first_name) , 
-                      []                      , 
-                      'close'                , 
-                      '0'                   , 
-                      []                   , 
-                      '0'                 ,  
-                      'NO'               , 
-                      None              , 
-                      'close'          , 
-                      0
-        ]
+        _accounts += [msg.chat.username, msg.chat.first_name, [], 'close', '0', [], '0', 'NO', None, 'close', 0, run_id]
         account = Account(_accounts)
         if insert_account(account):
             accounts[account.telegram_id] = account
@@ -439,34 +441,6 @@ def closeConversation(msg):
         change_status(msg.chat.id)
     except:
         saveLogs(f'[closeConversation]---->{traceback.format_exc()}')
-
-
-def setCollectionKeyboard(message, person_id, show_text = 'Выберите необходимый мед офис'):
-    bot.send_message(person_id, show_text, reply_markup = markupMaker(action = 'office', button_text = office_markup_dict))
-
-def selectOffice(message, person_id, step, push_text = '', data = ''):
-    if checkOperId(person_id = person_id, action = collection_oper_ids_arr):
-        if show_text_dict[step]:
-            dbCollection(message = message, person_id = person_id, step = step - 1, database_push_data = message.text)
-            nextStepWait(person_id = person_id, text = show_text_dict[step], func = selectOffice, args = [person_id, step + 1])
-        else:
-            dbCollection(message = message, person_id = person_id, step = step - 1, database_push_data = message.text)
-            for line, row in zip(add_text_dict, dbCollection(message = message, person_id = person_id, step = step, database_push_data = 'admin')[-1]):
-                data += f"{line} {row}\n"
-            bot.send_message(person_id, data)
-            inlineMessages(markup_text = 'Можете отправить отчёт или изменить данные', message = message, 
-                           markup_arr = [['Отправить отчёт', 'Отправить отчёт'], ['Изменить', 'Изменить']])
-
-    elif checkOperId(person_id = person_id, action = collection_cash_ids_arr):
-        dbCollection(message = message, person_id = person_id, database_push_data = message.text, action = 'cashier_init')
-        database_data = dbCollection(message = message, person_id = person_id, database_push_data = message.text, step = 9, action = 'show_collection_to_cashier')
-        if len(database_data) > 0:
-            for line, row in zip(add_text_dict, database_data[-1]):
-                data += f"{line} {row}\n"
-            bot.send_message(person_id, data)
-            inlineMessages(markup_text = 'Можете подтвердить или изменить данные', message = message, markup_arr = [['Подтвердить', 'Подтвердить'], ['Изменить', 'Изменить']])
-        else:
-            bot.send_message(person_id, 'Данных по этому офису нет!')
 #\==================================================================/#
 
 
@@ -496,10 +470,7 @@ def lol(msg) -> bool:
 
                 key : Dict = message_text_dict[txt]
 
-                if key[0] == 'office': 
-                    selectOffice(msg, _id, STEP_FIRST)
-
-                elif key[0] == 'text_show': 
+                if key[0] == 'text_show': 
                     pushingLabelFromFile(msg, accounts, key[1], key[2])
 
                 elif key[0] == 'oper_show': 
@@ -521,25 +492,8 @@ def lol(msg) -> bool:
             elif txt in (f'{EMJ_EXCLAMATION} Оставить жалобу', 
                          f'{EMJ_EXCLAMATION} Shikoyat qoldiring'):
                 work_msg(msg.chat.id)
-                #if checkOperId(_id, feedback_oper_ids_arr): 
-                #    dbDateSortEnter(msg, 'feedback_tb')
-                #else:
-                #    acc.feedback_st = 'open'
-                #    inlineMessages(
-                #        markup_text = openfileforRead(None, 
-                #            recv_label if isRu(accounts, msg = msg) else sec_recv_label
-                #        ), 
-                #        msg = msg, 
-                #        markup_arr = [["Написать жалобу", 
-                #                       "Написать жалобу"] if isRu(msg) else 
-                #                      ["Shikoyat yozing", 
-                #                       "Shikoyat yozing"]
-                #        ], 
-                #        action = False
-                #    )
 
             elif txt == f"{EMJ_MONEY_BAG} Инкассация":
-                #setCollectionKeyboard(message = msg, person_id = _id)
                 work_msg(msg.chat.id)
 
             elif txt in (f'{EMJ_DISK} БД переписок', f'{EMJ_DISK} Yozishmalar bazasi'):
@@ -553,8 +507,7 @@ def lol(msg) -> bool:
                     )
 
             elif txt in (f'{EMJ_PLUS} Мой ID', f'{EMJ_PLUS} Mening ID'):
-                id_txt = "Ваш ID:" \
-                    if isRu(accounts, id = _id) else "Sizning ID:"
+                id_txt = "Ваш ID:" if isRu(accounts, id = _id) else "Sizning ID:"
                 bot.send_message(_id, f'{EMJ_NOTE} {id_txt} {_id}')
 
             elif txt == f"{EMJ_EXCLAMATION} Жалоба":
@@ -635,192 +588,6 @@ def checkBlockedPeople(markup, pers_id, txt):
             bot.send_message(int(id_er), f"User {pers_id} blocked!\n\n{repr(error)}")
 
 
-def fdbackName(message, lang):
-    global account
-    name_user = message.text
-    if name_user != 'stop':
-        if name_user is None: name_user = 'Пользователь отправил нечитаемый объект'
-
-        feed_back[str(message.chat.id)] = {
-                                                     "Name" : name_user, 
-                                                     "Username" : str(message.chat.username), 
-                                                     "Language" : account[str(message.chat.id)].language
-                                                    }
-        nextStepWait(person_id = message.chat.id, text = f'{EMJ_PLUS} Введите ваш номер телефона' if lang == 0 
-                                                    else f'{EMJ_PLUS} Telefon raqamingizni kiriting', func = fdbackTele, args = [lang])
-    else:
-        bot.send_message(message.chat.id, f'{EMJ_PLUS} Операция отменена')
-def fdbackTele(message, lang):
-    tele_num = message.text
-    if tele_num.isdigit():
-
-        feed_back[str(message.chat.id)].update({
-                              'Telephone number' : tele_num if tele_num != None else 'Пользователь отправил нечитаемый объект'
-                                                         })
-
-        if lang: bot.send_message(message.chat.id, f'{EMJ_PLUS} Жалоба составляется в четыре этапа:\n'
-                                                    '1) Причина жалобы и номер заявки\n'
-                                                    '2) Обозначение филиала/места, где произошёл инцидент\n'
-                                                    '3) Дата инцидента\n'
-                                                    '4) Имя или опишите оппонента, с которым произошёл конфликт\n'
-                                                   f'{EMJ_CROSS} Для отмены операции напишите stop')
-        else:    bot.send_message(message.chat.id, f'{EMJ_PLUS} Shikoyat tort bosqichda tuziladi:\n'
-                                                    '1) Shikoyat sababi\n'
-                                                    '2) Hodisa sodir bolgan filial/joyni belgilash\n'
-                                                    '3) Hodisa sanasi\n'
-                                                    '4) Mojaro yuz bergan raqibning nomi yoki tarifi\n'
-                                                   f'{EMJ_CROSS} Operatsiyani bekor qilish uchun yozing stop')
-                                                                       
-        nextStepWait(person_id = message.chat.id, text = f'{EMJ_PLUS} Напишите причину жалобы и номер заявки' 
-                                       if lang == 0 else f'{EMJ_PLUS} Shikoyat sababini va ariza raqamini yozing', func = fdbackReason, args = [lang])
-    elif tele_num == 'stop': bot.send_message(message.chat.id, f'{EMJ_PLUS} Операция отменена' 
-                                             if lang == 0 else f'{EMJ_PLUS} Amal bekor qilindi')
-    else: nextStepWait(person_id = message.chat.id, text = f'{EMJ_PLUS} Введите номер телефона в формате 998999999999 или напишите stop' 
-                                         if lang == 0 else f'{EMJ_PLUS} Telefon raqamingizni formatda kiriting 9997777777777 yoki yozing stop', func = fdbackTele, args = [lang])
-def fdbackReason(message, lang):
-    reason_send = message.text
-    if reason_send != 'stop':
-        if reason_send == None: reason_send = 'Пользователь отправил нечитаемый объект'
-        feed_back[str(message.chat.id)].update({"Reason" : reason_send})
-        
-        nextStepWait(person_id = message.chat.id, text = f'{EMJ_PLUS} Напишите филиал/место, где произошёл инцидент' 
-                                       if lang == 0 else f'{EMJ_PLUS} Hodisa sodir bolgan filial/joyni yozing', func = fdbackPlace, args = [lang])
-    else:
-        bot.send_message(message.chat.id, f'{EMJ_PLUS} Операция отменена' 
-                        if lang == 0 else f'{EMJ_PLUS} Amal bekor qilindi')  
-def fdbackPlace(message, lang):
-    place_send = message.text
-    if place_send != 'stop':
-        if place_send == None: place_send = 'Пользователь отправил нечитаемый объект'
-        feed_back[str(message.chat.id)].update({"Place" : place_send})
-        nextStepWait(person_id = message.chat.id, text = f'{EMJ_PLUS} Напишите дату инцидента' 
-                                       if lang == 0 else f'{EMJ_PLUS} Hodisa tarixini yozing', func = fdbackDate, args = [lang])
-    else: bot.send_message(message.chat.id, f'{EMJ_PLUS} Операция отменена' if lang == 0 else f'{EMJ_PLUS} Amal bekor qilindi')
-def fdbackDate(message, lang):
-    date_send = message.text
-    if date_send != 'stop':
-        feed_back[str(message.chat.id)].update({"Date" : date_send if date_send != None else 'Пользователь отправил нечитаемый объект'})
-        nextStepWait(person_id = message.chat.id, text = f'{EMJ_PLUS} Напишите имя или опишите оппонента, с которым произошёл конфликт' 
-                                       if lang == 0 else f'{EMJ_PLUS} Ismni yozing yoki ziddiyatga duch kelgan raqibni tariflang', func = fdBack_fill, args = [lang])
-    else: bot.send_message(message.chat.id, f'{EMJ_PLUS} Операция отменена' 
-                          if lang == 0 else f'{EMJ_PLUS} Amal bekor qilindi')
-def fdBack_fill(message, lang):
-
-    feedback_user = message.text
-
-    if lang:
-        if (feedback_user not in [
-                    f'{EMJ_WRITING_HAND} Написать директору' ,  f'{EMJ_OLD_TELEPHONE} Тех. поддержка',
-                    f'{EMJ_EXCLAMATION}️ Оставить жалобу'     ,  f'{EMJ_NOTE} Создать заказ'          ,
-                    f'{EMJ_RAISING_HAND} Оператор'           ,  f'{EMJ_DISK} БД переписок'           ,
-                    f'{EMJ_INFO} FAQ Инструкция'             ,  f'{EMJ_GLOBE} Соц. сети'             ,
-                    f'{EMJ_TELEPHONE} Телефон'               ,  f'{EMJ_HOUSE} Адреса'                ,
-                    f'{EMJ_PLUS} Мой ID'                     ,  'stop'                                              ]
-            ):
-            
-            if feedback_user is None: feedback_user = 'Пользователь отправил нечитаемый объект'
-
-            feed_back[str(message.chat.id)].update({"FeedBack" : feedback_user})
-
-            txt = (
-                  f"--------ЖАЛОБА--------\n"
-                  f"id: {str(message.chat.id)}\n"
-                  f"Имя: {feed_back[str(message.chat.id)]['Name']}\n"
-                  f"Язык: {account[str(message.chat.id)].language}\n"
-                  f"Причина: {feed_back[str(message.chat.id)]['Reason']}\n"
-                  f"Место: {feed_back[str(message.chat.id)]['Place']}\n"
-                  f"Дата: {feed_back[str(message.chat.id)]['Date']}\n"
-                  f"Конфликт: {feedback_user}\n---------------------"
-            )
-
-            bot.send_message(message.chat.id, f'{EMJ_PLUS} Контроль сервиса лаборатории SwissLab. Мы благодарим за'
-                                               ' сделанный выбор и будем рады, если вы поможете улучшить качество нашего сервиса!\n'
-                                              f'{EMJ_RAISING_HAND} Наш оператор свяжется с вами при необходимости!')
-
-            markup = types.InlineKeyboardMarkup(row_width=2)
-            markup.add(types.InlineKeyboardButton("Ответить", callback_data = f"Q{str(message.chat.id)}"))
-            
-            for id_p in all_ids_arr:
-                checkBlockedPeople(markup = markup, pers_id = id_p, txt = txt)
-
-            db_answer = insert_feedback(0, message.chat.id, txt)
-            bot.send_message(message.chat.id, db_answer)
-
-        elif (
-                feedback_user not in [
-                    f"{EMJ_OLD_TELEPHONE} O'sha.  qo'llab-quvvatlash" , f'{EMJ_EXCLAMATION} Shikoyat qoldiring',
-                    f'{EMJ_GLOBE} Biz ijtimoiy tarmoqlarda'           , f'{EMJ_DISK} Yozishmalar bazasi'       ,
-                    f'{EMJ_WRITING_HAND} Direktorga yozing'           , f"{EMJ_INFO} FAQ Ko'rsatma"            ,
-                    f'{EMJ_NOTE} buyurtma yaratish'                   , f'{EMJ_TELEPHONE} telefon'             ,
-                    f'{EMJ_RAISING_HAND} Operator'                    , f'{EMJ_HOUSE} manzillari'              ,
-                    f'{EMJ_PLUS} Mening ID'                           ,  'stop' 
-                ]
-             ):
-
-                if feedback_user == None: feedback_user = 'Пользователь отправил нечитаемый объект'
-                
-                feed_back[str(message.chat.id)].update({"FeedBack" : feedback_user})
-
-                txt = (
-                    f"--------ЖАЛОБА--------\n"
-                    f"id: {str(message.chat.id)}\n"
-                    f"Имя: {feed_back[str(message.chat.id)]['Name']}\n"
-                    f"Язык: {account[str(message.chat.id)].language}\n"
-                    f"Причина: {feed_back[str(message.chat.id)]['Reason']}\n"
-                    f"Место: {feed_back[str(message.chat.id)]['Place']}\n"
-                    f"Дата: {feed_back[str(message.chat.id)]['Date']}\n"
-                    f"Конфликт: {feedback_user}\n---------------------"
-                )
-
-                bot.send_message(message.chat.id, f'{EMJ_PLUS} Laboratoriya xizmatini nazorat qilish SwissLab. Biz tanlaganingiz uchun'
-                                                   ' tashakkur uchun tashakkur va xizmatimiz sifatini yaxshilashga yordam bersangiz xursand bolamiz!\n'
-                                                  f'{EMJ_RAISING_HAND} Agar kerak bolsa, bizning operatorimiz sizga murojaat qiladi!')
-
-                markup = types.InlineKeyboardMarkup(row_width=2)
-                markup.add(types.InlineKeyboardButton("Ответить", callback_data = f"Q{str(message.chat.id)}"))
-
-                for id_p in all_ids_arr: checkBlockedPeople(markup = markup, pers_id = id_p, txt = txt)
-
-                db_answer = insert_feedback(0, message.chat.id, txt, bot)
-                bot.send_message(message.chat.id, db_answer)
-
-    elif feedback_user == 'stop': bot.send_message(message.chat.id, f'{EMJ_PLUS} Операция отменена' 
-                                                  if lang == 0 else f'{EMJ_PLUS} Amal bekor qilindi')
-                                                  
-    else: nextStepWait(person_id = message.chat.id, text = f'{EMJ_PLUS} Введите ваш отзыв в правильном формате или напишите stop' if lang == 0 
-                                                      else f'{EMJ_PLUS} Iltimos, sharhingizni togri formatda kiriting yoki yozing stop', func = fdBack_fill, args = [lang])
-
-
-def enterTag(message, mess):
-    global account
-    if mess == "new":
-        update_account(account = account[str(message.chat.id)], parametr = 'tags', data = [])        
-        account = get_accounts()
-
-    account[str(message.chat.id)].tags.append(message.text)
-    update_account(account = account[str(message.chat.id)], parametr = 'tags', data = account[str(message.chat.id)].tags)       
-
-    it = len(account[str(message.chat.id)].tags)
-    send = bot.send_message(message.chat.id, f"{EMJ_PLUS} Введено {str(it)} из 10 пользователей")
-    if it < 10: bot.register_next_step_handler(send, enterTag, "")
-    else: bot.send_message(message.chat.id, f"{EMJ_EXCLAMATION} Вы получите скидку после того как пользователи активируют бота\n"
-                                            f"{EMJ_EXCLAMATION} Если хотите изменить список друзей нажмите на /tags")
-def enterTag_Sec(message, mess):
-    global account
-    if mess == "new":
-        update_account(account = account[str(message.chat.id)], parametr = 'tags', data = [])        
-        account = get_accounts()
-
-    account[str(message.chat.id)].tags.append(message.text)
-    update_account(account = account[str(message.chat.id)], parametr = 'tags', data = account[str(message.chat.id)].tags)
-
-    it = len(account[str(message.chat.id)].tags)
-    send = bot.send_message(message.chat.id, f"{EMJ_PLUS} Kirilgan {str(it)} 10 foydalanuvchilar")
-    if it < 10: bot.register_next_step_handler(send, enterTag_Sec, "")
-    else: bot.send_message(message.chat.id, f"{EMJ_EXCLAMATION} Foydalanuvchilar botni aktivlashtirgandan so'ng chegirmaga"
-                                             " ega bo'lasiz agar do'stlaringiz ro'yxatini o'zgartirmoqchi bo'lsangiz bosing /tags")
-
-
 def userSebdText(message):
     global account
     if message.text != 'stop':
@@ -881,14 +648,6 @@ def inlineMessages(markup_text, call : Any    = None,
     except:
         debug.saveLogs(f'[inlineMessages]---->{traceback.format_exc()}')
 
-def handlingdbCollection(message, call, data = ''):
-    for line, row in zip(add_text_dict, dbCollection(message = message, person_id = message.chat.id, step = call_data_dict[call.data][1], action = 'show_data')[-1]):
-                data += f"{line} {row}\n"
-    bot.send_message(message.chat.id, data)
-    inlineMessages(markup_text = 'Можете отправить отчёт или изменить данные', message = message, markup_arr = [['Отправить отчёт', 'Отправить отчёт'] 
-                                                                                                  if checkOperId(person_id = str(message.chat.id), 
-                                                                                                                 action    = collection_oper_ids_arr) 
-                                                                                                  else ['Подтвердить', 'Подтвердить'], ['Изменить', 'Изменить']])
 
 def nextStepWait(_id, txt, func, args = None, mod = False, _msg_id = None):
     try:
@@ -927,14 +686,11 @@ def callback_inline(call):
         m_id  : int        = call.message.message_id
 
         if _data in call_data_dict.keys():
-
             _key = call_data_dict[_data]
 
             if _key[0] == 'set_lang':
                 if update_account(accounts[str(_id)], 'language', _data):
-
                     accounts = get_accounts()
-
                     inlineMessages(
                         markup_text = openfileforRead(None, _key[1]), 
                         call = call, 
@@ -942,11 +698,10 @@ def callback_inline(call):
                     )
                 else:
                     work_msg(_id)
-            
             elif _key[0] == 'disagree_data':
                 del_msg(_id, m_id)
+                update_account(accounts[str(_id)], 'link_enter', None)
                 bot.send_message(_id, _key[1])
-            
             elif _key[0] == 'agree_data':
                 if update_account(accounts[str(_id)], 'personal_data', 'YES'):
 
@@ -956,58 +711,29 @@ def callback_inline(call):
                     keyboardRefMaker(call.message, 
                         accounts[str(_id)].language
                     )
+                    if accounts[str(_id)].link_enter and accounts[str(_id)].link_enter.isdigit() and not checkOperId(str(_id), 'all_ids_arr'):
+                        key : Dict = message_text_dict[f'{EMJ_RAISING_HAND} Оператор']
+                        update_account(accounts[str(_id)], 'link_enter', None)
+                        operInit(call.message, accounts, [accounts[str(_id)].link_enter], key[2])
                 else:
                     work_msg(_id)
-            
             elif _key[0] in ('no_code', 'has_code'):
                 del_msg(_id, m_id)
                 keyboardRefMaker(call.message, 
                     accounts[str(_id)].language
-                )
-            
-            elif _key[0] == 'feedback':
-                nextStepWait(
-                    person_id  = _id, 
-                    text       = _key[1], 
-                    func       = fdbackName, 
-                    args       = [_key[2]], 
-                    action     = True, 
-                    message_id = m_id
-                )
-            
-            elif _key[0] == 'friends_tag':
-                nextStepWait(
-                    person_id  = _id, 
-                    text       = _key[1], 
-                    func       = enterTag, 
-                    args       = ["new"], 
-                    action     = True, 
-                    message_id = m_id
-                )
-            
+                ) 
             elif _key[0] == 'edit_label':
                 inlineMessages(
                     markup_text = 'Выберите язык блока', 
                     call        = call, 
                     markup_arr  = _key[1]
                 )
-            
             elif _key[0] == 'edit_label_sec':
                 nextStepWait(
                     person_id  = _id, 
                     text       = f'{EMJ_PLUS} Введите текст для изменения', 
                     func       = saveNewText, 
                     args       = [_key[1]], 
-                    action     = True, 
-                    message_id = m_id
-                )
-            
-            elif _key[0] == 'office_edit':
-                nextStepWait(
-                    person_id  = _id, 
-                    text       = f"{EMJ_PLUS} Введите данные для изменения", 
-                    func       = handlingdbCollection, 
-                    args       = [call], 
                     action     = True, 
                     message_id = m_id
                 )
@@ -1019,29 +745,7 @@ def callback_inline(call):
                 if isRu(accounts, id = _id) else 
                 'Baholash uchun rahmat!'
             )
-        elif _data == 'Изменить': 
-            inlineMessages(
-                markup_text = 'Что нужно исправить?', 
-                call = call, 
-                markup_arr = markup_change_collection_arr
-            )
-        elif _data == 'Отправить отчёт' or _data == 'Подтвердить':
-            del_msg(_id, m_id)
-            dbCollection(
-                call.message, 
-                person_id = _id, 
-                action = 'send_collection_to_oper' if _data == 'Отправить отчёт' 
-                                                   else 'confirm_collection'
-            )
-            bot.send_message(_id, 
-                'Отчёт отправлен!' if _data == 'Отправить отчёт' 
-                                   else 'Отчёт подтверждён!'
-            )
-            keyboardRefMaker(
-                call.message, 
-                0 if isRu(person_id = str(_id)) else 1, 
-                str(_id)
-            )
+        
         elif _data[0] == 'Q':
             if accounts[_data[1:]].feedback_st == 'open':
                 update_account(

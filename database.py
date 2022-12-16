@@ -428,16 +428,14 @@ def insert_account(acc : Account) -> bool:
     con, cur = connect()
     if con and cur:
         try:
+            link_enter = "'"+acc.link_enter+"'" if acc.link_enter else 'NULL'
             cur.execute( 'INSERT INTO account_tb (telegram_id  , login     ,     '
                          '                        name         , oper_ids  ,     '
                          '                        conversation , discount  ,     '
                          '                        tags         , ref       ,     '
                          '                        personal_data, language  ,     '
-                         '                        feedback_st  , timer_conv)     '
-                         'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'     , 
-                         (acc.telegram_id, acc.login   , acc.name       , acc.oper_ids  , 
-                          acc.conversation, acc.discount, acc.tags       , acc.ref       , 
-                          acc.personal_data, acc.language, acc.feedback_st, acc.timer_conv)
+                         '                        feedback_st  , timer_conv, link_enter)     '
+                         f"VALUES ('{acc.telegram_id}', '{acc.login}', '{acc.name}', '{'{}'}', '{acc.conversation}', '{acc.discount}', '{'{}'}', '{acc.ref}', '{acc.personal_data}', '{acc.language}', '{acc.feedback_st}', {acc.timer_conv}, {link_enter})"
             )
 
             con.commit()
@@ -460,7 +458,7 @@ def update_account(acc : Account , param, data) -> bool:
                          'WHERE               telegram_id = %s ', 
                         (data, acc.telegram_id)
             )
-            
+
             con.commit()
             return True
 
@@ -481,7 +479,7 @@ def get_accounts(accounts : Dict = {}, attr = 'telegram_id') -> Dict[int, Accoun
                         "       conversation , discount  , "
                         "       tags         , ref       , "
                         "       personal_data, language  , "
-                        "       feedback_st  , timer_conv  "
+                        "       feedback_st  , timer_conv, link_enter  "
                         "FROM   account_tb                 ")
 
             for account in cur.fetchall():
@@ -509,7 +507,8 @@ def get_accounts(accounts : Dict = {}, attr = 'telegram_id') -> Dict[int, Accoun
                 '       personal_data varchar(255), '
                 '       language varchar(255)     , '
                 '       feedback_st varchar(255)  , '
-                '       timer_conv integer          '
+                '       timer_conv integer        , '
+                '       link_enter varchar(64)      '
                 ');                                 '
             )
         

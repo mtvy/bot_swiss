@@ -18,6 +18,7 @@ class Account:
         self.language = acc[9]
         self.feedback_st = acc[10]
         self.timer_conv = acc[11]
+        self.link_enter = acc[12]
     
     def __str__(self):
         return str({
@@ -33,4 +34,5 @@ class Account:
             'language': self.language,
             'feedback_st': self.feedback_st,
             'timer_conv': self.timer_conv,
+            'link_enter': self.link_enter
         })
